@@ -5,7 +5,7 @@ const routes: Routes = [
     {
         path: '',
         loadChildren: () =>
-            import('./site/site.module').then(m => m.SiteModule)
+            import('./modules/syllogimous/syllogimous.module').then(m => m.SyllogimousModule)
     },
     {
         path: 'login',
@@ -17,11 +17,6 @@ const routes: Routes = [
         loadChildren: () =>
             import('./modules/docs/docs.module').then(m => m.DocsModule),
         canActivate: ["guardAdmin"]
-    },
-    {
-        path: 'playground',
-        loadChildren: () =>
-            import('./modules/syllogimous/syllogimous.module').then(m => m.SyllogimousModule)
     },
 ];
 
