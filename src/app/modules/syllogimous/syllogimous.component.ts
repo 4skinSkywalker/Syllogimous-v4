@@ -9,7 +9,7 @@ import { TIER_COLORS, TIER_SCORE_RANGES } from "./constants/syllogimous.constant
     styleUrls: ["./syllogimous.component.scss"]
 })
 export class SyllogimousComponent {
-    @HostBinding('style.backgroundImage') backgroundImage = `linear-gradient(62deg, #8EC5FC88 0%, #E0C3FC88 100%), url(/assets/images/bg-${1 + Math.floor(Math.random() * 6)}.avif)`;
+    @HostBinding('style.backgroundImage') backgroundImage = `linear-gradient(62deg, #8EC5FC88 0%, #E0C3FC88 100%), url(assets/images/bg-${1 + Math.floor(Math.random() * 6)}.avif)`;
     
     TIER_COLORS = TIER_COLORS;
     TIER_SCORE_RANGES = TIER_SCORE_RANGES;
