@@ -1,7 +1,7 @@
 :host {
     background-image: var(--app-sidebar-gradient);
     display: grid;
-    height: 100vh;
+    height: 100svh;
     place-items: center;
 }
 
@@ -92,7 +92,7 @@
 @media (max-width: 500px) {
 
     .subscription-wrapper {
-        height: 100vh;
+        height: 100svh;
     }
 
     .subscription-container {

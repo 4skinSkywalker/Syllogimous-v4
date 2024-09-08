@@ -6,7 +6,7 @@
         "side-l footer side-r";
     grid-template-columns: auto 1fr auto;
     grid-template-rows: min-content 1fr min-content;
-    height: 100vh;
+    height: 100svh;
 }
 
 .sb-layout__side {
@@ -61,7 +61,7 @@
 
 @media (max-width: 700px) {
     .sb-layout__side {
-        min-height: 100vh;
+        min-height: 100svh;
         position: fixed;
         width: 85vw;
     }

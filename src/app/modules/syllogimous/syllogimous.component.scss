@@ -1,7 +1,7 @@
 :host {
     display: grid;
     place-items: center;
-    height: 100vh;
+    height: 100svh;
     background-color: #8EC5FC;
     background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
 }
@@ -56,7 +56,7 @@
 
 .playcard {
     width: min(36rem, 100vw);
-    height: min(36rem, 100vh);
+    height: min(36rem, 100svh);
 }
 
 .playcard-body {
@@ -70,6 +70,6 @@
 @media(max-width: 768px) {
     .playcard {
         width: 100vw;
-        height: 100vh;
+        height: 100svh;
     }
 }
