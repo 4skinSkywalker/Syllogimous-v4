@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Question } from 'src/app/modules/syllogimous/models/question.models';
-import { SyllogimousService } from 'src/app/modules/syllogimous/syllogimous.service';
+import { SyllogimousService } from 'src/app/modules/syllogimous/services/syllogimous.service';
 
 @Component({
     selector: 'app-accuracy-stats',

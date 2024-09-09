@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { SyllogimousService } from "../../../syllogimous.service";
+import { SyllogimousService } from "../../../services/syllogimous.service";
 import { EnumScreens } from "../../../models/syllogimous.models";
 
 @Component({

@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { Question } from "src/app/modules/syllogimous/models/question.models";
 import { LS_HISTORY } from "src/app/modules/syllogimous/constants/local-storage.constants";
-import { SyllogimousService } from "../../../syllogimous.service";
+import { SyllogimousService } from "../../../services/syllogimous.service";
 
 @Component({
     selector: "app-body-tutorials",

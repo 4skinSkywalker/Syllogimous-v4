@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
-import { EnumQuestionType, Question } from "./models/question.models";
-import { coinFlip, findDirection, findDirection3D, findDirection4D, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, makeMetaRelations, pickUniqueItems, shuffle } from "./utils/engine.utils";
-import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_INVERSE, TIME_NAMES } from "./constants/engine.constants";
-import { EnumScreens, EnumTiers } from "./models/syllogimous.models";
-import { TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES, TIER_SETTINGS } from "./constants/syllogimous.constants";
-import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE } from "./constants/local-storage.constants";
+import { EnumQuestionType, Question } from "../models/question.models";
+import { coinFlip, findDirection, findDirection3D, findDirection4D, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, makeMetaRelations, pickUniqueItems, shuffle } from "../utils/engine.utils";
+import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_INVERSE, TIME_NAMES } from "../constants/engine.constants";
+import { EnumScreens, EnumTiers } from "../models/syllogimous.models";
+import { TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES, TIER_SETTINGS } from "../constants/syllogimous.constants";
+import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE } from "../constants/local-storage.constants";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { ModalLevelChangeComponent } from "./components/modal-level-change/modal-level-change.component";
+import { ModalLevelChangeComponent } from "../components/modal-level-change/modal-level-change.component";
 
 @Injectable({
     providedIn: "root"
@@ -83,32 +83,32 @@ export class SyllogimousService {
 
     createQuestion() {
         const choices = [];
-        if (this.settings.enableDistinction) {
-            choices.push(() => this.createDistinction(this.settings.premisesDistinction));
+        if (this.settings.distinction[0]) {
+            choices.push(() => this.createDistinction(this.settings.distinction[1]));
         }
-        if (this.settings.enableComparisonNumerical) {
-            choices.push(() => this.createComparison(this.settings.premisesComparisonNumerical, EnumQuestionType.ComparisonNumerical));
+        if (this.settings.comparisonNumerical[0]) {
+            choices.push(() => this.createComparison(this.settings.comparisonNumerical[1], EnumQuestionType.ComparisonNumerical));
         }
-        if (this.settings.enableComparisonChronological) {
-            choices.push(() => this.createComparison(this.settings.premisesComparisonChronological, EnumQuestionType.ComparisonChronological));
+        if (this.settings.comparisonChronological[0]) {
+            choices.push(() => this.createComparison(this.settings.comparisonChronological[1], EnumQuestionType.ComparisonChronological));
         }
-        if (this.settings.enableSyllogism) {
-            choices.push(() => this.createSyllogism(this.settings.premisesSyllogism));
+        if (this.settings.syllogism[0]) {
+            choices.push(() => this.createSyllogism(this.settings.syllogism[1]));
         }
-        if (this.settings.enableDirection) {
-            choices.push(() => this.createDirection(this.settings.premisesDirection));
+        if (this.settings.direction[0]) {
+            choices.push(() => this.createDirection(this.settings.direction[1]));
         }
-        if (this.settings.enableDirection3D) {
-            choices.push(() => this.createDirection3D(this.settings.premisesDirection3D));
+        if (this.settings.direction3D[0]) {
+            choices.push(() => this.createDirection3D(this.settings.direction3D[1]));
         }
-        if (this.settings.enableDirection4D) {
-            choices.push(() => this.createDirection4D(this.settings.premisesDirection4D));
+        if (this.settings.direction4D[0]) {
+            choices.push(() => this.createDirection4D(this.settings.direction4D[1]));
         }
-        if (this.settings.enableAnalogy) {
-            choices.push(() => this.createAnalogy(this.settings.premisesAnalogy));
+        if (this.settings.analogy[0]) {
+            choices.push(() => this.createAnalogy(this.settings.analogy[1]));
         }
-        if (this.settings.enableBinary) {
-            choices.push(() => this.createBinary(this.settings.premisesBinary));
+        if (this.settings.binary[0]) {
+            choices.push(() => this.createBinary(this.settings.binary[1]));
         }
 
         const randomQuestion = pickUniqueItems(choices, 1).picked[0]();
@@ -490,12 +490,12 @@ export class SyllogimousService {
         if (length < 3) throw Error("Needs at least 3 premises.");
 
         const analogyEnables = [
-            this.settings.enableDistinction,
-            this.settings.enableComparisonNumerical,
-            this.settings.enableComparisonChronological,
-            this.settings.enableDirection,
-            this.settings.enableDirection3D,
-            this.settings.enableDirection4D
+            this.settings.distinction[0],
+            this.settings.comparisonNumerical[0],
+            this.settings.comparisonChronological[0],
+            this.settings.direction[0],
+            this.settings.direction3D[0],
+            this.settings.direction4D[0]
         ];
         if (analogyEnables.reduce((a, c) => a + +c, 0) < 1) {
             throw new Error("Needs at least one of" + analogyEnables.join(", "));
@@ -503,22 +503,22 @@ export class SyllogimousService {
 
         const choiceIndices = [];
     
-        if (this.settings.enableDistinction) {
+        if (this.settings.distinction[0]) {
             choiceIndices.push(0);
         }
-        if (this.settings.enableComparisonNumerical) {
+        if (this.settings.comparisonNumerical[0]) {
             choiceIndices.push(1);
         }
-        if (this.settings.enableComparisonChronological) {
+        if (this.settings.comparisonChronological[0]) {
             choiceIndices.push(2);
         }
-        if (this.settings.enableDirection) {
+        if (this.settings.direction[0]) {
             choiceIndices.push(3);
         }
-        if (this.settings.enableDirection3D) {
+        if (this.settings.direction3D[0]) {
             choiceIndices.push(4);
         }
-        if (this.settings.enableDirection4D) {
+        if (this.settings.direction4D[0]) {
             choiceIndices.push(5);
         }
     
@@ -657,13 +657,13 @@ export class SyllogimousService {
         if (length < 4) throw Error("Needs at least 4 premises.");
 
         const binaryEnables = [
-            this.settings.enableDistinction,
-            this.settings.enableComparisonNumerical,
-            this.settings.enableComparisonChronological,
-            this.settings.enableDirection,
-            this.settings.enableDirection3D,
-            this.settings.enableDirection4D,
-            this.settings.enableSyllogism
+            this.settings.distinction[0],
+            this.settings.comparisonNumerical[0],
+            this.settings.comparisonChronological[0],
+            this.settings.direction[0],
+            this.settings.direction3D[0],
+            this.settings.direction4D[0],
+            this.settings.syllogism[0]
         ];
         if (binaryEnables.reduce((a, c) => a + +c, 0) < 1) {
             throw new Error("Needs at least one of" + binaryEnables.join(", "));
@@ -707,37 +707,37 @@ export class SyllogimousService {
     
         if (!operands.length) return;
     
-        if (this.settings.enableSyllogism) {
+        if (this.settings.syllogism[0]) {
             pool.push((length: number) =>
                 this.createSyllogism(length)
             );
         }
-        if (this.settings.enableDistinction) {
+        if (this.settings.distinction[0]) {
             pool.push((length: number) =>
                 this.createDistinction(length)
             );
         }
-        if (this.settings.enableComparisonNumerical) {
+        if (this.settings.comparisonNumerical[0]) {
             pool.push((length: number) =>
                 this.createComparison(length, EnumQuestionType.ComparisonNumerical)
             );
         }
-        if (this.settings.enableComparisonChronological) {
+        if (this.settings.comparisonChronological[0]) {
             pool.push((length: number) =>
                 this.createComparison(length, EnumQuestionType.ComparisonChronological)
             );
         }
-        if (this.settings.enableDirection) {
+        if (this.settings.direction[0]) {
             pool.push((length: number) =>
                 this.createDirection(length)
             );
         }
-        if (this.settings.enableDirection3D) {
+        if (this.settings.direction3D[0]) {
             pool.push((length: number) =>
                 this.createDirection3D(length)
             );
         }
-        if (this.settings.enableDirection4D) {
+        if (this.settings.direction4D[0]) {
             pool.push((length: number) =>
                 this.createDirection4D(length)
             );

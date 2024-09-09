@@ -1,3 +1,17 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Are you sure?</h4>
+        <button class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        All your progresses will be deleted.<br>Are you sure you want to proceed with the reset?
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-outline-secondary" (click)="modal.dismiss()">Cancel</button>
+        <button class="btn btn-danger" (click)="modal.close()">Continue</button>
+    </div>
+</ng-template>
+
 <div class="playcard card shadow">
     <div class="great-title d-none d-md-flex">
         <div>s</div>
@@ -13,7 +27,6 @@
         <div>s</div>
         <div class="great-title-version">v4</div>
     </div>
-
 
     <div class="playcard-header card-header">
         <div class="playcard-toolbar">
@@ -46,6 +59,7 @@
 						<button ngbDropdownItem (click)="sylSrv.screen = EnumScreens.Stats">Stats</button>
 						<button ngbDropdownItem (click)="sylSrv.screen = EnumScreens.History">History</button>
 						<button ngbDropdownItem (click)="sylSrv.screen = EnumScreens.Tutorials">Tutorials</button>
+						<button ngbDropdownItem (click)="resetGame(content)">Reset Game</button>
 						<div class="dropdown-divider"></div>
                         <a ngbDropdownItem href="https://www.linkedin.com/in/f3d3r1c07r0774/" target="_blank">About the creator</a>
 					</div>

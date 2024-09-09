@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { SyllogimousService } from "../../../syllogimous.service";
+import { SyllogimousService } from "../../../services/syllogimous.service";
 import { TIER_SCORE_RANGES } from "../../../constants/syllogimous.constants";
 import { EnumScreens, EnumTiers } from "../../../models/syllogimous.models";
 import { Question } from "../../../models/question.models";

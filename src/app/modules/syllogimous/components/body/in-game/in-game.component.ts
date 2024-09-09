@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { SyllogimousService } from "../../../syllogimous.service";
-import { EnumQuestionType } from "../../../models/question.models";
+import { SyllogimousService } from "../../../services/syllogimous.service";
+import { EnumTiers } from "../../../models/syllogimous.models";
+import { StatsService } from "../../../services/stats.service";
 
 @Component({
     selector: "app-body-in-game",
@@ -13,47 +14,26 @@ export class BodyInGameComponent implements OnInit, OnDestroy {
     timer: any;
 
     constructor(
-        public sylSrv: SyllogimousService
-    ) {}
+        public sylSrv: SyllogimousService,
+        private statsService: StatsService,
+    ) { }
 
     ngOnInit() {
+        const upperBound = 90;
+        const lowerBound = 10;
+        const bufferTime = 5;
         this.timerFull = 90;
-        switch (this.sylSrv.question.type) {
-            case EnumQuestionType.Syllogism: {
-                this.timerFull = this.sylSrv.settings.timerSyllogism;
-                break;
-            }
-            case EnumQuestionType.Distinction: {
-                this.timerFull = this.sylSrv.settings.timerDistinction;
-                break;
-            }
-            case EnumQuestionType.ComparisonChronological: {
-                this.timerFull = this.sylSrv.settings.timerComparisonChronological;
-                break;
-            }
-            case EnumQuestionType.ComparisonNumerical: {
-                this.timerFull = this.sylSrv.settings.timerComparisonNumerical;
-                break;
-            }
-            case EnumQuestionType.Binary: {
-                this.timerFull = this.sylSrv.settings.timerBinary;
-                break;
-            }
-            case EnumQuestionType.Direction: {
-                this.timerFull = this.sylSrv.settings.timerDirection;
-                break;
-            }
-            case EnumQuestionType.Direction3D: {
-                this.timerFull = this.sylSrv.settings.timerDirection3D;
-                break;
-            }
-            case EnumQuestionType.Direction4D: {
-                this.timerFull = this.sylSrv.settings.timerDirection4D;
-                break;
-            }
-            case EnumQuestionType.Analogy: {
-                this.timerFull = this.sylSrv.settings.timerAnalogy;
-                break;
+
+        this.statsService.calcStats();
+        const questionType = this.sylSrv.question.type;
+        const questionPremises = this.sylSrv.question.premises.length;
+        const typeBasedStats = this.statsService.typeBasedStats[questionType];
+        if (typeBasedStats?.stats) {
+            const stats = typeBasedStats.stats[questionPremises];
+            if (stats && stats.count > 4) {
+                const avg = stats.sum / (1000 * stats.count);
+                this.timerFull = Math.max(lowerBound, Math.min(avg, upperBound)) + bufferTime;
+                console.warn("AVG for " + questionType + " and " + questionPremises + " premises is " + this.timerFull + " s")
             }
         }
         

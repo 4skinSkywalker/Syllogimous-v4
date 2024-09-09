@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { TIER_SCORE_RANGES } from 'src/app/modules/syllogimous/constants/syllogimous.constants';
 import { EnumTiers } from 'src/app/modules/syllogimous/models/syllogimous.models';
-import { SyllogimousService } from 'src/app/modules/syllogimous/syllogimous.service';
+import { SyllogimousService } from 'src/app/modules/syllogimous/services/syllogimous.service';
 
 @Component({
     selector: 'app-tier-stats',

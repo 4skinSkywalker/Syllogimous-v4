@@ -1,7 +1,10 @@
 import { Component, HostBinding } from "@angular/core";
-import { SyllogimousService } from "./syllogimous.service";
+import { SyllogimousService } from "./services/syllogimous.service";
 import { EnumScreens, EnumTiers } from "./models/syllogimous.models";
 import { TIER_COLORS, TIER_SCORE_RANGES } from "./constants/syllogimous.constants";
+import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE } from "./constants/local-storage.constants";
+import { EnumQuestionType } from "./models/question.models";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
     selector: "app-syllogimous",
@@ -18,6 +21,24 @@ export class SyllogimousComponent {
     Infinity = Infinity;
 
     constructor(
-        public sylSrv: SyllogimousService
+        public sylSrv: SyllogimousService,
+        private modalService: NgbModal,
     ) {}
+
+    async resetGame(content: any) {
+        await this.modalService.open(content, { centered: true }).result;
+
+        localStorage.removeItem(LS_SCORE);
+        localStorage.removeItem(LS_HISTORY);
+
+        for (const screen of Object.values(EnumScreens)) {
+            localStorage.removeItem(LS_DONT_SHOW + screen);
+        }
+
+        for (const type of Object.values(EnumQuestionType)) {
+            localStorage.removeItem(LS_DONT_SHOW + type);
+        }
+
+        location.reload();
+    }
 }

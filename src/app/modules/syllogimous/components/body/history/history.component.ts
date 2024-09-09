@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { SyllogimousService } from "../../../syllogimous.service";
+import { SyllogimousService } from "../../../services/syllogimous.service";
 import { Question } from "../../../models/question.models";
 import { LS_HISTORY } from "../../../constants/local-storage.constants";
 
