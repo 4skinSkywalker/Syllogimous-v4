@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { SyllogimousService } from "../../../services/syllogimous.service";
-import { EnumTiers } from "../../../models/syllogimous.models";
 import { StatsService } from "../../../services/stats.service";
 
 @Component({
