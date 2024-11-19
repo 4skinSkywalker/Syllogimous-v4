@@ -37,7 +37,7 @@
 
 .great-title {
     display: flex;
-    align-items: end;
+    align-items: flex-end; /* Changed from 'end' to 'flex-end' */
     justify-content: space-evenly;
     position: absolute;
     width: 100%;

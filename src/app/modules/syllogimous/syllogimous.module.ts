@@ -6,6 +6,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { BodyModule } from './components/body/body.module';
 import { FooterModule } from './components/footer/footer.module';
 import { ModalLevelChangeComponent } from './components/modal-level-change/modal-level-change.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   { path: '', component: SyllogimousComponent }
@@ -19,6 +20,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     SharedModule,
+    NgbModule,
     RouterModule.forChild(routes),
     BodyModule,
     FooterModule

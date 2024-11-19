@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "multi-layout": {
+    "syllogimous": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/multi-layout",
+            "outputPath": "dist/syllogimous",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -26,15 +26,8 @@
             ],
             "styles": [
               "./node_modules/bootstrap-icons/font/bootstrap-icons.css",
-              "./node_modules/highlight.js/styles/magula.css",
-              "./node_modules/animate.css/animate.min.css",
-              "./node_modules/chartist/dist/index.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/css/bootstrap-with-vars.css",
-              "src/assets/css/custom-styles/base.css",
-              "src/assets/css/custom-styles/layout.css",
-              "src/assets/css/custom-styles/module.css",
-              "src/assets/css/custom-styles/util.css",
-              "src/assets/css/demos.css",
               "src/styles.css"
             ],
             "scripts": [
@@ -63,20 +56,6 @@
                 }
               ]
             },
-            "uat": {
-              "buildOptimizer": false,
-              "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.uat.ts"
-                }
-              ]
-            },
             "development": {
               "buildOptimizer": false,
               "optimization": false,
@@ -92,13 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "multi-layout:build:production"
-            },
-            "uat": {
-              "browserTarget": "multi-layout:build:uat"
+              "browserTarget": "syllogimous:build:production"
             },
             "development": {
-              "browserTarget": "multi-layout:build:development"
+              "browserTarget": "syllogimous:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -106,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "multi-layout:build"
+            "browserTarget": "syllogimous:build"
           }
         },
         "test": {

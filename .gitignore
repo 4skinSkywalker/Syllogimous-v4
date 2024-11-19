@@ -2,6 +2,7 @@
 
 # Compiled output
 /dist
+/docs
 /tmp
 /out-tsc
 /bazel-out
@@ -32,7 +33,7 @@ yarn-error.log
 /.angular/cache
 .sass-cache/
 /connect.lock
-/coverage
+/coveragea
 /libpeerconnection.log
 testem.log
 /typings
