@@ -1,0 +1,30 @@
+<h2 class="text-center">Timer Settings</h2>
+    
+<ul class="list-group">
+    <li class="list-group-item">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <b>Timer Multiplier</b>
+                <div class="text-muted">Higher values give more time</div>
+            </div>
+            <div class="d-flex gap-2 align-items-center">
+                <input 
+                    #multiplierInput
+                    type="number" 
+                    class="form-control" 
+                    style="width: 100px;"
+                    [value]="sylSrv.timerMultiplier"
+                    min="1"
+                    max="3"
+                    step="0.1"
+                >
+                <button 
+                    class="btn btn-primary"
+                    (click)="updateMultiplier(multiplierInput.value)"
+                >
+                    Apply
+                </button>
+            </div>
+        </div>
+    </li>
+</ul>

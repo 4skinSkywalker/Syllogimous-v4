@@ -23,6 +23,7 @@ import { TutorialDirection4DComponent } from './tutorial/direction4D/direction4D
 import { TutorialAnalogyComponent } from './tutorial/analogy/analogy.component';
 import { TutorialBinaryComponent } from './tutorial/binary/binary.component';
 import { BodyTutorialsComponent } from './tutorials/tutorials.component';
+import { TimerSettingsComponent } from './stats/timer-settings/timer-settings.component';
 
 @NgModule({
   declarations: [
@@ -50,11 +51,10 @@ import { BodyTutorialsComponent } from './tutorials/tutorials.component';
     ErrorAnalysisComponent,
     TimeBasedStatsComponent,
     TypeBasedStatsComponent,
+
+    TimerSettingsComponent,
   ],
-  imports: [
-    CommonModule,
-    SharedModule,
-  ],
+  imports: [CommonModule, SharedModule],
   exports: [
     BodyIntroComponent,
     BodyStartComponent,
@@ -64,6 +64,6 @@ import { BodyTutorialsComponent } from './tutorials/tutorials.component';
     BodyTutorialComponent,
     BodyTutorialsComponent,
     BodyStatsComponent,
-  ]
+  ],
 })
-export class BodyModule { }
+export class BodyModule {}

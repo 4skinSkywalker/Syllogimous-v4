@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { SyllogimousService } from "../../../services/syllogimous.service";
-import { StatsService } from "../../../services/stats.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { SyllogimousService } from '../../../services/syllogimous.service';
+import { StatsService } from '../../../services/stats.service';
 
 @Component({
-    selector: "app-body-in-game",
-    templateUrl: "./in-game.component.html",
-    styleUrls: ["./in-game.component.css"]
+    selector: 'app-body-in-game',
+    templateUrl: './in-game.component.html',
+    styleUrls: ['./in-game.component.css'],
 })
 export class BodyInGameComponent implements OnInit, OnDestroy {
     timerFull = 0;
@@ -15,31 +15,40 @@ export class BodyInGameComponent implements OnInit, OnDestroy {
     constructor(
         public sylSrv: SyllogimousService,
         private statsService: StatsService,
-    ) { }
+    ) {}
 
     ngOnInit() {
-        const upperBound = 90;
         const lowerBound = 10;
         const bufferTime = 5;
-        this.timerFull = upperBound;
+        const initialTime = 45;
+        this.timerFull = initialTime;
 
         this.statsService.calcStats();
         const questionType = this.sylSrv.question.type;
         const questionPremises = this.sylSrv.question.premises.length;
         const typeBasedStats = this.statsService.typeBasedStats[questionType];
+
         if (typeBasedStats?.stats) {
             const prevStats = typeBasedStats.stats[questionPremises - 1];
             const currStats = typeBasedStats.stats[questionPremises];
             let avg = 0;
+
             if (currStats && currStats.count > 4) {
-                avg = currStats.sum / (1000 * currStats.count);
+                avg =
+                    (currStats.sum / (1000 * currStats.count)) *
+                    this.sylSrv.timerMultiplier;
             } else if (prevStats && prevStats.count > 4) {
-                avg = prevStats.sum / (1000 * prevStats.count) + (4 * bufferTime);
+                avg =
+                    (prevStats.sum / (1000 * prevStats.count)) *
+                    this.sylSrv.timerMultiplier;
+                avg += 4 * bufferTime;
+            } else {
+                avg = initialTime * this.sylSrv.timerMultiplier;
             }
-            this.timerFull = Math.max(lowerBound, Math.min(avg, upperBound)) + bufferTime;
-            console.warn("timerFull", this.timerFull);
+
+            this.timerFull = Math.max(lowerBound, avg) + bufferTime;
         }
-        
+
         this.timerLeft = this.timerFull;
         this.timer = setInterval(() => {
             this.timerLeft -= 1;
@@ -47,12 +56,10 @@ export class BodyInGameComponent implements OnInit, OnDestroy {
                 this.sylSrv.checkQuestion();
             }
         }, 1000);
-        console.log("start timer", this.timer, "with time", this.timerFull);
     }
 
     ngOnDestroy() {
         if (this.timer) {
-            console.log("end timer", this.timer, "with time", this.timerLeft);
             clearInterval(this.timer);
         }
     }
