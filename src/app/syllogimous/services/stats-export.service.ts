@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { SyllogimousService } from './syllogimous.service';
-import { LS_TIMER } from '../constants/local-storage.constants';
 
 @Injectable({
     providedIn: 'root'
