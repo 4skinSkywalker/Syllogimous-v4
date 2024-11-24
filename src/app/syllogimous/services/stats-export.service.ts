@@ -15,9 +15,8 @@ export class StatsExportService {
         return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}.${String(date.getMilliseconds()).padStart(3, '0')}`;
     }
 
-    private getTimerSetting(): string {
-        const timerType = localStorage.getItem(LS_TIMER);
-        switch(timerType) {
+    private getTimerSetting(timerTypeOnAnswer: string): string {
+        switch(timerTypeOnAnswer) {
             case "0": return "No Timer";
             case "1": return "Fixed Timer";
             case "2": return "Adaptive Timer";
@@ -43,7 +42,7 @@ export class StatsExportService {
                 q.isValid,
                 q.userAnswer === undefined ? 'Timeout' : q.userAnswer,
                 q.userAnswer === undefined ? 'Timeout' : (q.userAnswer === q.isValid ? 'Correct' : 'Incorrect'),
-                this.getTimerSetting()
+                this.getTimerSetting(q.timerTypeOnAnswer)
             ];
             csvContent += row.join(',') + '\n';
         });

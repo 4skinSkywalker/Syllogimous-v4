@@ -24,6 +24,7 @@ export class Question {
     userAnswer?: boolean;
     negations = 0;
     metaRelations = 0;
+    timerTypeOnAnswer = "0";
 
     constructor(
         type: EnumQuestionType

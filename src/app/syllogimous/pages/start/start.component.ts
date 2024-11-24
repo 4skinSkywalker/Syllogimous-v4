@@ -63,11 +63,11 @@ export class StartComponent {
     }
 
     ngAfterViewInit() {
-        const timerType = localStorage.getItem(LS_TIMER) || 0;
+        const timerType = localStorage.getItem(LS_TIMER) || '0';
         (document.querySelector(`#timer-choice-${timerType}`) as HTMLInputElement).checked = true;
     }
 
-    setTimer(timerType: number) {
-        localStorage.setItem(LS_TIMER, JSON.stringify(timerType));
+    setTimer(timerType: string) {
+        localStorage.setItem(LS_TIMER, timerType);
     }
 }

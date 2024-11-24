@@ -4,7 +4,7 @@ import { coinFlip, findDirection, findDirection3D, findDirection4D, getRandomRul
 import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_INVERSE, TIME_NAMES } from "../constants/engine.constants";
 import { EnumScreens, EnumTiers } from "../models/syllogimous.models";
 import { TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES, TIER_SETTINGS } from "../constants/syllogimous.constants";
-import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE } from "../constants/local-storage.constants";
+import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local-storage.constants";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ModalLevelChangeComponent } from "../components/modal-level-change/modal-level-change.component";
 import { Router } from "@angular/router";
@@ -143,6 +143,7 @@ export class SyllogimousService {
     checkQuestion(value?: boolean) {
         this.question.userAnswer = value;
         this.question.answeredAt = Date.now();
+        this.question.timerTypeOnAnswer = localStorage.getItem(LS_TIMER) || "0";
 
         const currTier = this.tier;
 

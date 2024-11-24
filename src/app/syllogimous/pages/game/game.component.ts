@@ -10,7 +10,7 @@ import { EnumQuestionType } from '../../models/question.models';
     styleUrls: ['./game.component.css']
 })
 export class GameComponent {
-    timerType = 0;
+    timerType = '0';
     timerFull = 0;
     timerLeft = 0;
     timer: any;
@@ -21,10 +21,10 @@ export class GameComponent {
     ) { }
 
     ngOnInit() {
-        this.timerType = JSON.parse(localStorage.getItem(LS_TIMER) || '0');
+        this.timerType = localStorage.getItem(LS_TIMER) || '0';
 
         switch(this.timerType) {
-            case 1: {
+            case '1': {
                 console.log("Fixed timer");
 
                 switch(this.sylSrv.question.type) {
@@ -71,7 +71,7 @@ export class GameComponent {
 
                 break;
             }
-            case 2: {
+            case '2': {
                 console.log("Adaptive timer");
 
                 const correctRate = 1;
