@@ -38,20 +38,9 @@ yarn-error.log
 testem.log
 /typings
 
-# Generated assets
-/src/assets/css/bootstrap-with-vars.css
-/src/assets/css/demos.css
-
-# Environment files
-/src/environments/environment.production.ts
-/src/environments/environment.uat.ts
-
-# Third-party dependencies
-/src/app/shared/directives/deps/text2mask/*
-
 # System files
 .DS_Store
 Thumbs.db
 
 # Ignore specific file
-Syllogimous-v4/repomix-output.txt
+repomix-output.txt
