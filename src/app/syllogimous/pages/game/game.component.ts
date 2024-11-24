@@ -74,10 +74,10 @@ export class GameComponent {
             case 2: {
                 console.log("Adaptive timer");
 
-                const lowerBound = 15;
-                const correctRate = 0.5;
-                const incorrectRate = 1.5;
-                const timeoutRate = 2.5;
+                const newLevelBonusTime = 15;
+                const correctRate = 1;
+                const incorrectRate = 1;
+                const timeoutRate = 2;
                 this.timerFull = 90;
 
                 this.statsService.calcStats();
@@ -90,20 +90,20 @@ export class GameComponent {
                     const currStats = typeBasedStats.stats[questionPremises];
 
                     let avgTimeToRespond = this.timerFull;
-                    if (currStats && currStats.count > 4) {
-                        avgTimeToRespond = currStats.last10Sum / (1000 * currStats.last10Count);
+                    if (currStats && currStats.count > 2) {
+                        avgTimeToRespond = (currStats.last10Sum / 1000) / currStats.last10Count;
                         avgTimeToRespond -= correctRate * currStats.last10Correct;
                         avgTimeToRespond += incorrectRate * currStats.last10Incorrect;
                         avgTimeToRespond += timeoutRate * currStats.last10Timeout;
-                    } else if (prevStats && prevStats.count > 4) {
-                        avgTimeToRespond = prevStats.last10Sum / (1000 * prevStats.last10Count);
-                        avgTimeToRespond += lowerBound; // Bonus for the new level
+                    } else if (prevStats && prevStats.count > 2) {
+                        avgTimeToRespond = (prevStats.last10Sum / 1000) / prevStats.last10Count;
+                        avgTimeToRespond += newLevelBonusTime; // Bonus for the new level
                         avgTimeToRespond -= correctRate * prevStats.last10Correct;
                         avgTimeToRespond += incorrectRate * prevStats.last10Incorrect;
                         avgTimeToRespond += timeoutRate * prevStats.last10Timeout;
                     }
 
-                    this.timerFull = Math.max(lowerBound, avgTimeToRespond);
+                    this.timerFull = Math.max(0, avgTimeToRespond);
                 }
 
                 this.timerLeft = this.timerFull;

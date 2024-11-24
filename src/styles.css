@@ -10,3 +10,20 @@
     display: flex;
     justify-content: space-between;
 }
+
+.dropdown-menu {
+    box-shadow: 0 4px 8px 0px #0002;
+    backdrop-filter: blur(8px);
+    background-color: rgba(var(--app-gray_0), 0.66);
+    padding: 0.75rem 0;
+}
+
+.dropdown-item {
+    padding: 0.35rem 1rem;
+}
+
+.tab-content {
+    background-color: rgba(var(--app-gray_0), 1);
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}

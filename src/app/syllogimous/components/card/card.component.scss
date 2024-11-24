@@ -24,6 +24,10 @@
         color: #800000;
         font-weight: 700;
     }
+
+    .tier-badge {
+        border: 1px solid;
+    }
 }
 
 .great-title {
@@ -49,6 +53,8 @@
 .playcard {
     width: min(36rem, 100vw);
     height: min(36rem, 100svh);
+    background-color: rgba(var(--app-gray_0), 0.7);
+    backdrop-filter: blur(8px);
 }
 
 .playcard-body {

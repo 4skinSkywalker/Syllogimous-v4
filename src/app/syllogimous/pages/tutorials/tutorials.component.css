@@ -16,7 +16,3 @@
     border-right: none;
     border-radius: 0 !important;
 }
-
-[body] ::ng-deep .accordion-item:not(:last-child) {
-    border-bottom: 1px solid #eee;
-}
