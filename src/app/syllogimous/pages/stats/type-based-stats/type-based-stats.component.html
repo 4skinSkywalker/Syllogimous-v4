@@ -1,23 +1,23 @@
 <ng-template #timeBasedStatsTemplate let-ps="ps" let-stats="stats">
-    <ul class="list-group">
-        <li class="list-group-item">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item flex-between">
             <b>Average Time per Answer</b>
             <div>{{ (stats[ps] ? (stats[ps].sum / (1000 * stats[ps].count)) : 0) | number:".1-1" }} s</div>
         </li>
 
-        <li class="list-group-item">
+        <li class="list-group-item flex-between">
             <b>Fastest Answer</b>
             <div>{{ ((stats[ps]?.fastest / 1000) || 0) | number:".1-1" }} s</div>
         </li>
 
-        <li class="list-group-item">
+        <li class="list-group-item flex-between">
             <b>Slowest Answer</b>
             <div>{{ ((stats[ps]?.slowest / 1000) || 0) | number:".1-1" }} s</div>
         </li>
     </ul>
 </ng-template>
 
-<div class="p-3 border rounded text-center" *ngIf="!statsService.types.length">
+<div class="shadow p-3 border rounded text-center" *ngIf="!statsService.types.length">
     <h2>Type-Based Stats</h2>
     <h4 class="my-3">Play to see something here</h4>
     <button class="btn btn-lg btn-primary" (click)="sylSrv.start()">Press to Play</button>
@@ -27,13 +27,13 @@
     <div *ngFor="let type of statsService.types">
         <h2 class="text-center">{{ type }} Stats</h2>
     
-        <ul class="list-group my-3">
-            <li class="list-group-item">
+        <ul class="shadow list-group my-3">
+            <li class="list-group-item flex-between">
                 <b>Completed Questions</b>
                 <div>{{ statsService.typeBasedStats[type].completed }}</div>
             </li>
     
-            <li class="list-group-item">
+            <li class="list-group-item flex-between">
                 <b>Accuracy</b>
                 <div>{{ statsService.typeBasedStats[type].accuracy | percent }}</div>
             </li>
@@ -42,7 +42,7 @@
         <div *ngIf="{ activeTab: 2 } as d">
             <ul ngbNav #nav="ngbNav" [(activeId)]="d.activeTab" class="nav-tabs">
                 <li [ngbNavItem]="2">
-                    <a ngbNavLink>2 Premises</a>
+                    <a ngbNavLink>2 Ps</a>
                     <ng-template ngbNavContent>
                         <ng-container *ngTemplateOutlet="timeBasedStatsTemplate; context: { ps: d.activeTab, stats: statsService.typeBasedStats[type].stats }"></ng-container> 
                     </ng-template>
@@ -84,7 +84,7 @@
                 </li>
             </ul>
             
-            <div [ngbNavOutlet]="nav" class="p-3 border border-top-0"></div>
+            <div [ngbNavOutlet]="nav" class="shadow overflow-hidden border border-top-0"></div>
         </div>
     </div>
 </div>

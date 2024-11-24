@@ -56,11 +56,11 @@ export class SyllogimousService {
         this.loadScore();
         this.loadHistory();
 
-        if (!localStorage.getItem(LS_DONT_SHOW + EnumScreens.Intro)) {
+        /*if (!localStorage.getItem(LS_DONT_SHOW + EnumScreens.Intro)) {
             this.router.navigate([EnumScreens.Intro]);
         } else {
             this.router.navigate([EnumScreens.Start]);
-        }
+        }*/
     }
 
     loadScore() {
@@ -173,7 +173,6 @@ export class SyllogimousService {
 
         this.pushIntoHistory(this.question);
         this.router.navigate([EnumScreens.Feedback]);
-        setTimeout(() => this.router.navigate([EnumScreens.Start]), 750);
     }
 
     createSyllogism(length: number) {
@@ -345,6 +344,7 @@ export class SyllogimousService {
                 ];
 
                 if (this.settings.enableNegation && coinFlip()) {
+                    question.negations++;
                     question.premises.push(`<span class="subject">${words[i+1]}</span> is at <span class="is-negated">${(DIRECTION_NAMES_INVERSE as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
                 } else {
                     question.premises.push(`<span class="subject">${words[i+1]}</span> is at ${dirName} of <span class="subject">${words[i]}</span>`);
@@ -360,6 +360,7 @@ export class SyllogimousService {
         const direction = question.isValid ? conclusionDirection : oppositeDirection;
 
         if (this.settings.enableNegation && coinFlip()) {
+            question.negations++;
             question.conclusion = `<span class="subject">${words[0]}</span> is at <span class="is-negated">${(DIRECTION_NAMES_INVERSE as any)[direction]}</span> of <span class="subject">${words[words.length-1]}</span>`;
         } else {
             question.conclusion = `<span class="subject">${words[0]}</span> is at ${direction} of <span class="subject">${words[words.length-1]}</span>`;
@@ -402,6 +403,7 @@ export class SyllogimousService {
                 ];
 
                 if (this.settings.enableNegation && coinFlip()) {
+                    question.negations++;
                     question.premises.push(`<span class="subject">${words[i+1]}</span> is <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
                 } else {
                     question.premises.push(`<span class="subject">${words[i+1]}</span> is ${dirName} of <span class="subject">${words[i]}</span>`);
@@ -417,6 +419,7 @@ export class SyllogimousService {
         const direction = question.isValid ? conclusionDirection : oppositeDirection;
 
         if (this.settings.enableNegation && coinFlip()) {
+            question.negations++;
             question.conclusion = `<span class="subject">${words[0]}</span> is <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[direction]}</span> of <span class="subject">${words[words.length-1]}</span>`;
         } else {
             question.conclusion = `<span class="subject">${words[0]}</span> is ${direction} of <span class="subject">${words[words.length-1]}</span>`;
@@ -462,6 +465,7 @@ export class SyllogimousService {
                 ];
 
                 if (this.settings.enableNegation && coinFlip()) {
+                    question.negations++;
                     question.premises.push(`<span class="subject">${words[i+1]}</span> ${timeName} <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
                 } else {
                     question.premises.push(`<span class="subject">${words[i+1]}</span> ${timeName} ${dirName} of <span class="subject">${words[i]}</span>`);
@@ -477,6 +481,7 @@ export class SyllogimousService {
         const direction = question.isValid ? conclusionDirection : oppositeDirection;
 
         if (this.settings.enableNegation && coinFlip()) {
+            question.negations++;
             question.conclusion = `<span class="subject">${words[0]}</span> ${direction.temporal} <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[direction.spatial]}</span> of <span class="subject">${words[words.length-1]}</span>`;
         } else {
             question.conclusion = `<span class="subject">${words[0]}</span> ${direction.temporal} ${direction.spatial} of <span class="subject">${words[words.length-1]}</span>`;
@@ -620,6 +625,7 @@ export class SyllogimousService {
         question.isValid = isSameRelation ? isValidSame : !isValidSame;
 
         if (this.settings.enableNegation && coinFlip()) {
+            question.negations++;
             if (isSameRelation) {
                 if (choiceIndex < 1) {
                     question.conclusion += '<div class="analogy-conclusion-relation is-negated">is different from</div>';

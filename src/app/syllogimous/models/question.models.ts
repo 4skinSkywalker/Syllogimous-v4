@@ -22,6 +22,8 @@ export class Question {
     createdAt = new Date().getTime();
     answeredAt = new Date().getTime();
     userAnswer?: boolean;
+    negations = 0;
+    metaRelations = 0;
 
     constructor(
         type: EnumQuestionType

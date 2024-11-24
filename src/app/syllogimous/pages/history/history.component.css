@@ -7,20 +7,21 @@
 
 .list-group-item {
     border: none;
-    margin-bottom: 0.75rem;
+    box-shadow: 0 8px 8px 0 #0002;
+    margin-bottom: 1.25rem;
 }
 
 .correct {
-    background-color: #D4EDDA66;
+    background-color: #D4EDDA88;
     color: #155724;
 }
 
 .incorrect {
-    background-color: #F8D7DA66;
+    background-color: #F8D7DA88;
     color: #721C24;
 }
 
 .timeout {
-    background-color: #E0E0E066;
+    background-color: #E0E0E088;
     color: #424242;
 }

@@ -14,4 +14,18 @@
             {{ d.timeout ? "Timeout" : d.validity ? "Correct": "Incorrect" }}
         </div>
     </div>
+
+    <div footer class="playcard-toolbar">
+        <div>
+            <button
+                class="btn btn-outline-primary"
+                (click)="router.navigate([EnumScreens.Start]);"
+            >
+                <i class="bi bi-arrow-left"></i> Go to Start
+            </button>
+        </div>
+        <div>
+            <button class="btn btn-primary" (click)="sylSrv.start()">Press to Play</button>
+        </div>
+    </div>
 </app-card>

@@ -12,7 +12,7 @@
     </div>
 </ng-template>
 
-<div class="playcard card shadow">
+<div>
     <div class="great-title d-none d-md-flex">
         <div>s</div>
         <div>y</div>
@@ -27,54 +27,56 @@
         <div>s</div>
         <div class="great-title-version">v4</div>
     </div>
-
-    <div class="playcard-header card-header">
-        <div class="playcard-toolbar">
-            <div>
-                <span
-                    class="tier-badge badge clickable fs-6"
-                    [style.backgroundColor]="TIER_COLORS[sylSrv.tier].bgColor"
-                    [style.color]="TIER_COLORS[sylSrv.tier].textColor"
-                    [ngbTooltip]="tierTooltip"
-			        [autoClose]="'outside'"
-                    triggers="click"
-                >
-                    {{ sylSrv.tier }} <i class="bi bi-info-circle"></i>
-                </span>
-                <ng-template #tierTooltip>
-                    <div class="text-start">
-                        <div *ngFor="let tier of tiers">
-                            <span class="badge" style="width: 80px;" [style.backgroundColor]="TIER_COLORS[tier].bgColor" [style.color]="TIER_COLORS[tier].textColor">{{ tier }}</span> {{ (TIER_SCORE_RANGES[tier].maxScore === Infinity) ? "above" : "" }} {{ (TIER_SCORE_RANGES[tier].minScore === -Infinity) ? "" : TIER_SCORE_RANGES[tier].minScore }} {{ (TIER_SCORE_RANGES[tier].maxScore === Infinity) ? "" : (TIER_SCORE_RANGES[tier].minScore === -Infinity) ? "below" : "-" }} {{ (TIER_SCORE_RANGES[tier].maxScore === Infinity) ? "" : (TIER_SCORE_RANGES[tier].maxScore + 1) }} pts
+    
+    <div class="playcard card shadow">
+        <div class="playcard-header card-header">
+            <div class="playcard-toolbar">
+                <div>
+                    <span
+                        class="tier-badge badge clickable fs-6"
+                        [style.backgroundColor]="TIER_COLORS[sylSrv.tier].bgColor"
+                        [style.color]="TIER_COLORS[sylSrv.tier].textColor"
+                        [ngbTooltip]="tierTooltip"
+                        [autoClose]="'outside'"
+                        triggers="click"
+                    >
+                        {{ sylSrv.tier }} <i class="bi bi-info-circle"></i>
+                    </span>
+                    <ng-template #tierTooltip>
+                        <div class="text-start">
+                            <div *ngFor="let tier of tiers">
+                                <span class="badge" style="width: 80px;" [style.backgroundColor]="TIER_COLORS[tier].bgColor" [style.color]="TIER_COLORS[tier].textColor">{{ tier }}</span> {{ (TIER_SCORE_RANGES[tier].maxScore === Infinity) ? "above" : "" }} {{ (TIER_SCORE_RANGES[tier].minScore === -Infinity) ? "" : TIER_SCORE_RANGES[tier].minScore }} {{ (TIER_SCORE_RANGES[tier].maxScore === Infinity) ? "" : (TIER_SCORE_RANGES[tier].minScore === -Infinity) ? "below" : "-" }} {{ (TIER_SCORE_RANGES[tier].maxScore === Infinity) ? "" : (TIER_SCORE_RANGES[tier].maxScore + 1) }} pts
+                            </div>
+                        </div>
+                    </ng-template>
+                    <span class="text-muted ms-2">{{ sylSrv.score }} pts</span>
+                </div>
+                <div>
+                    <div ngbDropdown container="body">
+                        <button class="btn" ngbDropdownToggle>More</button>
+                        <div ngbDropdownMenu>
+                            <button ngbDropdownItem (click)="router.navigate([EnumScreens.Start])">Start</button>
+                            <button ngbDropdownItem (click)="router.navigate([EnumScreens.Intro])">Intro</button>
+                            <button ngbDropdownItem (click)="router.navigate([EnumScreens.Stats])">Stats</button>
+                            <button ngbDropdownItem (click)="router.navigate([EnumScreens.History])">History</button>
+                            <button ngbDropdownItem (click)="router.navigate([EnumScreens.Tutorials])">Tutorials</button>
+                            <button ngbDropdownItem (click)="resetGame(content)">Reset Game</button>
+                            <div class="dropdown-divider"></div>
+                            <a ngbDropdownItem href="https://www.linkedin.com/in/f3d3r1c07r0774/" target="_blank">About the creator</a>
                         </div>
                     </div>
-                </ng-template>
-                <span class="text-muted ms-2">{{ sylSrv.score }} pts</span>
-            </div>
-            <div>
-                <div ngbDropdown container="body">
-                    <button class="btn" ngbDropdownToggle>More</button>
-					<div ngbDropdownMenu>
-                        <button ngbDropdownItem (click)="router.navigate([EnumScreens.Start])">Start</button>
-                        <button ngbDropdownItem (click)="router.navigate([EnumScreens.Intro])">Intro</button>
-						<button ngbDropdownItem (click)="router.navigate([EnumScreens.Stats])">Stats</button>
-						<button ngbDropdownItem (click)="router.navigate([EnumScreens.History])">History</button>
-						<button ngbDropdownItem (click)="router.navigate([EnumScreens.Tutorials])">Tutorials</button>
-						<button ngbDropdownItem (click)="resetGame(content)">Reset Game</button>
-						<div class="dropdown-divider"></div>
-                        <a ngbDropdownItem href="https://www.linkedin.com/in/f3d3r1c07r0774/" target="_blank">About the creator</a>
-					</div>
-				</div>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="card-body p-0 overflow-hidden position-relative">
-        <div class="playcard-body">
-            <ng-content select="[body]"></ng-content>
+    
+        <div class="card-body p-0 overflow-hidden position-relative">
+            <div class="playcard-body">
+                <ng-content select="[body]"></ng-content>
+            </div>
         </div>
-    </div>
-
-    <div class="playcard-footer card-footer">
-        <ng-content select="[footer]"></ng-content>
+    
+        <div class="playcard-footer card-footer">
+            <ng-content select="[footer]"></ng-content>
+        </div>
     </div>
 </div>

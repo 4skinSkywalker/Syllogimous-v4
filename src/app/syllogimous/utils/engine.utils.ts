@@ -224,6 +224,7 @@ export function getRelation(settings: ISettings, type: EnumQuestionType, isPosit
 
 export function makeMetaRelations(settings: ISettings, question: Question, length: number) {
     if (settings.enableMeta && coinFlip()) {
+        question.metaRelations++;
         const numOfMetaRelations = 1 + Math.floor(Math.random() * Math.floor((length - 1) / 2));
         let _premises = pickUniqueItems(question.premises, numOfMetaRelations * 2);
         question.premises = [ ..._premises.remaining ];

@@ -13,7 +13,7 @@
                 [class.correct]="q.userAnswer !== undefined && q.userAnswer === q.isValid"
                 [class.incorrect]="q.userAnswer !== undefined && q.userAnswer !== q.isValid"
             >
-                <div class="p-2 overflow-auto" style="max-height: 150px; border: 1px solid;">
+                <div class="p-2 overflow-auto" style="max-height: 150px; border-bottom: 1px solid #0006;">
                     <div *ngFor="let p of q.premises" class="premise" [innerHTML]="p"></div>
                     <div [innerHTML]="q.conclusion"></div>
                 </div>

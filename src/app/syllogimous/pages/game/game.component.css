@@ -8,5 +8,10 @@
     left: 0;
     top: 0;
     border-radius: 0;
-    height: 4px;
+    height: 1.25rem;
+}
+
+::ng-deep .timerbar .progress-bar {
+    text-align: right;
+    padding-right: 0.5rem;
 }

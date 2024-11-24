@@ -74,10 +74,12 @@ export class GameComponent {
             case 2: {
                 console.log("Adaptive timer");
 
-                const newLevelBonusTime = 15;
                 const correctRate = 1;
                 const incorrectRate = 1;
                 const timeoutRate = 2;
+                const newLevelBonus = 15;
+                const negationBonus = 2;
+                const metaRelationBonus = 3;
                 this.timerFull = 90;
 
                 this.statsService.calcStats();
@@ -97,13 +99,16 @@ export class GameComponent {
                         avgTimeToRespond += timeoutRate * currStats.last10Timeout;
                     } else if (prevStats && prevStats.count > 2) {
                         avgTimeToRespond = (prevStats.last10Sum / 1000) / prevStats.last10Count;
-                        avgTimeToRespond += newLevelBonusTime; // Bonus for the new level
                         avgTimeToRespond -= correctRate * prevStats.last10Correct;
                         avgTimeToRespond += incorrectRate * prevStats.last10Incorrect;
                         avgTimeToRespond += timeoutRate * prevStats.last10Timeout;
+                        avgTimeToRespond += newLevelBonus; // Bonus for the new level
                     }
 
-                    this.timerFull = Math.max(0, avgTimeToRespond);
+                    avgTimeToRespond += negationBonus * this.sylSrv.question.negations;
+                    avgTimeToRespond += metaRelationBonus * this.sylSrv.question.metaRelations;
+
+                    this.timerFull = Math.floor(Math.max(0, avgTimeToRespond));
                 }
 
                 this.timerLeft = this.timerFull;

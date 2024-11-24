@@ -6,7 +6,6 @@
     top: 0;
     display: grid;
     place-items: center;
-    border-radius: 0 0 var(--border-radius_md) var(--border-radius_md);
 }
 
 .feedback-correct {
