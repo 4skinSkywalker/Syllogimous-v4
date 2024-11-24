@@ -45,6 +45,12 @@
             <button class="btn btn-link" (click)="router.navigate([EnumScreens.History])">History</button>
             <button class="btn btn-link" (click)="router.navigate([EnumScreens.Tutorials])">Tutorials</button>
         </div>
+
+        <div class="d-flex flex-between gap-2 pt-3">
+            <input type="radio" id="timer-choice-0" name="timer-kind" (input)="setTimer(0)"> <label for="timer-choice-0" ngbTooltip="No timer at all">No timer</label>
+            <input type="radio" id="timer-choice-1" name="timer-kind" (input)="setTimer(1)"> <label for="timer-choice-1" ngbTooltip="Fixed timer based on tier">Tier-based timer</label>
+            <input type="radio" id="timer-choice-2" name="timer-kind" (input)="setTimer(2)"> <label for="timer-choice-2" ngbTooltip="Timer adapts as you play">Adaptive timer</label>
+        </div>
     </div>
 
     <div footer class="text-center">
