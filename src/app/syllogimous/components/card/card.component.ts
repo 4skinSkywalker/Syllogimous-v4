@@ -9,7 +9,7 @@ import { Router } from "@angular/router";
 
 @Component({
     selector: "app-card",
-    styleUrls: ["./card.component.css"],
+    styleUrls: ["./card.component.scss"],
     templateUrl: "./card.component.html"
 })
 export class CardComponent {
