@@ -50,7 +50,7 @@ export class StatsService {
                 this.typeBasedStats[type].accuracy = questions.length && (questions.filter(q => q.userAnswer === q.isValid).length / questions.length);
 
                 [...questions].reverse().forEach((q, i) => {
-                    const ps = q.premises.length;
+                    const ps = (q.premises.length < 6) ? q.premises.length : "6+";
                     this.typeBasedStats[type].stats[ps] = this.typeBasedStats[type].stats[ps] || {
                         sum: 0,
                         count: 0,

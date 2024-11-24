@@ -69,15 +69,8 @@
                     </ng-template>
                 </li>
     
-                <li [ngbNavItem]="6">
-                    <a ngbNavLink>6 Ps</a>
-                    <ng-template ngbNavContent>
-                        <ng-container *ngTemplateOutlet="timeBasedStatsTemplate; context: { ps: d.activeTab, stats: statsService.typeBasedStats[type].stats }"></ng-container> 
-                    </ng-template>
-                </li>
-    
-                <li [ngbNavItem]="7">
-                    <a ngbNavLink>7+ Ps</a>
+                <li [ngbNavItem]="'6+'">
+                    <a ngbNavLink>6+ Ps</a>
                     <ng-template ngbNavContent>
                         <ng-container *ngTemplateOutlet="timeBasedStatsTemplate; context: { ps: d.activeTab, stats: statsService.typeBasedStats[type].stats }"></ng-container> 
                     </ng-template>
