@@ -29,6 +29,7 @@ import { ErrorAnalysisComponent } from './pages/stats/error-analysis/error-analy
 import { TierStatsComponent } from './pages/stats/tier-stats/tier-stats.component';
 import { TimeBasedStatsComponent } from './pages/stats/time-based-stats/time-based-stats.component';
 import { TypeBasedStatsComponent } from './pages/stats/type-based-stats/type-based-stats.component';
+import { StatsExportService } from './services/stats-export.service';
 
 const routes: Routes = [
   {
@@ -94,6 +95,9 @@ const routes: Routes = [
     CommonModule,
     SharedModule,
     RouterModule.forChild(routes),
+  ],
+  providers: [
+      StatsExportService
   ]
 })
 export class SyllogimousModule { }
