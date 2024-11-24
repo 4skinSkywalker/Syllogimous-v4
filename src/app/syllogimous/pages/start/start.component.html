@@ -1,0 +1,53 @@
+<app-card>
+    <div body style="min-width: 320px;">
+        <h2 class="text-center">Start Screen</h2>
+        
+        <ul class="list-group mb-2">
+            <li class="list-group-item flex-between">
+                <b>Tier</b>
+                <div>{{ sylSrv.tier }} ({{ sylSrv.score }} pts earned)</div>
+            </li>
+        
+            <li class="list-group-item flex-between">
+                <b>Next Tier</b>
+                <div>{{ nextTier }} ({{ pointsRemaining }} pts left)</div>
+            </li>
+    
+            <li class="list-group-item flex-between">
+                <b>Correct Answers</b>
+                <div>{{ correctQs.length }}</div>
+            </li>
+        
+            <li class="list-group-item flex-between">
+                <b>Incorrect Answers</b>
+                <div>{{ incorrectQs.length }}</div>
+            </li>
+        
+            <li class="list-group-item flex-between">
+                <b>Unanswered Questions</b>
+                <div>{{ unansweredQs.length }}</div>
+            </li>
+        
+            <li class="list-group-item flex-between">
+                <b>Current Streak</b>
+                <div>{{ currentStreak.length }}</div>
+            </li>
+        
+            <li class="list-group-item flex-between">
+                <b>Longest Streak</b>
+                <div>{{ longestStreak.length }}</div>
+            </li>
+        </ul>
+    
+        <div class="d-flex justify-content-evenly">
+            <button class="btn btn-link" (click)="router.navigate([EnumScreens.Intro])">Intro</button>
+            <button class="btn btn-link" (click)="router.navigate([EnumScreens.Stats])">Stats</button>
+            <button class="btn btn-link" (click)="router.navigate([EnumScreens.History])">History</button>
+            <button class="btn btn-link" (click)="router.navigate([EnumScreens.Tutorials])">Tutorials</button>
+        </div>
+    </div>
+
+    <div footer class="text-center">
+        <button class="btn btn-lg btn-primary" (click)="sylSrv.start()">Press to Play</button>
+    </div>
+</app-card>

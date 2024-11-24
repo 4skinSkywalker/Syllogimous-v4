@@ -15,11 +15,9 @@ import { TableComponent } from './components/table/table.component';
 import { MonthpickerComponent } from './components/monthpicker/monthpicker.component';
 import { AppChartComponent } from './components/chart.component';
 import { ImageUploaderPreviewComponent } from './components/image-uploader-preview/image-uploader-preview.component';
-import { HolyGrailComponent } from './components/holy-grail/holy-grail.component';
 import { LinearLoadingIndicatorComponent } from './components/linear-loading-indicator.component';
 import { LetDirective } from './directives/ng-let';
 import { MaskedInputDirective } from './directives/text2mask';
-import { RBACDirective } from './directives/role-based-access-control';
 import { AppSortableHeader } from './directives/sortable-header';
 import { HackCasePipe } from './pipes/hack-case.pipe';
 import { HighlightPipe } from './pipes/highlight.pipe';
@@ -37,13 +35,11 @@ import { ToastsContainer } from './components/toasts-container/toasts-container.
         MonthpickerComponent,
         AppChartComponent,
         ImageUploaderPreviewComponent,
-        HolyGrailComponent,
         LinearLoadingIndicatorComponent,
         ToastsContainer,
         // Directives
         LetDirective,
         MaskedInputDirective,
-        RBACDirective,
         AppSortableHeader,
         // Pipes
         HackCasePipe,
@@ -79,13 +75,11 @@ import { ToastsContainer } from './components/toasts-container/toasts-container.
         MonthpickerComponent,
         AppChartComponent,
         ImageUploaderPreviewComponent,
-        HolyGrailComponent,
         LinearLoadingIndicatorComponent,
         ToastsContainer,
         // Directives
         LetDirective,
         MaskedInputDirective,
-        RBACDirective,
         AppSortableHeader,
         // Pipes
         HackCasePipe,

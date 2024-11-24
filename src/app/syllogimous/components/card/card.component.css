@@ -1,0 +1,67 @@
+:host ::ng-deep {
+    .playcard-header, 
+    .playcard-footer {
+        background: transparent;
+        border: none;
+    }
+
+    .playcard-header:empty, 
+    .playcard-footer:empty {
+        padding: 0;
+    }
+
+    .playcard-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .subject {
+        font-weight: 700;
+    }
+
+    .is-negated {
+        color: #800000;
+        font-weight: 700;
+    }
+}
+
+.great-title {
+    display: flex;
+    align-items: end;
+    justify-content: space-evenly;
+    position: absolute;
+    width: 100%;
+    bottom: 100%;
+    font-size: 3.25rem;
+    line-height: 1;
+    text-transform: uppercase;
+    font-weight: 900;
+    color: #0008;
+}
+
+.great-title-version {
+    font-size: 1.75rem;
+    text-transform: lowercase;
+    margin-bottom: 0.25rem;
+}
+
+.playcard {
+    width: min(36rem, 100vw);
+    height: min(36rem, 100svh);
+}
+
+.playcard-body {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    overflow: auto;
+    padding: 1rem;
+}
+
+@media(max-width: 768px) {
+    .playcard {
+        width: 100vw;
+        height: 100svh;
+    }
+}
