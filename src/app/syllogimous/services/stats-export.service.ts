@@ -23,25 +23,56 @@ export class StatsExportService {
         }
     }
 
+    private calculateScoreAtPoint(questions: any[], index: number): number {
+        let score = 0;
+        
+        // Calculate score up to this point
+        for (let i = 0; i <= index; i++) {
+            const q = questions[i];
+            
+            if (q.userAnswer === undefined) {
+                // Timeout: -5 points
+                score = Math.max(0, score - 5);
+            } else if (q.userAnswer === q.isValid) {
+                // Correct answer: +10 points
+                score += 10;
+            } else {
+                // Incorrect answer: -5 points
+                score = Math.max(0, score - 5);
+            }
+        }
+        
+        return score;
+    }
+
     exportStats() {
         const questions = [...this.sylSrv.questionsFromLS]
-            .sort((a, b) => a.createdAt - b.createdAt); // Sort by oldest first
+            .sort((a, b) => a.createdAt - b.createdAt);
             
-        // Create CSV content
-        let csvContent = 'ID,Timestamp,Type,Time Taken (seconds),Correct Answer,User Answer,Result,Timer Setting\n';
+        // Create CSV header
+        let csvContent = 'ID,Timestamp,Type,Number of Premises,Time Taken (seconds),Correct Answer,User Answer,Result,Timer Setting,Points at Time,';
+        csvContent += 'Has Negation,Has Meta Relations,Negation Count,Meta Relations Count\n';
 
         // Add data rows
         questions.forEach((q, index) => {
             const timeTaken = (q.answeredAt - q.createdAt) / 1000;
+            const scoreAtPoint = this.calculateScoreAtPoint(questions, index);
+            
             const row = [
                 index + 1,
                 this.formatDateTime(q.createdAt),
                 q.type,
+                q.premises.length,
                 timeTaken.toFixed(1),
                 q.isValid,
                 q.userAnswer === undefined ? 'Timeout' : q.userAnswer,
                 q.userAnswer === undefined ? 'Timeout' : (q.userAnswer === q.isValid ? 'Correct' : 'Incorrect'),
-                this.getTimerSetting(q.timerTypeOnAnswer)
+                this.getTimerSetting(q.timerTypeOnAnswer),
+                scoreAtPoint,
+                q.negations > 0 ? 'Yes' : 'No',
+                q.metaRelations > 0 ? 'Yes' : 'No',
+                q.negations || 0,
+                q.metaRelations || 0
             ];
             csvContent += row.join(',') + '\n';
         });
