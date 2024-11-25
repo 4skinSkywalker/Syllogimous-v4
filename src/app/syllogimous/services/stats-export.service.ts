@@ -23,7 +23,7 @@ export class StatsExportService {
         }
     }
 
-    private calculateScoreAtPoint(questions: any[], index: number): number {
+    /*private calculateScoreAtPoint(questions: any[], index: number): number {
         let score = 0;
         
         // Calculate score up to this point
@@ -43,20 +43,34 @@ export class StatsExportService {
         }
         
         return score;
-    }
+    }*/
 
     exportStats() {
         const questions = [...this.sylSrv.questionsFromLS]
             .sort((a, b) => a.createdAt - b.createdAt);
             
         // Create CSV header
-        let csvContent = 'ID,Timestamp,Type,Number of Premises,Time Taken (seconds),Correct Answer,User Answer,Result,Timer Setting,Points at Time,';
-        csvContent += 'Has Negation,Has Meta Relations,Negation Count,Meta Relations Count\n';
+        let csvContent = [
+            "ID",
+            "Timestamp",
+            "Type",
+            "Number of Premises",
+            "Time Taken (seconds)",
+            "Correct Answer",
+            "User Answer",
+            "Result",
+            "Timer Setting",
+            "User Score",
+            "Has Negation",
+            "Has Meta Relations",
+            "Negation Count",
+            "Meta Relations Count"
+        ].join(",") + "\n";
 
         // Add data rows
         questions.forEach((q, index) => {
             const timeTaken = (q.answeredAt - q.createdAt) / 1000;
-            const scoreAtPoint = this.calculateScoreAtPoint(questions, index);
+            // const scoreAtPoint = this.calculateScoreAtPoint(questions, index);
             
             const row = [
                 index + 1,
@@ -68,7 +82,7 @@ export class StatsExportService {
                 q.userAnswer === undefined ? 'Timeout' : q.userAnswer,
                 q.userAnswer === undefined ? 'Timeout' : (q.userAnswer === q.isValid ? 'Correct' : 'Incorrect'),
                 this.getTimerSetting(q.timerTypeOnAnswer),
-                scoreAtPoint,
+                q.userScore,
                 q.negations > 0 ? 'Yes' : 'No',
                 q.metaRelations > 0 ? 'Yes' : 'No',
                 q.negations || 0,

@@ -158,6 +158,8 @@ export class SyllogimousService {
             }
         }
 
+        this.question.userScore = this.score;
+
         const nextTier = this.tier;
 
         // Level up/down
