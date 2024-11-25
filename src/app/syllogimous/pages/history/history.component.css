@@ -8,20 +8,35 @@
 .list-group-item {
     border: none;
     box-shadow: 0 8px 8px 0 #0002;
-    margin-bottom: 1.25rem;
+    margin: 0.5rem;
+    padding: 0;
+    border-radius: 1rem;
 }
 
 .correct {
     background-color: #D4EDDA88;
+    box-shadow: 0 8px 8px 0 #15572433;
     color: #155724;
 }
 
 .incorrect {
     background-color: #F8D7DA88;
+    box-shadow: 0 8px 8px 0 #721C2433;
     color: #721C24;
 }
 
 .timeout {
     background-color: #E0E0E088;
+    box-shadow: 0 8px 8px 0 #42424233;
     color: #424242;
+}
+
+.bd-left {
+    border-top: 1px solid #0006;
+    border-left: 1px solid #0006;
+    padding: 0.5rem 0.75rem;
+}
+
+.bd-left:first-child {
+    border-left: none;
 }

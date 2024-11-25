@@ -74,12 +74,12 @@ export class GameComponent {
             case '2': {
                 console.log("Adaptive timer");
 
-                const correctRate = 1;
+                const correctRate = 0.5;
                 const incorrectRate = 1;
-                const timeoutRate = 2;
+                const timeoutRate = 1.5;
                 const newLevelBonus = 15;
-                const negationBonus = 2;
-                const metaRelationBonus = 3;
+                const negationBonus = 3;
+                const metaRelationBonus = 4;
                 this.timerFull = 90;
 
                 this.statsService.calcStats();

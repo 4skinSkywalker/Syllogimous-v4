@@ -13,29 +13,29 @@
                 [class.correct]="q.userAnswer !== undefined && q.userAnswer === q.isValid"
                 [class.incorrect]="q.userAnswer !== undefined && q.userAnswer !== q.isValid"
             >
-                <div class="p-2 overflow-auto" style="max-height: 150px; border-bottom: 1px solid #0006;">
+                <div class="overflow-auto" style="max-height: 250px; padding: 0.5rem 0.75rem;">
                     <div *ngFor="let p of q.premises" class="premise" [innerHTML]="p"></div>
-                    <div [innerHTML]="q.conclusion"></div>
+                    <div class="mt-2" [innerHTML]="q.conclusion"></div>
                 </div>
         
-                <small class="d-grid mt-2 px-2" style="grid-template-columns: repeat(4, 1fr); gap: 0.25rem;">
-                    <div>
+                <small class="d-grid" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="bd-left">
                         <div class="fw-bold">Type</div>
                         {{ q.type }}
                     </div>
         
-                    <div>
-                        <div class="fw-bold">Correct Answer</div>
+                    <div class="bd-left">
+                        <div class="fw-bold">Correct Ans</div>
                         {{ q.isValid }}
                     </div>
         
-                    <div>
-                        <div class="fw-bold">User Answer</div>
+                    <div class="bd-left">
+                        <div class="fw-bold">User Ans</div>
                         {{ (q.userAnswer === undefined) ? "Timeout" : q.userAnswer }}
                     </div>
         
-                    <div>
-                        <div class="fw-bold">Time Taken</div>
+                    <div class="bd-left">
+                        <div class="fw-bold">Time</div>
                         {{ (q.userAnswer === undefined) ? "Timeout" : (((q.answeredAt - q.createdAt) / 1000) | number:".1-1") + "s" }}
                     </div>
                 </small>

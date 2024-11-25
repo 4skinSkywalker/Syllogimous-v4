@@ -17,7 +17,7 @@
     </ul>
 </ng-template>
 
-<div class="shadow p-3 border rounded text-center" *ngIf="!statsService.types.length">
+<div class="shadow bg-white p-3 border rounded text-center" *ngIf="!statsService.types.length">
     <h2>Type-Based Stats</h2>
     <h4 class="my-3">Play to see something here</h4>
     <button class="btn btn-lg btn-primary" (click)="sylSrv.start()">Press to Play</button>
