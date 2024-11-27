@@ -73,9 +73,15 @@
 }
 
 @media(max-width: 768px) {
+    .great-title {
+        display: none;
+    }
+    
     .playcard {
         width: 100vw;
         height: 100svh;
         border-radius: 0;
+        box-shadow: none;
+        margin: 0;
     }
 }
