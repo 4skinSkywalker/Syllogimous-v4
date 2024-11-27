@@ -17,7 +17,7 @@
     </ul>
 </ng-template>
 
-<div class="shadow bg-white p-3 border rounded text-center" *ngIf="!statsService.types.length">
+<div class="card p-3 rounded text-center" *ngIf="!statsService.types.length">
     <h2>Type-Based Stats</h2>
     <h4 class="my-3">Play to see something here</h4>
     <button class="btn btn-lg btn-primary" (click)="sylSrv.start()">Press to Play</button>
@@ -27,7 +27,7 @@
     <div *ngFor="let type of statsService.types">
         <h2 class="text-center">{{ type }} Stats</h2>
     
-        <ul class="shadow list-group my-3">
+        <ul class="list-group my-3">
             <li class="list-group-item flex-between">
                 <b>Completed Questions</b>
                 <div>{{ statsService.typeBasedStats[type].completed }}</div>
@@ -77,7 +77,10 @@
                 </li>
             </ul>
             
-            <div [ngbNavOutlet]="nav" class="shadow overflow-hidden border border-top-0"></div>
+            <div
+                [ngbNavOutlet]="nav"
+                class="shadow-sm overflow-hidden border border-top-0"
+            ></div>
         </div>
     </div>
 </div>

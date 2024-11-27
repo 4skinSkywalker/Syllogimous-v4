@@ -1,13 +1,13 @@
 <app-card>
-    <div body>
+    <div class="p-2" body>
         <div class="text-center" *ngIf="!questions.length">
             <h3 class="mb-3">Play to see something here</h3>
             <button class="btn btn-lg btn-primary" (click)="sylSrv.start()">Press to Play</button>
         </div>
-        
-        <ul class="list-group list-group-flush" *ngIf="questions.length">
-            <li
-                class="list-group-item"
+
+        <div class="d-grid gap-3">
+            <div
+                class="card"
                 *ngFor="let q of questions"
                 [class.timeout]="q.userAnswer === undefined"
                 [class.correct]="q.userAnswer !== undefined && q.userAnswer === q.isValid"
@@ -17,30 +17,30 @@
                     <div *ngFor="let p of q.premises" class="premise" [innerHTML]="p"></div>
                     <div class="mt-2" [innerHTML]="q.conclusion"></div>
                 </div>
-        
+    
                 <small class="d-grid" style="grid-template-columns: repeat(4, 1fr);">
                     <div class="bd-left">
                         <div class="fw-bold">Type</div>
                         {{ q.type }}
                     </div>
-        
+    
                     <div class="bd-left">
-                        <div class="fw-bold">Correct Ans</div>
+                        <div class="fw-bold">Correct Answer</div>
                         {{ q.isValid }}
                     </div>
-        
+    
                     <div class="bd-left">
-                        <div class="fw-bold">User Ans</div>
+                        <div class="fw-bold">User Answer</div>
                         {{ (q.userAnswer === undefined) ? "Timeout" : q.userAnswer }}
                     </div>
-        
+    
                     <div class="bd-left">
                         <div class="fw-bold">Time</div>
                         {{ (q.userAnswer === undefined) ? "Timeout" : (((q.answeredAt - q.createdAt) / 1000) | number:".1-1") + "s" }}
                     </div>
                 </small>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
 
     <div footer class="playcard-toolbar">

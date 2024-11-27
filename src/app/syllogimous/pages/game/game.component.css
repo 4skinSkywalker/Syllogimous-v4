@@ -2,12 +2,15 @@
     font-size: 1.5rem;
 }
 
-.timerbar {
+.timerbar-wrap {
+    padding: 8px;
     position: absolute;
     width: 100%;
     left: 0;
     top: 0;
-    border-radius: 0;
+}
+
+.timerbar {
     height: 1.25rem;
 }
 

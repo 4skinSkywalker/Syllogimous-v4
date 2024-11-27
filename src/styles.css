@@ -6,14 +6,20 @@
 }
 /* End of VARIABLES */
 
+html[darkmode] {
+    filter: invert(1) hue-rotate(180deg);
+}
+
 .flex-between {
     display: flex;
     justify-content: space-between;
 }
 
+.tooltip-inner {
+    max-width: 250px;
+}
+
 .dropdown-menu {
-    box-shadow: 0 4px 8px 0px #0002;
-    background-color: rgba(var(--app-gray_0), 1);
     padding: 0.8rem 0;
 }
 
@@ -25,4 +31,8 @@
     background-color: rgba(var(--app-gray_0), 1);
     border-bottom-left-radius: 1rem;
     border-bottom-right-radius: 1rem;
+}
+
+.list-group.list-group-flush .list-group-item:first-child {
+    border-top: 1px solid;
 }

@@ -1,4 +1,4 @@
-/* Start of BRAND */
+/* BRAND */
 .app-brand {
     align-items: center;
     color: inherit !important;
@@ -14,18 +14,8 @@
     width: 40px;
     height: 40px;
 }
-/* End of BRAND */
 
-
-/* Start of NAVBAR */
-.app-navbar {
-    min-height: 64px;
-    border-bottom: 1px solid rgba(var(--app-gray_100), 1);
-}
-/* End of NAVBAR */
-
-
-/* Start of BUTTON */
+/* BUTTON */
 .btn-circle {
     width: 42px;
     height: 42px;
@@ -37,16 +27,14 @@
     width: 54px;
     height: 54px;
 }
-/* End of BUTTON */
 
-
-/* Start of CDK_DRAG */
+/* CDK_DRAG */
 .cdk-drag-preview {
     box-sizing: border-box;
     border-radius: 4px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-        0 8px 10px 1px rgba(0, 0, 0, 0.14),
-        0 3px 14px 2px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 5px 5px -3px rgba(var(--app-gray_1000), 0.2),
+        0 8px 10px 1px rgba(var(--app-gray_1000), 0.14),
+        0 3px 14px 2px rgba(var(--app-gray_1000), 0.12);
 }
 
 .cdk-drag-placeholder {
@@ -65,16 +53,18 @@
 .cdk-drag-preview {
     z-index: 9000 !important;
 }
-/* End of CDK_DRAG */
 
+/* TABLE */
+app-table tr:not(.hidden, .has-row-expand) {
+    height: 55px; /* Works like min-height */
+}
 
-/* Start of TABLE */
-th[sortable] {
+app-table th[sortable] {
     cursor: pointer;
     user-select: none;
 }
 
-th[sortable]::before {
+app-table th[sortable]::before {
     content: '\F3CA';
     display: inline-block;
     font-family: bootstrap-icons !important;
@@ -87,12 +77,36 @@ th[sortable]::before {
     vertical-align: -0.125em;
 }
 
-th[sortable].desc::before,
-th[sortable].asc::before {
+app-table th[sortable].desc::before,
+app-table th[sortable].asc::before {
     content: '\F57B';
 }
 
-th[sortable].desc::before {
+app-table th[sortable].desc::before {
     content: '\F575';
 }
-/* End of TABLE */
+
+/* CHART */
+.ct-grid, .ct-label {
+    stroke: rgba(var(--app-gray_1000), 0.5);
+    fill: rgba(var(--app-gray_1000), 0.5);
+    color: rgba(var(--app-gray_1000), 0.5);
+}
+
+/* TABS */
+.nav-tabs {
+    border-bottom: 1px solid rgba(var(--app-gray_100), 0.75);
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    color: rgba(var(--app-gray_400), 1);
+}
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    background-color: #0000;
+    border: none;
+    border-bottom: 2px solid rgba(var(--app-gray_1000), 1);
+    color: rgba(var(--app-gray_1000), 1);
+    font-weight: 700;
+}

@@ -1,6 +1,8 @@
 <app-card>
     <div body class="battlefield">
-        <ngb-progressbar *ngIf="timerType !== '0'" class="timerbar" type="success" [value]="100 * timerLeft / timerFull">{{timerLeft}} s</ngb-progressbar>
+        <div class="timerbar-wrap">
+            <ngb-progressbar *ngIf="timerType !== '0'" class="timerbar" type="success" [value]="100 * timerLeft / timerFull">{{timerLeft}} s</ngb-progressbar>
+        </div>
     
         <small class="d-block text-muted">Premises</small>
         <div *ngFor="let p of sylSrv.question.premises" class="premise" [innerHTML]="p"></div>

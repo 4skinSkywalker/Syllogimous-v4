@@ -29,12 +29,11 @@
               "./node_modules/highlight.js/styles/magula.css",
               "./node_modules/animate.css/animate.min.css",
               "./node_modules/chartist/dist/index.css",
-              "src/assets/css/bootstrap-with-vars.css",
+              "src/assets/css/thickstrap.css",
               "src/assets/css/custom-styles/base.css",
               "src/assets/css/custom-styles/layout.css",
               "src/assets/css/custom-styles/module.css",
               "src/assets/css/custom-styles/util.css",
-              "src/assets/css/demos.css",
               "src/styles.css"
             ],
             "scripts": [

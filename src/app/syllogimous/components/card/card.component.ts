@@ -25,6 +25,10 @@ export class CardComponent {
         private modalService: NgbModal,
     ) {}
 
+    ngAfterViewInit() {
+        this.toggleDarkmode(true);
+    }
+
     async resetGame(content: any) {
         await this.modalService.open(content, { centered: true }).result;
 
@@ -40,5 +44,20 @@ export class CardComponent {
         }
 
         location.reload();
+    }
+
+    toggleDarkmode(initial = false) {
+        if (!initial) {
+            localStorage.setItem("darkmode", JSON.stringify(!this.getDarkmode()));
+        }
+        if (this.getDarkmode()) {
+            document.querySelector("html")?.setAttribute("darkmode", "");
+        } else {
+            document.querySelector("html")?.removeAttribute("darkmode");
+        }
+    }
+
+    getDarkmode() {
+        return JSON.parse(localStorage.getItem("darkmode") || "false");
     }
 }

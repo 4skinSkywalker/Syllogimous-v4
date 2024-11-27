@@ -10,9 +10,11 @@
     top: 0;
 }
 
-[body] ::ng-deep .accordion-item,
-[body] ::ng-deep .accordion-button {
-    border-left: none;
-    border-right: none;
-    border-radius: 0 !important;
+[body] ::ng-deep .accordion-button:not(.collapsed) {
+    background-color: rgba(var(--app-gray_0), 1);
+    border-bottom: 1px solid;
+}
+
+[body] ::ng-deep .accordion-button:focus {
+    box-shadow: none;
 }

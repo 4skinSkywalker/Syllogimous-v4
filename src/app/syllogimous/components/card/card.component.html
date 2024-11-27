@@ -28,7 +28,7 @@
         <div class="great-title-version">v4</div>
     </div>
     
-    <div class="playcard card shadow">
+    <div class="playcard card">
         <div class="playcard-header card-header">
             <div class="playcard-toolbar">
                 <div>
@@ -62,6 +62,14 @@
                             <button ngbDropdownItem (click)="router.navigate([EnumScreens.Tutorials])">Tutorials</button>
                             <button ngbDropdownItem (click)="resetGame(content)">Reset Game</button>
                             <div class="dropdown-divider"></div>
+                            <button ngbDropdownItem (click)="toggleDarkmode()">
+                                <ng-container *ngIf="getDarkmode(); else darkmode">
+                                    <i class="bi bi-sun"></i> Lightmode
+                                </ng-container>
+                                <ng-template #darkmode>
+                                    <i class="bi bi-moon"></i> Darkmode
+                                </ng-template>
+                            </button>
                             <a ngbDropdownItem href="https://www.linkedin.com/in/f3d3r1c07r0774/" target="_blank">About the creator</a>
                         </div>
                     </div>
