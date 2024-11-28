@@ -1,0 +1,14 @@
+<div class="modal-body p-5 text-center">
+    <h4>Timer Settings</h4>
+
+    <div class="my-4 text-start" style="font-size: 1.15rem;">
+        <div class="timers-overflow">
+            <app-dynamic-form [fields]="fields" (formValueChanged)="formData = $event"></app-dynamic-form>
+        </div>
+    </div>
+
+    <div class="d-flex gap-3 justify-content-center">
+        <button class="btn btn-outline-secondary" style="width: 100px;" (click)="activeModal.dismiss()">Cancel</button>
+        <button class="btn btn-primary" style="width: 100px;" (click)="save()">Save</button>
+    </div>
+</div>

@@ -222,12 +222,7 @@ export class InputComponent implements OnInit, OnDestroy {
             .map((year) => ({ text: year + "", value: year }));
     }
 
-    //  █████╗ ██╗   ██╗████████╗ ██████╗  ██████╗ ██████╗ ███╗   ███╗██████╗ ██╗     ███████╗████████╗███████╗
-    // ██╔══██╗██║   ██║╚══██╔══╝██╔═══██╗██╔════╝██╔═══██╗████╗ ████║██╔══██╗██║     ██╔════╝╚══██╔══╝██╔════╝
-    // ███████║██║   ██║   ██║   ██║   ██║██║     ██║   ██║██╔████╔██║██████╔╝██║     █████╗     ██║   █████╗  
-    // ██╔══██║██║   ██║   ██║   ██║   ██║██║     ██║   ██║██║╚██╔╝██║██╔═══╝ ██║     ██╔══╝     ██║   ██╔══╝  
-    // ██║  ██║╚██████╔╝   ██║   ╚██████╔╝╚██████╗╚██████╔╝██║ ╚═╝ ██║██║     ███████╗███████╗   ██║   ███████╗
-    // ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝  ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚══════╝╚══════╝   ╚═╝   ╚══════╝
+    // Start of Autocomplete
     appendLimitExplainerStylesheet() {
         // Create CSS for description
         const css =
@@ -335,13 +330,9 @@ export class InputComponent implements OnInit, OnDestroy {
     selectItem(selectEvent: NgbTypeaheadSelectItemEvent) {
         this.selectItemEmitter.emit(selectEvent);
     }
+    // End of Autocomplete
 
-    // ████████╗ █████╗  ██████╗  ██████╗ ███████╗██████╗ 
-    // ╚══██╔══╝██╔══██╗██╔════╝ ██╔════╝ ██╔════╝██╔══██╗
-    //    ██║   ███████║██║  ███╗██║  ███╗█████╗  ██████╔╝
-    //    ██║   ██╔══██║██║   ██║██║   ██║██╔══╝  ██╔══██╗
-    //    ██║   ██║  ██║╚██████╔╝╚██████╔╝███████╗██║  ██║
-    //    ╚═╝   ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚══════╝╚═╝  ╚═╝
+    // Start of Tagger
     setTaggerDefault() {
         if (this.ngControl.value) {
             this.tags = this.ngControl.value;
@@ -403,6 +394,7 @@ export class InputComponent implements OnInit, OnDestroy {
             setTimeout(() => this._autocompleteChoice = null, 0);
         }
     }
+    // End of Tagger
 
     markAsTouched() {
         this.ngControl.markAsTouched();

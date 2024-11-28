@@ -89,7 +89,7 @@ const routes: Routes = [
     ErrorAnalysisComponent,
     TierStatsComponent,
     TimeBasedStatsComponent,
-    TypeBasedStatsComponent
+    TypeBasedStatsComponent,
   ],
   imports: [
     CommonModule,

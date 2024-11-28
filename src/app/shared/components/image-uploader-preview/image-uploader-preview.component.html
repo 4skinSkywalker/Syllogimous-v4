@@ -53,7 +53,7 @@
             <span
                 *ngIf="!disabled"
                 id="file-upload-btn"
-                class="btn btn-primary shadow"
+                class="btn btn-primary"
             >
                 Select an image
             </span>
@@ -62,7 +62,7 @@
         <div class="text-center">
             <button
                 *ngIf="!disabled && base64"
-                class="btn btn-danger shadow"
+                class="btn btn-danger"
                 (click)="reset($event)"
             >
                 Remove image

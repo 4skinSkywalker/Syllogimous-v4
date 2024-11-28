@@ -15,13 +15,15 @@ import { TableComponent } from './components/table/table.component';
 import { MonthpickerComponent } from './components/monthpicker/monthpicker.component';
 import { AppChartComponent } from './components/chart.component';
 import { ImageUploaderPreviewComponent } from './components/image-uploader-preview/image-uploader-preview.component';
+import { HolyGrailComponent } from './components/holy-grail/holy-grail.component';
 import { LinearLoadingIndicatorComponent } from './components/linear-loading-indicator.component';
 import { LetDirective } from './directives/ng-let';
 import { MaskedInputDirective } from './directives/text2mask';
 import { AppSortableHeader } from './directives/sortable-header';
 import { HackCasePipe } from './pipes/hack-case.pipe';
-import { HighlightPipe } from './pipes/highlight.pipe';
+import { HighlightDirective } from './directives/highlight';
 import { ToastsContainer } from './components/toasts-container/toasts-container.component';
+import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
 
 @NgModule({
     declarations: [
@@ -35,15 +37,17 @@ import { ToastsContainer } from './components/toasts-container/toasts-container.
         MonthpickerComponent,
         AppChartComponent,
         ImageUploaderPreviewComponent,
+        HolyGrailComponent,
         LinearLoadingIndicatorComponent,
         ToastsContainer,
+        DynamicFormComponent,
         // Directives
         LetDirective,
         MaskedInputDirective,
         AppSortableHeader,
+        HighlightDirective,
         // Pipes
         HackCasePipe,
-        HighlightPipe,
     ],
     imports: [
         CommonModule,
@@ -75,15 +79,17 @@ import { ToastsContainer } from './components/toasts-container/toasts-container.
         MonthpickerComponent,
         AppChartComponent,
         ImageUploaderPreviewComponent,
+        HolyGrailComponent,
         LinearLoadingIndicatorComponent,
         ToastsContainer,
+        DynamicFormComponent,
         // Directives
         LetDirective,
         MaskedInputDirective,
         AppSortableHeader,
+        HighlightDirective,
         // Pipes
         HackCasePipe,
-        HighlightPipe,
     ]
 })
 export class SharedModule { }

@@ -27,7 +27,7 @@
 
 .tagger-array {
     border: 1px dashed #ccc;
-    border-radius: 0.25rem;
+    border-radius: var(--border-radius_md);
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;

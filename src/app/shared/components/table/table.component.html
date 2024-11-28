@@ -95,7 +95,7 @@
 	
 						<td *ngIf="rowExpand">
 							<button
-								type="button"
+								[id]="'row-expand-trigger-' + i"
 								class="btn collapse-toggle"
 								(click)="_row.collapsed = !_row.collapsed"
 								[attr.aria-expanded]="!_row.collapsed"
@@ -115,7 +115,7 @@
 						></ng-container>
 					</tr>
 	
-					<tr *ngIf="rowExpand">
+					<tr *ngIf="rowExpand" class="has-row-expand">
 						<td class="row-expand" [attr.colspan]="colspan + (rowExpand ? 1 : 0)">
 							<div #collapse="ngbCollapse" [(ngbCollapse)]="_row.collapsed">
 								<ng-container

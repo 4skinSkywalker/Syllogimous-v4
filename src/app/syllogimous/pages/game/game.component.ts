@@ -3,6 +3,7 @@ import { SyllogimousService } from '../../services/syllogimous.service';
 import { StatsService } from '../../services/stats.service';
 import { LS_TIMER } from '../../constants/local-storage.constants';
 import { EnumQuestionType } from '../../models/question.models';
+import { LS_CUSTOM_TIMERS_KEY } from '../../components/modal-timer-settings/modal-timer-settings.component';
 
 @Component({
     selector: 'app-game',
@@ -25,50 +26,11 @@ export class GameComponent {
 
         switch(this.timerType) {
             case '1': {
-                console.log("Fixed timer");
-
-                switch(this.sylSrv.question.type) {
-                    case EnumQuestionType.Syllogism: {
-                        this.timerFull = this.sylSrv.settings.syllogism[2];
-                        break;
-                    }
-                    case EnumQuestionType.Distinction: {
-                        this.timerFull = this.sylSrv.settings.distinction[2];
-                        break;
-                    }
-                    case EnumQuestionType.ComparisonNumerical: {
-                        this.timerFull = this.sylSrv.settings.comparisonNumerical[2];
-                        break;
-                    }
-                    case EnumQuestionType.ComparisonChronological: {
-                        this.timerFull = this.sylSrv.settings.comparisonChronological[2];
-                        break;
-                    }
-                    case EnumQuestionType.Binary: {
-                        this.timerFull = this.sylSrv.settings.binary[2];
-                        break;
-                    }
-                    case EnumQuestionType.Direction: {
-                        this.timerFull = this.sylSrv.settings.direction[2];
-                        break;
-                    }
-                    case EnumQuestionType.Direction3D: {
-                        this.timerFull = this.sylSrv.settings.direction3D[2];
-                        break;
-                    }
-                    case EnumQuestionType.Direction4D: {
-                        this.timerFull = this.sylSrv.settings.direction4D[2];
-                        break;
-                    }
-                    case EnumQuestionType.Analogy: {
-                        this.timerFull = this.sylSrv.settings.analogy[2];
-                        break;
-                    }
-                }
-                
+                console.log("Custom timer");
+                const customTimers = JSON.parse(localStorage.getItem(LS_CUSTOM_TIMERS_KEY) || "{}");
+                this.timerFull = customTimers[this.sylSrv.question.type] || 90;                
                 this.timerLeft = this.timerFull;
                 this.timer = this.kickTimer();
-
                 break;
             }
             case '2': {

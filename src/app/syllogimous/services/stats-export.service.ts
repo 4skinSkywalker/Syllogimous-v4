@@ -16,7 +16,7 @@ export class StatsExportService {
     private getTimerSetting(timerTypeOnAnswer: string): string {
         switch(timerTypeOnAnswer) {
             case "0": return "No Timer";
-            case "1": return "Fixed Timer";
+            case "1": return "Custom Timer";
             case "2": return "Adaptive Timer";
             default: return "Unknown";
         }
@@ -72,7 +72,7 @@ export class StatsExportService {
         const a = document.createElement('a');
         a.setAttribute('hidden', '');
         a.setAttribute('href', url);
-        a.setAttribute('download', `syllogimous_history_${new Date().toISOString().split('T')[0]}.csv`);
+        a.setAttribute('download', `syllogimous_history_${new Date().toLocaleDateString("sv")}.csv`);
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
