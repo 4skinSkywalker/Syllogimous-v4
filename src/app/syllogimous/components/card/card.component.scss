@@ -1,8 +1,12 @@
 :host ::ng-deep {
-    .playcard-header, 
+    .playcard-header {
+        border-bottom: 1px solid rgba(var(--app-gray_1000), 1);
+        background: #0000;
+    }
+
     .playcard-footer {
-        background: transparent;
-        border: none;
+        border-top: 1px solid rgba(var(--app-gray_1000), 1);
+        background: #0000;
     }
 
     .playcard-header:empty, 
@@ -64,24 +68,17 @@
     background-image: linear-gradient(62deg, rgba(142, 197, 252, 0.25) 0%, rgba(224, 195, 252, 0.25) 100%);
 }
 
-.playcard-body::after {
-    content: "";
-    box-shadow: inset 0 1px 0 rgba(0, 0, 0, 1), inset 0 -1px 0 rgba(0, 0, 0, 1);
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-}
-
 @media(max-width: 768px) {
     .great-title {
         display: none;
     }
-    
+
     .playcard {
         width: 100vw;
         height: 100svh;
         border-radius: 0;
         box-shadow: none;
         margin: 0;
+        border: 0;
     }
 }
