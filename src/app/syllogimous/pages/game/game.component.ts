@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { SyllogimousService } from '../../services/syllogimous.service';
 import { StatsService } from '../../services/stats.service';
 import { LS_TIMER } from '../../constants/local-storage.constants';
-import { EnumQuestionType } from '../../models/question.models';
 import { LS_CUSTOM_TIMERS_KEY } from '../../components/modal-timer-settings/modal-timer-settings.component';
 
 @Component({
@@ -30,7 +29,7 @@ export class GameComponent {
                 const customTimers = JSON.parse(localStorage.getItem(LS_CUSTOM_TIMERS_KEY) || "{}");
                 this.timerFull = customTimers[this.sylSrv.question.type] || 90;                
                 this.timerLeft = this.timerFull;
-                this.timer = this.kickTimer();
+                this.kickTimer();
                 break;
             }
             case '2': {
@@ -44,10 +43,9 @@ export class GameComponent {
                 const metaRelationBonus = 4;
                 this.timerFull = 90;
 
-                this.statsService.calcStats();
                 const questionType = this.sylSrv.question.type;
                 const questionPremises = this.sylSrv.question.premises.length;
-                const typeBasedStats = this.statsService.typeBasedStats[questionType];
+                const typeBasedStats = this.statsService.calcStats(this.timerType)[questionType];
 
                 if (typeBasedStats?.stats) {
                     const prevStats = typeBasedStats.stats[questionPremises - 1];
@@ -55,12 +53,12 @@ export class GameComponent {
 
                     let avgTimeToRespond = this.timerFull;
                     if (currStats && currStats.count > 2) {
-                        avgTimeToRespond = (currStats.last10Sum / 1000) / currStats.last10Count;
+                        avgTimeToRespond = (currStats.last10Sum / 1000) / (currStats.last10Count || 1);
                         avgTimeToRespond -= correctRate * currStats.last10Correct;
                         avgTimeToRespond += incorrectRate * currStats.last10Incorrect;
                         avgTimeToRespond += timeoutRate * currStats.last10Timeout;
                     } else if (prevStats && prevStats.count > 2) {
-                        avgTimeToRespond = (prevStats.last10Sum / 1000) / prevStats.last10Count;
+                        avgTimeToRespond = (prevStats.last10Sum / 1000) / (prevStats.last10Count || 1);
                         avgTimeToRespond -= correctRate * prevStats.last10Correct;
                         avgTimeToRespond += incorrectRate * prevStats.last10Incorrect;
                         avgTimeToRespond += timeoutRate * prevStats.last10Timeout;
@@ -74,7 +72,7 @@ export class GameComponent {
                 }
 
                 this.timerLeft = this.timerFull;
-                this.timer = this.kickTimer();
+                this.kickTimer();
                 
                 break;
             }
@@ -91,10 +89,11 @@ export class GameComponent {
     }
 
     kickTimer = () => {
-        return setInterval(() => {
+        this.timer = setInterval(() => {
             this.timerLeft -= 1;
             if (this.timerLeft < 0) {
                 this.sylSrv.checkQuestion();
+                clearInterval(this.timer);
             }
         }, 1000);
     }

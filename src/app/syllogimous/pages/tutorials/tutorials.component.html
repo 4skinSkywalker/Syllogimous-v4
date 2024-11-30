@@ -1,60 +1,60 @@
 <app-card>
-    <div class="px-2 pb-2" body>
+    <div body>
         <div class="text-center" *ngIf="!questions.length">
             <h3 class="mb-3">Play to discover question types</h3>
             <button class="btn btn-lg btn-primary" (click)="sylSrv.start()">Press to Play</button>
         </div>
         
         <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" *ngIf="questions.length">
-            <ngb-panel title="Analogy" *ngIf="seenQs['Analogy']">
+            <ngb-panel title="Analogy">
                 <ng-template ngbPanelContent>
                     <app-tutorial-analogy></app-tutorial-analogy>
                 </ng-template>
             </ngb-panel>
         
-            <ngb-panel title="Binary" *ngIf="seenQs['Binary']">
+            <ngb-panel title="Binary">
                 <ng-template ngbPanelContent>
                     <app-tutorial-binary></app-tutorial-binary>
                 </ng-template>
             </ngb-panel>
         
-            <ngb-panel title="Comparison Chronological" *ngIf="seenQs['Comparison Chronological']">
+            <ngb-panel title="Comparison Chronological">
                 <ng-template ngbPanelContent>
                     <app-tutorial-comparison-chronological></app-tutorial-comparison-chronological>
                 </ng-template>
             </ngb-panel>
         
-            <ngb-panel title="Comparison Numerical" *ngIf="seenQs['Comparison Numerical']">
+            <ngb-panel title="Comparison Numerical">
                 <ng-template ngbPanelContent>
                     <app-tutorial-comparison-numerical></app-tutorial-comparison-numerical>
                 </ng-template>
             </ngb-panel>
         
-            <ngb-panel title="Direction" *ngIf="seenQs['Direction']">
+            <ngb-panel title="Direction">
                 <ng-template ngbPanelContent>
                     <app-tutorial-direction></app-tutorial-direction>
                 </ng-template>
             </ngb-panel>
         
-            <ngb-panel title="Direction 3D" *ngIf="seenQs['Direction 3D']">
+            <ngb-panel title="Direction 3D">
                 <ng-template ngbPanelContent>
                     <app-tutorial-direction3D></app-tutorial-direction3D>
                 </ng-template>
             </ngb-panel>
         
-            <ngb-panel title="Direction 4D" *ngIf="seenQs['Direction 4D']">
+            <ngb-panel title="Direction 4D">
                 <ng-template ngbPanelContent>
                     <app-tutorial-direction4D></app-tutorial-direction4D>
                 </ng-template>
             </ngb-panel>
         
-            <ngb-panel title="Distinction" *ngIf="seenQs['Distinction']">
+            <ngb-panel title="Distinction">
                 <ng-template ngbPanelContent>
                     <app-tutorial-distinction></app-tutorial-distinction>
                 </ng-template>
             </ngb-panel>
         
-            <ngb-panel title="Syllogism" *ngIf="seenQs['Syllogism']">
+            <ngb-panel title="Syllogism">
                 <ng-template ngbPanelContent>
                     <app-tutorial-syllogism></app-tutorial-syllogism>
                 </ng-template>
