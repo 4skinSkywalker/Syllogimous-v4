@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { EnumQuestionType, Question } from "../models/question.models";
 import { SyllogimousService } from "./syllogimous.service";
 import { jsonCopy } from "src/app/utils/json";
 import { TypeBasedStats } from "../models/stats.models";
@@ -8,36 +7,27 @@ import { TypeBasedStats } from "../models/stats.models";
     providedIn: "root"
 })
 export class StatsService {
-    questions: Question[] = [];
-    types: EnumQuestionType[] = [];
-    typeBasedStats = new TypeBasedStats();
-
     constructor(
         public sylSrv: SyllogimousService
     ) { }
 
-    ngOnInit() {
-        this.typeBasedStats = this.calcStats();
-    }
-
     calcStats = (timerType?: "0" | "1" | "2") => {
-        this.questions = this.sylSrv.questionsFromLS;
-        this.types = [...new Set(this.questions.map(q => q.type))];
+        const questions = this.sylSrv.questionsFromLS;
+        const types = [...new Set(questions.map(q => q.type))];
         const typeBasedStats = new TypeBasedStats();
 
-        for (const type of this.types) {
+        for (const type of types) {
             const tbs = typeBasedStats[type];
-            const questions = this.questions.filter(q =>
+            const questionsByType = questions.filter(q =>
                 q.type === type && (timerType == null || q.timerTypeOnAnswer === timerType)
             );
             
             tbs.type = type;
             tbs.completed = questions.length;
-            tbs.accuracy = questions.filter(q => q.userAnswer === q.isValid).length / (questions.length || 1);
+            tbs.accuracy = questionsByType.filter(q => q.userAnswer === q.isValid).length / (questions.length || 1);
 
-            for (let i = 0; i < questions.length; i++) {
-                const q = questions[i];
-                const ps = ((q.premises.length < 6) ? String(q.premises.length) : "6+") as "1" | "2" | "3" | "4" | "5" | "6+";
+            for (const q of questionsByType) {
+                const ps = ((q.premises.length < 6) ? String(q.premises.length) : "6+") as "2" | "3" | "4" | "5" | "6+";
     
                 const dt = q.answeredAt - q.createdAt;
     
@@ -86,8 +76,8 @@ export class StatsService {
             };
         }
 
-        console.log("stats", { types: this.types, typeBasedStats });
+        console.log("stats", { types, typeBasedStats });
 
-        return jsonCopy(typeBasedStats);
+        return { types, questions, typeBasedStats: jsonCopy(typeBasedStats) as TypeBasedStats};
     }
 }

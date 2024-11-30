@@ -31,7 +31,6 @@ export class TypeBasedStatsInner {
     completed: number;
     accuracy: number;
     stats: {
-        "1": TypeBasedStatsInner2;
         "2": TypeBasedStatsInner2;
         "3": TypeBasedStatsInner2;
         "4": TypeBasedStatsInner2;
@@ -44,7 +43,6 @@ export class TypeBasedStatsInner {
         this.completed = 0;
         this.accuracy = 0;
         this.stats = {
-            "1": new TypeBasedStatsInner2(),
             "2": new TypeBasedStatsInner2(),
             "3": new TypeBasedStatsInner2(),
             "4": new TypeBasedStatsInner2(),

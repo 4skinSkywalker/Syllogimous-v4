@@ -45,11 +45,12 @@ export class GameComponent {
 
                 const questionType = this.sylSrv.question.type;
                 const questionPremises = this.sylSrv.question.premises.length;
-                const typeBasedStats = this.statsService.calcStats(this.timerType)[questionType];
+                const { typeBasedStats } = this.statsService.calcStats(this.timerType);
+                const tbs = typeBasedStats[questionType];
 
-                if (typeBasedStats?.stats) {
-                    const prevStats = typeBasedStats.stats[questionPremises - 1];
-                    const currStats = typeBasedStats.stats[questionPremises];
+                if (tbs?.stats) {
+                    const prevStats = (tbs.stats as any)[questionPremises - 1];
+                    const currStats = (tbs.stats as any)[questionPremises];
 
                     let avgTimeToRespond = this.timerFull;
                     if (currStats && currStats.count > 2) {
