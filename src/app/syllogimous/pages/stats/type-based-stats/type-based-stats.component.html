@@ -32,8 +32,8 @@
                                     <div>{{
                                         ($any(typeBasedStats[type].stats)[ps]
                                             ? ($any(typeBasedStats[type].stats)[ps].sum / ((1000 * $any(typeBasedStats[type].stats)[ps].count)) || 0)
-                                            : 0)
-                                        | number:".1-1"
+                                            : 0
+                                        ) | number:".1-1"
                                     }} s</div>
                                 </li>
                         

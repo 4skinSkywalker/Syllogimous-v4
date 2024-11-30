@@ -16,17 +16,17 @@ export class TimeBasedStatsComponent {
     avgAnswer = 0;
     fastestAnswer = 0;
     slowestAnswer = 0;
-    timeBasedStats: Record<string, any> = {};
+    timeBasedStats: Record<string, any>; // TODO: This should be typed
 
     constructor(
         private sylSrv: SyllogimousService
-    ) {}
-
-    ngOnInit() {
+    ) {
         this.questions = this.sylSrv.questionsFromLS;
+        this.timeBasedStats = {};
 
         for (const q of this.questions) {
-            const ps = q.premises.length;
+            const ps = ((q.premises.length < 6) ? String(q.premises.length) : "6+") as "2" | "3" | "4" | "5" | "6+";
+
             this.timeBasedStats[ps] = this.timeBasedStats[ps] || {
                 sum: 0,
                 count: 0,
@@ -56,5 +56,7 @@ export class TimeBasedStatsComponent {
                 }
             }
         }
+
+        console.log("timeBasedStats", this.timeBasedStats);
     }
 }
