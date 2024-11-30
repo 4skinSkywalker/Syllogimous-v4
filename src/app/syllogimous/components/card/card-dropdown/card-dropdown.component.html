@@ -1,0 +1,40 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Are you sure?</h4>
+        <button class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        All your progresses will be deleted.<br>Are you sure you want to proceed with the reset?
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-outline-secondary" (click)="modal.dismiss()">Cancel</button>
+        <button class="btn btn-danger" (click)="modal.close()">Continue</button>
+    </div>
+</ng-template>
+
+<div>
+    <div ngbDropdown container="body">
+        <button class="btn" ngbDropdownToggle>More</button>
+        <div ngbDropdownMenu>
+            <small class="text-muted ms-3">Pages</small>
+            <button ngbDropdownItem (click)="router.navigate([EnumScreens.Start])">Start</button>
+            <button ngbDropdownItem (click)="router.navigate([EnumScreens.Intro])">Intro</button>
+            <button ngbDropdownItem (click)="router.navigate([EnumScreens.Stats])">Stats</button>
+            <button ngbDropdownItem (click)="router.navigate([EnumScreens.History])">History</button>
+            <button ngbDropdownItem (click)="router.navigate([EnumScreens.Tutorials])">Tutorials</button>
+            <button ngbDropdownItem (click)="router.navigate([EnumScreens.PlaygroundMode])">Playground Mode</button>
+            <div class="dropdown-divider"></div>
+            <small class="text-muted ms-3">Functions</small>
+            <button ngbDropdownItem (click)="toggleDarkmode()">
+                <ng-container *ngIf="getDarkmode(); else darkmode">
+                    <i class="bi bi-sun"></i> Lightmode
+                </ng-container>
+                <ng-template #darkmode>
+                    <i class="bi bi-moon"></i> Darkmode
+                </ng-template>
+            </button>
+            <button ngbDropdownItem (click)="resetGame(content)"><i class="bi bi-trash3"></i> Reset Game</button>
+            <a ngbDropdownItem href="https://www.linkedin.com/in/f3d3r1c07r0774/" target="_blank">About the creator</a>
+        </div>
+    </div>
+</div>

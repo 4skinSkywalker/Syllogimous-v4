@@ -39,14 +39,10 @@
             </li>
         </ul>
 
-        <div class="d-flex flex-between gap-2">
-            <input type="radio" id="timer-choice-0" name="timer-kind" (click)="setTimer('0')"> <label for="timer-choice-0" ngbTooltip="No timer at all">No timer</label>
-            <input type="radio" id="timer-choice-1" name="timer-kind" (click)="setTimer('1')"> <label for="timer-choice-1" ngbTooltip="Choose your own timers">Custom timer</label>
-            <input type="radio" id="timer-choice-2" name="timer-kind" (click)="setTimer('2')"> <label for="timer-choice-2" ngbTooltip="Timer adapts as you play">Adaptive timer</label>
-        </div>
+        <app-timer-choose></app-timer-choose>
     </div>
 
     <div footer class="text-center">
-        <button class="btn btn-lg btn-primary" (click)="sylSrv.start()">Press to Play</button>
+        <button class="btn btn-lg btn-primary" (click)="sylSrv.playArcadeMode()">Press to Play</button>
     </div>
 </app-card>

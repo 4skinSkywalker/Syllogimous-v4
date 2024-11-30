@@ -1,16 +1,20 @@
 <div class="d-grid gap-3">
-    <app-input
-        *ngFor="let f of _fields"
-        [label]="f.label"
-        [name]="f.field"
-        [helper]="f.helper || ''"
-        [type]="f.type!"
-        [minlength]="f.minlength"
-        [maxlength]="f.maxlength"
-        [min]="f.min"
-        [max]="f.max"
-        [step]="f.step"
-        [options]="f.options || []"
-        [ngControl]="f.ngControl!"
-    />
+    <ng-container *ngFor="let f of _fields">
+        <div *ngIf="f.filler; else inputField" [innerHTML]="f.filler"></div>
+        <ng-template #inputField>
+            <app-input
+                [label]="f.label"
+                [name]="f.field"
+                [helper]="f.helper || ''"
+                [type]="f.type!"
+                [minlength]="f.minlength"
+                [maxlength]="f.maxlength"
+                [min]="f.min"
+                [max]="f.max"
+                [step]="f.step"
+                [options]="f.options || []"
+                [ngControl]="f.ngControl!"
+            />
+        </ng-template>
+    </ng-container>
 </div>

@@ -1,6 +1,6 @@
 import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, FORMS, NOUNS, STRINGS, TIME_NAMES, VALID_RULES } from "../constants/engine.constants";
 import { EnumQuestionType, Question } from "../models/question.models";
-import { ISettings, Picked } from "../models/settings.models";
+import { Settings, Picked } from "../models/settings.models";
 
 export function genBinKey(booleans: boolean[]) {
     return booleans.map(value => (value ? '1' : '0')).join('');
@@ -117,11 +117,11 @@ export function isPremiseLikeConclusion(premises: string[], conclusion: string) 
     return false;
 }
 
-export function getSymbols(settings: ISettings) {
+export function getSymbols(settings: Settings) {
     return settings.enableMeaningfulWords ? [...NOUNS] : [...STRINGS];
 }
 
-export function getRandomSymbols(settings: ISettings, length: number) {
+export function getRandomSymbols(settings: Settings, length: number) {
     const symbols = getSymbols(settings);
     const seen = new Set();
     return Array(length).fill(0)
@@ -135,7 +135,7 @@ export function getRandomSymbols(settings: ISettings, length: number) {
             });
 }
 
-export function getSyllogism(settings: ISettings, s: string, p: string, m: string, rule: string) {
+export function getSyllogism(settings: Settings, s: string, p: string, m: string, rule: string) {
     
     const _forms = (!settings.enableNegation)
         ? FORMS[0]
@@ -179,7 +179,7 @@ export function getSyllogism(settings: ISettings, s: string, p: string, m: strin
     return [major, minor, conclusion];
 }
 
-export function getMetaReplacer(settings: ISettings, choosenPair: Picked<string>, relations: string[], negations: boolean[]) {
+export function getMetaReplacer(settings: Settings, choosenPair: Picked<string>, relations: string[], negations: boolean[]) {
     const choosenSubjects = [...choosenPair.picked[0].matchAll(/<span class="subject">(.*?)<\/span>/g)];
     const [a, b] = choosenSubjects.map(m => m[1]);
 
@@ -189,7 +189,7 @@ export function getMetaReplacer(settings: ISettings, choosenPair: Picked<string>
     return `$1 ${relation} (<span class="subject">${a}</span> to <span class="subject">${b}</span>) to `;
 }
 
-export function getRelation(settings: ISettings, type: EnumQuestionType, isPositive: boolean) {
+export function getRelation(settings: Settings, type: EnumQuestionType, isPositive: boolean) {
     let positive = "";
     let negative = "";
 
@@ -222,7 +222,7 @@ export function getRelation(settings: ISettings, type: EnumQuestionType, isPosit
     return relation;
 }
 
-export function makeMetaRelations(settings: ISettings, question: Question, length: number) {
+export function makeMetaRelations(settings: Settings, question: Question, length: number) {
     if (settings.enableMeta && coinFlip()) {
         question.metaRelations++;
         const numOfMetaRelations = 1 + Math.floor(Math.random() * Math.floor((length - 1) / 2));

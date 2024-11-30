@@ -8,6 +8,7 @@ import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ModalLevelChangeComponent } from "../components/modal-level-change/modal-level-change.component";
 import { Router } from "@angular/router";
+import { Settings } from "../models/settings.models";
 
 @Injectable({
     providedIn: "root"
@@ -16,6 +17,7 @@ export class SyllogimousService {
     _score = 0;
     history: Question[] = [];
     question = this.createSyllogism(2);
+    playgroundSettings?: Settings;
 
     get score() {
         return this._score;
@@ -37,7 +39,7 @@ export class SyllogimousService {
     }
 
     get settings() {
-        return TIER_SETTINGS[this.tier];
+        return this.playgroundSettings || TIER_SETTINGS[this.tier]; // Playground settings override normal settings
     }
 
     get questionsFromLS() {
@@ -55,12 +57,6 @@ export class SyllogimousService {
     ) {
         this.loadScore();
         this.loadHistory();
-
-        /*if (!localStorage.getItem(LS_DONT_SHOW + EnumScreens.Intro)) {
-            this.router.navigate([EnumScreens.Intro]);
-        } else {
-            this.router.navigate([EnumScreens.Start]);
-        }*/
     }
 
     loadScore() {
@@ -83,33 +79,39 @@ export class SyllogimousService {
     }
 
     createQuestion() {
+        const settings = this.settings;
+
         const choices = [];
-        if (this.settings.distinction[0]) {
-            choices.push(() => this.createDistinction(this.settings.distinction[1]));
+        if (settings.distinction[0]) {
+            choices.push(() => this.createDistinction(settings.distinction[1]));
         }
-        if (this.settings.comparisonNumerical[0]) {
-            choices.push(() => this.createComparison(this.settings.comparisonNumerical[1], EnumQuestionType.ComparisonNumerical));
+        if (settings.comparisonNumerical[0]) {
+            choices.push(() => this.createComparison(settings.comparisonNumerical[1], EnumQuestionType.ComparisonNumerical));
         }
-        if (this.settings.comparisonChronological[0]) {
-            choices.push(() => this.createComparison(this.settings.comparisonChronological[1], EnumQuestionType.ComparisonChronological));
+        if (settings.comparisonChronological[0]) {
+            choices.push(() => this.createComparison(settings.comparisonChronological[1], EnumQuestionType.ComparisonChronological));
         }
-        if (this.settings.syllogism[0]) {
-            choices.push(() => this.createSyllogism(this.settings.syllogism[1]));
+        if (settings.syllogism[0]) {
+            choices.push(() => this.createSyllogism(settings.syllogism[1]));
         }
-        if (this.settings.direction[0]) {
-            choices.push(() => this.createDirection(this.settings.direction[1]));
+        if (settings.direction[0]) {
+            choices.push(() => this.createDirection(settings.direction[1]));
         }
-        if (this.settings.direction3D[0]) {
-            choices.push(() => this.createDirection3D(this.settings.direction3D[1]));
+        if (settings.direction3D[0]) {
+            choices.push(() => this.createDirection3D(settings.direction3D[1]));
         }
-        if (this.settings.direction4D[0]) {
-            choices.push(() => this.createDirection4D(this.settings.direction4D[1]));
+        if (settings.direction4D[0]) {
+            choices.push(() => this.createDirection4D(settings.direction4D[1]));
         }
-        if (this.settings.analogy[0]) {
-            choices.push(() => this.createAnalogy(this.settings.analogy[1]));
+        if (settings.analogy[0]) {
+            choices.push(() => this.createAnalogy(settings.analogy[1]));
         }
-        if (this.settings.binary[0]) {
-            choices.push(() => this.createBinary(this.settings.binary[1]));
+        if (settings.binary[0]) {
+            choices.push(() => this.createBinary(settings.binary[1]));
+        }
+
+        if (!choices.length) {
+            return;
         }
 
         const randomQuestion = pickUniqueItems(choices, 1).picked[0]();
@@ -124,13 +126,21 @@ export class SyllogimousService {
         this.router.navigate([EnumScreens.Start]);
     }
 
-    start() {
-        this.createQuestion();
-        if (!localStorage.getItem(LS_DONT_SHOW + this.question.type)) {
-            this.router.navigate([EnumScreens.Tutorial, this.question.type]);
-        } else {
+    play() {
+        if (this.playgroundSettings) {
             this.router.navigate([EnumScreens.Game]);
+        } else {
+            if (!localStorage.getItem(LS_DONT_SHOW + this.question.type)) {
+                this.router.navigate([EnumScreens.Tutorial, this.question.type]);
+            } else {
+                this.router.navigate([EnumScreens.Game]);
+            }
         }
+    }
+
+    playArcadeMode() {
+        this.playgroundSettings = undefined;
+        this.play();
     }
 
     skipTutorial(dontShowAnymore: boolean) {
@@ -183,12 +193,13 @@ export class SyllogimousService {
 
         length++;
     
+        const settings = this.settings;
         const question = new Question(EnumQuestionType.Syllogism);
         question.isValid = coinFlip();
 
         do {
             question.rule = question.isValid ? getRandomRuleValid() : getRandomRuleInvalid();
-            question.bucket = getRandomSymbols(this.settings, length);
+            question.bucket = getRandomSymbols(settings, length);
             question.premises = [];
 
             [
@@ -196,7 +207,7 @@ export class SyllogimousService {
                 question.premises[1],
                 question.conclusion
             ] = getSyllogism(
-                this.settings,
+                settings,
                 question.bucket[0],
                 question.bucket[1],
                 question.bucket[2],
@@ -208,7 +219,7 @@ export class SyllogimousService {
             const rnd = Math.floor(Math.random() * (i - 1));
             const flip = coinFlip();
             const [ p, m ] = flip ? [question.bucket[i], question.bucket[rnd]] : [question.bucket[rnd], question.bucket[i]];
-            question.premises.push(getSyllogism(this.settings, "#####", p, m, getRandomRuleInvalid())[0]);
+            question.premises.push(getSyllogism(settings, "#####", p, m, getRandomRuleInvalid())[0]);
         }
     
         shuffle(question.premises);
@@ -221,7 +232,8 @@ export class SyllogimousService {
 
         length++;
 
-        const symbols = getRandomSymbols(this.settings, length);
+        const settings = this.settings;
+        const symbols = getRandomSymbols(settings, length);
         const question = new Question(EnumQuestionType.Distinction);
 
         do {
@@ -240,7 +252,7 @@ export class SyllogimousService {
                 curr = symbols.splice(rnd, 1);
 
                 const isSameAs = coinFlip();
-                const relation = getRelation(this.settings, EnumQuestionType.Distinction, isSameAs);
+                const relation = getRelation(settings, EnumQuestionType.Distinction, isSameAs);
 
                 question.premises.push(`<span class="subject">${prev}</span> is ${relation} <span class="subject">${curr}</span>`);
 
@@ -253,10 +265,10 @@ export class SyllogimousService {
                 prev = curr;
             }
 
-            makeMetaRelations(this.settings, question, length);
+            makeMetaRelations(settings, question, length);
 
             const isSameAs = coinFlip();
-            const relation = getRelation(this.settings, EnumQuestionType.Distinction, isSameAs);
+            const relation = getRelation(settings, EnumQuestionType.Distinction, isSameAs);
 
             question.conclusion = `<span class="subject">${first}</span> is ${relation} <span class="subject">${curr}</span>`;
             question.isValid = isSameAs
@@ -274,10 +286,11 @@ export class SyllogimousService {
 
         length++;
 
+        const settings = this.settings;
         const question = new Question(type);
 
         do {
-            question.bucket = getRandomSymbols(this.settings, length);
+            question.bucket = getRandomSymbols(settings, length);
             question.premises = [];
             const sign = [-1, 1][Math.floor(Math.random() * 2)];
 
@@ -289,12 +302,12 @@ export class SyllogimousService {
 
                 const isMoreOrAfter = coinFlip();
                 const [first, last] = ((sign === 1) === isMoreOrAfter) ? [next, curr] : [curr, next];
-                const relation = getRelation(this.settings, type, isMoreOrAfter);
+                const relation = getRelation(settings, type, isMoreOrAfter);
 
                 question.premises.push(`<span class="subject">${first}</span> is ${relation} <span class="subject">${last}</span>`);
             }
 
-            makeMetaRelations(this.settings, question, length);
+            makeMetaRelations(settings, question, length);
 
             const a = Math.floor(Math.random() * question.bucket.length);
             let b = Math.floor(Math.random() * question.bucket.length);
@@ -303,7 +316,7 @@ export class SyllogimousService {
             }
 
             const isMoreOrAfter = coinFlip();
-            const relation = getRelation(this.settings, type, isMoreOrAfter);
+            const relation = getRelation(settings, type, isMoreOrAfter);
 
             question.conclusion = `<span class="subject">${question.bucket[a]}</span> is ${relation} <span class="subject">${question.bucket[b]}</span>`;
             question.isValid = isMoreOrAfter
@@ -320,8 +333,9 @@ export class SyllogimousService {
         if (length < 2) throw Error("Needs at least 2 premises.");
         
         length++;
-        
-        const symbols = getSymbols(this.settings);
+
+        const settings = this.settings;
+        const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, length).picked;
         const question = new Question(EnumQuestionType.Direction);
 
@@ -346,7 +360,7 @@ export class SyllogimousService {
                     wordCoordMap[words[i]][1] + dirCoord[1]  // y
                 ];
 
-                if (this.settings.enableNegation && coinFlip()) {
+                if (settings.enableNegation && coinFlip()) {
                     question.negations++;
                     question.premises.push(`<span class="subject">${words[i+1]}</span> is at <span class="is-negated">${(DIRECTION_NAMES_INVERSE as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
                 } else {
@@ -362,7 +376,7 @@ export class SyllogimousService {
         const oppositeDirection = findDirection(wordCoordMap[words[length-1]], wordCoordMap[words[0]]);
         const direction = question.isValid ? conclusionDirection : oppositeDirection;
 
-        if (this.settings.enableNegation && coinFlip()) {
+        if (settings.enableNegation && coinFlip()) {
             question.negations++;
             question.conclusion = `<span class="subject">${words[0]}</span> is at <span class="is-negated">${(DIRECTION_NAMES_INVERSE as any)[direction]}</span> of <span class="subject">${words[words.length-1]}</span>`;
         } else {
@@ -379,7 +393,8 @@ export class SyllogimousService {
 
         length++;
     
-        const symbols = getSymbols(this.settings);
+        const settings = this.settings;
+        const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, length).picked;
         const question = new Question(EnumQuestionType.Direction3D);
     
@@ -405,7 +420,7 @@ export class SyllogimousService {
                     wordCoordMap[words[i]][2] + dirCoord[2], // z
                 ];
 
-                if (this.settings.enableNegation && coinFlip()) {
+                if (settings.enableNegation && coinFlip()) {
                     question.negations++;
                     question.premises.push(`<span class="subject">${words[i+1]}</span> is <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
                 } else {
@@ -421,7 +436,7 @@ export class SyllogimousService {
         const oppositeDirection = findDirection3D(wordCoordMap[words[length-1]], wordCoordMap[words[0]]);
         const direction = question.isValid ? conclusionDirection : oppositeDirection;
 
-        if (this.settings.enableNegation && coinFlip()) {
+        if (settings.enableNegation && coinFlip()) {
             question.negations++;
             question.conclusion = `<span class="subject">${words[0]}</span> is <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[direction]}</span> of <span class="subject">${words[words.length-1]}</span>`;
         } else {
@@ -438,7 +453,8 @@ export class SyllogimousService {
 
         length++;
     
-        const symbols = getSymbols(this.settings);
+        const settings = this.settings;
+        const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, length).picked;
         const question = new Question(EnumQuestionType.Direction4D);
     
@@ -467,7 +483,7 @@ export class SyllogimousService {
                     wordCoordMap[words[i]][3] + timeIndex,   // time
                 ];
 
-                if (this.settings.enableNegation && coinFlip()) {
+                if (settings.enableNegation && coinFlip()) {
                     question.negations++;
                     question.premises.push(`<span class="subject">${words[i+1]}</span> ${timeName} <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
                 } else {
@@ -483,7 +499,7 @@ export class SyllogimousService {
         const oppositeDirection = findDirection4D(wordCoordMap[words[length-1]], wordCoordMap[words[0]]);
         const direction = question.isValid ? conclusionDirection : oppositeDirection;
 
-        if (this.settings.enableNegation && coinFlip()) {
+        if (settings.enableNegation && coinFlip()) {
             question.negations++;
             question.conclusion = `<span class="subject">${words[0]}</span> ${direction.temporal} <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[direction.spatial]}</span> of <span class="subject">${words[words.length-1]}</span>`;
         } else {
@@ -498,13 +514,14 @@ export class SyllogimousService {
     createAnalogy(length: number) {
         if (length < 3) throw Error("Needs at least 3 premises.");
 
+        const settings = this.settings;
         const analogyEnables = [
-            this.settings.distinction[0],
-            this.settings.comparisonNumerical[0],
-            this.settings.comparisonChronological[0],
-            this.settings.direction[0],
-            this.settings.direction3D[0],
-            this.settings.direction4D[0]
+            settings.distinction[0],
+            settings.comparisonNumerical[0],
+            settings.comparisonChronological[0],
+            settings.direction[0],
+            settings.direction3D[0],
+            settings.direction4D[0]
         ];
         if (analogyEnables.reduce((a, c) => a + +c, 0) < 1) {
             throw new Error("Needs at least one of" + analogyEnables.join(", "));
@@ -512,22 +529,22 @@ export class SyllogimousService {
 
         const choiceIndices = [];
     
-        if (this.settings.distinction[0]) {
+        if (settings.distinction[0]) {
             choiceIndices.push(0);
         }
-        if (this.settings.comparisonNumerical[0]) {
+        if (settings.comparisonNumerical[0]) {
             choiceIndices.push(1);
         }
-        if (this.settings.comparisonChronological[0]) {
+        if (settings.comparisonChronological[0]) {
             choiceIndices.push(2);
         }
-        if (this.settings.direction[0]) {
+        if (settings.direction[0]) {
             choiceIndices.push(3);
         }
-        if (this.settings.direction3D[0]) {
+        if (settings.direction3D[0]) {
             choiceIndices.push(4);
         }
-        if (this.settings.direction4D[0]) {
+        if (settings.direction4D[0]) {
             choiceIndices.push(5);
         }
     
@@ -627,7 +644,7 @@ export class SyllogimousService {
         const isSameRelation = coinFlip();
         question.isValid = isSameRelation ? isValidSame : !isValidSame;
 
-        if (this.settings.enableNegation && coinFlip()) {
+        if (settings.enableNegation && coinFlip()) {
             question.negations++;
             if (isSameRelation) {
                 if (choiceIndex < 1) {
@@ -666,14 +683,15 @@ export class SyllogimousService {
     createBinary(length: number) {
         if (length < 4) throw Error("Needs at least 4 premises.");
 
+        const settings = this.settings;
         const binaryEnables = [
-            this.settings.distinction[0],
-            this.settings.comparisonNumerical[0],
-            this.settings.comparisonChronological[0],
-            this.settings.direction[0],
-            this.settings.direction3D[0],
-            this.settings.direction4D[0],
-            this.settings.syllogism[0]
+            settings.distinction[0],
+            settings.comparisonNumerical[0],
+            settings.comparisonChronological[0],
+            settings.direction[0],
+            settings.direction3D[0],
+            settings.direction4D[0],
+            settings.syllogism[0]
         ];
         if (binaryEnables.reduce((a, c) => a + +c, 0) < 1) {
             throw new Error("Needs at least one of" + binaryEnables.join(", "));
@@ -684,32 +702,32 @@ export class SyllogimousService {
         const operandTemplates = [];
         const pool = [];
     
-        if (this.settings.enableAnd) {
+        if (settings.enableAnd) {
             operands.push("a&&b");
             operandNames.push("AND");
             operandTemplates.push('$a <div class="is-connector">and</div> $b');
         }
-        if (this.settings.enableNand) {
+        if (settings.enableNand) {
             operands.push("!(a&&b)");
             operandNames.push("NAND");
             operandTemplates.push('$a <div class="is-connector">and</div> $b <div class="is-connector">are not both true</div>');
         }
-        if (this.settings.enableOr) {
+        if (settings.enableOr) {
             operands.push("a||b");
             operandNames.push("OR");
             operandTemplates.push('$a <div class="is-connector">or</div> $b');
         }
-        if (this.settings.enableNor) {
+        if (settings.enableNor) {
             operands.push("!(a||b)");
             operandNames.push("NOR");
             operandTemplates.push('$a <div class="is-connector">and</div> $b <div class="is-connector">are both false</div>');
         }
-        if (this.settings.enableXor) {
+        if (settings.enableXor) {
             operands.push("!(a&&b)&&(a||b)");
             operandNames.push("XOR");
             operandTemplates.push('$a <div class="is-connector">differs from</div> $b');
         }
-        if (this.settings.enableXnor) {
+        if (settings.enableXnor) {
             operands.push("!(!(a&&b)&&(a||b))");
             operandNames.push("XNOR");
             operandTemplates.push('$a <div class="is-connector">is equal to</div> $b');
@@ -717,37 +735,37 @@ export class SyllogimousService {
     
         if (!operands.length) return;
     
-        if (this.settings.syllogism[0]) {
+        if (settings.syllogism[0]) {
             pool.push((length: number) =>
                 this.createSyllogism(length)
             );
         }
-        if (this.settings.distinction[0]) {
+        if (settings.distinction[0]) {
             pool.push((length: number) =>
                 this.createDistinction(length)
             );
         }
-        if (this.settings.comparisonNumerical[0]) {
+        if (settings.comparisonNumerical[0]) {
             pool.push((length: number) =>
                 this.createComparison(length, EnumQuestionType.ComparisonNumerical)
             );
         }
-        if (this.settings.comparisonChronological[0]) {
+        if (settings.comparisonChronological[0]) {
             pool.push((length: number) =>
                 this.createComparison(length, EnumQuestionType.ComparisonChronological)
             );
         }
-        if (this.settings.direction[0]) {
+        if (settings.direction[0]) {
             pool.push((length: number) =>
                 this.createDirection(length)
             );
         }
-        if (this.settings.direction3D[0]) {
+        if (settings.direction3D[0]) {
             pool.push((length: number) =>
                 this.createDirection3D(length)
             );
         }
-        if (this.settings.direction4D[0]) {
+        if (settings.direction4D[0]) {
             pool.push((length: number) =>
                 this.createDirection4D(length)
             );

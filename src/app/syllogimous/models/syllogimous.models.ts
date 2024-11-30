@@ -7,6 +7,7 @@ export enum EnumScreens {
     History = "History",
     Tutorials = "Tutorials",
     Stats = "Stats",
+    PlaygroundMode = "Playground Mode",
 }
 
 export enum EnumTiers {

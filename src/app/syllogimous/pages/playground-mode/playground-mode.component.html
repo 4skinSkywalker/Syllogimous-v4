@@ -1,0 +1,41 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Error</h4>
+        <button class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        A validation error occurred: {{ validationError }}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" (click)="modal.dismiss()">OK</button>
+    </div>
+</ng-template>
+
+<app-card>
+    <div class="p-3" body style="max-width: 500px;">
+        <p class="text-center mx-auto lead mb-4" style="max-width: 400px;">Playground Mode is a free-form mode where you can choose how to play.<br>Have fun!</p>
+        
+        <small class="text-muted d-block mb-3">Questions & Premises</small>
+        <app-dynamic-form class="d-block mb-4" [fields]="fields" (formValueChanged)="formData = $event" [emitInitial]="true"></app-dynamic-form>
+        
+        <small class="text-muted d-block mb-3">Timers</small>
+        <app-timer-choose></app-timer-choose>
+    </div>
+
+    <div footer class="playcard-toolbar">
+        <div>
+            <button
+                class="btn btn-outline-primary"
+                (click)="router.navigate([ EnumScreens.Start ])"
+            >
+                <i class="bi bi-arrow-left"></i> Go Back
+            </button>
+        </div>
+        <div>
+            <button
+                class="btn btn-primary"
+                (click)="play(content)"
+            >Let's Play!</button>
+        </div>
+    </div>
+</app-card>

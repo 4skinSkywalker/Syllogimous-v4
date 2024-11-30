@@ -4,6 +4,7 @@ import { Subject, takeUntil } from "rxjs";
 import { jsonCopy } from "src/app/utils/json";
 
 export interface IDynamicField {
+    filler?: string;
     field: string;
     label: string;
     helper?: string;
@@ -55,6 +56,10 @@ export class DynamicFormComponent implements OnChanges, OnDestroy {
 
         const formGroup: Record<string, FormControl> = {};
         for (const f of this._fields) {
+            if ("filler" in f) {
+                continue;
+            }
+
             const formControl = new FormControl(f.value);
             f.ngControl = formControl;
             formGroup[f.field] = formControl;

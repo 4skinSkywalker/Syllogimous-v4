@@ -30,6 +30,9 @@ import { TierStatsComponent } from './pages/stats/tier-stats/tier-stats.componen
 import { TimeBasedStatsComponent } from './pages/stats/time-based-stats/time-based-stats.component';
 import { TypeBasedStatsComponent } from './pages/stats/type-based-stats/type-based-stats.component';
 import { StatsExportService } from './services/stats-export.service';
+import { CardDropdownComponent } from './components/card/card-dropdown/card-dropdown.component';
+import { TimerChooseComponent } from './components/timer-choose/timer-choose.component';
+import { PlaygroundModeComponent } from './pages/playground-mode/playground-mode.component';
 
 const routes: Routes = [
   {
@@ -59,6 +62,10 @@ const routes: Routes = [
         ]
       },
       { path: EnumScreens.Stats, component: StatsComponent },
+      { 
+        path: EnumScreens.PlaygroundMode,
+        component: PlaygroundModeComponent,
+      }
     ]
   }
 ];
@@ -90,6 +97,9 @@ const routes: Routes = [
     TierStatsComponent,
     TimeBasedStatsComponent,
     TypeBasedStatsComponent,
+    CardDropdownComponent,
+    PlaygroundModeComponent,
+    TimerChooseComponent,
   ],
   imports: [
     CommonModule,
