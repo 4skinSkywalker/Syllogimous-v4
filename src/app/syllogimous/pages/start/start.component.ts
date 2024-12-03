@@ -4,6 +4,7 @@ import { TIER_SCORE_RANGES } from '../../constants/syllogimous.constants';
 import { Question } from '../../models/question.models';
 import { SyllogimousService } from '../../services/syllogimous.service';
 import { Router } from '@angular/router';
+import { formatTime } from 'src/app/utils/date';
 
 @Component({
     selector: 'app-start',
@@ -12,10 +13,11 @@ import { Router } from '@angular/router';
 })
 export class StartComponent {
     EnumScreens = EnumScreens;
+    formatTime = formatTime;  // Explicitly declare as class property
 
     TIER_SCORE_RANGES = TIER_SCORE_RANGES;
     tiers = Object.values(EnumTiers);
-    nextTier = EnumTiers.Savant;
+    nextTier: EnumTiers | string = EnumTiers.Savant;
     pointsRemaining = 0;
 
     questions: Question[] = [];
@@ -24,6 +26,7 @@ export class StartComponent {
     unansweredQs: Question[] = [];
     currentStreak: Question[] = [];
     longestStreak: Question[] = [];
+    timePlayedToday: number = 0;  // Explicitly declare as class property
 
     constructor(
         public sylSrv: SyllogimousService,
@@ -59,5 +62,11 @@ export class StartComponent {
             }
             streak.push(q);
         }
+
+        // Calculate time played today
+        const today = new Date().setHours(0, 0, 0, 0);
+        this.timePlayedToday = this.questions
+            .filter(q => new Date(q.createdAt).setHours(0, 0, 0, 0) === today)
+            .reduce((sum, q) => sum + (q.answeredAt - q.createdAt), 0);
     }
 }
