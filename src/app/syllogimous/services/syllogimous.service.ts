@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { EnumQuestionType, Question } from "../models/question.models";
-import { coinFlip, findDirection, findDirection3D, findDirection4D, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, makeMetaRelations, pickUniqueItems, shuffle } from "../utils/engine.utils";
+import { coinFlip, findDirection, findDirection3D, findDirection4D, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, makeMetaRelationsNew, pickUniqueItems, shuffle } from "../utils/engine.utils";
 import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_INVERSE, TIME_NAMES } from "../constants/engine.constants";
 import { EnumScreens, EnumTiers } from "../models/syllogimous.models";
 import { TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES, TIER_SETTINGS } from "../constants/syllogimous.constants";
@@ -57,6 +57,7 @@ export class SyllogimousService {
     ) {
         this.loadScore();
         this.loadHistory();
+        (window as any).syllogimous = this;
     }
 
     loadScore() {
@@ -265,8 +266,8 @@ export class SyllogimousService {
                 prev = curr;
             }
 
-            makeMetaRelations(settings, question, length);
-
+            makeMetaRelationsNew(settings, question);
+            
             const isSameAs = coinFlip();
             const relation = getRelation(settings, EnumQuestionType.Distinction, isSameAs);
 
@@ -307,7 +308,7 @@ export class SyllogimousService {
                 question.premises.push(`<span class="subject">${first}</span> is ${relation} <span class="subject">${last}</span>`);
             }
 
-            makeMetaRelations(settings, question, length);
+            makeMetaRelationsNew(settings, question);
 
             const a = Math.floor(Math.random() * question.bucket.length);
             let b = Math.floor(Math.random() * question.bucket.length);

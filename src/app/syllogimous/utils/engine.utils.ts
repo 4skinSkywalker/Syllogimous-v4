@@ -222,10 +222,10 @@ export function getRelation(settings: Settings, type: EnumQuestionType, isPositi
     return relation;
 }
 
-export function makeMetaRelations(settings: Settings, question: Question, length: number) {
+export function makeMetaRelationsOld(settings: Settings, question: Question, length: number) {
     if (settings.enableMeta && coinFlip()) {
-        question.metaRelations++;
         const numOfMetaRelations = 1 + Math.floor(Math.random() * Math.floor((length - 1) / 2));
+        question.metaRelations += numOfMetaRelations;
         let _premises = pickUniqueItems(question.premises, numOfMetaRelations * 2);
         question.premises = [ ..._premises.remaining ];
     
@@ -241,5 +241,65 @@ export function makeMetaRelations(settings: Settings, question: Question, length
     
             _premises = { picked: choosenPair.remaining, remaining: [] };
         }
+    }
+}
+
+export function makeMetaRelationsNew(settings: Settings, question: Question) {
+    // Substitute a variable number of premises with meta-relations
+    if (settings.enableMeta && coinFlip()) {
+        const numOfMetaRelationships = 1 + Math.floor(Math.random() * Math.floor((length - 1) / 2));
+        question.metaRelations += numOfMetaRelationships;
+        
+        let subjects: { value: number, subject: string }[] = [];
+        if (question.type === EnumQuestionType.Distinction) {
+            subjects = question.buckets.reduce((a, c, i) => [ ...a, ...c.map(b => ({ value: i, subject: b[0] })) ], [] as typeof subjects);        
+        } else {
+            subjects = question.bucket.map((c, i, a) => ({ value: (a.length - i), subject: c }), []);
+        }
+        
+        const { picked: pickedPremises, remaining: remainingPremises } = pickUniqueItems(question.premises, numOfMetaRelationships);
+        const pickedPremisesSubjects = pickedPremises.map(extractSubjects);
+        const remainingPremisesSubjects = remainingPremises.map(extractSubjects);
+        const bidirectionalRelationshipMap = remainingPremisesSubjects.reduce((acc, [a, b]) => (acc[a] = acc[a] || [], acc[a].push(b), acc[b] = acc[b] || [], acc[b].push(a), acc), {} as {[key: string]: string[]});
+        const newPremises = [];
+        for (const premiseSubjects of pickedPremisesSubjects) {
+            const [ a, b ] = premiseSubjects.map(ps => subjects.find(s => ps === s.subject)!);
+            const { picked } = pickUniqueItems(Object.entries(bidirectionalRelationshipMap), 1);
+            let _c = "";
+            let _d = "";
+            if (picked[0][1].length > 1) { // Indirect relation
+                _c = picked[0][1][0];
+                _d = picked[0][1][1];
+            } else {
+                _c = picked[0][0]; // Direct relation
+                _d = picked[0][1][0];
+            }
+            const c = subjects.find(s => s.subject === _c)!;
+            const d = subjects.find(s => s.subject === _d)!;
+            
+            let isSame = false;
+            if (question.type === EnumQuestionType.Distinction) {
+                isSame = (a.value === b.value) === (c.value === d.value);
+            } else { 
+                isSame = (a.value < b.value) === (c.value < d.value);
+            }
+
+            if (isSame) { // Same
+                if (settings.enableNegation && coinFlip()) {
+                    newPremises.push(`<span class="subject">${a.subject}</span> to <span class="subject">${b.subject}</span> has the <span class="is-negated">same</span> relation as <span class="subject">${c.subject}</span> to <span class="subject">${d.subject}</span>`);
+                } else {
+                    newPremises.push(`<span class="subject">${a.subject}</span> to <span class="subject">${b.subject}</span> has the same relation as <span class="subject">${c.subject}</span> to <span class="subject">${d.subject}</span>`);
+                }
+            } else { // Different
+                if (settings.enableNegation && coinFlip()) {
+                    newPremises.push(`<span class="subject">${a.subject}</span> to <span class="subject">${b.subject}</span> has a <span class="is-negated">different</span> relation as <span class="subject">${c.subject}</span> to <span class="subject">${d.subject}</span>`);
+                } else {
+                    newPremises.push(`<span class="subject">${a.subject}</span> to <span class="subject">${b.subject}</span> has a different relation as <span class="subject">${c.subject}</span> to <span class="subject">${d.subject}</span>`);
+                }
+            }
+        }
+
+        newPremises.push(...remainingPremises);
+        question.premises = newPremises;
     }
 }
