@@ -11,7 +11,8 @@ export function areSettingsInvalid(settings: Settings) {
         !settings.comparisonChronological[0] &&
         !settings.direction[0] &&
         !settings.syllogism[0] &&
-        !settings.direction3D[0] &&
+        !settings.direction3DSpatial[0] &&
+        !settings.direction3DTemporal[0] &&
         !settings.direction4D[0] &&
         !settings.analogy[0] &&
         !settings.binary[0]
@@ -25,7 +26,8 @@ export function areSettingsInvalid(settings: Settings) {
         !settings.comparisonChronological[0] &&
         !settings.direction[0] &&
         !settings.syllogism[0] &&
-        !settings.direction3D[0] &&
+        !settings.direction3DSpatial[0] &&
+        !settings.direction3DTemporal[0] &&
         !settings.direction4D[0] &&
         (settings.analogy[0] || settings.binary[0])
     ) {
@@ -56,7 +58,8 @@ export class Settings {
     comparisonChronological: [ boolean, number ];
     direction: [ boolean, number ];
     syllogism: [ boolean, number ];
-    direction3D: [ boolean, number ];
+    direction3DSpatial: [ boolean, number ];
+    direction3DTemporal: [ boolean, number ];
     direction4D: [ boolean, number ];
     analogy: [ boolean, number ];
     binary: [ boolean, number ];
@@ -76,7 +79,8 @@ export class Settings {
         this.comparisonChronological = [ true, 2 ]; // min 2
         this.direction = [ true, 2 ]; // min 2
         this.syllogism = [ true, 2 ]; // min 2
-        this.direction3D = [ true, 2 ]; // min 2
+        this.direction3DSpatial = [ true, 2 ]; // min 2
+        this.direction3DTemporal = [ true, 2 ]; // min 2
         this.direction4D = [ true, 2 ]; // min 2
         this.analogy = [ true, 3 ]; // min 3
         this.binary = [ true, 4 ];  // min 4

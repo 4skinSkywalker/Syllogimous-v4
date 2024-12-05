@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { EnumQuestionType, Question } from "../models/question.models";
 import { coinFlip, findDirection, findDirection3D, findDirection4D, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, makeMetaRelationsNew, pickUniqueItems, shuffle } from "../utils/engine.utils";
-import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_INVERSE, TIME_NAMES } from "../constants/engine.constants";
+import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, DIRECTION_NAMES_INVERSE, TIME_NAMES } from "../constants/engine.constants";
 import { EnumScreens, EnumTiers } from "../models/syllogimous.models";
 import { TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES, TIER_SETTINGS } from "../constants/syllogimous.constants";
 import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local-storage.constants";
@@ -98,8 +98,11 @@ export class SyllogimousService {
         if (settings.direction[0]) {
             choices.push(() => this.createDirection(settings.direction[1]));
         }
-        if (settings.direction3D[0]) {
-            choices.push(() => this.createDirection3D(settings.direction3D[1]));
+        if (settings.direction3DSpatial[0]) {
+            choices.push(() => this.createDirection3D(settings.direction3DSpatial[1], EnumQuestionType.Direction3DSpatial));
+        }
+        if (settings.direction3DTemporal[0]) {
+            choices.push(() => this.createDirection3D(settings.direction3DTemporal[1], EnumQuestionType.Direction3DTemporal));
         }
         if (settings.direction4D[0]) {
             choices.push(() => this.createDirection4D(settings.direction4D[1]));
@@ -128,6 +131,7 @@ export class SyllogimousService {
     }
 
     play() {
+        this.createQuestion();
         if (this.playgroundSettings) {
             this.router.navigate([EnumScreens.Game]);
         } else {
@@ -389,7 +393,7 @@ export class SyllogimousService {
         return question;
     }
 
-    createDirection3D(length: number) {
+    createDirection3D(length: number, type: EnumQuestionType.Direction3DSpatial | EnumQuestionType.Direction3DTemporal) {
         if (length < 2) throw Error("Needs at least 2 premises.");
 
         length++;
@@ -397,7 +401,11 @@ export class SyllogimousService {
         const settings = this.settings;
         const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, length).picked;
-        const question = new Question(EnumQuestionType.Direction3D);
+        const question = new Question(type);
+        const isTemporal = type === EnumQuestionType.Direction3DTemporal;
+        const [ direction_names, direction_names_inverse ] = isTemporal
+            ? [ DIRECTION_NAMES_3D_TEMPORAL, DIRECTION_NAMES_3D_INVERSE_TEMPORAL ]
+            : [ DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE ];
     
         let wordCoordMap: Record<string, [number, number, number]> = {};
         let conclusionDirection = "";
@@ -407,8 +415,8 @@ export class SyllogimousService {
             question.premises = [];
     
             for (let i = 0; i < words.length - 1; i++) {
-                const dirIndex = 1 + Math.floor(Math.random() * (DIRECTION_NAMES_3D.length - 1));
-                const dirName = DIRECTION_NAMES_3D[dirIndex];
+                const dirIndex = 1 + Math.floor(Math.random() * (direction_names.length - 1));
+                const dirName = direction_names[dirIndex];
                 const dirCoord = DIRECTION_COORDS_3D[dirIndex];
 
                 if (i === 0) {
@@ -423,18 +431,26 @@ export class SyllogimousService {
 
                 if (settings.enableNegation && coinFlip()) {
                     question.negations++;
-                    question.premises.push(`<span class="subject">${words[i+1]}</span> is <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
+                    question.premises.push(`<span class="subject">${words[i+1]}</span> is <span class="is-negated">${(direction_names_inverse as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
                 } else {
                     question.premises.push(`<span class="subject">${words[i+1]}</span> is ${dirName} of <span class="subject">${words[i]}</span>`);
                 }
             }
     
-            conclusionDirection = findDirection3D(wordCoordMap[words[0]], wordCoordMap[words[length-1]]);
+            conclusionDirection = findDirection3D(
+                wordCoordMap[words[0]],
+                wordCoordMap[words[length-1]],
+                isTemporal
+            );
         }
 
         question.wordCoordMap = wordCoordMap;
         question.isValid = coinFlip();
-        const oppositeDirection = findDirection3D(wordCoordMap[words[length-1]], wordCoordMap[words[0]]);
+        const oppositeDirection = findDirection3D(
+            wordCoordMap[words[length-1]],
+            wordCoordMap[words[0]],
+            isTemporal
+        );
         const direction = question.isValid ? conclusionDirection : oppositeDirection;
 
         if (settings.enableNegation && coinFlip()) {
@@ -521,7 +537,8 @@ export class SyllogimousService {
             settings.comparisonNumerical[0],
             settings.comparisonChronological[0],
             settings.direction[0],
-            settings.direction3D[0],
+            settings.direction3DSpatial[0],
+            settings.direction3DTemporal[0],
             settings.direction4D[0]
         ];
         if (analogyEnables.reduce((a, c) => a + +c, 0) < 1) {
@@ -542,11 +559,14 @@ export class SyllogimousService {
         if (settings.direction[0]) {
             choiceIndices.push(3);
         }
-        if (settings.direction3D[0]) {
+        if (settings.direction3DSpatial[0]) {
             choiceIndices.push(4);
         }
-        if (settings.direction4D[0]) {
+        if (settings.direction3DTemporal[0]) {
             choiceIndices.push(5);
+        }
+        if (settings.direction4D[0]) {
+            choiceIndices.push(6);
         }
     
         const choiceIndex = pickUniqueItems(choiceIndices, 1).picked[0];
@@ -582,7 +602,7 @@ export class SyllogimousService {
                 break;
             case 1:
             case 2:
-                const type = choiceIndex === 1 ? EnumQuestionType.ComparisonNumerical : EnumQuestionType.ComparisonChronological;
+                const type = (choiceIndex === 1) ? EnumQuestionType.ComparisonNumerical : EnumQuestionType.ComparisonChronological;
                 question = this.createComparison(length, type);
                 question.type = EnumQuestionType.Analogy;
                 question.conclusion = "";
@@ -609,8 +629,10 @@ export class SyllogimousService {
                 }
                 break;
             case 4:
+            case 5:
                 while (flip !== isValidSame) {
-                    question = this.createDirection3D(length);
+                    const type = (choiceIndex === 4) ? EnumQuestionType.Direction3DSpatial : EnumQuestionType.Direction3DTemporal;
+                    question = this.createDirection3D(length, type);
                     question.type = EnumQuestionType.Analogy;
                     question.conclusion = "";
 
@@ -622,7 +644,7 @@ export class SyllogimousService {
                     isValidSame = dirA === dirB;
                 }
                 break;
-            case 5:
+            case 6:
                 while (flip !== isValidSame) {
                     question = this.createDirection4D(length);
                     question.type = EnumQuestionType.Analogy;
@@ -690,7 +712,8 @@ export class SyllogimousService {
             settings.comparisonNumerical[0],
             settings.comparisonChronological[0],
             settings.direction[0],
-            settings.direction3D[0],
+            settings.direction3DSpatial[0],
+            settings.direction3DTemporal[0],
             settings.direction4D[0],
             settings.syllogism[0]
         ];
@@ -761,9 +784,14 @@ export class SyllogimousService {
                 this.createDirection(length)
             );
         }
-        if (settings.direction3D[0]) {
+        if (settings.direction3DSpatial[0]) {
             pool.push((length: number) =>
-                this.createDirection3D(length)
+                this.createDirection3D(length, EnumQuestionType.Direction3DSpatial)
+            );
+        }
+        if (settings.direction3DTemporal[0]) {
+            pool.push((length: number) =>
+                this.createDirection3D(length, EnumQuestionType.Direction3DTemporal)
             );
         }
         if (settings.direction4D[0]) {

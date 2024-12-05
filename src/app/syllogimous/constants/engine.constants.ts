@@ -2061,7 +2061,9 @@ export const DIRECTION_COORDS = [
 
 export const DIRECTION_COORDS_3D: [number, number, number][] = [];
 export const DIRECTION_NAMES_3D: string[] = [];
+export const DIRECTION_NAMES_3D_TEMPORAL: string[] = [];
 export const DIRECTION_NAMES_3D_INVERSE: Record<string, string> = {};
+export const DIRECTION_NAMES_3D_INVERSE_TEMPORAL: Record<string, string> = {};
 
 const nums = Array(3).fill(0).map((_, i) => i-1)
 nums.map(x =>
@@ -2070,7 +2072,9 @@ nums.map(x =>
             if (x === 0 && y === 0 && z === 0) return;
             DIRECTION_COORDS_3D.push([ x, y, z ]);
             DIRECTION_NAMES_3D.push(getDirectionString(x, y, z));
+            DIRECTION_NAMES_3D_TEMPORAL.push(getDirectionString(x, y, z, true));
             DIRECTION_NAMES_3D_INVERSE[getDirectionString(x, y, z)] = getDirectionString(-x, -y, -z);
+            DIRECTION_NAMES_3D_INVERSE_TEMPORAL[getDirectionString(x, y, z, true)] = getDirectionString(-x, -y, -z, true);
         })
     )
 );

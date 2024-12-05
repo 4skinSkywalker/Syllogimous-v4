@@ -86,8 +86,10 @@ export class PlaygroundModeComponent {
             directionPremises,
             syllogism,
             syllogismPremises,
-            direction3D,
-            direction3DPremises,
+            direction3DSpatial,
+            direction3DSpatialPremises,
+            direction3DTemporal,
+            direction3DTemporalPremises,
             direction4D,
             direction4DPremises,
             analogy,
@@ -111,7 +113,8 @@ export class PlaygroundModeComponent {
         settings.comparisonChronological = [comparisonChronological, comparisonChronologicalPremises];
         settings.direction = [direction, directionPremises]; 
         settings.syllogism = [syllogism, syllogismPremises];
-        settings.direction3D = [direction3D, direction3DPremises];
+        settings.direction3DSpatial = [direction3DSpatial, direction3DSpatialPremises];
+        settings.direction3DTemporal = [direction3DTemporal, direction3DTemporalPremises];
         settings.direction4D = [direction4D, direction4DPremises];
         settings.analogy = [analogy, analogyPremises];
         settings.binary = [binary, binaryPremises];

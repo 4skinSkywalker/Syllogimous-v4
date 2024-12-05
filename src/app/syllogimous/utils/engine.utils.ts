@@ -1,4 +1,4 @@
-import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, FORMS, NOUNS, STRINGS, TIME_NAMES, VALID_RULES } from "../constants/engine.constants";
+import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, FORMS, NOUNS, STRINGS, TIME_NAMES, VALID_RULES } from "../constants/engine.constants";
 import { EnumQuestionType, Question } from "../models/question.models";
 import { Settings, Picked } from "../models/settings.models";
 
@@ -31,11 +31,12 @@ export function shuffle<T>(array: T[]) {
     return array;
 }
 
-export function getDirectionString(x: number, y: number, z: number) {
+export function getDirectionString(x: number, y: number, z: number, isTemporal = false) {
     let res = "";
-    if (z === 1) res = "Above";
-    if (z === -1) res = "Below";
-    if (z && (x || y)) res += " and ";
+    if (z === 0) res = isTemporal ? "in the present" : "";
+    if (z === 1) res = isTemporal ? "in the future" : "Above";
+    if (z === -1) res = isTemporal ? "in the past" : "Below";
+    if ((z || isTemporal) && (x || y)) res += " and ";
     if (y === 1) res += "North";
     if (y === -1) res += "South";
     if (y && x) res += "-";
@@ -59,7 +60,7 @@ export function findDirection(aCoord: [number, number], bCoord: [number, number]
     return dirName!;
 }
 
-export function findDirection3D(aCoord: [number, number, number], bCoord: [number, number, number]) {
+export function findDirection3D(aCoord: [number, number, number], bCoord: [number, number, number], isTemporal = false) {
     const x = aCoord[0];
     const y = aCoord[1];
     const z = aCoord[2];
@@ -72,7 +73,7 @@ export function findDirection3D(aCoord: [number, number, number], bCoord: [numbe
     const dz = ((z - z2) / Math.abs(z - z2)) || 0;
 
     const dirIndex = DIRECTION_COORDS_3D.findIndex(c => c[0] === dx && c[1] === dy && c[2] === dz);
-    const dirName = DIRECTION_NAMES_3D[dirIndex];
+    const dirName = (isTemporal ? DIRECTION_NAMES_3D_TEMPORAL : DIRECTION_NAMES_3D)[dirIndex];
     return dirName;
 }
 

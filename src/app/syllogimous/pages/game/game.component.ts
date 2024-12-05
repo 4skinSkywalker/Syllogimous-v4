@@ -18,9 +18,7 @@ export class GameComponent {
     constructor(
         public sylSrv: SyllogimousService,
         private statsService: StatsService,
-    ) {
-        this.sylSrv.createQuestion();
-    }
+    ) {}
 
     ngOnInit() {
         this.timerType = localStorage.getItem(LS_TIMER) || '0';

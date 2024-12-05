@@ -19,7 +19,8 @@ import { TutorialSyllogismComponent } from './pages/tutorial/syllogism/syllogism
 import { TutorialComparisonNumericalComponent } from './pages/tutorial/comparison-numerical/comparison-numerical.component';
 import { TutorialComparisonChronologicalComponent } from './pages/tutorial/comparison-chronological/comparison-chronological.component';
 import { TutorialDirectionComponent } from './pages/tutorial/direction/direction.component';
-import { TutorialDirection3DComponent } from './pages/tutorial/direction3D/direction3D.component';
+import { TutorialDirection3DSpatialComponent } from './pages/tutorial/direction3D-spatial/direction3D-spatial.component';
+import { TutorialDirection3DTemporalComponent } from './pages/tutorial/direction3D-temporal/direction3D-temporal.component';
 import { TutorialDirection4DComponent } from './pages/tutorial/direction4D/direction4D.component';
 import { TutorialAnalogyComponent } from './pages/tutorial/analogy/analogy.component';
 import { TutorialBinaryComponent } from './pages/tutorial/binary/binary.component';
@@ -55,7 +56,8 @@ const routes: Routes = [
           { path: EnumQuestionType.ComparisonNumerical, component: TutorialComparisonNumericalComponent },
           { path: EnumQuestionType.ComparisonChronological, component: TutorialComparisonChronologicalComponent },
           { path: EnumQuestionType.Direction, component: TutorialDirectionComponent },
-          { path: EnumQuestionType.Direction3D, component: TutorialDirection3DComponent },
+          { path: EnumQuestionType.Direction3DSpatial, component: TutorialDirection3DSpatialComponent },
+          { path: EnumQuestionType.Direction3DTemporal, component: TutorialDirection3DTemporalComponent },
           { path: EnumQuestionType.Direction4D, component: TutorialDirection4DComponent },
           { path: EnumQuestionType.Analogy, component: TutorialAnalogyComponent },
           { path: EnumQuestionType.Binary, component: TutorialBinaryComponent },
@@ -87,7 +89,8 @@ const routes: Routes = [
     TutorialComparisonNumericalComponent,
     TutorialComparisonChronologicalComponent,
     TutorialDirectionComponent,
-    TutorialDirection3DComponent,
+    TutorialDirection3DSpatialComponent,
+    TutorialDirection3DTemporalComponent,
     TutorialDirection4DComponent,
     TutorialAnalogyComponent,
     TutorialBinaryComponent,

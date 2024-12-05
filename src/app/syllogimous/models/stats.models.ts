@@ -7,7 +7,8 @@ export class TypeBasedStats {
     [EnumQuestionType.ComparisonChronological]: TypeBasedStatsInner;
     [EnumQuestionType.Binary]: TypeBasedStatsInner;
     [EnumQuestionType.Direction]: TypeBasedStatsInner;
-    [EnumQuestionType.Direction3D]: TypeBasedStatsInner;
+    [EnumQuestionType.Direction3DSpatial]: TypeBasedStatsInner;
+    [EnumQuestionType.Direction3DTemporal]: TypeBasedStatsInner;
     [EnumQuestionType.Direction4D]: TypeBasedStatsInner;
     [EnumQuestionType.Analogy]: TypeBasedStatsInner;
     [EnumQuestionType.Unknown]: TypeBasedStatsInner;
@@ -19,7 +20,8 @@ export class TypeBasedStats {
         this[EnumQuestionType.ComparisonChronological] = new TypeBasedStatsInner();
         this[EnumQuestionType.Binary] = new TypeBasedStatsInner();
         this[EnumQuestionType.Direction] = new TypeBasedStatsInner();
-        this[EnumQuestionType.Direction3D] = new TypeBasedStatsInner();
+        this[EnumQuestionType.Direction3DSpatial] = new TypeBasedStatsInner();
+        this[EnumQuestionType.Direction3DTemporal] = new TypeBasedStatsInner();
         this[EnumQuestionType.Direction4D] = new TypeBasedStatsInner();
         this[EnumQuestionType.Analogy] = new TypeBasedStatsInner();
         this[EnumQuestionType.Unknown] = new TypeBasedStatsInner();
