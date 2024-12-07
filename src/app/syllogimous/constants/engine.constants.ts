@@ -2080,3 +2080,9 @@ nums.map(x =>
 );
 
 export const TIME_NAMES = ["was", "is", "will be"];
+
+export const TIME_NAMES_INVERSE = {
+    "was": "will be",
+    "is": "is",
+    "will be": "was"
+};

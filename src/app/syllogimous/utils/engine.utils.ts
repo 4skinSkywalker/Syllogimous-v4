@@ -43,10 +43,10 @@ export function getDirectionString(x: number, y: number, z: number, isTemporal =
     }
 
     if (z === 1) {
-        res = isTemporal ? "in the future" : "Above";
+        res = isTemporal ? "in the future" : "above";
     }
     if (z === -1) {
-        res = isTemporal ? "in the past" : "Below";
+        res = isTemporal ? "in the past" : "below";
     }
 
     if ((z || isTemporal) && (x || y)) {

@@ -64,6 +64,7 @@ export function canGenerateQuestion(
                 && getQtaEnabledBasicQuestions(settings) >= 2;
         }
     }
+    
     return false;
 }
 
