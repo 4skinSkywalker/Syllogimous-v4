@@ -129,6 +129,7 @@ export class PlaygroundModeComponent {
         this.validationError = areSettingsInvalid(settings);
         if (this.validationError) {
             await this.modalService.open(content, { centered: true }).result;
+            return;
         }
         
         this.sylSrv.playgroundSettings = settings;

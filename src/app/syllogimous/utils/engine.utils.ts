@@ -33,15 +33,41 @@ export function shuffle<T>(array: T[]) {
 
 export function getDirectionString(x: number, y: number, z: number, isTemporal = false) {
     let res = "";
-    if (z === 0) res = isTemporal ? "in the present" : "";
-    if (z === 1) res = isTemporal ? "in the future" : "Above";
-    if (z === -1) res = isTemporal ? "in the past" : "Below";
-    if ((z || isTemporal) && (x || y)) res += " and ";
-    if (y === 1) res += "North";
-    if (y === -1) res += "South";
-    if (y && x) res += "-";
-    if (x === 1) res += "East";
-    if (x === -1) res += "West";
+
+    if (z === 0) {
+        if (x === 0 && y === 0) {
+            res = isTemporal ? "in the present and in the same location" : "";
+        } else {
+            res = isTemporal ? "in the present" : "";
+        }
+    }
+
+    if (z === 1) {
+        res = isTemporal ? "in the future" : "Above";
+    }
+    if (z === -1) {
+        res = isTemporal ? "in the past" : "Below";
+    }
+
+    if ((z || isTemporal) && (x || y)) {
+        res += " and ";
+    }
+
+    if (y === 1) {
+        res += "North";
+    }
+    if (y === -1) {
+        res += "South";
+    }
+    if (y && x) {
+        res += "-";
+    }
+    if (x === 1) {
+        res += "East";
+    }
+    if (x === -1) {
+        res += "West";
+    }
     return res;
 }
 

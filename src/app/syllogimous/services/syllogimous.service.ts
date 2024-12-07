@@ -8,7 +8,7 @@ import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ModalLevelChangeComponent } from "../components/modal-level-change/modal-level-change.component";
 import { Router } from "@angular/router";
-import { Settings } from "../models/settings.models";
+import { canGenerateQuestion, Settings } from "../models/settings.models";
 
 @Injectable({
     providedIn: "root"
@@ -189,15 +189,19 @@ export class SyllogimousService {
             }
         }
 
-        this.pushIntoHistory(this.question);
+        if (this.settings !== this.playgroundSettings) { // Playground rounds don't count in the stats
+            this.pushIntoHistory(this.question);
+        }
+
         this.router.navigate([EnumScreens.Feedback]);
     }
 
-    createSyllogism(length: number) {
-        if (length < 2) throw Error("Needs at least 2 premises.");
-
-        length++;
+    createSyllogism(qtaPremises: number) {
+        if (!canGenerateQuestion(EnumQuestionType.Syllogism, qtaPremises)) {
+            throw new Error("Cannot generate.");
+        }
     
+        const length = qtaPremises + 1;
         const settings = this.settings;
         const question = new Question(EnumQuestionType.Syllogism);
         question.isValid = coinFlip();
@@ -232,11 +236,12 @@ export class SyllogimousService {
         return question;
     }
 
-    createDistinction(length: number) {
-        if (length < 2) throw Error("Needs at least 2 premises.");
+    createDistinction(qtaPremises: number) {
+        if (!canGenerateQuestion(EnumQuestionType.Distinction, qtaPremises)) {
+            throw new Error("Cannot generate.");
+        }
 
-        length++;
-
+        const length = qtaPremises + 1;
         const settings = this.settings;
         const symbols = getRandomSymbols(settings, length);
         const question = new Question(EnumQuestionType.Distinction);
@@ -286,11 +291,12 @@ export class SyllogimousService {
         return question;
     }
 
-    createComparison(length: number, type: EnumQuestionType.ComparisonNumerical | EnumQuestionType.ComparisonChronological) {
-        if (length < 2) throw Error("Needs at least 2 premises.");
+    createComparison(qtaPremises: number, type: EnumQuestionType.ComparisonNumerical | EnumQuestionType.ComparisonChronological) {
+        if (!canGenerateQuestion(type, qtaPremises)) {
+            throw new Error("Cannot generate.");
+        }
 
-        length++;
-
+        const length = qtaPremises + 1;
         const settings = this.settings;
         const question = new Question(type);
 
@@ -334,11 +340,12 @@ export class SyllogimousService {
         return question;
     }
 
-    createDirection(length: number) {
-        if (length < 2) throw Error("Needs at least 2 premises.");
-        
-        length++;
+    createDirection(qtaPremises: number) {
+        if (!canGenerateQuestion(EnumQuestionType.Direction, qtaPremises)) {
+            throw new Error("Cannot generate.");
+        }
 
+        const length = qtaPremises + 1;
         const settings = this.settings;
         const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, length).picked;
@@ -393,11 +400,12 @@ export class SyllogimousService {
         return question;
     }
 
-    createDirection3D(length: number, type: EnumQuestionType.Direction3DSpatial | EnumQuestionType.Direction3DTemporal) {
-        if (length < 2) throw Error("Needs at least 2 premises.");
+    createDirection3D(qtaPremises: number, type: EnumQuestionType.Direction3DSpatial | EnumQuestionType.Direction3DTemporal) {
+        if (!canGenerateQuestion(type, qtaPremises)) {
+            throw new Error("Cannot generate.");
+        }
 
-        length++;
-    
+        const length = qtaPremises + 1;
         const settings = this.settings;
         const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, length).picked;
@@ -465,11 +473,12 @@ export class SyllogimousService {
         return question;
     }
 
-    createDirection4D(length: number) {
-        if (length < 2) throw Error("Needs at least 2 premises.");
+    createDirection4D(qtaPremises: number) {
+        if (!canGenerateQuestion(EnumQuestionType.Direction4D, qtaPremises)) {
+            throw new Error("Cannot generate.");
+        }
 
-        length++;
-    
+        const length = qtaPremises + 1;
         const settings = this.settings;
         const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, length).picked;
@@ -529,20 +538,9 @@ export class SyllogimousService {
     }
 
     createAnalogy(length: number) {
-        if (length < 3) throw Error("Needs at least 3 premises.");
-
         const settings = this.settings;
-        const analogyEnables = [
-            settings.distinction[0],
-            settings.comparisonNumerical[0],
-            settings.comparisonChronological[0],
-            settings.direction[0],
-            settings.direction3DSpatial[0],
-            settings.direction3DTemporal[0],
-            settings.direction4D[0]
-        ];
-        if (analogyEnables.reduce((a, c) => a + +c, 0) < 1) {
-            throw new Error("Needs at least one of" + analogyEnables.join(", "));
+        if (!canGenerateQuestion(EnumQuestionType.Analogy, length, settings)) {
+            throw new Error("Cannot generate.");
         }
 
         const choiceIndices = [];
@@ -704,21 +702,9 @@ export class SyllogimousService {
     }
 
     createBinary(length: number) {
-        if (length < 4) throw Error("Needs at least 4 premises.");
-
         const settings = this.settings;
-        const binaryEnables = [
-            settings.distinction[0],
-            settings.comparisonNumerical[0],
-            settings.comparisonChronological[0],
-            settings.direction[0],
-            settings.direction3DSpatial[0],
-            settings.direction3DTemporal[0],
-            settings.direction4D[0],
-            settings.syllogism[0]
-        ];
-        if (binaryEnables.reduce((a, c) => a + +c, 0) < 1) {
-            throw new Error("Needs at least one of" + binaryEnables.join(", "));
+        if (!canGenerateQuestion(EnumQuestionType.Binary, length, settings)) {
+            throw new Error("Cannot generate.");
         }
 
         const operands = [];
