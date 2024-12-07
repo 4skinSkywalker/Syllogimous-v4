@@ -21,6 +21,11 @@
 
         <ul class="list-group mb-4">
             <li class="list-group-item flex-between">
+                <b>Time Played Today</b>
+                <div>{{ formatTime(timePlayedToday) }}</div>
+            </li>
+            
+            <li class="list-group-item flex-between">
                 <b>Tier</b>
                 <div>{{ sylSrv.tier }} ({{ sylSrv.score }} pts earned)</div>
             </li>
@@ -53,11 +58,6 @@
             <li class="list-group-item flex-between">
                 <b>Longest Streak</b>
                 <div>{{ longestStreak.length }}</div>
-            </li>
-
-            <li class="list-group-item flex-between">
-                <b>Time Played Today</b>
-                <div>{{ formatTime(timePlayedToday) }}</div>
             </li>
         </ul>
 

@@ -29,4 +29,8 @@ export class DailyProgressService {
     calcDailyProgress(isoDate: string) {
         return Math.max(0, Math.min(100, Math.floor(100 * (this.getDailyProgressLS()[isoDate] || 0) / GOAL)));
     }
+
+    getTimePlayed(isoDate: string) {
+        return this.getDailyProgressLS()[isoDate] || 0;
+    }
 }

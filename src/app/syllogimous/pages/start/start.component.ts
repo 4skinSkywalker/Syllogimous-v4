@@ -37,6 +37,7 @@ export class StartComponent {
         private dailyProgressService: DailyProgressService
     ) {
         this.dailyProgressPercentage = dailyProgressService.calcDailyProgress(dailyProgressService.getToday());
+        this.timePlayedToday = dailyProgressService.getTimePlayed(dailyProgressService.getToday());
     }
 
     ngOnInit() {
@@ -68,11 +69,5 @@ export class StartComponent {
             }
             streak.push(q);
         }
-
-        // Calculate time played today
-        const today = new Date().setHours(0, 0, 0, 0);
-        this.timePlayedToday = this.questions
-            .filter(q => new Date(q.createdAt).setHours(0, 0, 0, 0) === today)
-            .reduce((sum, q) => sum + (q.answeredAt - q.createdAt), 0);
     }
 }
