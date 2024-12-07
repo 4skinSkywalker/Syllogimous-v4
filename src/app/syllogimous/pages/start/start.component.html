@@ -1,5 +1,22 @@
 <app-card>
-    <div body style="min-width: 320px;">
+    <div body style="min-width: 320px; padding-top: 24px;">
+        <div class="timerbar-wrap">
+            <div class="progress timerbar">
+                <div
+                    class="progress-bar"
+                    [class.bg-warning]="this.dailyProgressPercentage < 100"
+                    [ngStyle]="{
+                        'width': this.dailyProgressPercentage + '%',
+                        'position': 'relative',
+                        'overflow': 'visible'
+                    }"
+                >
+                    <!-- <span class="me-2">{{dailyProgressPercentage}} %</span> -->
+                    <span style="position: absolute; left: 100%; padding-left: 4px; color: rgba(var(--app-gray_1000), 1);">Daily Progress</span>
+                </div>
+            </div>
+        </div>
+
         <h2 class="text-center">Your Stats</h2>
 
         <ul class="list-group mb-4">

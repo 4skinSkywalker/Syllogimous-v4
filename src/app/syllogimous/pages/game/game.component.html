@@ -1,7 +1,9 @@
 <app-card>
     <div body class="battlefield">
         <div class="timerbar-wrap">
-            <ngb-progressbar *ngIf="timerType !== '0'" class="timerbar" type="success" [value]="100 * timerLeft / timerFull">{{timerLeft}} s</ngb-progressbar>
+            <ngb-progressbar *ngIf="timerType !== '0'" class="timerbar" type="success" [value]="100 * timerLeft / timerFull">
+                <span class="me-2">{{timerLeft}} s</span>
+            </ngb-progressbar>
         </div>
     
         <small class="d-block text-muted">Premises</small>

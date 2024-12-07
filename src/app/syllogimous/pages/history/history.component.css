@@ -23,7 +23,7 @@
 .bd-left {
     border-top: 1px solid #0006;
     border-left: 1px solid #0006;
-    padding: 0.5rem 0.75rem;
+    padding: 0.5rem;
 }
 
 .bd-left:first-child {

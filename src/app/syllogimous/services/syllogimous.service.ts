@@ -9,6 +9,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ModalLevelChangeComponent } from "../components/modal-level-change/modal-level-change.component";
 import { Router } from "@angular/router";
 import { canGenerateQuestion, Settings } from "../models/settings.models";
+import { DailyProgressService } from "./daily-progress.service";
 
 @Injectable({
     providedIn: "root"
@@ -53,7 +54,8 @@ export class SyllogimousService {
 
     constructor(
         private modalService: NgbModal,
-        private router: Router
+        private router: Router,
+        private dailyProgressService: DailyProgressService
     ) {
         this.loadScore();
         this.loadHistory();
@@ -192,6 +194,11 @@ export class SyllogimousService {
         if (this.settings !== this.playgroundSettings) { // Playground rounds don't count in the stats
             this.pushIntoHistory(this.question);
         }
+
+        this.dailyProgressService.setDailyProgressLS(
+            this.dailyProgressService.getToday(),
+            this.question.answeredAt - this.question.createdAt
+        );
 
         this.router.navigate([EnumScreens.Feedback]);
     }

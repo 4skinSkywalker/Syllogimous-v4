@@ -5,6 +5,7 @@ import { Question } from '../../models/question.models';
 import { SyllogimousService } from '../../services/syllogimous.service';
 import { Router } from '@angular/router';
 import { formatTime } from 'src/app/utils/date';
+import { DailyProgressService } from '../../services/daily-progress.service';
 
 @Component({
     selector: 'app-start',
@@ -28,10 +29,15 @@ export class StartComponent {
     longestStreak: Question[] = [];
     timePlayedToday: number = 0;  // Explicitly declare as class property
 
+    dailyProgressPercentage = 0;
+
     constructor(
         public sylSrv: SyllogimousService,
         public router: Router,
-    ) { }
+        private dailyProgressService: DailyProgressService
+    ) {
+        this.dailyProgressPercentage = dailyProgressService.calcDailyProgress(dailyProgressService.getToday());
+    }
 
     ngOnInit() {
         const currTierIdx = this.tiers.findIndex(tier => tier === this.sylSrv.tier);
