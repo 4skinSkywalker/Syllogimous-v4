@@ -34,6 +34,7 @@ import { StatsExportService } from './services/stats-export.service';
 import { CardDropdownComponent } from './components/card/card-dropdown/card-dropdown.component';
 import { TimerChooseComponent } from './components/timer-choose/timer-choose.component';
 import { PlaygroundModeComponent } from './pages/playground-mode/playground-mode.component';
+import { DailyProgressComponent } from './components/daily-progress/daily-progress.component';
 
 const routes: Routes = [
   {
@@ -103,6 +104,7 @@ const routes: Routes = [
     CardDropdownComponent,
     PlaygroundModeComponent,
     TimerChooseComponent,
+    DailyProgressComponent,
   ],
   imports: [
     CommonModule,

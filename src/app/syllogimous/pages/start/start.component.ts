@@ -27,16 +27,13 @@ export class StartComponent {
     unansweredQs: Question[] = [];
     currentStreak: Question[] = [];
     longestStreak: Question[] = [];
-    timePlayedToday: number = 0;  // Explicitly declare as class property
-
-    dailyProgressPercentage = 0;
+    timePlayedToday = 0;
 
     constructor(
         public sylSrv: SyllogimousService,
         public router: Router,
         private dailyProgressService: DailyProgressService
     ) {
-        this.dailyProgressPercentage = dailyProgressService.calcDailyProgress(dailyProgressService.getToday());
         this.timePlayedToday = dailyProgressService.getTimePlayed(dailyProgressService.getToday());
     }
 

@@ -1,0 +1,24 @@
+<div class="timerbar-wrap">
+    <div class="progress timerbar">
+        <div
+            class="progress-bar progress-1"
+            [class.progress-2]="this.dailyProgressPercentage > 10"
+            [class.progress-3]="this.dailyProgressPercentage > 20"
+            [class.progress-4]="this.dailyProgressPercentage > 30"
+            [class.progress-5]="this.dailyProgressPercentage > 40"
+            [class.progress-6]="this.dailyProgressPercentage > 50"
+            [class.progress-7]="this.dailyProgressPercentage > 60"
+            [class.progress-8]="this.dailyProgressPercentage > 70"
+            [class.progress-9]="this.dailyProgressPercentage > 80"
+            [class.progress-10]="this.dailyProgressPercentage > 90"
+            [ngStyle]="{
+                'width': this.dailyProgressPercentage + '%',
+                'position': 'relative',
+                'overflow': 'visible'
+            }"
+        >
+            <span *ngIf="this.dailyProgressPercentage > 5" class="me-2">{{dailyProgressPercentage}} %</span>
+            <span style="position: absolute; left: 100%; padding-left: 4px; color: rgba(var(--app-gray_1000), 1);">Daily Progress</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+.timerbar-wrap {
+    padding: 8px;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+
+.timerbar {
+    height: 1.25rem;
+}
+
+::ng-deep .timerbar .progress-bar {
+    text-align: right;
+}
+
+.progress-1 {
+    background-color: #E74C3C;
+}
+
+.progress-2 {
+    background-color: #E67E22;
+}
+
+.progress-3 {
+    background-color: #F39C12;
+}
+
+.progress-4 {
+    background-color: #F1C40F;
+}
+
+.progress-5 {
+    background-color: #D4AC0D;
+}
+
+.progress-6 {
+    background-color: #A3CB38;
+}
+
+.progress-7 {
+    background-color: #82E0AA;
+}
+
+.progress-8 {
+    background-color: #58D68D;
+}
+
+.progress-9 {
+    background-color: #2ECC71;
+}
+
+.progress-10 {
+    background-color: #27AE60;
+}
