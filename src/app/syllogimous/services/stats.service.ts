@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { SyllogimousService } from "./syllogimous.service";
 import { jsonCopy } from "src/app/utils/json";
 import { TypeBasedStats } from "../models/stats.models";
+import { EnumQuestionType } from "../models/question.models";
 
 @Injectable({
     providedIn: "root"
@@ -13,10 +14,10 @@ export class StatsService {
 
     calcStats = (timerType?: "0" | "1" | "2") => {
         const questions = this.sylSrv.questionsFromLS;
-        const types = [...new Set(questions.map(q => q.type))];
+        const types = Object.values(EnumQuestionType).filter(qt => qt !== EnumQuestionType.Unknown);
         const typeBasedStats = new TypeBasedStats();
 
-        for (const type of types) {
+        for (let type of types) {
             const tbs = typeBasedStats[type];
             const questionsByType = questions.filter(q =>
                 q.type === type && (timerType == null || q.timerTypeOnAnswer === timerType)
