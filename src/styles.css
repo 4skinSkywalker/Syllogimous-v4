@@ -13,6 +13,7 @@ html[darkmode] {
 .flex-between {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .tooltip-inner {

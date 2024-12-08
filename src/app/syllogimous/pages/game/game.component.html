@@ -1,16 +1,51 @@
 <app-card>
-    <div body class="battlefield">
+    <div body class="battlefield" [ngStyle]="{ width: (gameMode === '1') ? '100%' : 'auto' }">
         <div class="timerbar-wrap">
             <ngb-progressbar *ngIf="timerType !== '0'" class="timerbar" type="success" [value]="100 * timerLeft / timerFull">
                 <span class="me-2">{{timerLeft}} s</span>
             </ngb-progressbar>
         </div>
+
+        <div [hidden]="gameMode !== '1'">
+            <ngb-carousel
+                #carousel
+                [interval]="999999999"
+                [showNavigationArrows]="false"
+                [showNavigationIndicators]="false"
+                style="border: 0; box-shadow: none;"
+            >
+                <ng-template ngbSlide *ngFor="let p of sylSrv.question.premises; let i = index">
+                    <div style="display: grid; place-items: center;">
+                        <div>
+                            <small class="text-muted">Premise {{i + 1}}</small>
+                            <div class="premise" [innerHTML]="p"></div>
+                        </div>
+                    </div>
+                </ng-template>
     
-        <small class="d-block text-muted">Premises</small>
-        <div *ngFor="let p of sylSrv.question.premises" class="premise" [innerHTML]="p"></div>
+                <ng-template ngbSlide id="conclusion">
+                    <div style="display: grid; place-items: center;">
+                        <div>
+                            <small class="text-muted">Conclusion</small>
+                            <div class="conclusion" [innerHTML]="sylSrv.question.conclusion"></div>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-carousel>
     
-        <small class="d-block text-muted mt-3">Conclusion</small>
-        <div class="conclusion" [innerHTML]="sylSrv.question.conclusion"></div>
+            <div class="flex-between mt-3 mx-3">
+                <button class="btn border-0" style="box-shadow: none;" (click)="carousel.prev()"><i class="bi bi-arrow-left"></i> Prev</button>
+                <button class="btn border-0" style="box-shadow: none;" (click)="carousel.next()">Next <i class="bi bi-arrow-right"></i></button>
+            </div>
+        </div>
+        
+        <div [hidden]="gameMode === '1'">
+            <small class="d-block text-muted">Premises</small>
+            <div *ngFor="let p of sylSrv.question.premises" class="premise" [innerHTML]="p"></div>
+
+            <small class="d-block text-muted mt-3">Conclusion</small>
+            <div class="conclusion" [innerHTML]="sylSrv.question.conclusion"></div>
+        </div>
     </div>
 
     <div footer class="d-flex gap-3 justify-content-center">

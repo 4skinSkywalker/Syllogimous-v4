@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LS_TIMER } from '../../constants/local-storage.constants';
 import { ModalTimerSettingsComponent } from '../modal-timer-settings/modal-timer-settings.component';
@@ -9,6 +9,7 @@ import { ModalTimerSettingsComponent } from '../modal-timer-settings/modal-timer
     styleUrls: ['./timer-choose.component.css']
 })
 export class TimerChooseComponent {
+    @Input("forPlayground") forPlayground = false;
 
     constructor(
         private modalService: NgbModal

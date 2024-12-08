@@ -47,7 +47,7 @@ export class PlaygroundModeComponent {
             if (Array.isArray((settings as any)[setting])) {
                 this.fields.push(
                     { 
-                        filler: "<div class='border-bottom opacity-10'></div>",
+                        filler: "<div></div>",
                         field: "",
                         label: ""
                     },

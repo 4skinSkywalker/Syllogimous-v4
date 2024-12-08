@@ -1,0 +1,18 @@
+<small
+    class="text-muted"
+    [class.d-block]="forPlayground"
+    [class.mt-4]="forPlayground"
+    [class.mb-1]="forPlayground"
+>Game Mode</small>
+
+<div class="d-flex flex-wrap" style="gap: 0.5rem;">
+    <div class="d-flex gap-2" style="width: 100px;">
+        <input type="radio" id="mode-choice-0" name="mode-kind" (click)="setMode('0')">
+        <label for="mode-choice-0" ngbTooltip="View all premises on the screen simultaneously">View all</label>
+    </div>
+
+    <div class="d-flex gap-2" style="width: 100px;">
+        <input type="radio" id="mode-choice-1" name="mode-kind" (click)="setMode('1')">
+        <label for="mode-choice-1" ngbTooltip="View one premise at a time in a carousel format">Carousel</label>
+    </div>
+</div>

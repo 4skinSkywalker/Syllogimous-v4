@@ -1,37 +1,27 @@
 <app-card>
-    <div body style="min-width: 320px; padding-top: 20px;">
+    <div body style="min-width: 320px; padding-top: 1rem;">
         <app-daily-progress></app-daily-progress>
 
-        <h2 class="text-center">Your Stats</h2>
+        <h3 class="text-center">Your Stats</h3>
 
         <ul class="list-group mb-4">
             <li class="list-group-item flex-between">
-                <b>Time Played Today</b>
-                <div>{{ formatTime(timePlayedToday) }}</div>
-            </li>
-
-            <li class="list-group-item flex-between">
                 <b>Tier</b>
-                <div>{{ sylSrv.tier }} ({{ sylSrv.score }} pts earned)</div>
-            </li>
-        
-            <li class="list-group-item flex-between">
-                <b>Next Tier</b>
-                <div>{{ nextTier }} ({{ pointsRemaining }} pts left)</div>
+                <div>{{ sylSrv.tier }} {{ sylSrv.score }} pts <small class="text-muted">(next {{nextTier}}<i [ngbTooltip]="pointsRemaining + ' pts left to this next level'" class="bi bi-info-circle ms-1"></i>)</small></div>
             </li>
     
             <li class="list-group-item flex-between">
-                <b>Correct Answers</b>
+                <b>Right</b>
                 <div>{{ correctQs.length }}</div>
             </li>
         
             <li class="list-group-item flex-between">
-                <b>Incorrect Answers</b>
+                <b>Wrong</b>
                 <div>{{ incorrectQs.length }}</div>
             </li>
         
             <li class="list-group-item flex-between">
-                <b>Unanswered Questions</b>
+                <b>Timedout</b>
                 <div>{{ unansweredQs.length }}</div>
             </li>
         
@@ -44,7 +34,14 @@
                 <b>Longest Streak</b>
                 <div>{{ longestStreak.length }}</div>
             </li>
+
+            <li class="list-group-item flex-between">
+                <b>Time Played Today</b>
+                <div>{{ formatTime(timePlayedToday) }}</div>
+            </li>
         </ul>
+
+        <app-game-mode-choose></app-game-mode-choose>
 
         <app-timer-choose></app-timer-choose>
     </div>

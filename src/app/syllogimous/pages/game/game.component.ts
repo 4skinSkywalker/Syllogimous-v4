@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SyllogimousService } from '../../services/syllogimous.service';
 import { StatsService } from '../../services/stats.service';
-import { LS_TIMER } from '../../constants/local-storage.constants';
+import { LS_GAME_MODE, LS_TIMER } from '../../constants/local-storage.constants';
 import { LS_CUSTOM_TIMERS_KEY } from '../../components/modal-timer-settings/modal-timer-settings.component';
 
 @Component({
@@ -10,7 +10,8 @@ import { LS_CUSTOM_TIMERS_KEY } from '../../components/modal-timer-settings/moda
     styleUrls: ['./game.component.css']
 })
 export class GameComponent {
-    timerType = '0';
+    timerType;
+    gameMode;
     timerFull = 0;
     timerLeft = 0;
     timer: any;
@@ -18,11 +19,12 @@ export class GameComponent {
     constructor(
         public sylSrv: SyllogimousService,
         private statsService: StatsService,
-    ) {}
+    ) {
+        this.timerType = localStorage.getItem(LS_TIMER) || '0';
+        this.gameMode = localStorage.getItem(LS_GAME_MODE) || '0';
+    }
 
     ngOnInit() {
-        this.timerType = localStorage.getItem(LS_TIMER) || '0';
-
         switch(this.timerType) {
             case '1': {
                 console.log("Custom timer");

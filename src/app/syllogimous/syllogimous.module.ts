@@ -35,6 +35,7 @@ import { CardDropdownComponent } from './components/card/card-dropdown/card-drop
 import { TimerChooseComponent } from './components/timer-choose/timer-choose.component';
 import { PlaygroundModeComponent } from './pages/playground-mode/playground-mode.component';
 import { DailyProgressComponent } from './components/daily-progress/daily-progress.component';
+import { GameModeChooseComponent } from './components/game-mode-choose/game-mode-choose.component';
 
 const routes: Routes = [
   {
@@ -105,6 +106,7 @@ const routes: Routes = [
     PlaygroundModeComponent,
     TimerChooseComponent,
     DailyProgressComponent,
+    GameModeChooseComponent,
   ],
   imports: [
     CommonModule,

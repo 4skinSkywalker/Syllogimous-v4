@@ -18,8 +18,9 @@
         <small class="text-muted d-block mb-3">Questions & Premises</small>
         <app-dynamic-form class="d-block mb-4" [fields]="fields" (formValueChanged)="formData = $event" [emitInitial]="true"></app-dynamic-form>
         
-        <small class="text-muted d-block mb-3">Timers</small>
-        <app-timer-choose></app-timer-choose>
+        <app-game-mode-choose [forPlayground]="true"></app-game-mode-choose>
+
+        <app-timer-choose [forPlayground]="true"></app-timer-choose>
     </div>
 
     <div footer class="playcard-toolbar">
