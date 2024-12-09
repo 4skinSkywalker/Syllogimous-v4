@@ -88,45 +88,42 @@ export class SyllogimousService {
         if (settings.distinction[0]) {
             choices.push(() => this.createDistinction(settings.distinction[1]));
         }
-        if (settings.comparisonNumerical[0]) {
-            choices.push(() => this.createComparison(settings.comparisonNumerical[1], EnumQuestionType.ComparisonNumerical));
-        }
-        if (settings.comparisonChronological[0]) {
-            choices.push(() => this.createComparison(settings.comparisonChronological[1], EnumQuestionType.ComparisonChronological));
-        }
         if (settings.syllogism[0]) {
             choices.push(() => this.createSyllogism(settings.syllogism[1]));
         }
-    
-        const directionEnabled = settings.direction[0] || 
-                               settings.direction3DSpatial[0] || 
-                               settings.direction3DTemporal[0] || 
-                               settings.direction4D[0];
-        
-        if (directionEnabled) {
-            choices.push(() => {
-                const directionChoices = [];
-                if (settings.direction[0]) {
-                    directionChoices.push(() => this.createDirection(settings.direction[1]));
-                }
-                if (settings.direction3DSpatial[0]) {
-                    directionChoices.push(() => this.createDirection3D(settings.direction3DSpatial[1], EnumQuestionType.Direction3DSpatial));
-                }
-                if (settings.direction3DTemporal[0]) {
-                    directionChoices.push(() => this.createDirection3D(settings.direction3DTemporal[1], EnumQuestionType.Direction3DTemporal));
-                }
-                if (settings.direction4D[0]) {
-                    directionChoices.push(() => this.createDirection4D(settings.direction4D[1]));
-                }
-                return pickUniqueItems(directionChoices, 1).picked[0]();
-            });
-        }
-    
         if (settings.analogy[0]) {
             choices.push(() => this.createAnalogy(settings.analogy[1]));
         }
         if (settings.binary[0]) {
             choices.push(() => this.createBinary(settings.binary[1]));
+        }
+
+        const comparisonChoices = [];
+        if (settings.comparisonNumerical[0]) {
+            comparisonChoices.push(() => this.createComparison(settings.comparisonNumerical[1], EnumQuestionType.ComparisonNumerical));
+        }
+        if (settings.comparisonChronological[0]) {
+            comparisonChoices.push(() => this.createComparison(settings.comparisonChronological[1], EnumQuestionType.ComparisonChronological));
+        }
+        if (comparisonChoices.length) {
+            choices.push(pickUniqueItems(comparisonChoices, 1).picked[0]);
+        }
+
+        const directionChoices = [];
+        if(settings.direction[0]) {
+            directionChoices.push(() => this.createDirection(settings.direction[1]));
+        }
+        if(settings.direction3DSpatial[0]) {
+            directionChoices.push(() => this.createDirection3D(settings.direction3DSpatial[1], EnumQuestionType.Direction3DSpatial));
+        }
+        if(settings.direction3DTemporal[0]) {
+            directionChoices.push(() => this.createDirection3D(settings.direction3DTemporal[1], EnumQuestionType.Direction3DTemporal));
+        }
+        if(settings.direction4D[0]) {
+            directionChoices.push(() => this.createDirection4D(settings.direction4D[1]));
+        }
+        if (directionChoices.length) {
+            choices.push(pickUniqueItems(directionChoices, 1).picked[0]);
         }
     
         if (!choices.length) {
@@ -134,7 +131,7 @@ export class SyllogimousService {
         }
     
         const randomQuestion = pickUniqueItems(choices, 1).picked[0]();
-        console.log("createQuestion()", randomQuestion);
+        console.log("randomQuestion", randomQuestion);
         this.question = randomQuestion!;
     }
 
@@ -741,8 +738,16 @@ export class SyllogimousService {
                     [a, b, c, d] = pickUniqueItems(Object.keys(question.wordCoordMap), 4).picked;
                     question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
 
-                    const dirA = findDirection3D(question.wordCoordMap[a] as any, question.wordCoordMap[b] as any);
-                    const dirB = findDirection3D(question.wordCoordMap[c] as any, question.wordCoordMap[d] as any);
+                    const dirA = findDirection3D(
+                        question.wordCoordMap[a] as any,
+                        question.wordCoordMap[b] as any,
+                        type === EnumQuestionType.Direction3DTemporal
+                    );
+                    const dirB = findDirection3D(
+                        question.wordCoordMap[c] as any,
+                        question.wordCoordMap[d] as any,
+                        type === EnumQuestionType.Direction3DTemporal
+                    );
                     isValidSame = dirA === dirB;
                 }
                 break;

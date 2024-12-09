@@ -2,6 +2,8 @@ import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES
 import { EnumQuestionType, Question } from "../models/question.models";
 import { Settings, Picked } from "../models/settings.models";
 
+export const b2n = (b: boolean) => +b as number;
+
 export function genBinKey(booleans: boolean[]) {
     return booleans.map(value => (value ? '1' : '0')).join('');
 }

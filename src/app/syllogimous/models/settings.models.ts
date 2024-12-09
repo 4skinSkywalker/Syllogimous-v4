@@ -1,6 +1,5 @@
+import { b2n } from "../utils/engine.utils";
 import { EnumQuestionType } from "./question.models";
-
-const b2n = (b: boolean) => +b as number;
 
 const getQtaEnabledBasicQuestions = (settings: Settings) => {
     return b2n(settings.distinction[0])
