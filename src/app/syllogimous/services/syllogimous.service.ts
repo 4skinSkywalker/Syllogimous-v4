@@ -83,7 +83,7 @@ export class SyllogimousService {
 
     createQuestion() {
         const settings = this.settings;
-
+    
         const choices = [];
         if (settings.distinction[0]) {
             choices.push(() => this.createDistinction(settings.distinction[1]));
@@ -97,29 +97,42 @@ export class SyllogimousService {
         if (settings.syllogism[0]) {
             choices.push(() => this.createSyllogism(settings.syllogism[1]));
         }
-        if (settings.direction[0]) {
-            choices.push(() => this.createDirection(settings.direction[1]));
+    
+        const directionEnabled = settings.direction[0] || 
+                               settings.direction3DSpatial[0] || 
+                               settings.direction3DTemporal[0] || 
+                               settings.direction4D[0];
+        
+        if (directionEnabled) {
+            choices.push(() => {
+                const directionChoices = [];
+                if (settings.direction[0]) {
+                    directionChoices.push(() => this.createDirection(settings.direction[1]));
+                }
+                if (settings.direction3DSpatial[0]) {
+                    directionChoices.push(() => this.createDirection3D(settings.direction3DSpatial[1], EnumQuestionType.Direction3DSpatial));
+                }
+                if (settings.direction3DTemporal[0]) {
+                    directionChoices.push(() => this.createDirection3D(settings.direction3DTemporal[1], EnumQuestionType.Direction3DTemporal));
+                }
+                if (settings.direction4D[0]) {
+                    directionChoices.push(() => this.createDirection4D(settings.direction4D[1]));
+                }
+                return pickUniqueItems(directionChoices, 1).picked[0]();
+            });
         }
-        if (settings.direction3DSpatial[0]) {
-            choices.push(() => this.createDirection3D(settings.direction3DSpatial[1], EnumQuestionType.Direction3DSpatial));
-        }
-        if (settings.direction3DTemporal[0]) {
-            choices.push(() => this.createDirection3D(settings.direction3DTemporal[1], EnumQuestionType.Direction3DTemporal));
-        }
-        if (settings.direction4D[0]) {
-            choices.push(() => this.createDirection4D(settings.direction4D[1]));
-        }
+    
         if (settings.analogy[0]) {
             choices.push(() => this.createAnalogy(settings.analogy[1]));
         }
         if (settings.binary[0]) {
             choices.push(() => this.createBinary(settings.binary[1]));
         }
-
+    
         if (!choices.length) {
             return;
         }
-
+    
         const randomQuestion = pickUniqueItems(choices, 1).picked[0]();
         console.log("createQuestion()", randomQuestion);
         this.question = randomQuestion!;
