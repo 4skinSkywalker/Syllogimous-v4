@@ -273,7 +273,7 @@ export function makeMetaRelationsOld(settings: Settings, question: Question, len
     }
 }
 
-export function makeMetaRelationsNew(settings: Settings, question: Question) {
+export function makeMetaRelationsNew(settings: Settings, question: Question, length: number) {
     // Substitute a variable number of premises with meta-relations
     if (settings.enableMeta && coinFlip()) {
         const numOfMetaRelationships = 1 + Math.floor(Math.random() * Math.floor((length - 1) / 2));

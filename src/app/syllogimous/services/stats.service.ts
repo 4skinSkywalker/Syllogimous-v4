@@ -13,7 +13,7 @@ export class StatsService {
     ) { }
 
     calcStats = (timerType?: "0" | "1" | "2") => {
-        const questions = this.sylSrv.questionsFromLS;
+        const questions = this.sylSrv.questionsFromLS.filter(q => !q.playgroundMode);
         const types = Object.values(EnumQuestionType).filter(qt => qt !== EnumQuestionType.Unknown);
         const typeBasedStats = new TypeBasedStats();
 

@@ -133,6 +133,7 @@ export class SyllogimousService {
         const randomQuestion = pickUniqueItems(choices, 1).picked[0]();
         console.log("randomQuestion", randomQuestion);
         this.question = randomQuestion!;
+        return this.question;
     }
 
     skipIntro(dontShowAnymore: boolean) {
@@ -171,39 +172,41 @@ export class SyllogimousService {
         this.question.userAnswer = value;
         this.question.answeredAt = Date.now();
         this.question.timerTypeOnAnswer = localStorage.getItem(LS_TIMER) || "0";
+        this.question.playgroundMode = this.settings === this.playgroundSettings;
 
-        const currTier = this.tier;
-
-        let ds = 0;
-        if (this.question.userAnswer === this.question.isValid) {
-            this.score += TIER_SCORE_ADJUSTMENTS[this.tier].increment;
-            ds += 1;
-        } else {
-            this.score = Math.max(0, this.score - TIER_SCORE_ADJUSTMENTS[this.tier].decrement);
-            if (this.score !== 0) {
-                ds -= 1;
+        // Playground doesn't progress points
+        if (!this.question.playgroundMode) {
+            const currTier = this.tier;
+    
+            let ds = 0;
+            if (this.question.userAnswer === this.question.isValid) {
+                this.score += TIER_SCORE_ADJUSTMENTS[this.tier].increment;
+                ds += 1;
+            } else {
+                this.score = Math.max(0, this.score - TIER_SCORE_ADJUSTMENTS[this.tier].decrement);
+                if (this.score !== 0) {
+                    ds -= 1;
+                }
+            }
+    
+            this.question.userScore = this.score;
+    
+            const nextTier = this.tier;
+    
+            // Level up/down
+            if (currTier !== nextTier) {
+                const modalRef = this.modalService.open(ModalLevelChangeComponent, { centered: true });
+                if (ds > 0) { // level up
+                    modalRef.componentInstance.title = "Congratulations\nYou've Leveled Up!";
+                    modalRef.componentInstance.content = "Your hard work is paying off.\nKeep going to unlock more features and rewards!";
+                } else if (ds < 0) { // level down
+                    modalRef.componentInstance.title = "Level Down\nLet's Regroup!";
+                    modalRef.componentInstance.content = "Take this as a learning step.\nRefocus your efforts and you’ll be back on top in no time!";
+                }
             }
         }
 
-        this.question.userScore = this.score;
-
-        const nextTier = this.tier;
-
-        // Level up/down
-        if (currTier !== nextTier) {
-            const modalRef = this.modalService.open(ModalLevelChangeComponent, { centered: true });
-            if (ds > 0) { // level up
-                modalRef.componentInstance.title = "Congratulations\nYou've Leveled Up!";
-                modalRef.componentInstance.content = "Your hard work is paying off.\nKeep going to unlock more features and rewards!";
-            } else if (ds < 0) { // level down
-                modalRef.componentInstance.title = "Level Down\nLet's Regroup!";
-                modalRef.componentInstance.content = "Take this as a learning step.\nRefocus your efforts and you’ll be back on top in no time!";
-            }
-        }
-
-        if (this.settings !== this.playgroundSettings) { // Playground rounds don't count in the stats
-            this.pushIntoHistory(this.question);
-        }
+        this.pushIntoHistory(this.question);
 
         this.dailyProgressService.setDailyProgressLS(
             this.dailyProgressService.getToday(),
@@ -292,7 +295,7 @@ export class SyllogimousService {
                 prev = curr;
             }
 
-            makeMetaRelationsNew(settings, question);
+            makeMetaRelationsNew(settings, question, length);
             
             const isSameAs = coinFlip();
             const relation = getRelation(settings, EnumQuestionType.Distinction, isSameAs);
@@ -335,7 +338,7 @@ export class SyllogimousService {
                 question.premises.push(`<span class="subject">${first}</span> is ${relation} <span class="subject">${last}</span>`);
             }
 
-            makeMetaRelationsNew(settings, question);
+            makeMetaRelationsNew(settings, question, length);
 
             const a = Math.floor(Math.random() * question.bucket.length);
             let b = Math.floor(Math.random() * question.bucket.length);

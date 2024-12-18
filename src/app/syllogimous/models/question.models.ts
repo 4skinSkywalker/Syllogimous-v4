@@ -28,6 +28,7 @@ export class Question {
     metaRelations = 0;
     timerTypeOnAnswer = "0";
     userScore = 0;
+    playgroundMode = false;
 
     constructor(
         type: EnumQuestionType
