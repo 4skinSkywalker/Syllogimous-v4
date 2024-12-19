@@ -927,4 +927,79 @@ export class SyllogimousService {
     
         return question;
     }
+
+    createArrangement(length: number) {
+        enum EnumRelationships {
+            NextTo = "is next to",
+            NotNextTo = "is not next to",
+            AtTheLeftOf = "is at the left of",
+            AdjacentToTheLeftOf = "is adjacent to the left of",
+            AtTheRightOf = "is at the right of",
+            AdjacentToTheRightOf = "is adjacent to the right of",
+            InFrontOf = "is in front of",
+            NotInFrontOf = "is not in front of"
+        };
+
+        length = Math.max(4, Math.floor(length / 2) * 2);
+
+        const getPossibleRelationships = (i: number, j: number) => {
+            const possibilities = [];
+
+            const isAdjacentToTheLeft = (length+(i+1))%length === j;
+            if (isAdjacentToTheLeft) {
+                possibilities.push(EnumRelationships.AdjacentToTheLeftOf);
+            }
+
+            const isAdjacentToTheRight = (length+(i-1))%length === j;
+            if (isAdjacentToTheRight) {
+                possibilities.push(EnumRelationships.AdjacentToTheRightOf);
+            }
+
+            const isInFrontOf = (i + (length / 2)) % length === j;
+            if (isInFrontOf) {
+                possibilities.push(EnumRelationships.InFrontOf);
+            }
+
+            const isAtLeft = (length+(i-j))%length < 0;
+            if (isAtLeft) {
+                possibilities.push(EnumRelationships.AtTheLeftOf);
+            }
+
+            const isAtRight = (length+(i-j))%length > 0;
+            if (isAtRight) {
+                possibilities.push(EnumRelationships.AtTheRightOf);
+            }
+
+            if (isAdjacentToTheLeft || isAdjacentToTheRight) {
+                possibilities.push(EnumRelationships.NextTo);
+            } else {
+                possibilities.push(EnumRelationships.NotNextTo);
+            }
+
+            if (!isInFrontOf) {
+                possibilities.push(EnumRelationships.NotInFrontOf);
+            }
+
+            return possibilities;
+        };
+
+        const settings = this.settings;
+        const symbols = getSymbols(settings);
+        const words = pickUniqueItems(symbols, length).picked;
+        
+        const premises = [];
+        let picked = [];
+        let remaining = [...words];
+        console.log(remaining);
+        while (premises.length < length-1) {
+            const pick = pickUniqueItems(remaining, 2);
+            picked = pick.picked;
+            const [a, b] = picked;
+            remaining = [b, ...pick.remaining];
+            const [aid, bid] = [words.indexOf(a), words.indexOf(b)];
+            premises.push([a, getPossibleRelationships(aid, bid), b]);
+        }
+
+        console.log(premises);
+    }
 }
