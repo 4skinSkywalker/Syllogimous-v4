@@ -13,6 +13,12 @@
                 [class.correct]="q.userAnswer !== undefined && q.userAnswer === q.isValid"
                 [class.incorrect]="q.userAnswer !== undefined && q.userAnswer !== q.isValid"
             >
+                <div
+                    *ngIf="q.playgroundMode"
+                    class="text-muted"
+                    style="padding-top: 0.5rem;padding-left: 0.75rem;font-size: 0.9rem;margin-bottom: -0.25rem;"
+                >Playground Mode</div>
+
                 <div class="overflow-auto" style="max-height: 250px; padding: 0.5rem 0.75rem;">
                     <div *ngFor="let p of q.premises" class="premise" [innerHTML]="p"></div>
                     <div class="mt-2" [innerHTML]="q.conclusion"></div>
