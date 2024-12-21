@@ -928,76 +928,80 @@ export class SyllogimousService {
         return question;
     }
 
-    createArrangement(length: number) {
+    createLinearArrangement(numOfEls: number) {
+        // TODO
+    }
+
+    createCircularArrangement(numOfEls: number) {
         enum EnumRelationships {
-            NextTo = "is next to",
-            NotNextTo = "is not next to",
-            AtTheLeftOf = "is at the left of",
-            AdjacentToTheLeftOf = "is adjacent to the left of",
-            AtTheRightOf = "is at the right of",
-            AdjacentToTheRightOf = "is adjacent to the right of",
-            InFrontOf = "is in front of",
-            NotInFrontOf = "is not in front of"
+            AdjLeft = "is adjacent to the left of",
+            AdjRight = "is adjacent to the right of",
+            Next = "is next to",
+            NotNext = "is not next to",
+            Left = "is at the left of",
+            Right = "is at the right of",
+            InFront = "is in front of",
+            NotInFront = "is not in front of",
         };
 
-        length = Math.max(4, Math.floor(length / 2) * 2);
+        const getAdjLeft = (i: number) => (numOfEls+(i+1))%numOfEls;
+        const getAdjRight = (i: number) => (numOfEls+(i-1))%numOfEls;
+        const getInFront = (i: number) => (i+(numOfEls/2))%numOfEls;
+
+        numOfEls = Math.max(4, Math.floor(numOfEls/2)*2);
 
         const getPossibleRelationships = (i: number, j: number) => {
-            const possibilities = [];
-
-            const isAdjacentToTheLeft = (length+(i+1))%length === j;
-            if (isAdjacentToTheLeft) {
-                possibilities.push(EnumRelationships.AdjacentToTheLeftOf);
+            // Set i to 0 and derive j
+            if (i > numOfEls/2) {
+                j = numOfEls+((j-i)%numOfEls);
+                i = 0;
             }
 
-            const isAdjacentToTheRight = (length+(i-1))%length === j;
-            if (isAdjacentToTheRight) {
-                possibilities.push(EnumRelationships.AdjacentToTheRightOf);
-            }
-
-            const isInFrontOf = (i + (length / 2)) % length === j;
-            if (isInFrontOf) {
-                possibilities.push(EnumRelationships.InFrontOf);
-            }
-
-            const isAtLeft = (length+(i-j))%length < 0;
-            if (isAtLeft) {
-                possibilities.push(EnumRelationships.AtTheLeftOf);
-            }
-
-            const isAtRight = (length+(i-j))%length > 0;
-            if (isAtRight) {
-                possibilities.push(EnumRelationships.AtTheRightOf);
-            }
-
-            if (isAdjacentToTheLeft || isAdjacentToTheRight) {
-                possibilities.push(EnumRelationships.NextTo);
-            } else {
-                possibilities.push(EnumRelationships.NotNextTo);
-            }
-
-            if (!isInFrontOf) {
-                possibilities.push(EnumRelationships.NotInFrontOf);
-            }
+            const isAdjLeft = getAdjLeft(i) === j;
+            const isAdjRight = getAdjRight(i) === j;
+            const isNext = isAdjLeft || isAdjRight;
+            const isInFront = getInFront(i) === j;
+            const possibilities = {
+                [EnumRelationships.AdjLeft]: isAdjLeft,       // 1 possibilit,
+                [EnumRelationships.AdjRight]: isAdjRight,     // 1 possibility
+                [EnumRelationships.Next]: isNext,             // 2 possibilities
+                [EnumRelationships.NotNext]: !isNext,         // N-2 possibilities
+                [EnumRelationships.Left]: j < getInFront(i),  // N/2-1 possibilities
+                [EnumRelationships.Right]: j > getInFront(i), // N/2-1 possibilities
+                [EnumRelationships.InFront]: isInFront,       // 1 possibility
+                [EnumRelationships.NotInFront]: !isInFront,   // N-2 possibilities
+            };
 
             return possibilities;
         };
 
         const settings = this.settings;
         const symbols = getSymbols(settings);
-        const words = pickUniqueItems(symbols, length).picked;
+        const words = pickUniqueItems(symbols, numOfEls).picked;
         
         const premises = [];
         let picked = [];
         let remaining = [...words];
         console.log(remaining);
-        while (premises.length < length-1) {
+        while (premises.length < numOfEls-1) {
             const pick = pickUniqueItems(remaining, 2);
             picked = pick.picked;
             const [a, b] = picked;
             remaining = [b, ...pick.remaining];
             const [aid, bid] = [words.indexOf(a), words.indexOf(b)];
             premises.push([a, getPossibleRelationships(aid, bid), b]);
+
+            /**
+             * TODO
+             * starts by picking only adjLeft/adjRight/inFront
+             * after 2 can pick Next
+             * from N/2 to end can pick left/right
+             * from N-3 to end can pick notNext and notInFront
+             * 
+             * This should ensure the solutions are well rounded and possibly unique
+             * 
+             * Try to avoid repeated relationships
+             */
         }
 
         console.log(premises);
