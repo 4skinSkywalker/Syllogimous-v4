@@ -333,7 +333,7 @@ export function makeMetaRelationsNew(settings: Settings, question: Question, len
     }
 }
 
-export function alterArrangementPremisesWithMetaRelations(settings: Settings, premises: string[][]) {
+export function alterArrangementWithMetaRelations(settings: Settings, premises: string[][]) {
     if (1 == 1 || settings.enableMeta && coinFlip()) {
         const premisesByRelation: { [key: string]: { same: string[][], opposite: string[][] }} = {};
         for (const p of premises) {
@@ -387,7 +387,7 @@ export function alterArrangementPremisesWithMetaRelations(settings: Settings, pr
             sameRelations = remaining;
             const [a, b] = pickUniqueItems(picked[0], 2).picked;
             const premise = premises.find(p => p[3] === a[3])!;
-            premise[1] = `has the same relationship of ${b[0]} and ${b[2]} with`;
+            premise[1] = `has the same relationship of ${b[0]} to ${b[2]} with`;
             console.warn("altered same meta-relation", premise);
         }
         
@@ -407,8 +407,42 @@ export function alterArrangementPremisesWithMetaRelations(settings: Settings, pr
             const _b = shouldSwitch ? b : a;
 
             const premise = premises.find(p => p[3] === _a[3])!;
-            premise[1] = `has the opposite relationship of ${_b[0]} and ${_b[2]} with`;
+            premise[1] = `has the opposite relationship of ${_b[0]} to ${_b[2]} with`;
             console.warn("altered opposite meta-relation", premise);
         }
     }
+}
+
+export function randomlyReverseFewSubjectsInArrangement(premises: string[][]) {
+    premises = premises.map(([a, rel, b, guid])  => {
+        if (rel && coinFlip()) {
+            switch (rel) {
+                case EnumArrangementRelations.AdjLeft: {
+                    return [b, EnumArrangementRelations.AdjRight, a, guid];
+                }
+                case EnumArrangementRelations.AdjRight: {
+                    return [b, EnumArrangementRelations.AdjLeft, a, guid];
+                }
+                case EnumArrangementRelations.InFront: {
+                    return [b, EnumArrangementRelations.InFront, a, guid];
+                }
+                case EnumArrangementRelations.NotInFront: {
+                    return [b, EnumArrangementRelations.NotInFront, a, guid];
+                }
+                case EnumArrangementRelations.Next: {
+                    return [b, EnumArrangementRelations.Next, a, guid];
+                }
+                case EnumArrangementRelations.NotNext: {
+                    return [b, EnumArrangementRelations.NotNext, a, guid];
+                }
+                case EnumArrangementRelations.Left: {
+                    return [b, EnumArrangementRelations.Right, a, guid];
+                }
+                case EnumArrangementRelations.Right: {
+                    return [b, EnumArrangementRelations.Left, a, guid];
+                }
+            }
+        }
+        return [a, rel, b, guid];
+    });
 }
