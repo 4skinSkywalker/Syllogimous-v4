@@ -965,7 +965,8 @@ export class SyllogimousService {
         const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, numOfEls).picked;
         const question = new Question(EnumQuestionType.LinearArrangement);
-        console.log(words);
+        question.instructions = `There are ${numOfEls} subjects along a LINEAR path.`;
+        // console.log(words);
         
         let premises: string[][] = [];
         let subjects = [...words];
@@ -1039,7 +1040,6 @@ export class SyllogimousService {
 
         alterArrangementWithMetaRelations(settings, premises);
 
-        premises.unshift([`<div class="fst-italic mb-2">There are ${numOfEls} subjects along a LINEAR path.</div>`]);
         let b: string | undefined = undefined;
         for (let safe = 1e2; safe && b == undefined; safe--) {
             const subject = pickUniqueItems(words, 1).picked[0];
@@ -1058,7 +1058,7 @@ export class SyllogimousService {
 
         question.rule = words.join(", ");
         (question as any).rawPremises = premises;
-        question.premises = premises.map(([a, rel, b], i) => i === 0 ? a : `<span class="subject">${a}</span> ${rel} <span class="subject">${b}</span>`);
+        question.premises = premises.map(([a, rel, b]) => `<span class="subject">${a}</span> ${rel} <span class="subject">${b}</span>`);
 
         return question;
     }
@@ -1103,6 +1103,7 @@ export class SyllogimousService {
         const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, numOfEls).picked;
         const question = new Question(EnumQuestionType.CircularArrangement);
+        question.instructions = `There are ${numOfEls} subjects along a CIRCULAR path.`;
         // console.log(words);
         
         let premises: string[][] = [];
@@ -1185,7 +1186,6 @@ export class SyllogimousService {
 
         alterArrangementWithMetaRelations(settings, premises);
 
-        premises.unshift([`<div class="fst-italic mb-2">There are ${numOfEls} subjects along a CIRCULAR path.</div>`]);
         let b: string | undefined = undefined;
         for (let safe = 1e2; safe && b == undefined; safe--) {
             const subject = pickUniqueItems(words, 1).picked[0];
@@ -1204,7 +1204,7 @@ export class SyllogimousService {
 
         question.rule = words.join(", ");
         (question as any).rawPremises = premises;
-        question.premises = premises.map(([a, rel, b], i) => i === 0 ? a : `<span class="subject">${a}</span> ${rel} <span class="subject">${b}</span>`);
+        question.premises = premises.map(([a, rel, b]) => `<span class="subject">${a}</span> ${rel} <span class="subject">${b}</span>`);
 
         return question;
     }

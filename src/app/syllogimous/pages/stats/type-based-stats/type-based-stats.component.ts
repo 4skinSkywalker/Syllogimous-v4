@@ -11,6 +11,7 @@ import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.ser
     styleUrls: ['./type-based-stats.component.css']
 })
 export class TypeBasedStatsComponent {
+    EnumQuestionType = EnumQuestionType;
     types: EnumQuestionType[];
     typeBasedStats: TypeBasedStats;
 
@@ -21,5 +22,19 @@ export class TypeBasedStatsComponent {
         const { types, typeBasedStats } = this.statsService.calcStats();
         this.types = types;
         this.typeBasedStats = typeBasedStats;
+    }
+
+    getTabInfoForType(type: EnumQuestionType) {
+        if (type === EnumQuestionType.LinearArrangement || type === EnumQuestionType.CircularArrangement) {
+            return {
+                initial: '3',
+                premises: ['3','4','5','6+'],
+            };
+        } else {
+            return {
+                initial: '2',
+                premises: ['2','3','4','5','6+'],
+            };
+        }
     }
 }

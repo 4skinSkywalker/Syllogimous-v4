@@ -26,6 +26,7 @@ export enum EnumArrangementRelations {
 };
 
 export class Question {
+    instructions?: string;
     type: EnumQuestionType;
     isValid = false;
     rule = "";
@@ -43,9 +44,7 @@ export class Question {
     userScore = 0;
     playgroundMode = false;
 
-    constructor(
-        type: EnumQuestionType
-    ) {
+    constructor(type: EnumQuestionType) {
         this.type = type;
     }
 }

@@ -50,6 +50,10 @@ export function canGenerateQuestion(
         case EnumQuestionType.Direction4D: {
             return qtaPremises >= 2;
         }
+        case EnumQuestionType.LinearArrangement:
+        case EnumQuestionType.CircularArrangement: {
+            return qtaPremises >= 3;
+        }
         case EnumQuestionType.Analogy: {
             if (!settings) {
                 return false;
@@ -94,13 +98,13 @@ export class Settings {
     distinction: [ boolean, number ];
     comparisonNumerical: [ boolean, number ];
     comparisonChronological: [ boolean, number ];
-    direction: [ boolean, number ];
-    linearArrangement: [ boolean, number ];
     syllogism: [ boolean, number ];
-    circularArrangement: [ boolean, number ];
+    direction: [ boolean, number ];
     direction3DSpatial: [ boolean, number ];
     direction3DTemporal: [ boolean, number ];
     direction4D: [ boolean, number ];
+    linearArrangement: [ boolean, number ];
+    circularArrangement: [ boolean, number ];
     analogy: [ boolean, number ];
     binary: [ boolean, number ];
     enableAnd: boolean;
@@ -117,13 +121,13 @@ export class Settings {
         this.distinction = [ true, 2 ]; // min 2
         this.comparisonNumerical = [ true, 2 ]; // min 2
         this.comparisonChronological = [ true, 2 ]; // min 2
-        this.direction = [ true, 2 ]; // min 2
-        this.linearArrangement = [ true, 3 ]; // min 3
         this.syllogism = [ true, 2 ]; // min 2
-        this.circularArrangement = [ true, 3 ]; // min 3
+        this.direction = [ true, 2 ]; // min 2
         this.direction3DSpatial = [ true, 2 ]; // min 2
         this.direction3DTemporal = [ true, 2 ]; // min 2
         this.direction4D = [ true, 2 ]; // min 2
+        this.linearArrangement = [ true, 3 ]; // min 3
+        this.circularArrangement = [ true, 3 ]; // min 3
         this.analogy = [ true, 3 ]; // min 3
         this.binary = [ true, 4 ];  // min 4
         this.enableAnd = true;

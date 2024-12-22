@@ -82,20 +82,20 @@ export class PlaygroundModeComponent {
             comparisonNumericalPremises,
             comparisonChronological,
             comparisonChronologicalPremises,
-            direction,
-            directionPremises,
-            linearArrangement,
-            linearArrangementPremises,
             syllogism,
             syllogismPremises,
-            circularArrangement,
-            circularArrangementPremises,
+            direction,
+            directionPremises,
             direction3DSpatial,
             direction3DSpatialPremises,
             direction3DTemporal,
             direction3DTemporalPremises,
             direction4D,
             direction4DPremises,
+            linearArrangement,
+            linearArrangementPremises,
+            circularArrangement,
+            circularArrangementPremises,
             analogy,
             analogyPremises,
             binary,
@@ -115,13 +115,13 @@ export class PlaygroundModeComponent {
         settings.distinction = [distinction, distinctionPremises];
         settings.comparisonNumerical = [comparisonNumerical, comparisonNumericalPremises];
         settings.comparisonChronological = [comparisonChronological, comparisonChronologicalPremises];
-        settings.direction = [direction, directionPremises]; 
-        settings.linearArrangement = [linearArrangement, linearArrangementPremises]; 
         settings.syllogism = [syllogism, syllogismPremises];
-        settings.circularArrangement = [circularArrangement, circularArrangementPremises]; 
+        settings.direction = [direction, directionPremises];
         settings.direction3DSpatial = [direction3DSpatial, direction3DSpatialPremises];
         settings.direction3DTemporal = [direction3DTemporal, direction3DTemporalPremises];
         settings.direction4D = [direction4D, direction4DPremises];
+        settings.linearArrangement = [linearArrangement, linearArrangementPremises]; 
+        settings.circularArrangement = [circularArrangement, circularArrangementPremises]; 
         settings.analogy = [analogy, analogyPremises];
         settings.binary = [binary, binaryPremises];
         settings.enableAnd = enableAnd;
