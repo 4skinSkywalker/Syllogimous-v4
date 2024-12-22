@@ -954,7 +954,6 @@ export class SyllogimousService {
                 [EnumArrangementRelations.AdjLeft]: isAdjLeft,       // 1 way,
                 [EnumArrangementRelations.AdjRight]: isAdjRight,     // 1 way
                 [EnumArrangementRelations.Next]: isNext,             // 2 ways
-                [EnumArrangementRelations.NotNext]: !isNext,         // N-2 ways
                 [EnumArrangementRelations.Left]: i < j,              // N/2-1 ways
                 [EnumArrangementRelations.Right]: i > j,             // N/2-1 ways
             };
@@ -977,14 +976,11 @@ export class SyllogimousService {
             const defWays = [EnumArrangementRelations.AdjLeft, EnumArrangementRelations.AdjRight];
 
             ways.push(...defWays);
-            if (premises.length > 1) {
+            if (premises.length > 2) {
                 ways.push(EnumArrangementRelations.Next);
             }
             if (premises.length >= subjects.length) {
                 ways.push(EnumArrangementRelations.Left, EnumArrangementRelations.Right);
-            }
-            if (subjects.length < 3) {
-                ways.push(EnumArrangementRelations.NotNext);
             }
 
             let premise: string[] | undefined = undefined;
@@ -1043,7 +1039,7 @@ export class SyllogimousService {
 
         alterArrangementWithMetaRelations(settings, premises);
 
-        premises.unshift([`There are ${numOfEls} subjects along a linear path.`]);
+        premises.unshift([`<div class="fst-italic mb-2">There are ${numOfEls} subjects along a LINEAR path.</div>`]);
         let b: string | undefined = undefined;
         for (let safe = 1e2; safe && b == undefined; safe--) {
             const subject = pickUniqueItems(words, 1).picked[0];
@@ -1089,11 +1085,9 @@ export class SyllogimousService {
                 [EnumArrangementRelations.AdjLeft]: isAdjLeft,       // 1 way,
                 [EnumArrangementRelations.AdjRight]: isAdjRight,     // 1 way
                 [EnumArrangementRelations.Next]: isNext,             // 2 ways
-                [EnumArrangementRelations.NotNext]: !isNext,         // N-2 ways
                 [EnumArrangementRelations.Left]: j < getInFront(i),  // N/2-1 ways
                 [EnumArrangementRelations.Right]: j > getInFront(i), // N/2-1 ways
                 [EnumArrangementRelations.InFront]: isInFront,       // 1 way
-                [EnumArrangementRelations.NotInFront]: !isInFront,   // N-2 ways
             };
 
             // Odd num of els do not make for diametrically opposite els
@@ -1123,14 +1117,11 @@ export class SyllogimousService {
             }
 
             ways.push(...defWays);
-            if (premises.length > 1) {
+            if (premises.length > 2) {
                 ways.push(EnumArrangementRelations.Next);
             }
             if (premises.length >= subjects.length) {
                 ways.push(EnumArrangementRelations.Left, EnumArrangementRelations.Right);
-            }
-            if (subjects.length < 3) {
-                ways.push(EnumArrangementRelations.NotInFront, EnumArrangementRelations.NotNext);
             }
 
             let premise: string[] | undefined = undefined;
@@ -1194,7 +1185,7 @@ export class SyllogimousService {
 
         alterArrangementWithMetaRelations(settings, premises);
 
-        premises.unshift([`There are ${numOfEls} subjects along a circular path.`]);
+        premises.unshift([`<div class="fst-italic mb-2">There are ${numOfEls} subjects along a CIRCULAR path.</div>`]);
         let b: string | undefined = undefined;
         for (let safe = 1e2; safe && b == undefined; safe--) {
             const subject = pickUniqueItems(words, 1).picked[0];

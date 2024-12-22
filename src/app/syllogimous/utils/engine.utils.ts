@@ -387,7 +387,7 @@ export function alterArrangementWithMetaRelations(settings: Settings, premises: 
             sameRelations = remaining;
             const [a, b] = pickUniqueItems(picked[0], 2).picked;
             const premise = premises.find(p => p[3] === a[3])!;
-            premise[1] = `has the same relationship of ${b[0]} to ${b[2]} with`;
+            premise[1] = `has the same relationship of <span class="subject">${b[0]}</span> to <span class="subject">${b[2]}</span> with`;
             console.warn("altered same meta-relation", premise);
         }
         
@@ -407,7 +407,7 @@ export function alterArrangementWithMetaRelations(settings: Settings, premises: 
             const _b = shouldSwitch ? b : a;
 
             const premise = premises.find(p => p[3] === _a[3])!;
-            premise[1] = `has the opposite relationship of ${_b[0]} to ${_b[2]} with`;
+            premise[1] = `has the opposite relationship of <span class="subject">${_b[0]}</span> to <span class="subject">${_b[2]}</span> with`;
             console.warn("altered opposite meta-relation", premise);
         }
     }
