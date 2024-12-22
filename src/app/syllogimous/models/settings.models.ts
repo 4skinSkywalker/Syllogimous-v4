@@ -23,6 +23,8 @@ const getQtaEnabledOperators = (settings: Settings) => {
 
 const getQtaEnabledQuestions = (settings: Settings) => {
     return getQtaEnabledBasicQuestions(settings)
+        + b2n(settings.linearArrangement[0])
+        + b2n(settings.circularArrangement[0])
         + b2n(settings.analogy[0])
         + b2n(settings.binary[0]);
 };
@@ -93,7 +95,9 @@ export class Settings {
     comparisonNumerical: [ boolean, number ];
     comparisonChronological: [ boolean, number ];
     direction: [ boolean, number ];
+    linearArrangement: [ boolean, number ];
     syllogism: [ boolean, number ];
+    circularArrangement: [ boolean, number ];
     direction3DSpatial: [ boolean, number ];
     direction3DTemporal: [ boolean, number ];
     direction4D: [ boolean, number ];
@@ -114,7 +118,9 @@ export class Settings {
         this.comparisonNumerical = [ true, 2 ]; // min 2
         this.comparisonChronological = [ true, 2 ]; // min 2
         this.direction = [ true, 2 ]; // min 2
+        this.linearArrangement = [ true, 3 ]; // min 3
         this.syllogism = [ true, 2 ]; // min 2
+        this.circularArrangement = [ true, 3 ]; // min 3
         this.direction3DSpatial = [ true, 2 ]; // min 2
         this.direction3DTemporal = [ true, 2 ]; // min 2
         this.direction4D = [ true, 2 ]; // min 2

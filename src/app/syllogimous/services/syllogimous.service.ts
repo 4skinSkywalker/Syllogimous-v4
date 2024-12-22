@@ -126,6 +126,17 @@ export class SyllogimousService {
         if (directionChoices.length) {
             choices.push(pickUniqueItems(directionChoices, 1).picked[0]);
         }
+
+        const arrangementQuestions = [];
+        if(settings.linearArrangement[0]) {
+            arrangementQuestions.push(() => this.createLinearArrangement(settings.linearArrangement[1]));
+        }
+        if(settings.circularArrangement[0]) {
+            arrangementQuestions.push(() => this.createCircularArrangement(settings.circularArrangement[1]));
+        }
+        if (arrangementQuestions.length) {
+            choices.push(pickUniqueItems(arrangementQuestions, 1).picked[0]);
+        }
     
         if (!choices.length) {
             return;
