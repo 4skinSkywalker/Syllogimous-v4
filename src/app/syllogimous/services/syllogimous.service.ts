@@ -933,24 +933,24 @@ export class SyllogimousService {
     }
 
     createCircularArrangement(numOfEls: number) {
-        enum EnumRelationships {
-            AdjLeft = "is adjacent to the left of",
-            AdjRight = "is adjacent to the right of",
+        enum EnumRelations {
+            AdjLeft = "is to the immediate left of",
+            AdjRight = "is to the immediate right of",
             Next = "is next to",
             NotNext = "is not next to",
             Left = "is at the left of",
             Right = "is at the right of",
-            InFront = "is in front of",
-            NotInFront = "is not in front of",
+            InFront = "is diametrically opposite to",
+            NotInFront = "is not diametrically opposite to",
         };
 
         const getAdjLeft = (i: number) => (numOfEls+(i+1))%numOfEls;
         const getAdjRight = (i: number) => (numOfEls+(i-1))%numOfEls;
         const getInFront = (i: number) => (i+(numOfEls/2))%numOfEls;
 
-        numOfEls = Math.max(4, Math.floor(numOfEls/2)*2);
+        numOfEls = Math.max(3, numOfEls);
 
-        const getPossibleRelationships = (i: number, j: number) => {
+        const getWays = (i: number, j: number) => {
             // Set i to 0 and derive j
             if (i > numOfEls/2) {
                 j = numOfEls+((j-i)%numOfEls);
@@ -961,49 +961,148 @@ export class SyllogimousService {
             const isAdjRight = getAdjRight(i) === j;
             const isNext = isAdjLeft || isAdjRight;
             const isInFront = getInFront(i) === j;
-            const possibilities = {
-                [EnumRelationships.AdjLeft]: isAdjLeft,       // 1 possibilit,
-                [EnumRelationships.AdjRight]: isAdjRight,     // 1 possibility
-                [EnumRelationships.Next]: isNext,             // 2 possibilities
-                [EnumRelationships.NotNext]: !isNext,         // N-2 possibilities
-                [EnumRelationships.Left]: j < getInFront(i),  // N/2-1 possibilities
-                [EnumRelationships.Right]: j > getInFront(i), // N/2-1 possibilities
-                [EnumRelationships.InFront]: isInFront,       // 1 possibility
-                [EnumRelationships.NotInFront]: !isInFront,   // N-2 possibilities
+            const ways = {
+                [EnumRelations.AdjLeft]: isAdjLeft,       // 1 way,
+                [EnumRelations.AdjRight]: isAdjRight,     // 1 way
+                [EnumRelations.Next]: isNext,             // 2 ways
+                [EnumRelations.NotNext]: !isNext,         // N-2 ways
+                [EnumRelations.Left]: j < getInFront(i),  // N/2-1 ways
+                [EnumRelations.Right]: j > getInFront(i), // N/2-1 ways
+                [EnumRelations.InFront]: isInFront,       // 1 way
+                [EnumRelations.NotInFront]: !isInFront,   // N-2 ways
             };
 
-            return possibilities;
+            // Odd num of els do not make for diametrically opposite els
+            if (numOfEls%2 !== 0) {
+                delete (ways as any)[EnumRelations.InFront];
+                delete (ways as any)[EnumRelations.NotInFront];
+            }
+
+            return ways;
         };
 
         const settings = this.settings;
         const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, numOfEls).picked;
+        const question = new Question(EnumQuestionType.CircularArrangement);
+        console.log(words);
         
-        const premises = [];
-        let picked = [];
-        let remaining = [...words];
-        console.log(remaining);
-        while (premises.length < numOfEls-1) {
-            const pick = pickUniqueItems(remaining, 2);
-            picked = pick.picked;
-            const [a, b] = picked;
-            remaining = [b, ...pick.remaining];
-            const [aid, bid] = [words.indexOf(a), words.indexOf(b)];
-            premises.push([a, getPossibleRelationships(aid, bid), b]);
+        let premises: string[][] = [];
+        let subjects = [...words];
+        let safe = 1e2;
+        let a: string | undefined = undefined;
+        while (safe-- && premises.length < numOfEls-1) {
+            const ways = [];
 
-            /**
-             * TODO
-             * starts by picking only adjLeft/adjRight/inFront
-             * after 2 can pick Next
-             * from N/2 to end can pick left/right
-             * from N-3 to end can pick notNext and notInFront
-             * 
-             * This should ensure the solutions are well rounded and possibly unique
-             * 
-             * Try to avoid repeated relationships
-             */
+            const defWays = [EnumRelations.AdjLeft, EnumRelations.AdjRight];
+            const targetSubjectGetters = [getAdjLeft, getAdjRight];
+            if (numOfEls%2 === 0) {
+                // Even num of els make for diametrically opposite els
+                defWays.push(EnumRelations.InFront);
+                targetSubjectGetters.push(getInFront);
+            }
+
+            ways.push(...defWays);
+            if (premises.length > 1) {
+                ways.push(EnumRelations.Next);
+            }
+            if (premises.length >= subjects.length) {
+                ways.push(EnumRelations.Left, EnumRelations.Right);
+            }
+            if (subjects.length < 3) {
+                ways.push(EnumRelations.NotInFront, EnumRelations.NotNext);
+            }
+
+            let premise: string[] | undefined = undefined;
+            let safe2 = 1e2;
+            while (safe2-- && premise == undefined) {
+                const targetWay = pickUniqueItems(ways, 1).picked[0];
+
+                a = a || pickUniqueItems(subjects, 1).picked[0];
+                // console.log("a", a);
+                const aid = words.indexOf(a);
+
+                let defWayIdx = defWays.indexOf(targetWay);
+                if (defWayIdx > -1) {
+                    const bid = targetSubjectGetters[defWayIdx](aid);
+                    let b = words[bid];
+                    // console.log("b", b);
+                    if (premises.find(([_a, _, _b]) => _a === b || _b === b)) {
+                        console.warn("already seen", 1e2 - safe2, "times");
+                        continue;
+                    }
+                    premise = [a, targetWay, b];
+                    subjects = subjects.filter(s => s !== a && s !== b);
+                    a = b;
+                    break;
+                }
+
+                const b = pickUniqueItems(subjects, 1).picked[0];
+                // console.log("b", b);
+                const bid = words.indexOf(b);
+                const _ways = getWays(aid, bid);
+                if (_ways[targetWay]) {
+                    premise = [a, targetWay, b];
+                    subjects = subjects.filter(s => s !== a && s !== b)
+                    a = b;
+                }
+            }
+            premises.push(premise!);
         }
 
-        console.log(premises);
+        // Randomly switch a with b while preserving the relationship
+        premises = premises.map(([a, rel, b])  => {
+            if (rel && coinFlip()) {
+                switch (rel) {
+                    case EnumRelations.AdjLeft: {
+                        return [b, EnumRelations.AdjRight, a];
+                    }
+                    case EnumRelations.AdjRight: {
+                        return [b, EnumRelations.AdjLeft, a];
+                    }
+                    case EnumRelations.InFront: {
+                        return [b, EnumRelations.InFront, a];
+                    }
+                    case EnumRelations.Next: {
+                        return [b, EnumRelations.Next, a];
+                    }
+                    case EnumRelations.NotInFront: {
+                        return [b, EnumRelations.NotInFront, a];
+                    }
+                    case EnumRelations.Left: {
+                        return [b, EnumRelations.Right, a];
+                    }
+                    case EnumRelations.Right: {
+                        return [b, EnumRelations.Left, a];
+                    }
+                }
+            }
+            return [a, rel, b];
+        });
+
+        shuffle(premises);
+
+        premises.unshift([`There are ${numOfEls} subjects along a circular path.`]);
+        let b: string | undefined = undefined;
+        let safe3 = 1e2;
+        while (safe3-- && b == undefined) {
+            const subject = pickUniqueItems(words, 1).picked[0];
+            const alreadyRelated = premises.find(([_a, _, _b]) => (_a === a && _b === subject) || (_a === subject && _b === a));
+            if (subject !== a && !alreadyRelated) {
+                b = subject;
+            }
+        }
+        const [aid, bid] = [words.indexOf(a!), words.indexOf(b!)];
+        const ways = getWays(aid, bid);
+        // console.log(a, b);
+
+        question.isValid = coinFlip();
+        const conclusionWays = Object.entries(ways).filter(([_, b]) => b === question.isValid).map(x => x[0]);
+        question.conclusion = [a, pickUniqueItems(conclusionWays, 1).picked[0], b].join(" ");
+
+        question.rule = words.join(", ");
+        question.premises = premises.map(p => p.join(" "));
+
+        console.log(question);
     }
 }

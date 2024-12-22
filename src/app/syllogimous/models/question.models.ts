@@ -9,6 +9,8 @@ export enum EnumQuestionType {
     Direction3DTemporal = "Direction3D Temporal",
     Direction4D = "Direction4D",
     Analogy = "Analogy",
+    LinearArrangement = "Linear Arrangement",
+    CircularArrangement = "Circular Arrangement",
     Unknown = "Unknown",
 }
 

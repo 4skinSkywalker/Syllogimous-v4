@@ -11,6 +11,8 @@ export class TypeBasedStats {
     [EnumQuestionType.Direction3DTemporal]: TypeBasedStatsInner;
     [EnumQuestionType.Direction4D]: TypeBasedStatsInner;
     [EnumQuestionType.Analogy]: TypeBasedStatsInner;
+    [EnumQuestionType.LinearArrangement]: TypeBasedStatsInner;
+    [EnumQuestionType.CircularArrangement]: TypeBasedStatsInner;
     [EnumQuestionType.Unknown]: TypeBasedStatsInner;
 
     constructor() {
@@ -24,6 +26,8 @@ export class TypeBasedStats {
         this[EnumQuestionType.Direction3DTemporal] = new TypeBasedStatsInner();
         this[EnumQuestionType.Direction4D] = new TypeBasedStatsInner();
         this[EnumQuestionType.Analogy] = new TypeBasedStatsInner();
+        this[EnumQuestionType.LinearArrangement] = new TypeBasedStatsInner();
+        this[EnumQuestionType.CircularArrangement] = new TypeBasedStatsInner();
         this[EnumQuestionType.Unknown] = new TypeBasedStatsInner();
     }
 }
