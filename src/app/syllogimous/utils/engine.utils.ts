@@ -1,5 +1,5 @@
 import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, FORMS, NOUNS, STRINGS, TIME_NAMES, VALID_RULES } from "../constants/engine.constants";
-import { EnumQuestionType, Question } from "../models/question.models";
+import { EnumArrangementRelations, EnumQuestionType, Question } from "../models/question.models";
 import { Settings, Picked } from "../models/settings.models";
 
 export const b2n = (b: boolean) => +b as number;
@@ -330,5 +330,85 @@ export function makeMetaRelationsNew(settings: Settings, question: Question, len
 
         newPremises.push(...remainingPremises);
         question.premises = newPremises;
+    }
+}
+
+export function alterArrangementPremisesWithMetaRelations(settings: Settings, premises: string[][]) {
+    if (1 == 1 || settings.enableMeta && coinFlip()) {
+        const premisesByRelation: { [key: string]: { same: string[][], opposite: string[][] }} = {};
+        for (const p of premises) {
+            premisesByRelation[p[1]] = premisesByRelation[p[1]] || { same: [], opposite: [] };
+            premisesByRelation[p[1]].same.push([...p]);
+        }
+
+        for (const rel in premisesByRelation) {
+            switch (rel) {
+                case EnumArrangementRelations.AdjLeft: {
+                    premisesByRelation[rel].opposite = premisesByRelation[EnumArrangementRelations.AdjRight]?.same || [];
+                    break;
+                }
+                case EnumArrangementRelations.AdjRight: {
+                    premisesByRelation[rel].opposite = premisesByRelation[EnumArrangementRelations.AdjLeft]?.same || [];
+                    break;
+                }
+                case EnumArrangementRelations.Left: {
+                    premisesByRelation[rel].opposite = premisesByRelation[EnumArrangementRelations.Right]?.same || [];
+                    break;
+                }
+                case EnumArrangementRelations.Right: {
+                    premisesByRelation[rel].opposite = premisesByRelation[EnumArrangementRelations.Left]?.same || [];
+                    break;
+                }
+                case EnumArrangementRelations.Next: {
+                    premisesByRelation[rel].opposite = premisesByRelation[EnumArrangementRelations.NotNext]?.same || [];
+                    break;
+                }
+                case EnumArrangementRelations.NotNext: {
+                    premisesByRelation[rel].opposite = premisesByRelation[EnumArrangementRelations.Next]?.same || [];
+                    break;
+                }
+                case EnumArrangementRelations.InFront: {
+                    premisesByRelation[rel].opposite = premisesByRelation[EnumArrangementRelations.NotInFront]?.same || [];
+                    break;
+                }
+                case EnumArrangementRelations.NotInFront: {
+                    premisesByRelation[rel].opposite = premisesByRelation[EnumArrangementRelations.InFront]?.same || [];
+                    break;
+                }
+            }
+        }
+
+        let sameRelations = Object.values(premisesByRelation)
+            .filter(({ same }) => same.length > 1)
+            .map(({ same }) => same);
+        let howManySame = Math.floor(Math.random()*sameRelations.length);
+        while (howManySame--) {
+            const { picked, remaining } = pickUniqueItems(sameRelations, 1);
+            sameRelations = remaining;
+            const [a, b] = pickUniqueItems(picked[0], 2).picked;
+            const premise = premises.find(p => p[3] === a[3])!;
+            premise[1] = `has the same relationship of ${b[0]} and ${b[2]} with`;
+            console.warn("altered same meta-relation", premise);
+        }
+        
+        let oppositeRelations = Object.values(premisesByRelation)
+            .filter(({ same, opposite }) => same.length && opposite.length);
+        let howManyOpposite = Math.floor(Math.random()*oppositeRelations.length);
+        while (howManyOpposite--) {
+            const { picked, remaining } = pickUniqueItems(oppositeRelations, 1);
+            oppositeRelations = remaining;
+
+            const rndRelation = pickUniqueItems(picked, 1).picked[0];
+            const a = pickUniqueItems(rndRelation.same, 1).picked[0];
+            const b = pickUniqueItems(rndRelation.opposite, 1).picked[0];
+
+            const shouldSwitch = coinFlip();
+            const _a = shouldSwitch ? a : b;
+            const _b = shouldSwitch ? b : a;
+
+            const premise = premises.find(p => p[3] === _a[3])!;
+            premise[1] = `has the opposite relationship of ${_b[0]} and ${_b[2]} with`;
+            console.warn("altered opposite meta-relation", premise);
+        }
     }
 }

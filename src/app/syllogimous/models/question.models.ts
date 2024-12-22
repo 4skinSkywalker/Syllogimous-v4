@@ -14,6 +14,17 @@ export enum EnumQuestionType {
     Unknown = "Unknown",
 }
 
+export enum EnumArrangementRelations {
+    AdjLeft = "is to the immediate left of",
+    AdjRight = "is to the immediate right of",
+    Next = "is next to",
+    NotNext = "is not next to",
+    Left = "is at the left of",
+    Right = "is at the right of",
+    InFront = "is diametrically opposite to", // not used by linear
+    NotInFront = "is not diametrically opposite to", // not used by linear
+};
+
 export class Question {
     type: EnumQuestionType;
     isValid = false;

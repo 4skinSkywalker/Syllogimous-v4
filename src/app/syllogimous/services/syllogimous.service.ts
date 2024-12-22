@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { EnumQuestionType, Question } from "../models/question.models";
-import { coinFlip, extractSubjects, findDirection, findDirection3D, findDirection4D, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, makeMetaRelationsNew, pickUniqueItems, shuffle } from "../utils/engine.utils";
+import { EnumArrangementRelations, EnumQuestionType, Question } from "../models/question.models";
+import { alterArrangementPremisesWithMetaRelations, coinFlip, extractSubjects, findDirection, findDirection3D, findDirection4D, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, makeMetaRelationsNew, pickUniqueItems, shuffle } from "../utils/engine.utils";
 import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, DIRECTION_NAMES_INVERSE, TIME_NAMES, TIME_NAMES_INVERSE } from "../constants/engine.constants";
 import { EnumScreens, EnumTiers } from "../models/syllogimous.models";
 import { TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES, TIER_SETTINGS } from "../constants/syllogimous.constants";
@@ -10,6 +10,7 @@ import { ModalLevelChangeComponent } from "../components/modal-level-change/moda
 import { Router } from "@angular/router";
 import { canGenerateQuestion, Settings } from "../models/settings.models";
 import { DailyProgressService } from "./daily-progress.service";
+import { guid } from "src/app/utils/uuid";
 
 @Injectable({
     providedIn: "root"
@@ -929,21 +930,159 @@ export class SyllogimousService {
     }
 
     createLinearArrangement(numOfEls: number) {
-        // TODO
+        const getAdjLeft = (i: number) => i+1;
+        const getAdjRight = (i: number) => i-1;
+
+        numOfEls = Math.max(3, numOfEls);
+
+        const getWays = (i: number, j: number) => {
+            const isAdjLeft = getAdjLeft(i) === j;
+            const isAdjRight = getAdjRight(i) === j;
+            const isNext = isAdjLeft || isAdjRight;
+            const ways = {
+                [EnumArrangementRelations.AdjLeft]: isAdjLeft,       // 1 way,
+                [EnumArrangementRelations.AdjRight]: isAdjRight,     // 1 way
+                [EnumArrangementRelations.Next]: isNext,             // 2 ways
+                [EnumArrangementRelations.NotNext]: !isNext,         // N-2 ways
+                [EnumArrangementRelations.Left]: i < j,              // N/2-1 ways
+                [EnumArrangementRelations.Right]: i > j,             // N/2-1 ways
+            };
+
+            return ways;
+        };
+
+        const settings = this.settings;
+        const symbols = getSymbols(settings);
+        const words = pickUniqueItems(symbols, numOfEls).picked;
+        const question = new Question(EnumQuestionType.LinearArrangement);
+        console.log(words);
+        
+        let premises: string[][] = [];
+        let subjects = [...words];
+        let a: string | undefined = undefined;
+        for (let safe = 1e2; safe && premises.length < numOfEls-1; safe--) {
+            const ways = [];
+
+            const defWays = [EnumArrangementRelations.AdjLeft, EnumArrangementRelations.AdjRight];
+
+            ways.push(...defWays);
+            if (premises.length > 1) {
+                ways.push(EnumArrangementRelations.Next);
+            }
+            if (premises.length >= subjects.length) {
+                ways.push(EnumArrangementRelations.Left, EnumArrangementRelations.Right);
+            }
+            if (subjects.length < 3) {
+                ways.push(EnumArrangementRelations.NotNext);
+            }
+
+            let premise: string[] | undefined = undefined;
+            let safe = 1e2;
+            for (; safe && premise == undefined; safe--) {
+                a = a || pickUniqueItems(subjects, 1).picked[0];
+                console.log("a", a);
+                const aid = words.indexOf(a);
+
+                // It should try to go a def route first...
+                if (ways.length === defWays.length) {
+                    const bidLeft = getAdjLeft(aid);
+                    const bLeft = words[bidLeft];
+
+                    const bidRight = getAdjRight(aid);
+                    const bRight = words[bidRight];
+
+                    const existsAndNotRepeated = (b: string | undefined) => {
+                        return b && !premises.find(([_a, _, _b]) => _a === b || _b === b);
+                    }
+
+                    const bWays = [];
+                    if (existsAndNotRepeated(bLeft)) {
+                        bWays.push([EnumArrangementRelations.AdjLeft, bLeft]);
+                    }
+                    if (existsAndNotRepeated(bRight)) {
+                        bWays.push([EnumArrangementRelations.AdjRight, bRight]);
+                    }
+
+                    if (bWays.length) {
+                        const [targetWay, b] = pickUniqueItems(bWays, 1).picked[0];
+                        console.log("b", b);
+                        premise = [a, targetWay, b];
+                        subjects = subjects.filter(s => s !== a && s !== b);
+                        a = b;
+                        break;
+                    }
+                }
+
+                // ...otherwise pick any available route
+                const b = pickUniqueItems(subjects, 1).picked[0];
+                console.log("b non-def", b);
+                const bid = words.indexOf(b);
+                const [ targetWay, canGoThere ] = pickUniqueItems(Object.entries(getWays(aid, bid)), 1).picked[0];
+                if (canGoThere) {
+                    premise = [a, targetWay, b];
+                    subjects = subjects.filter(s => s !== a && s !== b)
+                    a = b;
+                }
+            }
+            premises.push([...premise!, guid()]);
+        }
+
+        // Randomly switch a with b while preserving the relationship
+        premises = premises.map(([a, rel, b, guid])  => {
+            if (rel && coinFlip()) {
+                switch (rel) {
+                    case EnumArrangementRelations.AdjLeft: {
+                        return [b, EnumArrangementRelations.AdjRight, a, guid];
+                    }
+                    case EnumArrangementRelations.AdjRight: {
+                        return [b, EnumArrangementRelations.AdjLeft, a, guid];
+                    }
+                    case EnumArrangementRelations.Next: {
+                        return [b, EnumArrangementRelations.Next, a, guid];
+                    }
+                    case EnumArrangementRelations.NotNext: {
+                        return [b, EnumArrangementRelations.NotNext, a, guid];
+                    }
+                    case EnumArrangementRelations.Left: {
+                        return [b, EnumArrangementRelations.Right, a, guid];
+                    }
+                    case EnumArrangementRelations.Right: {
+                        return [b, EnumArrangementRelations.Left, a, guid];
+                    }
+                }
+            }
+            return [a, rel, b, guid];
+        });
+
+        shuffle(premises);
+
+        alterArrangementPremisesWithMetaRelations(settings, premises);
+
+        premises.unshift([`There are ${numOfEls} subjects along a linear path.`]);
+        let b: string | undefined = undefined;
+        for (let safe = 1e2; safe && b == undefined; safe--) {
+            const subject = pickUniqueItems(words, 1).picked[0];
+            const alreadyRelated = premises.find(([_a, _, _b]) => (_a === a && _b === subject) || (_a === subject && _b === a));
+            if (subject !== a && !alreadyRelated) {
+                b = subject;
+            }
+        }
+        const [aid, bid] = [words.indexOf(a!), words.indexOf(b!)];
+        const ways = getWays(aid, bid);
+        // console.log(a, b);
+
+        question.isValid = coinFlip();
+        const conclusionWays = Object.entries(ways).filter(([_, b]) => b === question.isValid).map(x => x[0]);
+        question.conclusion = `<span class="subject">${a}</span> ${pickUniqueItems(conclusionWays, 1).picked[0]} <span class="subject">${b}</span>`;
+
+        question.rule = words.join(", ");
+        (question as any).rawPremises = premises;
+        question.premises = premises.map(([a, rel, b], i) => i === 0 ? a : `<span class="subject">${a}</span> ${rel} <span class="subject">${b}</span>`);
+
+        return question;
     }
 
     createCircularArrangement(numOfEls: number) {
-        enum EnumRelations {
-            AdjLeft = "is to the immediate left of",
-            AdjRight = "is to the immediate right of",
-            Next = "is next to",
-            NotNext = "is not next to",
-            Left = "is at the left of",
-            Right = "is at the right of",
-            InFront = "is diametrically opposite to",
-            NotInFront = "is not diametrically opposite to",
-        };
-
         const getAdjLeft = (i: number) => (numOfEls+(i+1))%numOfEls;
         const getAdjRight = (i: number) => (numOfEls+(i-1))%numOfEls;
         const getInFront = (i: number) => (i+(numOfEls/2))%numOfEls;
@@ -962,20 +1101,20 @@ export class SyllogimousService {
             const isNext = isAdjLeft || isAdjRight;
             const isInFront = getInFront(i) === j;
             const ways = {
-                [EnumRelations.AdjLeft]: isAdjLeft,       // 1 way,
-                [EnumRelations.AdjRight]: isAdjRight,     // 1 way
-                [EnumRelations.Next]: isNext,             // 2 ways
-                [EnumRelations.NotNext]: !isNext,         // N-2 ways
-                [EnumRelations.Left]: j < getInFront(i),  // N/2-1 ways
-                [EnumRelations.Right]: j > getInFront(i), // N/2-1 ways
-                [EnumRelations.InFront]: isInFront,       // 1 way
-                [EnumRelations.NotInFront]: !isInFront,   // N-2 ways
+                [EnumArrangementRelations.AdjLeft]: isAdjLeft,       // 1 way,
+                [EnumArrangementRelations.AdjRight]: isAdjRight,     // 1 way
+                [EnumArrangementRelations.Next]: isNext,             // 2 ways
+                [EnumArrangementRelations.NotNext]: !isNext,         // N-2 ways
+                [EnumArrangementRelations.Left]: j < getInFront(i),  // N/2-1 ways
+                [EnumArrangementRelations.Right]: j > getInFront(i), // N/2-1 ways
+                [EnumArrangementRelations.InFront]: isInFront,       // 1 way
+                [EnumArrangementRelations.NotInFront]: !isInFront,   // N-2 ways
             };
 
             // Odd num of els do not make for diametrically opposite els
             if (numOfEls%2 !== 0) {
-                delete (ways as any)[EnumRelations.InFront];
-                delete (ways as any)[EnumRelations.NotInFront];
+                delete (ways as any)[EnumArrangementRelations.InFront];
+                delete (ways as any)[EnumArrangementRelations.NotInFront];
             }
 
             return ways;
@@ -985,37 +1124,36 @@ export class SyllogimousService {
         const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, numOfEls).picked;
         const question = new Question(EnumQuestionType.CircularArrangement);
-        console.log(words);
+        // console.log(words);
         
         let premises: string[][] = [];
         let subjects = [...words];
-        let safe = 1e2;
         let a: string | undefined = undefined;
-        while (safe-- && premises.length < numOfEls-1) {
+        for (let safe = 1e2; safe && premises.length < numOfEls-1; safe--) {
             const ways = [];
 
-            const defWays = [EnumRelations.AdjLeft, EnumRelations.AdjRight];
+            const defWays = [EnumArrangementRelations.AdjLeft, EnumArrangementRelations.AdjRight];
             const targetSubjectGetters = [getAdjLeft, getAdjRight];
             if (numOfEls%2 === 0) {
                 // Even num of els make for diametrically opposite els
-                defWays.push(EnumRelations.InFront);
+                defWays.push(EnumArrangementRelations.InFront);
                 targetSubjectGetters.push(getInFront);
             }
 
             ways.push(...defWays);
             if (premises.length > 1) {
-                ways.push(EnumRelations.Next);
+                ways.push(EnumArrangementRelations.Next);
             }
             if (premises.length >= subjects.length) {
-                ways.push(EnumRelations.Left, EnumRelations.Right);
+                ways.push(EnumArrangementRelations.Left, EnumArrangementRelations.Right);
             }
             if (subjects.length < 3) {
-                ways.push(EnumRelations.NotInFront, EnumRelations.NotNext);
+                ways.push(EnumArrangementRelations.NotInFront, EnumArrangementRelations.NotNext);
             }
 
             let premise: string[] | undefined = undefined;
-            let safe2 = 1e2;
-            while (safe2-- && premise == undefined) {
+            let safe = 1e2;
+            for (; safe && premise == undefined; safe--) {
                 const targetWay = pickUniqueItems(ways, 1).picked[0];
 
                 a = a || pickUniqueItems(subjects, 1).picked[0];
@@ -1028,7 +1166,7 @@ export class SyllogimousService {
                     let b = words[bid];
                     // console.log("b", b);
                     if (premises.find(([_a, _, _b]) => _a === b || _b === b)) {
-                        console.warn("already seen", 1e2 - safe2, "times");
+                        console.warn("already seen", (1e2 - safe) + 1, "times");
                         continue;
                     }
                     premise = [a, targetWay, b];
@@ -1038,7 +1176,7 @@ export class SyllogimousService {
                 }
 
                 const b = pickUniqueItems(subjects, 1).picked[0];
-                // console.log("b", b);
+                // console.log("b non-def", b);
                 const bid = words.indexOf(b);
                 const _ways = getWays(aid, bid);
                 if (_ways[targetWay]) {
@@ -1047,45 +1185,49 @@ export class SyllogimousService {
                     a = b;
                 }
             }
-            premises.push(premise!);
+            premises.push([...premise!, guid()]);
         }
 
         // Randomly switch a with b while preserving the relationship
-        premises = premises.map(([a, rel, b])  => {
+        premises = premises.map(([a, rel, b, guid])  => {
             if (rel && coinFlip()) {
                 switch (rel) {
-                    case EnumRelations.AdjLeft: {
-                        return [b, EnumRelations.AdjRight, a];
+                    case EnumArrangementRelations.AdjLeft: {
+                        return [b, EnumArrangementRelations.AdjRight, a, guid];
                     }
-                    case EnumRelations.AdjRight: {
-                        return [b, EnumRelations.AdjLeft, a];
+                    case EnumArrangementRelations.AdjRight: {
+                        return [b, EnumArrangementRelations.AdjLeft, a, guid];
                     }
-                    case EnumRelations.InFront: {
-                        return [b, EnumRelations.InFront, a];
+                    case EnumArrangementRelations.InFront: {
+                        return [b, EnumArrangementRelations.InFront, a, guid];
                     }
-                    case EnumRelations.Next: {
-                        return [b, EnumRelations.Next, a];
+                    case EnumArrangementRelations.NotInFront: {
+                        return [b, EnumArrangementRelations.NotInFront, a, guid];
                     }
-                    case EnumRelations.NotInFront: {
-                        return [b, EnumRelations.NotInFront, a];
+                    case EnumArrangementRelations.Next: {
+                        return [b, EnumArrangementRelations.Next, a, guid];
                     }
-                    case EnumRelations.Left: {
-                        return [b, EnumRelations.Right, a];
+                    case EnumArrangementRelations.NotNext: {
+                        return [b, EnumArrangementRelations.NotNext, a, guid];
                     }
-                    case EnumRelations.Right: {
-                        return [b, EnumRelations.Left, a];
+                    case EnumArrangementRelations.Left: {
+                        return [b, EnumArrangementRelations.Right, a, guid];
+                    }
+                    case EnumArrangementRelations.Right: {
+                        return [b, EnumArrangementRelations.Left, a, guid];
                     }
                 }
             }
-            return [a, rel, b];
+            return [a, rel, b, guid];
         });
 
         shuffle(premises);
 
+        alterArrangementPremisesWithMetaRelations(settings, premises);
+
         premises.unshift([`There are ${numOfEls} subjects along a circular path.`]);
         let b: string | undefined = undefined;
-        let safe3 = 1e2;
-        while (safe3-- && b == undefined) {
+        for (let safe = 1e2; safe && b == undefined; safe--) {
             const subject = pickUniqueItems(words, 1).picked[0];
             const alreadyRelated = premises.find(([_a, _, _b]) => (_a === a && _b === subject) || (_a === subject && _b === a));
             if (subject !== a && !alreadyRelated) {
@@ -1098,11 +1240,11 @@ export class SyllogimousService {
 
         question.isValid = coinFlip();
         const conclusionWays = Object.entries(ways).filter(([_, b]) => b === question.isValid).map(x => x[0]);
-        question.conclusion = [a, pickUniqueItems(conclusionWays, 1).picked[0], b].join(" ");
+        question.conclusion = `<span class="subject">${a}</span> ${pickUniqueItems(conclusionWays, 1).picked[0]} <span class="subject">${b}</span>`;
 
         question.rule = words.join(", ");
-        question.premises = premises.map(p => p.join(" "));
+        question.premises = premises.map(([a, rel, b], i) => i === 0 ? a : `<span class="subject">${a}</span> ${rel} <span class="subject">${b}</span>`);
 
-        console.log(question);
+        return question;
     }
 }
