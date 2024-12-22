@@ -7,18 +7,19 @@
 
 .correct {
     background-color: #D4EDDA88;
-    color: #155724;
+    color: #000;
 }
 
 .incorrect {
     background-color: #F8D7DA88;
-    color: #721C24;
+    color: #000;
 }
 
 .timeout {
     background-color: #E0E0E088;
-    color: #424242;
+    color: #000;
 }
+
 
 .bd-left {
     border-top: 1px solid #0006;
