@@ -333,7 +333,7 @@ export function makeMetaRelationsNew(settings: Settings, question: Question, len
     }
 }
 
-export function alterArrangementWithMetaRelations(settings: Settings, premises: string[][]) {
+export function alterArrangementWithMetaRelations(settings: Settings, question: Question, premises: string[][]) {
     if (1 == 1 || settings.enableMeta && coinFlip()) {
         const premisesByRelation: { [key: string]: { same: string[][], opposite: string[][] }} = {};
         for (const p of premises) {
@@ -389,6 +389,7 @@ export function alterArrangementWithMetaRelations(settings: Settings, premises: 
             const premise = premises.find(p => p[3] === a[3])!;
             premise[1] = `has the same relationship of <span class="subject">${b[0]}</span> to <span class="subject">${b[2]}</span> with`;
             console.warn("altered same meta-relation", premise);
+            question.metaRelations++;
         }
         
         let oppositeRelations = Object.values(premisesByRelation)
@@ -409,6 +410,7 @@ export function alterArrangementWithMetaRelations(settings: Settings, premises: 
             const premise = premises.find(p => p[3] === _a[3])!;
             premise[1] = `has the opposite relationship of <span class="subject">${_b[0]}</span> to <span class="subject">${_b[2]}</span> with`;
             console.warn("altered opposite meta-relation", premise);
+            question.metaRelations++;
         }
     }
 }

@@ -1038,7 +1038,7 @@ export class SyllogimousService {
 
         shuffle(premises);
 
-        alterArrangementWithMetaRelations(settings, premises);
+        alterArrangementWithMetaRelations(settings, question, premises);
 
         let b: string | undefined = undefined;
         for (let safe = 1e2; safe && b == undefined; safe--) {
@@ -1180,7 +1180,7 @@ export class SyllogimousService {
 
         shuffle(premises);
 
-        alterArrangementWithMetaRelations(settings, premises);
+        alterArrangementWithMetaRelations(settings, question, premises);
 
         let b: string | undefined = undefined;
         for (let safe = 1e2; safe && b == undefined; safe--) {
