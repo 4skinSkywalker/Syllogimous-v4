@@ -1071,11 +1071,8 @@ export class SyllogimousService {
         numOfEls = Math.max(3, numOfEls);
 
         const getWays = (i: number, j: number) => {
-            // Set i to 0 and derive j
-            if (i > numOfEls/2) {
-                j = numOfEls+((j-i)%numOfEls);
-                i = 0;
-            }
+            j = (numOfEls+(j-i))%numOfEls;
+            i = 0;
 
             const isAdjLeft = getAdjLeft(i) === j;
             const isAdjRight = getAdjRight(i) === j;
@@ -1093,7 +1090,6 @@ export class SyllogimousService {
             // Odd num of els do not make for diametrically opposite els
             if (numOfEls%2 !== 0) {
                 delete (ways as any)[EnumArrangementRelations.InFront];
-                delete (ways as any)[EnumArrangementRelations.NotInFront];
             }
 
             return ways;

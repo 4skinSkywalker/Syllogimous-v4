@@ -24,6 +24,8 @@ import { TutorialDirection3DTemporalComponent } from './pages/tutorial/direction
 import { TutorialDirection4DComponent } from './pages/tutorial/direction4D/direction4D.component';
 import { TutorialAnalogyComponent } from './pages/tutorial/analogy/analogy.component';
 import { TutorialBinaryComponent } from './pages/tutorial/binary/binary.component';
+import { TutorialLinearArrangementComponent } from './pages/tutorial/linear-arrangement/linear-arrangement.component';
+import { TutorialCircularArrangementComponent } from './pages/tutorial/circular-arrangement/circular-arrangement.component';
 import { EnumQuestionType } from './models/question.models';
 import { AccuracyStatsComponent } from './pages/stats/accuracy-stats/accuracy-stats.component';
 import { ErrorAnalysisComponent } from './pages/stats/error-analysis/error-analysis.component';
@@ -63,6 +65,8 @@ const routes: Routes = [
           { path: EnumQuestionType.Direction4D, component: TutorialDirection4DComponent },
           { path: EnumQuestionType.Analogy, component: TutorialAnalogyComponent },
           { path: EnumQuestionType.Binary, component: TutorialBinaryComponent },
+          { path: EnumQuestionType.LinearArrangement, component: TutorialLinearArrangementComponent },
+          { path: EnumQuestionType.CircularArrangement, component: TutorialCircularArrangementComponent },
         ]
       },
       { path: EnumScreens.Stats, component: StatsComponent },
@@ -96,6 +100,8 @@ const routes: Routes = [
     TutorialDirection4DComponent,
     TutorialAnalogyComponent,
     TutorialBinaryComponent,
+    TutorialLinearArrangementComponent,
+    TutorialCircularArrangementComponent,
     StatsComponent,
     AccuracyStatsComponent,
     ErrorAnalysisComponent,
