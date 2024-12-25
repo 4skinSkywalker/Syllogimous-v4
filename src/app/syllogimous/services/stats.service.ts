@@ -24,7 +24,7 @@ export class StatsService {
             );
             
             tbs.type = type;
-            tbs.completed = questions.length;
+            tbs.completed = questionsByType.length;
             tbs.accuracy = questionsByType.filter(q => q.userAnswer === q.isValid).length / (questions.length || 1);
 
             for (const q of questionsByType) {
