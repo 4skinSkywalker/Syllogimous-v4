@@ -40,7 +40,7 @@ export class StartComponent {
     ngOnInit() {
         const currTierIdx = this.tiers.findIndex(tier => tier === this.sylSrv.tier);
         this.nextTier = this.tiers[currTierIdx + 1] || "--";
-        this.pointsRemaining = this.nextTier ? (TIER_SCORE_RANGES[this.nextTier].minScore - this.sylSrv.score) : 0;
+        this.pointsRemaining = this.nextTier ? (TIER_SCORE_RANGES[this.nextTier as EnumTiers].minScore - this.sylSrv.score) : 0;
 
         this.questions = this.sylSrv.questionsFromLS;
 
