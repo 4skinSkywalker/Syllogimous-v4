@@ -11,7 +11,6 @@ export enum EnumQuestionType {
     Analogy = "Analogy",
     LinearArrangement = "Linear Arrangement",
     CircularArrangement = "Circular Arrangement",
-    Unknown = "Unknown",
 }
 
 export enum EnumArrangementRelations {

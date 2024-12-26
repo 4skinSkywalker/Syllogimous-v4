@@ -8,7 +8,7 @@ import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ModalLevelChangeComponent } from "../components/modal-level-change/modal-level-change.component";
 import { Router } from "@angular/router";
-import { canGenerateQuestion, Settings } from "../models/settings.models";
+import { canGenerateQuestion, EnumQuestionGroup, QuestionSetting, Settings } from "../models/settings.models";
 import { DailyProgressService } from "./daily-progress.service";
 import { guid } from "src/app/utils/uuid";
 
@@ -82,60 +82,72 @@ export class SyllogimousService {
         localStorage.setItem(LS_HISTORY, JSON.stringify(this.history));
     }
 
+    /** Given question type and number of premises, returns a question creator function */
+    getCreateFn(questionType: EnumQuestionType, qtyPremises: number) {
+        return {
+            [EnumQuestionType.Distinction]: () => this.createDistinction(qtyPremises),
+            [EnumQuestionType.Syllogism]: () => this.createSyllogism(qtyPremises),
+            [EnumQuestionType.Analogy]: () => this.createAnalogy(qtyPremises),
+            [EnumQuestionType.Binary]: () => this.createBinary(qtyPremises),
+            [EnumQuestionType.ComparisonNumerical]: () => this.createComparison(qtyPremises, EnumQuestionType.ComparisonNumerical),
+            [EnumQuestionType.ComparisonChronological]: () => this.createComparison(qtyPremises, EnumQuestionType.ComparisonChronological),
+            [EnumQuestionType.LinearArrangement]: () => this.createLinearArrangement(qtyPremises),
+            [EnumQuestionType.CircularArrangement]: () => this.createCircularArrangement(qtyPremises),
+            [EnumQuestionType.Direction]: () => this.createDirection(qtyPremises),
+            [EnumQuestionType.Direction3DSpatial]: () => this.createDirection3D(qtyPremises, EnumQuestionType.Direction3DSpatial),
+            [EnumQuestionType.Direction3DTemporal]: () => this.createDirection3D(qtyPremises, EnumQuestionType.Direction3DTemporal),
+            [EnumQuestionType.Direction4D]: () => this.createDirection4D(qtyPremises),
+        }[questionType];
+    }
+
+    /** Return a random question based on the current settings */
     createQuestion() {
         const settings = this.settings;
-    
+
+        const typeSettingTuples =  Object.entries(settings.question) as [EnumQuestionType, QuestionSetting][];
+        const comparisonQuestions = typeSettingTuples.filter(([qt, qs]) => qs.group == EnumQuestionGroup.Comparison);
+        const directionQuestions = typeSettingTuples.filter(([qt, qs]) => qs.group == EnumQuestionGroup.Direction);
+        const arrangementQuestions = typeSettingTuples.filter(([qt, qs]) => qs.group == EnumQuestionGroup.Arrangement);
+        const ungroupedQuestions = typeSettingTuples.filter(([qt, qs]) => qs.group == undefined);
+
         const choices = [];
-        if (settings.distinction[0]) {
-            choices.push(() => this.createDistinction(settings.distinction[1]));
-        }
-        if (settings.syllogism[0]) {
-            choices.push(() => this.createSyllogism(settings.syllogism[1]));
-        }
-        if (settings.analogy[0]) {
-            choices.push(() => this.createAnalogy(settings.analogy[1]));
-        }
-        if (settings.binary[0]) {
-            choices.push(() => this.createBinary(settings.binary[1]));
+        for (const [qt, qs] of ungroupedQuestions) {
+            if (qs.enabled) {
+                choices.push(this.getCreateFn(qt, qs.actual));
+            }
         }
 
+        // Pick one comparison question from the pool of comparisons
         const comparisonChoices = [];
-        if (settings.comparisonNumerical[0]) {
-            comparisonChoices.push(() => this.createComparison(settings.comparisonNumerical[1], EnumQuestionType.ComparisonNumerical));
-        }
-        if (settings.comparisonChronological[0]) {
-            comparisonChoices.push(() => this.createComparison(settings.comparisonChronological[1], EnumQuestionType.ComparisonChronological));
+        for (const [qt, qs] of comparisonQuestions) {
+            if (qs.enabled) {
+                comparisonChoices.push(this.getCreateFn(qt, qs.actual));
+            }
         }
         if (comparisonChoices.length) {
             choices.push(pickUniqueItems(comparisonChoices, 1).picked[0]);
         }
 
+        // Pick one direction question from the pool of directions
         const directionChoices = [];
-        if(settings.direction[0]) {
-            directionChoices.push(() => this.createDirection(settings.direction[1]));
-        }
-        if(settings.direction3DSpatial[0]) {
-            directionChoices.push(() => this.createDirection3D(settings.direction3DSpatial[1], EnumQuestionType.Direction3DSpatial));
-        }
-        if(settings.direction3DTemporal[0]) {
-            directionChoices.push(() => this.createDirection3D(settings.direction3DTemporal[1], EnumQuestionType.Direction3DTemporal));
-        }
-        if(settings.direction4D[0]) {
-            directionChoices.push(() => this.createDirection4D(settings.direction4D[1]));
+        for (const [qt, qs] of directionQuestions) {
+            if (qs.enabled) {
+                directionChoices.push(this.getCreateFn(qt, qs.actual));
+            }
         }
         if (directionChoices.length) {
             choices.push(pickUniqueItems(directionChoices, 1).picked[0]);
         }
 
-        const arrangementQuestions = [];
-        if(settings.linearArrangement[0]) {
-            arrangementQuestions.push(() => this.createLinearArrangement(settings.linearArrangement[1]));
+        // Pick one arrangement question from the pool of arrangements
+        const arrangementChoices = [];
+        for (const [qt, qs] of arrangementQuestions) {
+            if (qs.enabled) {
+                arrangementChoices.push(this.getCreateFn(qt, qs.actual));
+            }
         }
-        if(settings.circularArrangement[0]) {
-            arrangementQuestions.push(() => this.createCircularArrangement(settings.circularArrangement[1]));
-        }
-        if (arrangementQuestions.length) {
-            choices.push(pickUniqueItems(arrangementQuestions, 1).picked[0]);
+        if (arrangementChoices.length) {
+            choices.push(pickUniqueItems(arrangementChoices, 1).picked[0]);
         }
     
         if (!choices.length) {
@@ -228,14 +240,16 @@ export class SyllogimousService {
         this.router.navigate([EnumScreens.Feedback]);
     }
 
-    createSyllogism(qtaPremises: number) {
-        if (!canGenerateQuestion(EnumQuestionType.Syllogism, qtaPremises)) {
+    createSyllogism(numOfPremises: number) {
+        const type = EnumQuestionType.Syllogism;
+        const settings = this.settings;
+
+        if (!canGenerateQuestion(type, numOfPremises, settings)) {
             throw new Error("Cannot generate.");
         }
     
-        const length = qtaPremises + 1;
-        const settings = this.settings;
-        const question = new Question(EnumQuestionType.Syllogism);
+        const length = numOfPremises + 1;
+        const question = new Question(type);
         question.isValid = coinFlip();
 
         do {
@@ -268,15 +282,17 @@ export class SyllogimousService {
         return question;
     }
 
-    createDistinction(qtaPremises: number) {
-        if (!canGenerateQuestion(EnumQuestionType.Distinction, qtaPremises)) {
+    createDistinction(numOfPremises: number) {
+        const type = EnumQuestionType.Distinction;
+        const settings = this.settings;
+
+        if (!canGenerateQuestion(type, numOfPremises, settings)) {
             throw new Error("Cannot generate.");
         }
 
-        const length = qtaPremises + 1;
-        const settings = this.settings;
+        const length = numOfPremises + 1;
         const symbols = getRandomSymbols(settings, length);
-        const question = new Question(EnumQuestionType.Distinction);
+        const question = new Question(type);
 
         do {
             const rnd = Math.floor(Math.random() * symbols.length);
@@ -294,7 +310,7 @@ export class SyllogimousService {
                 curr = symbols.splice(rnd, 1);
 
                 const isSameAs = coinFlip();
-                const relation = getRelation(settings, EnumQuestionType.Distinction, isSameAs);
+                const relation = getRelation(settings, type, isSameAs);
 
                 question.premises.push(`<span class="subject">${prev}</span> is ${relation} <span class="subject">${curr}</span>`);
 
@@ -310,7 +326,7 @@ export class SyllogimousService {
             makeMetaRelationsNew(settings, question, length);
             
             const isSameAs = coinFlip();
-            const relation = getRelation(settings, EnumQuestionType.Distinction, isSameAs);
+            const relation = getRelation(settings, type, isSameAs);
 
             question.conclusion = `<span class="subject">${first}</span> is ${relation} <span class="subject">${curr}</span>`;
             question.isValid = isSameAs
@@ -323,13 +339,14 @@ export class SyllogimousService {
         return question;
     }
 
-    createComparison(qtaPremises: number, type: EnumQuestionType.ComparisonNumerical | EnumQuestionType.ComparisonChronological) {
-        if (!canGenerateQuestion(type, qtaPremises)) {
+    createComparison(numOfPremises: number, type: EnumQuestionType.ComparisonNumerical | EnumQuestionType.ComparisonChronological) {
+        const settings = this.settings;
+
+        if (!canGenerateQuestion(type, numOfPremises, settings)) {
             throw new Error("Cannot generate.");
         }
 
-        const length = qtaPremises + 1;
-        const settings = this.settings;
+        const length = numOfPremises + 1;
         const question = new Question(type);
 
         do {
@@ -372,16 +389,18 @@ export class SyllogimousService {
         return question;
     }
 
-    createDirection(qtaPremises: number) {
-        if (!canGenerateQuestion(EnumQuestionType.Direction, qtaPremises)) {
+    createDirection(qtyPremises: number) {
+        const type = EnumQuestionType.Direction;
+        const settings = this.settings;
+
+        if (!canGenerateQuestion(type, qtyPremises, settings)) {
             throw new Error("Cannot generate.");
         }
 
-        const length = qtaPremises + 1;
-        const settings = this.settings;
+        const length = qtyPremises + 1;
         const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, length).picked;
-        const question = new Question(EnumQuestionType.Direction);
+        const question = new Question(type);
 
         let wordCoordMap: Record<string, [number, number]> = {};
         let conclusionSubjects = ["", ""];
@@ -406,7 +425,7 @@ export class SyllogimousService {
                     wordCoordMap[words[i]][1] + dirCoord[1]  // y
                 ];
 
-                if (settings.enableNegation && coinFlip()) {
+                if (settings.enable.negation && coinFlip()) {
                     question.negations++;
                     if (coinFlip()) {
                         question.premises.push(`<span class="subject">${words[i+1]}</span> is <span class="is-negated">${(DIRECTION_NAMES_INVERSE as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
@@ -443,7 +462,7 @@ export class SyllogimousService {
                 : findDirection(bCoords, aCoords);
         }
 
-        if (settings.enableNegation && coinFlip()) {
+        if (settings.enable.negation && coinFlip()) {
             question.negations++;
             if (coinFlip()) {
                 question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> is <span class="is-negated">${(DIRECTION_NAMES_INVERSE as any)[conclusionDirection]}</span> of <span class="subject">${conclusionSubjects[1]}</span>`;
@@ -463,13 +482,14 @@ export class SyllogimousService {
         return question;
     }
 
-    createDirection3D(qtaPremises: number, type: EnumQuestionType.Direction3DSpatial | EnumQuestionType.Direction3DTemporal) {
-        if (!canGenerateQuestion(type, qtaPremises)) {
+    createDirection3D(numOfPremises: number, type: EnumQuestionType.Direction3DSpatial | EnumQuestionType.Direction3DTemporal) {
+        const settings = this.settings;
+
+        if (!canGenerateQuestion(type, numOfPremises, settings)) {
             throw new Error("Cannot generate.");
         }
 
-        const length = qtaPremises + 1;
-        const settings = this.settings;
+        const length = numOfPremises + 1;
         const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, length).picked;
         const question = new Question(type);
@@ -502,7 +522,7 @@ export class SyllogimousService {
                     wordCoordMap[words[i]][2] + dirCoord[2], // z
                 ];
 
-                if (settings.enableNegation && coinFlip()) {
+                if (settings.enable.negation && coinFlip()) {
                     question.negations++;
                     if (coinFlip()) {
                         question.premises.push(`<span class="subject">${words[i+1]}</span> is <span class="is-negated">${(direction_names_inverse as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
@@ -539,7 +559,7 @@ export class SyllogimousService {
                 : findDirection3D(bCoords, aCoords, isTemporal);
         }
 
-        if (settings.enableNegation && coinFlip()) {
+        if (settings.enable.negation && coinFlip()) {
             question.negations++;
             if (coinFlip()) {
                 question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> is <span class="is-negated">${(direction_names_inverse as any)[conclusionDirection]}</span> of <span class="subject">${conclusionSubjects[1]}</span>`;
@@ -559,16 +579,18 @@ export class SyllogimousService {
         return question;
     }
 
-    createDirection4D(qtaPremises: number) {
-        if (!canGenerateQuestion(EnumQuestionType.Direction4D, qtaPremises)) {
+    createDirection4D(numOfPremises: number) {
+        const type = EnumQuestionType.Direction4D;
+        const settings = this.settings;
+
+        if (!canGenerateQuestion(type, numOfPremises, settings)) {
             throw new Error("Cannot generate.");
         }
 
-        const length = qtaPremises + 1;
-        const settings = this.settings;
+        const length = numOfPremises + 1;
         const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, length).picked;
-        const question = new Question(EnumQuestionType.Direction4D);
+        const question = new Question(type);
     
         let wordCoordMap: Record<string, [number, number, number, number]> = {};
         let conclusionSubjects = ["", ""];
@@ -597,7 +619,7 @@ export class SyllogimousService {
                     wordCoordMap[words[i]][3] + timeIndex,   // time
                 ];
 
-                if (settings.enableNegation && coinFlip()) {
+                if (settings.enable.negation && coinFlip()) {
                     question.negations++;
                     if (coinFlip()) {
                         question.premises.push(`<span class="subject">${words[i+1]}</span> ${timeName} <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
@@ -633,7 +655,7 @@ export class SyllogimousService {
                 ? findDirection4D(aCoords, bCoords)
                 : findDirection4D(bCoords, aCoords);
         }
-        if (settings.enableNegation && coinFlip()) {
+        if (settings.enable.negation && coinFlip()) {
             question.negations++;
             if (coinFlip()) {
                 question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> ${conclusionDirection.temporal} <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[conclusionDirection.spatial]}</span> of <span class="subject">${conclusionSubjects[1]}</span>`;
@@ -654,38 +676,63 @@ export class SyllogimousService {
     }
 
     createAnalogy(length: number) {
+        const topType = EnumQuestionType.Analogy;
         const settings = this.settings;
-        if (!canGenerateQuestion(EnumQuestionType.Analogy, length, settings)) {
+
+        if (!canGenerateQuestion(topType, length, settings)) {
             throw new Error("Cannot generate.");
         }
 
         const choiceIndices = [];
-    
-        if (settings.distinction[0]) {
+        if (settings.question[EnumQuestionType.Distinction].enabled) {
             choiceIndices.push(0);
         }
-        if (settings.comparisonNumerical[0]) {
-            choiceIndices.push(1);
+
+        // Randomly pick one comparison question from the comparison questions enabled
+        const comparisonChoices = [];
+        if (settings.question[EnumQuestionType.ComparisonNumerical].enabled) {
+            comparisonChoices.push(1);
         }
-        if (settings.comparisonChronological[0]) {
-            choiceIndices.push(2);
+        if (settings.question[EnumQuestionType.ComparisonChronological].enabled) {
+            comparisonChoices.push(2);
         }
-        if (settings.direction[0]) {
-            choiceIndices.push(3);
+        if (comparisonChoices.length) {
+            choiceIndices.push(pickUniqueItems(comparisonChoices, 1).picked[0]);
         }
-        if (settings.direction3DSpatial[0]) {
-            choiceIndices.push(4);
+
+        // Randomly pick one direction question from the direction questions enabled
+        const directionsChoices = [];
+        if (settings.question[EnumQuestionType.Direction].enabled) {
+            directionsChoices.push(3);
         }
-        if (settings.direction3DTemporal[0]) {
-            choiceIndices.push(5);
+        if (settings.question[EnumQuestionType.Direction3DSpatial].enabled) {
+            directionsChoices.push(4);
         }
-        if (settings.direction4D[0]) {
-            choiceIndices.push(6);
+        if (settings.question[EnumQuestionType.Direction3DTemporal].enabled) {
+            directionsChoices.push(5);
         }
+        if (settings.question[EnumQuestionType.Direction4D].enabled) {
+            directionsChoices.push(6);
+        }
+        if (directionsChoices.length) {
+            choiceIndices.push(pickUniqueItems(directionsChoices, 1).picked[0]);
+        }
+
+        // TODO: Randomly pick one arrangement question from the arrangement questions enabled
+        /* const arrangementChoices = [];
+        if (settings.question[EnumQuestionType.LinearArrangement].enabled) {
+            arrangementChoices.push(7);
+        }
+        if (settings.question[EnumQuestionType.CircularArrangement].enabled) {
+            arrangementChoices.push(8);
+        }
+        if (arrangementChoices.length) {
+            choiceIndices.push(pickUniqueItems(arrangementChoices, 1).picked[0]);
+        }*/
     
         const choiceIndex = pickUniqueItems(choiceIndices, 1).picked[0];
 
-        let question = new Question(EnumQuestionType.Analogy);
+        let question = new Question(topType);
         let isValidSame;
         let a, b, c, d;
         let indexOfA, indexOfB, indexOfC, indexOfD;
@@ -695,7 +742,7 @@ export class SyllogimousService {
         switch (choiceIndex) {
             case 0:
                 question = this.createDistinction(length);
-                question.type = EnumQuestionType.Analogy;
+                question.type = topType;
                 question.conclusion = "";
         
                 [a, b, c, d] = pickUniqueItems([...question.buckets[0], ...question.buckets[1]], 4).picked;
@@ -716,9 +763,11 @@ export class SyllogimousService {
                 break;
             case 1:
             case 2:
-                const type = (choiceIndex === 1) ? EnumQuestionType.ComparisonNumerical : EnumQuestionType.ComparisonChronological;
+                const type = (choiceIndex === 1) 
+                    ? EnumQuestionType.ComparisonNumerical
+                    : EnumQuestionType.ComparisonChronological;
                 question = this.createComparison(length, type);
-                question.type = EnumQuestionType.Analogy;
+                question.type = topType;
                 question.conclusion = "";
 
                 [a, b, c, d] = pickUniqueItems(question.bucket, 4).picked;
@@ -731,7 +780,7 @@ export class SyllogimousService {
             case 3:
                 while (flip !== isValidSame) {
                     question = this.createDirection(length);
-                    question.type = EnumQuestionType.Analogy;
+                    question.type = topType;
                     question.conclusion = "";
 
                     [a, b, c, d] = pickUniqueItems(Object.keys(question.wordCoordMap), 4).picked;
@@ -745,9 +794,12 @@ export class SyllogimousService {
             case 4:
             case 5:
                 while (flip !== isValidSame) {
-                    const type = (choiceIndex === 4) ? EnumQuestionType.Direction3DSpatial : EnumQuestionType.Direction3DTemporal;
+                    const type = (choiceIndex === 4) 
+                        ? EnumQuestionType.Direction3DSpatial
+                        : EnumQuestionType.Direction3DTemporal;
+                    const isTemporal = type === EnumQuestionType.Direction3DTemporal;
                     question = this.createDirection3D(length, type);
-                    question.type = EnumQuestionType.Analogy;
+                    question.type = topType;
                     question.conclusion = "";
 
                     [a, b, c, d] = pickUniqueItems(Object.keys(question.wordCoordMap), 4).picked;
@@ -756,12 +808,12 @@ export class SyllogimousService {
                     const dirA = findDirection3D(
                         question.wordCoordMap[a] as any,
                         question.wordCoordMap[b] as any,
-                        type === EnumQuestionType.Direction3DTemporal
+                        isTemporal
                     );
                     const dirB = findDirection3D(
                         question.wordCoordMap[c] as any,
                         question.wordCoordMap[d] as any,
-                        type === EnumQuestionType.Direction3DTemporal
+                        isTemporal
                     );
                     isValidSame = dirA === dirB;
                 }
@@ -769,7 +821,7 @@ export class SyllogimousService {
             case 6:
                 while (flip !== isValidSame) {
                     question = this.createDirection4D(length);
-                    question.type = EnumQuestionType.Analogy;
+                    question.type = topType;
                     question.conclusion = "";
 
                     [a, b, c, d] = pickUniqueItems(Object.keys(question.wordCoordMap), 4).picked;
@@ -780,6 +832,14 @@ export class SyllogimousService {
                     isValidSame = (spatial === spatial2) && (temporal === temporal2);
                 }
                 break;
+            case 7: {
+                // TODO: Linear arrangement
+                break;
+            }
+            case 8: {
+                // TODO: Circular arrangement
+                break;
+            }
         }
 
         if (isValidSame === undefined) {
@@ -789,7 +849,7 @@ export class SyllogimousService {
         const isSameRelation = coinFlip();
         question.isValid = isSameRelation ? isValidSame : !isValidSame;
 
-        if (settings.enableNegation && coinFlip()) {
+        if (settings.enable.negation && coinFlip()) {
             question.negations++;
             if (isSameRelation) {
                 if (choiceIndex < 1) {
@@ -826,8 +886,10 @@ export class SyllogimousService {
     }
 
     createBinary(length: number) {
+        const topType = EnumQuestionType.Binary;
         const settings = this.settings;
-        if (!canGenerateQuestion(EnumQuestionType.Binary, length, settings)) {
+
+        if (!canGenerateQuestion(topType, length, settings)) {
             throw new Error("Cannot generate.");
         }
 
@@ -836,32 +898,32 @@ export class SyllogimousService {
         const operandTemplates = [];
         const pool = [];
     
-        if (settings.enableAnd) {
+        if (settings.enable.binary.and) {
             operands.push("a&&b");
             operandNames.push("AND");
             operandTemplates.push('$a <div class="is-connector">and</div> $b');
         }
-        if (settings.enableNand) {
+        if (settings.enable.binary.nand) {
             operands.push("!(a&&b)");
             operandNames.push("NAND");
             operandTemplates.push('$a <div class="is-connector">and</div> $b <div class="is-connector">are not both true</div>');
         }
-        if (settings.enableOr) {
+        if (settings.enable.binary.or) {
             operands.push("a||b");
             operandNames.push("OR");
             operandTemplates.push('$a <div class="is-connector">or</div> $b');
         }
-        if (settings.enableNor) {
+        if (settings.enable.binary.nor) {
             operands.push("!(a||b)");
             operandNames.push("NOR");
             operandTemplates.push('$a <div class="is-connector">and</div> $b <div class="is-connector">are both false</div>');
         }
-        if (settings.enableXor) {
+        if (settings.enable.binary.xor) {
             operands.push("!(a&&b)&&(a||b)");
             operandNames.push("XOR");
             operandTemplates.push('$a <div class="is-connector">differs from</div> $b');
         }
-        if (settings.enableXnor) {
+        if (settings.enable.binary.xnor) {
             operands.push("!(!(a&&b)&&(a||b))");
             operandNames.push("XNOR");
             operandTemplates.push('$a <div class="is-connector">is equal to</div> $b');
@@ -910,7 +972,7 @@ export class SyllogimousService {
             );
         }
 
-        const question = new Question(EnumQuestionType.Binary);
+        const question = new Question(topType);
         const flip = coinFlip();
         const operandIndex = Math.floor(Math.random()*operands.length);
         const operand = operands[operandIndex];

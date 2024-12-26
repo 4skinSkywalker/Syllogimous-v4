@@ -50,35 +50,54 @@ export function areSettingsInvalid(settings: Settings) {
     return null;
 }
 
+export enum EnumQuestionGroup {
+    Comparison = "Comparison",
+    Direction = "Direction",
+    Arrangement = "Arrangement",
+}
+
 export class QuestionSetting {
     enabled: boolean;
     min: number;
+    actual: number; // TODO: set via minmmax function
     max: number;
     basic: boolean; // A basic question type can be utilized by high-order questions
+    group?: EnumQuestionGroup;
 
-    constructor(enabled: boolean, min: number, max: number, basic: boolean) {
+    constructor(
+        enabled: boolean,
+        min: number,
+        max: number,
+        basic: boolean,
+        group?: EnumQuestionGroup
+    ) {
         this.enabled = enabled;
-        this.min = min;
-        this.max = max;
+        this.min = min;     // Min number of premises
+        this.actual = min;  // Actual number of premises
+        this.max = max;     // Max number of premises
         this.basic = basic;
+        this.group = group;
     }
 }
 
 export class Settings {
     question = {
+        // Comparisons
+        [EnumQuestionType.ComparisonNumerical]: new QuestionSetting(true, 2, 9, true, EnumQuestionGroup.Comparison),
+        [EnumQuestionType.ComparisonChronological]: new QuestionSetting(true, 2, 9, true, EnumQuestionGroup.Comparison),
+        // Directions
+        [EnumQuestionType.Direction]: new QuestionSetting(true, 2, 9, true, EnumQuestionGroup.Direction),
+        [EnumQuestionType.Direction3DSpatial]: new QuestionSetting(true, 2, 9, true, EnumQuestionGroup.Direction),
+        [EnumQuestionType.Direction3DTemporal]: new QuestionSetting(true, 2, 9, true, EnumQuestionGroup.Direction),
+        [EnumQuestionType.Direction4D]: new QuestionSetting(true, 2, 9, true, EnumQuestionGroup.Direction),
+        // Arrangements
+        [EnumQuestionType.LinearArrangement]: new QuestionSetting(true, 3, 9, false, EnumQuestionGroup.Arrangement),
+        [EnumQuestionType.CircularArrangement]: new QuestionSetting(true, 3, 9, false, EnumQuestionGroup.Arrangement),
+        // Others
         [EnumQuestionType.Distinction]: new QuestionSetting(true, 2, 9, true),
-        [EnumQuestionType.ComparisonNumerical]: new QuestionSetting(true, 2, 9, true),
-        [EnumQuestionType.ComparisonChronological]: new QuestionSetting(true, 2, 9, true),
         [EnumQuestionType.Syllogism]: new QuestionSetting(true, 2, 9, true),
-        [EnumQuestionType.Direction]: new QuestionSetting(true, 2, 9, true),
-        [EnumQuestionType.Direction3DSpatial]: new QuestionSetting(true, 2, 9, true),
-        [EnumQuestionType.Direction3DTemporal]: new QuestionSetting(true, 2, 9, true),
-        [EnumQuestionType.Direction4D]: new QuestionSetting(true, 2, 9, true),
-        [EnumQuestionType.LinearArrangement]: new QuestionSetting(true, 3, 9, false),
-        [EnumQuestionType.CircularArrangement]: new QuestionSetting(true, 3, 9, false),
         [EnumQuestionType.Analogy]: new QuestionSetting(true, 3, 9, false),
         [EnumQuestionType.Binary]: new QuestionSetting(true, 4, 9, false),
-        [EnumQuestionType.Unknown]: new QuestionSetting(false, 9, 9, false),
     };
 
     enable = {

@@ -13,7 +13,6 @@ export class TypeBasedStats {
     [EnumQuestionType.Analogy]: TypeBasedStatsInner;
     [EnumQuestionType.LinearArrangement]: TypeBasedStatsInner;
     [EnumQuestionType.CircularArrangement]: TypeBasedStatsInner;
-    [EnumQuestionType.Unknown]: TypeBasedStatsInner;
 
     constructor() {
         this[EnumQuestionType.Syllogism] = new TypeBasedStatsInner();
@@ -28,7 +27,6 @@ export class TypeBasedStats {
         this[EnumQuestionType.Analogy] = new TypeBasedStatsInner();
         this[EnumQuestionType.LinearArrangement] = new TypeBasedStatsInner();
         this[EnumQuestionType.CircularArrangement] = new TypeBasedStatsInner();
-        this[EnumQuestionType.Unknown] = new TypeBasedStatsInner();
     }
 }
 
@@ -44,8 +42,8 @@ export class TypeBasedStatsInner {
         "6+": TypeBasedStatsInner2;
     };
     
-    constructor() {
-        this.type = EnumQuestionType.Unknown;
+    constructor(type: EnumQuestionType) {
+        this.type = type;
         this.completed = 0;
         this.accuracy = 0;
         this.stats = {
