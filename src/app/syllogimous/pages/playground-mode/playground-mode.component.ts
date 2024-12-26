@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IDynamicField } from 'src/app/shared/components/dynamic-form/dynamic-form.component';
-import { areSettingsInvalid, Settings } from 'src/app/syllogimous/models/settings.models';
+import { areSettingsInvalid, QuestionSetting, Settings } from 'src/app/syllogimous/models/settings.models';
 import { EnumScreens } from 'src/app/syllogimous/models/syllogimous.models';
 import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.service';
+import { EnumQuestionType } from '../../models/question.models';
 
 function capitalize(val: string) {
     return val[0].toUpperCase() + val.slice(1);
@@ -26,110 +27,87 @@ export class PlaygroundModeComponent {
     formData: any = {};
     validationError: string | null = null;
 
+    genericEnables: [string, boolean][];
+    binaryEnables: [string, boolean][];
+    questionControls: [string, QuestionSetting][];
+
     constructor(
         public router: Router,
         private modalService: NgbModal,
         private sylSrv: SyllogimousService,
     ) {
         const settings = this.sylSrv.playgroundSettings || new Settings();
-        for (const setting in settings) {
-            const settingValue = (settings as any)[setting];
-            
-            if (typeof settingValue === 'boolean') {
-                this.fields.push({
-                    field: setting,
-                    label: decomposeCamelCase(setting),
-                    type: "checkbox",
-                    value: settingValue,
-                });
-            }
 
-            if (Array.isArray((settings as any)[setting])) {
-                this.fields.push(
-                    { 
-                        filler: "<div></div>",
-                        field: "",
-                        label: ""
-                    },
-                    {
-                        field: setting,
-                        label: "Enable " + decomposeCamelCase(setting),
-                        type: "checkbox",
-                        value: settingValue[0],
-                    },
-                    {
-                        field: setting + "Premises",
-                        label: decomposeCamelCase(setting) + " Premises",
-                        type: "range",
-                        value: settingValue[1],
-                        min: settingValue[1],
-                        max: 10,
-                        step: 1
-                    }
-                );
-            }
+        this.genericEnables = Object.entries(settings.enable).filter(([field]) => field !== "binary") as [string, boolean][];
+        this.binaryEnables = Object.entries(settings.enable.binary);
+        this.questionControls = Object.entries(settings.question);
+
+        // Create generic boolean controls
+        for (const [field, value] of this.genericEnables) {
+            this.fields.push({
+                type: "checkbox",
+                label: decomposeCamelCase(field),
+                field,
+                value,
+            });
+        }
+
+        // Create binary boolean controls
+        for (const [field, value] of this.binaryEnables) {
+            this.fields.push({
+                type: "checkbox",
+                label: decomposeCamelCase(field),
+                field,
+                value,
+            });
+        }
+
+        // Create controls for questions (enable checkbox and num of premises slider)
+        for (const [qt, qs] of this.questionControls) {
+            this.fields.push(
+                { 
+                    filler: "<div></div>",
+                    field: "",
+                    label: ""
+                },
+                {
+                    field: qt,
+                    label: "Enable " + decomposeCamelCase(qt),
+                    type: "checkbox",
+                    value: qs.actual,
+                },
+                {
+                    field: qt + "premises",
+                    label: decomposeCamelCase(qt) + " Premises",
+                    type: "range",
+                    value: qs.actual,
+                    min: qs.min,
+                    max: qs.max,
+                    step: 1
+                }
+            );
         }
     }
 
     async play(content: any) {
-        const {
-            enableMeaningfulWords,
-            enableMeta,
-            enableNegation,
-            distinction,
-            distinctionPremises,
-            comparisonNumerical,
-            comparisonNumericalPremises,
-            comparisonChronological,
-            comparisonChronologicalPremises,
-            syllogism,
-            syllogismPremises,
-            direction,
-            directionPremises,
-            direction3DSpatial,
-            direction3DSpatialPremises,
-            direction3DTemporal,
-            direction3DTemporalPremises,
-            direction4D,
-            direction4DPremises,
-            linearArrangement,
-            linearArrangementPremises,
-            circularArrangement,
-            circularArrangementPremises,
-            analogy,
-            analogyPremises,
-            binary,
-            binaryPremises,
-            enableAnd,
-            enableNand,
-            enableOr,
-            enableNor,
-            enableXor,
-            enableXnor
-        } = this.formData;
-        
         const settings = new Settings();
-        settings.enableMeaningfulWords = enableMeaningfulWords;
-        settings.enableMeta = enableMeta;
-        settings.enableNegation = enableNegation;
-        settings.distinction = [distinction, distinctionPremises];
-        settings.comparisonNumerical = [comparisonNumerical, comparisonNumericalPremises];
-        settings.comparisonChronological = [comparisonChronological, comparisonChronologicalPremises];
-        settings.syllogism = [syllogism, syllogismPremises];
-        settings.direction = [direction, directionPremises];
-        settings.direction3DSpatial = [direction3DSpatial, direction3DSpatialPremises];
-        settings.direction3DTemporal = [direction3DTemporal, direction3DTemporalPremises];
-        settings.direction4D = [direction4D, direction4DPremises];
-        settings.linearArrangement = [linearArrangement, linearArrangementPremises]; 
-        settings.circularArrangement = [circularArrangement, circularArrangementPremises]; 
-        settings.analogy = [analogy, analogyPremises];
-        settings.binary = [binary, binaryPremises];
-        settings.enableAnd = enableAnd;
-        settings.enableNand = enableNand;
-        settings.enableOr = enableOr;
-        settings.enableNor = enableNor;
-        settings.enableXor = enableXor;
-        settings.enableXnor = enableXnor;
+
+        // Set generic boolean values
+        for (const [field, value] of this.genericEnables) {
+            (settings.enable as any)[field] = this.formData[field];
+        }
+
+        // Set binary boolean values
+        for (const [field, value] of this.binaryEnables) {
+            (settings.enable.binary as any)[field] = this.formData[field];
+        }
+
+        // Set question enables and num of premises
+        for (const [qt, qs] of this.questionControls) {
+            const _qt = qt as EnumQuestionType;
+            settings.question[_qt].enabled = this.formData[_qt];
+            settings.question[_qt].actual = this.formData[_qt + "premises"];
+        }
         
         // Check configuration
         this.validationError = areSettingsInvalid(settings);
@@ -139,7 +117,7 @@ export class PlaygroundModeComponent {
         }
         
         this.sylSrv.playgroundSettings = settings;
-        console.log("playgroundSettings", settings);
+        console.log("Playground settings", settings);
 
         this.sylSrv.play();
     }

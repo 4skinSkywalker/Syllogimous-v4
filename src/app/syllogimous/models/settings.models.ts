@@ -79,6 +79,10 @@ export class QuestionSetting {
         this.group = group;
     }
 
+    setActual(numOfPremises: number) {
+        this.actual = this.clampNumOfPremises(numOfPremises);
+    }
+
     clampNumOfPremises(numOfPremises: number) {
         return Math.max(this.min, Math.min(this.max, numOfPremises))
     }
@@ -117,4 +121,22 @@ export class Settings {
             xnor: true,
         },
     };
+
+    setGenericEnable(prop: "meaningfulWords"|"meta"|"negation", value: boolean) {
+        this.enable[prop] = value;
+        return this;
+    }
+
+    setQuestionSetting(type: EnumQuestionType, enabled: boolean, actual: number) {
+        this.question[type].enabled = enabled;
+        this.question[type].actual = actual;
+
+        // Enable all operators at once on binary questions
+        if (type === EnumQuestionType.Binary) {
+            for (const key in this.enable.binary) {
+                (this.enable.binary as any)[key] = enabled;
+            }
+        }
+        return this;
+    }
 }

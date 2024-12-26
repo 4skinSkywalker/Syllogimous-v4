@@ -1,4 +1,5 @@
-import { Settings } from "../models/settings.models";
+import { EnumQuestionType } from "../models/question.models";
+import { QuestionSetting, Settings } from "../models/settings.models";
 import { EnumTiers } from "../models/syllogimous.models";
 
 export const TIER_COLORS: Record<string, {bgColor: string, textColor: string}> = {
@@ -46,308 +47,197 @@ export const TIER_SCORE_ADJUSTMENTS: Record<string, { increment: number, decreme
     [EnumTiers.Transcendent]: { increment: 5, decrement: 5 }
 };
 
-// Minimum premises for analogy is 3
-// Minimum premises for binary is 4
-
 export const TIER_SETTINGS: Record<EnumTiers, Settings> = {
-    [EnumTiers.Adept]: {
-        enableMeaningfulWords:   true,
-        enableMeta:              false,
-        enableNegation:          false,
-
-        distinction:             [ true,  2 ],
-        comparisonNumerical:     [ true,  2 ],
-        comparisonChronological: [ true,  2 ],
-        syllogism:               [ false, 2 ],
-        direction:               [ false, 2 ],
-        direction3DSpatial:      [ false, 2 ],
-        direction3DTemporal:     [ false, 2 ],
-        direction4D:             [ false, 2 ],
-        linearArrangement:       [ false, 3 ],
-        circularArrangement:     [ false, 3 ],
-        analogy:                 [ false, 3 ],
-        binary:                  [ false, 4 ],
-
-        enableAnd:               false,
-        enableOr:                false,
-        enableNand:              false,
-        enableNor:               false,
-        enableXor:               false,
-        enableXnor:              false,
-    },
-    [EnumTiers.Savant]: {
-        enableMeaningfulWords:   true,
-        enableMeta:              true,
-        enableNegation:          false,
-
-        distinction:             [ true,  3 ],
-        comparisonNumerical:     [ true,  3 ],
-        comparisonChronological: [ true,  3 ],
-        syllogism:               [ true,  3 ],
-        direction:               [ true,  3 ],
-        direction3DSpatial:      [ false, 2 ],
-        direction3DTemporal:     [ false, 2 ],
-        direction4D:             [ false, 2 ],
-        linearArrangement:       [ true,  3 ],
-        circularArrangement:     [ false, 3 ],
-        analogy:                 [ false, 3 ],
-        binary:                  [ false, 4 ],
-
-        enableAnd:               false,
-        enableOr:                false,
-        enableNand:              false,
-        enableNor:               false,
-        enableXor:               false,
-        enableXnor:              false,
-    },
-    [EnumTiers.Mastermind]: {
-        enableMeaningfulWords:   true,
-        enableMeta:              true,
-        enableNegation:          false,
-
-        distinction:             [ true,  4 ],
-        comparisonNumerical:     [ true,  4 ],
-        comparisonChronological: [ true,  4 ],
-        direction:               [ true,  3 ],
-        linearArrangement:       [ true,  3 ],
-        syllogism:               [ true,  3 ],
-        circularArrangement:     [ true,  3 ],
-        direction3DSpatial:      [ true,  2 ],
-        direction3DTemporal:     [ true,  2 ],
-        direction4D:             [ true,  2 ],
-        analogy:                 [ false, 3 ],
-        binary:                  [ false, 4 ],
-
-        enableAnd:               false,
-        enableOr:                false,
-        enableNand:              false,
-        enableNor:               false,
-        enableXor:               false,
-        enableXnor:              false,
-    },
-    [EnumTiers.Visionary]: {
-        enableMeaningfulWords:   true,
-        enableMeta:              true,
-        enableNegation:          false,
-
-        distinction:             [ true,  4 ],
-        comparisonNumerical:     [ true,  4 ],
-        comparisonChronological: [ true,  4 ],
-        syllogism:               [ true,  4 ],
-        direction:               [ true,  4 ],
-        direction3DSpatial:      [ true,  3 ],
-        direction3DTemporal:     [ true,  3 ],
-        direction4D:             [ true,  3 ],
-        linearArrangement:       [ true,  4 ],
-        circularArrangement:     [ true,  3 ],
-        analogy:                 [ true,  3 ],
-        binary:                  [ false, 4 ],
-
-        enableAnd:               false,
-        enableOr:                false,
-        enableNand:              false,
-        enableNor:               false,
-        enableXor:               false,
-        enableXnor:              false,
-    },
-    [EnumTiers.Genius]: {
-        enableMeaningfulWords:   true,
-        enableMeta:              true,
-        enableNegation:          true,
-
-        distinction:             [ true,  5 ],
-        comparisonNumerical:     [ true,  5 ],
-        comparisonChronological: [ true,  5 ],
-        syllogism:               [ true,  4 ],
-        direction:               [ true,  4 ],
-        direction3DSpatial:      [ true,  3 ],
-        direction3DTemporal:     [ true,  3 ],
-        direction4D:             [ true,  3 ],
-        linearArrangement:       [ true,  4 ],
-        circularArrangement:     [ true,  3 ],
-        analogy:                 [ true,  3 ],
-        binary:                  [ true,  4 ],
-
-        enableAnd:               true,
-        enableOr:                true,
-        enableNand:              false,
-        enableNor:               false,
-        enableXor:               false,
-        enableXnor:              false,
-    },
-    [EnumTiers.Luminary]: {
-        enableMeaningfulWords:   true,
-        enableMeta:              true,
-        enableNegation:          true,
-
-        distinction:             [ true,  5 ],
-        comparisonNumerical:     [ true,  5 ],
-        comparisonChronological: [ true,  5 ],
-        syllogism:               [ true,  5 ],
-        direction:               [ true,  5 ],
-        direction3DSpatial:      [ true,  4 ],
-        direction3DTemporal:     [ true,  4 ],
-        direction4D:             [ true,  4 ],
-        linearArrangement:       [ true,  5 ],
-        circularArrangement:     [ true,  4 ],
-        analogy:                 [ true,  4 ],
-        binary:                  [ true,  4 ],
-
-        enableAnd:               true,
-        enableOr:                true,
-        enableNand:              true,
-        enableNor:               true,
-        enableXor:               true,
-        enableXnor:              true,
-    },
-    [EnumTiers.Prodigy]: {
-        enableMeaningfulWords:   true,
-        enableMeta:              true,
-        enableNegation:          true,
-
-        distinction:             [ true,  6 ],
-        comparisonNumerical:     [ true,  6 ],
-        comparisonChronological: [ true,  6 ],
-        syllogism:               [ true,  5 ],
-        direction:               [ true,  6 ],
-        direction3DSpatial:      [ true,  4 ],
-        direction3DTemporal:     [ true,  4 ],
-        direction4D:             [ true,  4 ],
-        linearArrangement:       [ true,  6 ],
-        circularArrangement:     [ true,  4 ],
-        analogy:                 [ true,  4 ],
-        binary:                  [ true,  4 ],
-
-        enableAnd:               true,
-        enableOr:                true,
-        enableNand:              true,
-        enableNor:               true,
-        enableXor:               true,
-        enableXnor:              true,
-    },
-    [EnumTiers.Oracle]: {
-        enableMeaningfulWords:   true,
-        enableMeta:              true,
-        enableNegation:          true,
-
-        distinction:             [ true,  7 ],
-        comparisonNumerical:     [ true,  7 ],
-        comparisonChronological: [ true,  7 ],
-        syllogism:               [ true,  6 ],
-        direction:               [ true,  6 ],
-        direction3DSpatial:      [ true,  5 ],
-        direction3DTemporal:     [ true,  5 ],
-        direction4D:             [ true,  5 ],
-        linearArrangement:       [ true,  6 ],
-        circularArrangement:     [ true,  5 ],
-        analogy:                 [ true,  5 ],
-        binary:                  [ true,  5 ],
-
-        enableAnd:               true,
-        enableOr:                true,
-        enableNand:              true,
-        enableNor:               true,
-        enableXor:               true,
-        enableXnor:              true,
-    },
-    [EnumTiers.Sage]: {
-        enableMeaningfulWords:   true,
-        enableMeta:              true,
-        enableNegation:          true,
-
-        distinction:             [ true,  7 ],
-        comparisonNumerical:     [ true,  7 ],
-        comparisonChronological: [ true,  7 ],
-        syllogism:               [ true,  7 ],
-        direction:               [ true,  7 ],
-        direction3DSpatial:      [ true,  6 ],
-        direction3DTemporal:     [ true,  6 ],
-        direction4D:             [ true,  6 ],
-        linearArrangement:       [ true,  7 ],
-        circularArrangement:     [ true,  6 ],
-        analogy:                 [ true,  6 ],
-        binary:                  [ true,  6 ],
-
-        enableAnd:               true,
-        enableOr:                true,
-        enableNand:              true,
-        enableNor:               true,
-        enableXor:               true,
-        enableXnor:              true,
-    },
-    [EnumTiers.Philosopher]: {
-        enableMeaningfulWords:   true,
-        enableMeta:              true,
-        enableNegation:          true,
-
-        distinction:             [ true,  8 ],
-        comparisonNumerical:     [ true,  8 ],
-        comparisonChronological: [ true,  8 ],
-        syllogism:               [ true,  7 ],
-        direction:               [ true,  8 ],
-        direction3DSpatial:      [ true,  7 ],
-        direction3DTemporal:     [ true,  7 ],
-        direction4D:             [ true,  7 ],
-        linearArrangement:       [ true,  8 ],
-        circularArrangement:     [ true,  7 ],
-        analogy:                 [ true,  6 ],
-        binary:                  [ true,  6 ],
-
-        enableAnd:               true,
-        enableOr:                true,
-        enableNand:              true,
-        enableNor:               true,
-        enableXor:               true,
-        enableXnor:              true,
-    },
-    [EnumTiers.Mystic]: {
-        enableMeaningfulWords:   true,
-        enableMeta:              true,
-        enableNegation:          true,
-
-        distinction:             [ true,  9 ],
-        comparisonNumerical:     [ true,  9 ],
-        comparisonChronological: [ true,  9 ],
-        syllogism:               [ true,  8 ],
-        direction:               [ true,  9 ],
-        direction3DSpatial:      [ true,  8 ],
-        direction3DTemporal:     [ true,  8 ],
-        direction4D:             [ true,  8 ],
-        linearArrangement:       [ true,  9 ],
-        circularArrangement:     [ true,  8 ],
-        analogy:                 [ true,  7 ],
-        binary:                  [ true,  7 ],
-
-        enableAnd:               true,
-        enableOr:                true,
-        enableNand:              true,
-        enableNor:               true,
-        enableXor:               true,
-        enableXnor:              true,
-    },
-    [EnumTiers.Transcendent]: {
-        enableMeaningfulWords:   true,
-        enableMeta:              true,
-        enableNegation:          true,
-
-        distinction:             [ true,  9 ],
-        comparisonNumerical:     [ true,  9 ],
-        comparisonChronological: [ true,  9 ],
-        syllogism:               [ true,  9 ],
-        direction:               [ true,  9 ],
-        direction3DSpatial:      [ true,  9 ],
-        direction3DTemporal:     [ true,  9 ],
-        direction4D:             [ true,  9 ],
-        linearArrangement:       [ true,  9 ],
-        circularArrangement:     [ true,  9 ],
-        analogy:                 [ true,  8 ],
-        binary:                  [ true,  8 ],
-
-        enableAnd:               true,
-        enableOr:                true,
-        enableNand:              true,
-        enableNor:               true,
-        enableXor:               true,
-        enableXnor:              true,
-    }
+    [EnumTiers.Adept]: new Settings()
+        .setGenericEnable("meaningfulWords", false)
+        .setGenericEnable("meta", false)
+        .setGenericEnable("negation", false)
+        .setQuestionSetting(EnumQuestionType.Analogy, false, 2)
+        .setQuestionSetting(EnumQuestionType.Binary, false, 2)
+        .setQuestionSetting(EnumQuestionType.Syllogism, false, 2)
+        .setQuestionSetting(EnumQuestionType.Distinction, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonNumerical, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonChronological, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DSpatial, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DTemporal, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction4D, false, 2)
+        .setQuestionSetting(EnumQuestionType.LinearArrangement, false, 2)
+        .setQuestionSetting(EnumQuestionType.CircularArrangement, false, 2),
+    [EnumTiers.Savant]: new Settings()
+        .setGenericEnable("meaningfulWords", false)
+        .setGenericEnable("meta", false)
+        .setGenericEnable("negation", false)
+        .setQuestionSetting(EnumQuestionType.Analogy, false, 2)
+        .setQuestionSetting(EnumQuestionType.Binary, false, 2)
+        .setQuestionSetting(EnumQuestionType.Syllogism, false, 2)
+        .setQuestionSetting(EnumQuestionType.Distinction, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonNumerical, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonChronological, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DSpatial, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DTemporal, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction4D, false, 2)
+        .setQuestionSetting(EnumQuestionType.LinearArrangement, false, 2)
+        .setQuestionSetting(EnumQuestionType.CircularArrangement, false, 2),
+    [EnumTiers.Mastermind]: new Settings()
+        .setGenericEnable("meaningfulWords", false)
+        .setGenericEnable("meta", false)
+        .setGenericEnable("negation", false)
+        .setQuestionSetting(EnumQuestionType.Analogy, false, 2)
+        .setQuestionSetting(EnumQuestionType.Binary, false, 2)
+        .setQuestionSetting(EnumQuestionType.Syllogism, false, 2)
+        .setQuestionSetting(EnumQuestionType.Distinction, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonNumerical, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonChronological, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DSpatial, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DTemporal, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction4D, false, 2)
+        .setQuestionSetting(EnumQuestionType.LinearArrangement, false, 2)
+        .setQuestionSetting(EnumQuestionType.CircularArrangement, false, 2),
+    [EnumTiers.Visionary]: new Settings()
+        .setGenericEnable("meaningfulWords", false)
+        .setGenericEnable("meta", false)
+        .setGenericEnable("negation", false)
+        .setQuestionSetting(EnumQuestionType.Analogy, false, 2)
+        .setQuestionSetting(EnumQuestionType.Binary, false, 2)
+        .setQuestionSetting(EnumQuestionType.Syllogism, false, 2)
+        .setQuestionSetting(EnumQuestionType.Distinction, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonNumerical, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonChronological, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DSpatial, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DTemporal, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction4D, false, 2)
+        .setQuestionSetting(EnumQuestionType.LinearArrangement, false, 2)
+        .setQuestionSetting(EnumQuestionType.CircularArrangement, false, 2),
+    [EnumTiers.Genius]: new Settings()
+        .setGenericEnable("meaningfulWords", false)
+        .setGenericEnable("meta", false)
+        .setGenericEnable("negation", false)
+        .setQuestionSetting(EnumQuestionType.Analogy, false, 2)
+        .setQuestionSetting(EnumQuestionType.Binary, false, 2)
+        .setQuestionSetting(EnumQuestionType.Syllogism, false, 2)
+        .setQuestionSetting(EnumQuestionType.Distinction, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonNumerical, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonChronological, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DSpatial, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DTemporal, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction4D, false, 2)
+        .setQuestionSetting(EnumQuestionType.LinearArrangement, false, 2)
+        .setQuestionSetting(EnumQuestionType.CircularArrangement, false, 2),
+    [EnumTiers.Luminary]: new Settings()
+        .setGenericEnable("meaningfulWords", false)
+        .setGenericEnable("meta", false)
+        .setGenericEnable("negation", false)
+        .setQuestionSetting(EnumQuestionType.Analogy, false, 2)
+        .setQuestionSetting(EnumQuestionType.Binary, false, 2)
+        .setQuestionSetting(EnumQuestionType.Syllogism, false, 2)
+        .setQuestionSetting(EnumQuestionType.Distinction, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonNumerical, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonChronological, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DSpatial, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DTemporal, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction4D, false, 2)
+        .setQuestionSetting(EnumQuestionType.LinearArrangement, false, 2)
+        .setQuestionSetting(EnumQuestionType.CircularArrangement, false, 2),
+    [EnumTiers.Prodigy]: new Settings()
+        .setGenericEnable("meaningfulWords", false)
+        .setGenericEnable("meta", false)
+        .setGenericEnable("negation", false)
+        .setQuestionSetting(EnumQuestionType.Analogy, false, 2)
+        .setQuestionSetting(EnumQuestionType.Binary, false, 2)
+        .setQuestionSetting(EnumQuestionType.Syllogism, false, 2)
+        .setQuestionSetting(EnumQuestionType.Distinction, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonNumerical, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonChronological, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DSpatial, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DTemporal, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction4D, false, 2)
+        .setQuestionSetting(EnumQuestionType.LinearArrangement, false, 2)
+        .setQuestionSetting(EnumQuestionType.CircularArrangement, false, 2),
+    [EnumTiers.Oracle]: new Settings()
+        .setGenericEnable("meaningfulWords", false)
+        .setGenericEnable("meta", false)
+        .setGenericEnable("negation", false)
+        .setQuestionSetting(EnumQuestionType.Analogy, false, 2)
+        .setQuestionSetting(EnumQuestionType.Binary, false, 2)
+        .setQuestionSetting(EnumQuestionType.Syllogism, false, 2)
+        .setQuestionSetting(EnumQuestionType.Distinction, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonNumerical, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonChronological, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DSpatial, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DTemporal, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction4D, false, 2)
+        .setQuestionSetting(EnumQuestionType.LinearArrangement, false, 2)
+        .setQuestionSetting(EnumQuestionType.CircularArrangement, false, 2),
+    [EnumTiers.Sage]: new Settings()
+        .setGenericEnable("meaningfulWords", false)
+        .setGenericEnable("meta", false)
+        .setGenericEnable("negation", false)
+        .setQuestionSetting(EnumQuestionType.Analogy, false, 2)
+        .setQuestionSetting(EnumQuestionType.Binary, false, 2)
+        .setQuestionSetting(EnumQuestionType.Syllogism, false, 2)
+        .setQuestionSetting(EnumQuestionType.Distinction, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonNumerical, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonChronological, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DSpatial, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DTemporal, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction4D, false, 2)
+        .setQuestionSetting(EnumQuestionType.LinearArrangement, false, 2)
+        .setQuestionSetting(EnumQuestionType.CircularArrangement, false, 2),
+    [EnumTiers.Philosopher]: new Settings()
+        .setGenericEnable("meaningfulWords", false)
+        .setGenericEnable("meta", false)
+        .setGenericEnable("negation", false)
+        .setQuestionSetting(EnumQuestionType.Analogy, false, 2)
+        .setQuestionSetting(EnumQuestionType.Binary, false, 2)
+        .setQuestionSetting(EnumQuestionType.Syllogism, false, 2)
+        .setQuestionSetting(EnumQuestionType.Distinction, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonNumerical, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonChronological, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DSpatial, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DTemporal, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction4D, false, 2)
+        .setQuestionSetting(EnumQuestionType.LinearArrangement, false, 2)
+        .setQuestionSetting(EnumQuestionType.CircularArrangement, false, 2),
+    [EnumTiers.Mystic]: new Settings()
+        .setGenericEnable("meaningfulWords", false)
+        .setGenericEnable("meta", false)
+        .setGenericEnable("negation", false)
+        .setQuestionSetting(EnumQuestionType.Analogy, false, 2)
+        .setQuestionSetting(EnumQuestionType.Binary, false, 2)
+        .setQuestionSetting(EnumQuestionType.Syllogism, false, 2)
+        .setQuestionSetting(EnumQuestionType.Distinction, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonNumerical, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonChronological, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DSpatial, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DTemporal, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction4D, false, 2)
+        .setQuestionSetting(EnumQuestionType.LinearArrangement, false, 2)
+        .setQuestionSetting(EnumQuestionType.CircularArrangement, false, 2),
+    [EnumTiers.Transcendent]: new Settings()
+        .setGenericEnable("meaningfulWords", false)
+        .setGenericEnable("meta", false)
+        .setGenericEnable("negation", false)
+        .setQuestionSetting(EnumQuestionType.Analogy, false, 2)
+        .setQuestionSetting(EnumQuestionType.Binary, false, 2)
+        .setQuestionSetting(EnumQuestionType.Syllogism, false, 2)
+        .setQuestionSetting(EnumQuestionType.Distinction, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonNumerical, false, 2)
+        .setQuestionSetting(EnumQuestionType.ComparisonChronological, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DSpatial, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction3DTemporal, false, 2)
+        .setQuestionSetting(EnumQuestionType.Direction4D, false, 2)
+        .setQuestionSetting(EnumQuestionType.LinearArrangement, false, 2)
+        .setQuestionSetting(EnumQuestionType.CircularArrangement, false, 2),
 }

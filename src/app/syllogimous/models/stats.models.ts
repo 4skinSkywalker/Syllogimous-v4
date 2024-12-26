@@ -1,91 +1,50 @@
 import { EnumQuestionType } from "./question.models";
 
 export class TypeBasedStats {
-    [EnumQuestionType.Syllogism]: TypeBasedStatsInner;
-    [EnumQuestionType.Distinction]: TypeBasedStatsInner;
-    [EnumQuestionType.ComparisonNumerical]: TypeBasedStatsInner;
-    [EnumQuestionType.ComparisonChronological]: TypeBasedStatsInner;
-    [EnumQuestionType.Binary]: TypeBasedStatsInner;
-    [EnumQuestionType.Direction]: TypeBasedStatsInner;
-    [EnumQuestionType.Direction3DSpatial]: TypeBasedStatsInner;
-    [EnumQuestionType.Direction3DTemporal]: TypeBasedStatsInner;
-    [EnumQuestionType.Direction4D]: TypeBasedStatsInner;
-    [EnumQuestionType.Analogy]: TypeBasedStatsInner;
-    [EnumQuestionType.LinearArrangement]: TypeBasedStatsInner;
-    [EnumQuestionType.CircularArrangement]: TypeBasedStatsInner;
-
-    constructor() {
-        this[EnumQuestionType.Syllogism] = new TypeBasedStatsInner();
-        this[EnumQuestionType.Distinction] = new TypeBasedStatsInner();
-        this[EnumQuestionType.ComparisonNumerical] = new TypeBasedStatsInner();
-        this[EnumQuestionType.ComparisonChronological] = new TypeBasedStatsInner();
-        this[EnumQuestionType.Binary] = new TypeBasedStatsInner();
-        this[EnumQuestionType.Direction] = new TypeBasedStatsInner();
-        this[EnumQuestionType.Direction3DSpatial] = new TypeBasedStatsInner();
-        this[EnumQuestionType.Direction3DTemporal] = new TypeBasedStatsInner();
-        this[EnumQuestionType.Direction4D] = new TypeBasedStatsInner();
-        this[EnumQuestionType.Analogy] = new TypeBasedStatsInner();
-        this[EnumQuestionType.LinearArrangement] = new TypeBasedStatsInner();
-        this[EnumQuestionType.CircularArrangement] = new TypeBasedStatsInner();
-    }
+    [EnumQuestionType.Syllogism] = new TypeBasedStatsInner(EnumQuestionType.Syllogism);
+    [EnumQuestionType.Distinction] = new TypeBasedStatsInner(EnumQuestionType.Distinction);
+    [EnumQuestionType.ComparisonNumerical] = new TypeBasedStatsInner(EnumQuestionType.ComparisonNumerical);
+    [EnumQuestionType.ComparisonChronological] = new TypeBasedStatsInner(EnumQuestionType.ComparisonChronological);
+    [EnumQuestionType.Binary] = new TypeBasedStatsInner(EnumQuestionType.Binary);
+    [EnumQuestionType.Direction] = new TypeBasedStatsInner(EnumQuestionType.Direction);
+    [EnumQuestionType.Direction3DSpatial] = new TypeBasedStatsInner(EnumQuestionType.Direction3DSpatial);
+    [EnumQuestionType.Direction3DTemporal] = new TypeBasedStatsInner(EnumQuestionType.Direction3DTemporal);
+    [EnumQuestionType.Direction4D] = new TypeBasedStatsInner(EnumQuestionType.Direction4D);
+    [EnumQuestionType.Analogy] = new TypeBasedStatsInner(EnumQuestionType.Analogy);
+    [EnumQuestionType.LinearArrangement] = new TypeBasedStatsInner(EnumQuestionType.LinearArrangement);
+    [EnumQuestionType.CircularArrangement] = new TypeBasedStatsInner(EnumQuestionType.CircularArrangement);
 }
 
 export class TypeBasedStatsInner {
     type: EnumQuestionType;
-    completed: number;
-    accuracy: number;
-    stats: {
-        "2": TypeBasedStatsInner2;
-        "3": TypeBasedStatsInner2;
-        "4": TypeBasedStatsInner2;
-        "5": TypeBasedStatsInner2;
-        "6+": TypeBasedStatsInner2;
+    completed = 0;
+    accuracy = 0;
+    stats = {
+        "2": new TypeBasedStatsInner2(),
+        "3": new TypeBasedStatsInner2(),
+        "4": new TypeBasedStatsInner2(),
+        "5": new TypeBasedStatsInner2(),
+        "6+": new TypeBasedStatsInner2(),
     };
     
     constructor(type: EnumQuestionType) {
         this.type = type;
-        this.completed = 0;
-        this.accuracy = 0;
-        this.stats = {
-            "2": new TypeBasedStatsInner2(),
-            "3": new TypeBasedStatsInner2(),
-            "4": new TypeBasedStatsInner2(),
-            "5": new TypeBasedStatsInner2(),
-            "6+": new TypeBasedStatsInner2()
-        };
     }
 }
 
 export class TypeBasedStatsInner2 {
-    sum: number;
-    count: number;
-    fastest: number;
-    slowest: number;
-    correct: number;
-    incorrect: number;
-    timeout: number;
-    last10Sum: number;
-    last10Count: number;
-    last10Fastest: number;
-    last10Slowest: number;
-    last10Correct: number;
-    last10Incorrect: number;
-    last10Timeout: number;
-
-    constructor() {
-        this.sum = 0;
-        this.count = 0;
-        this.fastest = 0;
-        this.slowest = 0;
-        this.correct = 0;
-        this.incorrect = 0;
-        this.timeout = 0;
-        this.last10Sum = 0;
-        this.last10Count = 0;
-        this.last10Fastest = 0;
-        this.last10Slowest = 0;
-        this.last10Correct = 0;
-        this.last10Incorrect = 0;
-        this.last10Timeout = 0;
-    }
+    sum = 0;
+    count = 0;
+    fastest = 0;
+    slowest = 0;
+    correct = 0;
+    incorrect = 0;
+    timeout = 0;
+    last10Sum = 0;
+    last10Count = 0;
+    last10Fastest = 0;
+    last10Slowest = 0;
+    last10Correct = 0;
+    last10Incorrect = 0;
+    last10Timeout = 0;
 }
