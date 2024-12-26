@@ -1,32 +1,15 @@
 import { b2n } from "../utils/engine.utils";
 import { EnumQuestionType } from "./question.models";
 
-const getQtaEnabledBasicQuestions = (settings: Settings) => {
-    return b2n(settings.distinction[0])
-        + b2n(settings.comparisonNumerical[0])
-        + b2n(settings.comparisonChronological[0])
-        + b2n(settings.direction[0])
-        + b2n(settings.syllogism[0])
-        + b2n(settings.direction3DSpatial[0])
-        + b2n(settings.direction3DTemporal[0])
-        + b2n(settings.direction4D[0]);
+const getNumOfEnabledQuestions = (settings: Settings, basicQuestionFilter: boolean) => {
+    return Object.values(settings.question)
+        .filter(qs => qs.basic === basicQuestionFilter)
+        .reduce((a, c) => a + b2n(c.enabled), 0);
 };
 
-const getQtaEnabledOperators = (settings: Settings) => {
-    return b2n(settings.enableAnd)
-        + b2n(settings.enableNand)
-        + b2n(settings.enableOr)
-        + b2n(settings.enableNor)
-        + b2n(settings.enableXor)
-        + b2n(settings.enableXnor);
-};
-
-const getQtaEnabledQuestions = (settings: Settings) => {
-    return getQtaEnabledBasicQuestions(settings)
-        + b2n(settings.linearArrangement[0])
-        + b2n(settings.circularArrangement[0])
-        + b2n(settings.analogy[0])
-        + b2n(settings.binary[0]);
+const getNumOfEnabledOperators = (settings: Settings) => {
+    return Object.values(settings.enable.binary)
+        .reduce((a, c) => a + b2n(c), 0);
 };
 
 export interface Picked<T> {
@@ -36,105 +19,79 @@ export interface Picked<T> {
 
 export function canGenerateQuestion(
     questionType: EnumQuestionType,
-    qtaPremises: number,
-    settings?: Settings
+    numOfPremises: number,
+    settings: Settings
 ) {
-    switch (questionType) {
-        case EnumQuestionType.Syllogism:
-        case EnumQuestionType.Distinction:
-        case EnumQuestionType.ComparisonNumerical:
-        case EnumQuestionType.ComparisonChronological:
-        case EnumQuestionType.Direction:
-        case EnumQuestionType.Direction3DSpatial:
-        case EnumQuestionType.Direction3DTemporal:
-        case EnumQuestionType.Direction4D: {
-            return qtaPremises >= 2;
-        }
-        case EnumQuestionType.LinearArrangement:
-        case EnumQuestionType.CircularArrangement: {
-            return qtaPremises >= 3;
-        }
-        case EnumQuestionType.Analogy: {
-            if (!settings) {
-                return false;
-            }
-            return qtaPremises >= 3
-                && getQtaEnabledBasicQuestions(settings) >= 2;
-        }
-        case EnumQuestionType.Binary: {
-            if (!settings) {
-                return false;
-            }
-            return qtaPremises >= 4
-                && getQtaEnabledBasicQuestions(settings) >= 2;
-        }
+    if (settings.question[questionType].basic) {
+        return numOfPremises >= settings.question[questionType].min;
     }
-    
-    return false;
+
+    return numOfPremises >= settings.question[questionType].min 
+        && getNumOfEnabledQuestions(settings, true) >= 2;
 }
 
 export function areSettingsInvalid(settings: Settings) {
-    const qtaEnabledQuestions = getQtaEnabledQuestions(settings);
-    const qtaEnabledBasicQuestions = getQtaEnabledBasicQuestions(settings);
-    const qtaEnabledOperators = getQtaEnabledOperators(settings);
+    const numOfEnabledBasicQuestions = getNumOfEnabledQuestions(settings, true);
+    const numOfEnabledQuestions = numOfEnabledBasicQuestions + getNumOfEnabledQuestions(settings, false);
+    const numOfEnabledOperators = getNumOfEnabledOperators(settings);
+    const isAnalogyEnabled = settings.question[EnumQuestionType.Analogy].enabled;
+    const isBinaryEnabled = settings.question[EnumQuestionType.Binary].enabled;
 
-    if (qtaEnabledQuestions < 1) {
+    if (numOfEnabledQuestions < 1) {
         return "You need at least one question type";
     }
-    if ((settings.analogy[0] || settings.binary[0]) && qtaEnabledBasicQuestions < 2) {
+    if ((isAnalogyEnabled || isBinaryEnabled) && numOfEnabledBasicQuestions < 2) {
         return "Analogy/binary type of questions need at least two other basic question types";
     }
-    if (settings.binary[0] && qtaEnabledOperators < 2) {
+    if (isBinaryEnabled && numOfEnabledOperators < 2) {
         return "Binary needs at least two operators"
     }
 
     return null;
 }
 
-export class Settings {
-    enableMeaningfulWords: boolean;
-    enableMeta: boolean;
-    enableNegation: boolean;
-    distinction: [ boolean, number ];
-    comparisonNumerical: [ boolean, number ];
-    comparisonChronological: [ boolean, number ];
-    syllogism: [ boolean, number ];
-    direction: [ boolean, number ];
-    direction3DSpatial: [ boolean, number ];
-    direction3DTemporal: [ boolean, number ];
-    direction4D: [ boolean, number ];
-    linearArrangement: [ boolean, number ];
-    circularArrangement: [ boolean, number ];
-    analogy: [ boolean, number ];
-    binary: [ boolean, number ];
-    enableAnd: boolean;
-    enableNand: boolean;
-    enableOr: boolean;
-    enableNor: boolean;
-    enableXor: boolean;
-    enableXnor: boolean;
+export class QuestionSetting {
+    enabled: boolean;
+    min: number;
+    max: number;
+    basic: boolean; // A basic question type can be utilized by high-order questions
 
-    constructor() {
-        this.enableMeaningfulWords = true;
-        this.enableMeta = true;
-        this.enableNegation = true;
-        this.distinction = [ true, 2 ]; // min 2
-        this.comparisonNumerical = [ true, 2 ]; // min 2
-        this.comparisonChronological = [ true, 2 ]; // min 2
-        this.syllogism = [ true, 2 ]; // min 2
-        this.direction = [ true, 2 ]; // min 2
-        this.direction3DSpatial = [ true, 2 ]; // min 2
-        this.direction3DTemporal = [ true, 2 ]; // min 2
-        this.direction4D = [ true, 2 ]; // min 2
-        this.linearArrangement = [ true, 3 ]; // min 3
-        this.circularArrangement = [ true, 3 ]; // min 3
-        this.analogy = [ true, 3 ]; // min 3
-        this.binary = [ true, 4 ];  // min 4
-        this.enableAnd = true;
-        this.enableNand = true;
-        this.enableOr = true;
-        this.enableNor = true;
-        this.enableXor = true;
-        this.enableXnor = true;
+    constructor(enabled: boolean, min: number, max: number, basic: boolean) {
+        this.enabled = enabled;
+        this.min = min;
+        this.max = max;
+        this.basic = basic;
     }
+}
+
+export class Settings {
+    question = {
+        [EnumQuestionType.Distinction]: new QuestionSetting(true, 2, 9, true),
+        [EnumQuestionType.ComparisonNumerical]: new QuestionSetting(true, 2, 9, true),
+        [EnumQuestionType.ComparisonChronological]: new QuestionSetting(true, 2, 9, true),
+        [EnumQuestionType.Syllogism]: new QuestionSetting(true, 2, 9, true),
+        [EnumQuestionType.Direction]: new QuestionSetting(true, 2, 9, true),
+        [EnumQuestionType.Direction3DSpatial]: new QuestionSetting(true, 2, 9, true),
+        [EnumQuestionType.Direction3DTemporal]: new QuestionSetting(true, 2, 9, true),
+        [EnumQuestionType.Direction4D]: new QuestionSetting(true, 2, 9, true),
+        [EnumQuestionType.LinearArrangement]: new QuestionSetting(true, 3, 9, false),
+        [EnumQuestionType.CircularArrangement]: new QuestionSetting(true, 3, 9, false),
+        [EnumQuestionType.Analogy]: new QuestionSetting(true, 3, 9, false),
+        [EnumQuestionType.Binary]: new QuestionSetting(true, 4, 9, false),
+        [EnumQuestionType.Unknown]: new QuestionSetting(false, 9, 9, false),
+    };
+
+    enable = {
+        meaningfulWords: true,
+        meta: true,
+        negation: true,
+        binary: {
+            and: true,
+            nand: true,
+            or: true,
+            nor: true,
+            xor: true,
+            xnor: true,
+        },
+    };
 }
