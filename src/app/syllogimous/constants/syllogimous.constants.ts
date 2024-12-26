@@ -83,6 +83,9 @@ export const TIER_SCORE_ADJUSTMENTS: Record<EnumTiers, { increment: number, decr
 };
 
 // TODO: think about a better system
+// Introduce a new question type at every tier and up the n of the previously existing questions
+// After new questions have finished introduce firstly negation then meta
+// Remove a number of tiers
 export const TIER_SETTINGS: Record<EnumTiers, Settings> = {
     [EnumTiers.Adept]: new Settings()
         .setGenericEnable("meaningfulWords", true)
