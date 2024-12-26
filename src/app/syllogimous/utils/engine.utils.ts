@@ -147,7 +147,7 @@ export function isPremiseLikeConclusion(premises: string[], conclusion: string) 
 }
 
 export function getSymbols(settings: Settings) {
-    return settings.enableMeaningfulWords ? [...NOUNS] : [...STRINGS];
+    return settings.enable.meaningfulWords ? [...NOUNS] : [...STRINGS];
 }
 
 export function getRandomSymbols(settings: Settings, length: number) {
@@ -166,7 +166,7 @@ export function getRandomSymbols(settings: Settings, length: number) {
 
 export function getSyllogism(settings: Settings, s: string, p: string, m: string, rule: string) {
     
-    const _forms = (!settings.enableNegation)
+    const _forms = (!settings.enable.negation)
         ? FORMS[0]
         : pickUniqueItems(FORMS, 1).picked[0];
 
@@ -238,7 +238,7 @@ export function getRelation(settings: Settings, type: EnumQuestionType, isPositi
     }
 
     let relation = isPositive ? positive : negative;
-    if (settings.enableNegation && coinFlip()) {
+    if (settings.enable.negation && coinFlip()) {
         switch (relation) {
             case positive:
                 relation = `<span class="is-negated">${negative}</span>`;
@@ -252,7 +252,7 @@ export function getRelation(settings: Settings, type: EnumQuestionType, isPositi
 }
 
 export function makeMetaRelationsOld(settings: Settings, question: Question, length: number) {
-    if (settings.enableMeta && coinFlip()) {
+    if (settings.enable.meta && coinFlip()) {
         const numOfMetaRelations = 1 + Math.floor(Math.random() * Math.floor((length - 1) / 2));
         question.metaRelations += numOfMetaRelations;
         let _premises = pickUniqueItems(question.premises, numOfMetaRelations * 2);
@@ -275,7 +275,7 @@ export function makeMetaRelationsOld(settings: Settings, question: Question, len
 
 export function makeMetaRelationsNew(settings: Settings, question: Question, length: number) {
     // Substitute a variable number of premises with meta-relations
-    if (settings.enableMeta && coinFlip()) {
+    if (settings.enable.meta && coinFlip()) {
         const numOfMetaRelationships = 1 + Math.floor(Math.random() * Math.floor((length - 1) / 2));
         question.metaRelations += numOfMetaRelationships;
         
@@ -314,13 +314,13 @@ export function makeMetaRelationsNew(settings: Settings, question: Question, len
             }
 
             if (isSame) { // Same
-                if (settings.enableNegation && coinFlip()) {
+                if (settings.enable.negation && coinFlip()) {
                     newPremises.push(`<span class="subject">${a.subject}</span> to <span class="subject">${b.subject}</span> has the <span class="is-negated">same</span> relation as <span class="subject">${c.subject}</span> to <span class="subject">${d.subject}</span>`);
                 } else {
                     newPremises.push(`<span class="subject">${a.subject}</span> to <span class="subject">${b.subject}</span> has the same relation as <span class="subject">${c.subject}</span> to <span class="subject">${d.subject}</span>`);
                 }
             } else { // Different
-                if (settings.enableNegation && coinFlip()) {
+                if (settings.enable.negation && coinFlip()) {
                     newPremises.push(`<span class="subject">${a.subject}</span> to <span class="subject">${b.subject}</span> has a <span class="is-negated">different</span> relation as <span class="subject">${c.subject}</span> to <span class="subject">${d.subject}</span>`);
                 } else {
                     newPremises.push(`<span class="subject">${a.subject}</span> to <span class="subject">${b.subject}</span> has a different relation as <span class="subject">${c.subject}</span> to <span class="subject">${d.subject}</span>`);
@@ -334,7 +334,7 @@ export function makeMetaRelationsNew(settings: Settings, question: Question, len
 }
 
 export function alterArrangementWithMetaRelations(settings: Settings, question: Question, premises: string[][]) {
-    if (1 == 1 || settings.enableMeta && coinFlip()) {
+    if (settings.enable.meta && coinFlip()) {
         const premisesByRelation: { [key: string]: { same: string[][], opposite: string[][] }} = {};
         for (const p of premises) {
             premisesByRelation[p[1]] = premisesByRelation[p[1]] || { same: [], opposite: [] };

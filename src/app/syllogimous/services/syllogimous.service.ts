@@ -101,63 +101,38 @@ export class SyllogimousService {
     }
 
     /** Return a random question based on the current settings */
-    createQuestion() {
+    createRandomQuestion(numOfPremises?: number) {
         const settings = this.settings;
 
         const typeSettingTuples =  Object.entries(settings.question) as [EnumQuestionType, QuestionSetting][];
-        const comparisonQuestions = typeSettingTuples.filter(([qt, qs]) => qs.group == EnumQuestionGroup.Comparison);
-        const directionQuestions = typeSettingTuples.filter(([qt, qs]) => qs.group == EnumQuestionGroup.Direction);
-        const arrangementQuestions = typeSettingTuples.filter(([qt, qs]) => qs.group == EnumQuestionGroup.Arrangement);
-        const ungroupedQuestions = typeSettingTuples.filter(([qt, qs]) => qs.group == undefined);
+        const getQuestionGroup = (qg?: EnumQuestionGroup) => typeSettingTuples.filter(([qt, qs]) => qs.group == qg);
+        const groupsOfQuestions = [
+            getQuestionGroup(undefined),
+            getQuestionGroup(EnumQuestionGroup.Comparison),
+            getQuestionGroup(EnumQuestionGroup.Direction),
+            getQuestionGroup(EnumQuestionGroup.Arrangement),
+        ];
 
-        const choices = [];
-        for (const [qt, qs] of ungroupedQuestions) {
-            if (qs.enabled) {
-                choices.push(this.getCreateFn(qt, qs.actual));
-            }
-        }
+        const choices: Array<() => Question> = [];
 
-        // Pick one comparison question from the pool of comparisons
-        const comparisonChoices = [];
-        for (const [qt, qs] of comparisonQuestions) {
-            if (qs.enabled) {
-                comparisonChoices.push(this.getCreateFn(qt, qs.actual));
+        // Pick one question from each group so that the distribution is uniform
+        // The "isUndefinedGroup" predicate is used to push all ungrouped question into choices
+        for (const grouped of groupsOfQuestions) {
+            const isUndefinedGroup = grouped === groupsOfQuestions[0];
+            const groupChoices: Array<() => Question> = isUndefinedGroup ? choices : [];
+            for (const [qt, qs] of grouped) {
+                if (qs.enabled) {
+                    groupChoices.push(this.getCreateFn(qt, qs.clampNumOfPremises(numOfPremises || qs.actual)));
+                }
             }
-        }
-        if (comparisonChoices.length) {
-            choices.push(pickUniqueItems(comparisonChoices, 1).picked[0]);
-        }
-
-        // Pick one direction question from the pool of directions
-        const directionChoices = [];
-        for (const [qt, qs] of directionQuestions) {
-            if (qs.enabled) {
-                directionChoices.push(this.getCreateFn(qt, qs.actual));
+            if (!isUndefinedGroup && groupChoices.length) {
+                choices.push(pickUniqueItems(groupChoices, 1).picked[0]);
             }
-        }
-        if (directionChoices.length) {
-            choices.push(pickUniqueItems(directionChoices, 1).picked[0]);
-        }
-
-        // Pick one arrangement question from the pool of arrangements
-        const arrangementChoices = [];
-        for (const [qt, qs] of arrangementQuestions) {
-            if (qs.enabled) {
-                arrangementChoices.push(this.getCreateFn(qt, qs.actual));
-            }
-        }
-        if (arrangementChoices.length) {
-            choices.push(pickUniqueItems(arrangementChoices, 1).picked[0]);
-        }
-    
-        if (!choices.length) {
-            return;
         }
     
         const randomQuestion = pickUniqueItems(choices, 1).picked[0]();
-        console.log("randomQuestion", randomQuestion);
-        this.question = randomQuestion!;
-        return this.question;
+        console.log("Generated random question", randomQuestion);
+        return randomQuestion;
     }
 
     skipIntro(dontShowAnymore: boolean) {
@@ -168,7 +143,7 @@ export class SyllogimousService {
     }
 
     play() {
-        this.createQuestion();
+        this.question = this.createRandomQuestion();
         if (this.playgroundSettings) {
             this.router.navigate([EnumScreens.Game]);
         } else {
@@ -675,333 +650,6 @@ export class SyllogimousService {
         return question;
     }
 
-    createAnalogy(length: number) {
-        const topType = EnumQuestionType.Analogy;
-        const settings = this.settings;
-
-        if (!canGenerateQuestion(topType, length, settings)) {
-            throw new Error("Cannot generate.");
-        }
-
-        const choiceIndices = [];
-        if (settings.question[EnumQuestionType.Distinction].enabled) {
-            choiceIndices.push(0);
-        }
-
-        // Randomly pick one comparison question from the comparison questions enabled
-        const comparisonChoices = [];
-        if (settings.question[EnumQuestionType.ComparisonNumerical].enabled) {
-            comparisonChoices.push(1);
-        }
-        if (settings.question[EnumQuestionType.ComparisonChronological].enabled) {
-            comparisonChoices.push(2);
-        }
-        if (comparisonChoices.length) {
-            choiceIndices.push(pickUniqueItems(comparisonChoices, 1).picked[0]);
-        }
-
-        // Randomly pick one direction question from the direction questions enabled
-        const directionsChoices = [];
-        if (settings.question[EnumQuestionType.Direction].enabled) {
-            directionsChoices.push(3);
-        }
-        if (settings.question[EnumQuestionType.Direction3DSpatial].enabled) {
-            directionsChoices.push(4);
-        }
-        if (settings.question[EnumQuestionType.Direction3DTemporal].enabled) {
-            directionsChoices.push(5);
-        }
-        if (settings.question[EnumQuestionType.Direction4D].enabled) {
-            directionsChoices.push(6);
-        }
-        if (directionsChoices.length) {
-            choiceIndices.push(pickUniqueItems(directionsChoices, 1).picked[0]);
-        }
-
-        // TODO: Randomly pick one arrangement question from the arrangement questions enabled
-        /* const arrangementChoices = [];
-        if (settings.question[EnumQuestionType.LinearArrangement].enabled) {
-            arrangementChoices.push(7);
-        }
-        if (settings.question[EnumQuestionType.CircularArrangement].enabled) {
-            arrangementChoices.push(8);
-        }
-        if (arrangementChoices.length) {
-            choiceIndices.push(pickUniqueItems(arrangementChoices, 1).picked[0]);
-        }*/
-    
-        const choiceIndex = pickUniqueItems(choiceIndices, 1).picked[0];
-
-        let question = new Question(topType);
-        let isValidSame;
-        let a, b, c, d;
-        let indexOfA, indexOfB, indexOfC, indexOfD;
-
-        const flip = coinFlip();
-
-        switch (choiceIndex) {
-            case 0:
-                question = this.createDistinction(length);
-                question.type = topType;
-                question.conclusion = "";
-        
-                [a, b, c, d] = pickUniqueItems([...question.buckets[0], ...question.buckets[1]], 4).picked;
-                question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
-
-                [
-                    indexOfA,
-                    indexOfB,
-                    indexOfC,
-                    indexOfD
-                ] = [
-                    Number(question.buckets[0].indexOf(a) !== -1),
-                    Number(question.buckets[0].indexOf(b) !== -1),
-                    Number(question.buckets[0].indexOf(c) !== -1),
-                    Number(question.buckets[0].indexOf(d) !== -1)
-                ];
-                isValidSame = (indexOfA === indexOfB && indexOfC === indexOfD) || (indexOfA !== indexOfB && indexOfC !== indexOfD);
-                break;
-            case 1:
-            case 2:
-                const type = (choiceIndex === 1) 
-                    ? EnumQuestionType.ComparisonNumerical
-                    : EnumQuestionType.ComparisonChronological;
-                question = this.createComparison(length, type);
-                question.type = topType;
-                question.conclusion = "";
-
-                [a, b, c, d] = pickUniqueItems(question.bucket, 4).picked;
-                question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
-
-                [indexOfA, indexOfB] = [question.bucket.indexOf(a), question.bucket.indexOf(b)];
-                [indexOfC, indexOfD] = [question.bucket.indexOf(c), question.bucket.indexOf(d)];
-                isValidSame = (indexOfA > indexOfB && indexOfC > indexOfD) || (indexOfA < indexOfB && indexOfC < indexOfD);
-                break;
-            case 3:
-                while (flip !== isValidSame) {
-                    question = this.createDirection(length);
-                    question.type = topType;
-                    question.conclusion = "";
-
-                    [a, b, c, d] = pickUniqueItems(Object.keys(question.wordCoordMap), 4).picked;
-                    question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
-        
-                    const dirA = findDirection(question.wordCoordMap[a] as any, question.wordCoordMap[b] as any);
-                    const dirB = findDirection(question.wordCoordMap[c] as any, question.wordCoordMap[d] as any);
-                    isValidSame = dirA === dirB;
-                }
-                break;
-            case 4:
-            case 5:
-                while (flip !== isValidSame) {
-                    const type = (choiceIndex === 4) 
-                        ? EnumQuestionType.Direction3DSpatial
-                        : EnumQuestionType.Direction3DTemporal;
-                    const isTemporal = type === EnumQuestionType.Direction3DTemporal;
-                    question = this.createDirection3D(length, type);
-                    question.type = topType;
-                    question.conclusion = "";
-
-                    [a, b, c, d] = pickUniqueItems(Object.keys(question.wordCoordMap), 4).picked;
-                    question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
-
-                    const dirA = findDirection3D(
-                        question.wordCoordMap[a] as any,
-                        question.wordCoordMap[b] as any,
-                        isTemporal
-                    );
-                    const dirB = findDirection3D(
-                        question.wordCoordMap[c] as any,
-                        question.wordCoordMap[d] as any,
-                        isTemporal
-                    );
-                    isValidSame = dirA === dirB;
-                }
-                break;
-            case 6:
-                while (flip !== isValidSame) {
-                    question = this.createDirection4D(length);
-                    question.type = topType;
-                    question.conclusion = "";
-
-                    [a, b, c, d] = pickUniqueItems(Object.keys(question.wordCoordMap), 4).picked;
-                    question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
-
-                    const { spatial, temporal } = findDirection4D(question.wordCoordMap[a] as any, question.wordCoordMap[b] as any);
-                    const { spatial: spatial2, temporal: temporal2 } = findDirection4D(question.wordCoordMap[c] as any, question.wordCoordMap[d] as any);
-                    isValidSame = (spatial === spatial2) && (temporal === temporal2);
-                }
-                break;
-            case 7: {
-                // TODO: Linear arrangement
-                break;
-            }
-            case 8: {
-                // TODO: Circular arrangement
-                break;
-            }
-        }
-
-        if (isValidSame === undefined) {
-            throw new Error("Shouldn't be here...");
-        }
-
-        const isSameRelation = coinFlip();
-        question.isValid = isSameRelation ? isValidSame : !isValidSame;
-
-        if (settings.enable.negation && coinFlip()) {
-            question.negations++;
-            if (isSameRelation) {
-                if (choiceIndex < 1) {
-                    question.conclusion += '<div class="analogy-conclusion-relation is-negated">is different from</div>';
-                } else {
-                    question.conclusion += '<div class="analogy-conclusion-relation is-negated">has a different relation from</div>';
-                }
-            } else {
-                if (choiceIndex < 1) {
-                    question.conclusion += '<div class="analogy-conclusion-relation is-negated">is the same as</div>';
-                } else {
-                    question.conclusion += '<div class="analogy-conclusion-relation is-negated">has the same relation as</div>';
-                }
-            }
-        } else {
-            if (isSameRelation) {
-                if (choiceIndex < 1) {
-                    question.conclusion += '<div class="analogy-conclusion-relation">is the same as</div>';
-                } else {
-                    question.conclusion += '<div class="analogy-conclusion-relation">has the same relation as</div>';
-                }
-            } else {
-                if (choiceIndex < 1) {
-                    question.conclusion += '<div class="analogy-conclusion-relation">is different from</div>';
-                } else {
-                    question.conclusion += '<div class="analogy-conclusion-relation">has a different relation from</div>';
-                }
-            }
-        }
-
-        question.conclusion += `<span class="subject">${c}</span> to <span class="subject">${d}</span>`;
-    
-        return question;
-    }
-
-    createBinary(length: number) {
-        const topType = EnumQuestionType.Binary;
-        const settings = this.settings;
-
-        if (!canGenerateQuestion(topType, length, settings)) {
-            throw new Error("Cannot generate.");
-        }
-
-        const operands = [];
-        const operandNames = [];
-        const operandTemplates = [];
-        const pool = [];
-    
-        if (settings.enable.binary.and) {
-            operands.push("a&&b");
-            operandNames.push("AND");
-            operandTemplates.push('$a <div class="is-connector">and</div> $b');
-        }
-        if (settings.enable.binary.nand) {
-            operands.push("!(a&&b)");
-            operandNames.push("NAND");
-            operandTemplates.push('$a <div class="is-connector">and</div> $b <div class="is-connector">are not both true</div>');
-        }
-        if (settings.enable.binary.or) {
-            operands.push("a||b");
-            operandNames.push("OR");
-            operandTemplates.push('$a <div class="is-connector">or</div> $b');
-        }
-        if (settings.enable.binary.nor) {
-            operands.push("!(a||b)");
-            operandNames.push("NOR");
-            operandTemplates.push('$a <div class="is-connector">and</div> $b <div class="is-connector">are both false</div>');
-        }
-        if (settings.enable.binary.xor) {
-            operands.push("!(a&&b)&&(a||b)");
-            operandNames.push("XOR");
-            operandTemplates.push('$a <div class="is-connector">differs from</div> $b');
-        }
-        if (settings.enable.binary.xnor) {
-            operands.push("!(!(a&&b)&&(a||b))");
-            operandNames.push("XNOR");
-            operandTemplates.push('$a <div class="is-connector">is equal to</div> $b');
-        }
-    
-        if (!operands.length) return;
-    
-        if (settings.syllogism[0]) {
-            pool.push((length: number) =>
-                this.createSyllogism(length)
-            );
-        }
-        if (settings.distinction[0]) {
-            pool.push((length: number) =>
-                this.createDistinction(length)
-            );
-        }
-        if (settings.comparisonNumerical[0]) {
-            pool.push((length: number) =>
-                this.createComparison(length, EnumQuestionType.ComparisonNumerical)
-            );
-        }
-        if (settings.comparisonChronological[0]) {
-            pool.push((length: number) =>
-                this.createComparison(length, EnumQuestionType.ComparisonChronological)
-            );
-        }
-        if (settings.direction[0]) {
-            pool.push((length: number) =>
-                this.createDirection(length)
-            );
-        }
-        if (settings.direction3DSpatial[0]) {
-            pool.push((length: number) =>
-                this.createDirection3D(length, EnumQuestionType.Direction3DSpatial)
-            );
-        }
-        if (settings.direction3DTemporal[0]) {
-            pool.push((length: number) =>
-                this.createDirection3D(length, EnumQuestionType.Direction3DTemporal)
-            );
-        }
-        if (settings.direction4D[0]) {
-            pool.push((length: number) =>
-                this.createDirection4D(length)
-            );
-        }
-
-        const question = new Question(topType);
-        const flip = coinFlip();
-        const operandIndex = Math.floor(Math.random()*operands.length);
-        const operand = operands[operandIndex];
-
-        do {
-            const picked = pickUniqueItems(pool, 2).picked;
-    
-            const choices = [
-                picked[0](Math.floor(length / 2)),
-                picked[1](Math.ceil(length / 2))
-            ];
-        
-            question.premises = [...choices[0].premises, ...choices[1].premises];
-            shuffle(question.premises);
-        
-            question.conclusion = operandTemplates[operandIndex]
-                .replace("$a", choices[0].conclusion)
-                .replace("$b", choices[1].conclusion);
-
-            question.isValid = eval(
-                operand
-                    .replaceAll("a", String(choices[0].isValid))
-                    .replaceAll("b", String(choices[1].isValid))
-            );
-        } while (flip !== question.isValid);
-    
-        return question;
-    }
-
     createLinearArrangement(numOfEls: number) {
         const getAdjLeft = (i: number) => i+1;
         const getAdjRight = (i: number) => i-1;
@@ -1264,6 +912,287 @@ export class SyllogimousService {
         (question as any).rawPremises = premises;
         question.premises = premises.map(([a, rel, b]) => `<span class="subject">${a}</span> ${rel} <span class="subject">${b}</span>`);
 
+        return question;
+    }
+
+    createAnalogy(length: number) {
+        const topType = EnumQuestionType.Analogy;
+        const settings = this.settings;
+
+        if (!canGenerateQuestion(topType, length, settings)) {
+            throw new Error("Cannot generate.");
+        }
+
+        const choiceIndices = [];
+        if (settings.question[EnumQuestionType.Distinction].enabled) {
+            choiceIndices.push(0);
+        }
+
+        // Randomly pick one comparison question from the comparison questions enabled
+        const comparisonChoices = [];
+        if (settings.question[EnumQuestionType.ComparisonNumerical].enabled) {
+            comparisonChoices.push(1);
+        }
+        if (settings.question[EnumQuestionType.ComparisonChronological].enabled) {
+            comparisonChoices.push(2);
+        }
+        if (comparisonChoices.length) {
+            choiceIndices.push(pickUniqueItems(comparisonChoices, 1).picked[0]);
+        }
+
+        // Randomly pick one direction question from the direction questions enabled
+        const directionsChoices = [];
+        if (settings.question[EnumQuestionType.Direction].enabled) {
+            directionsChoices.push(3);
+        }
+        if (settings.question[EnumQuestionType.Direction3DSpatial].enabled) {
+            directionsChoices.push(4);
+        }
+        if (settings.question[EnumQuestionType.Direction3DTemporal].enabled) {
+            directionsChoices.push(5);
+        }
+        if (settings.question[EnumQuestionType.Direction4D].enabled) {
+            directionsChoices.push(6);
+        }
+        if (directionsChoices.length) {
+            choiceIndices.push(pickUniqueItems(directionsChoices, 1).picked[0]);
+        }
+
+        // TODO: Randomly pick one arrangement question from the arrangement questions enabled
+        /* const arrangementChoices = [];
+        if (settings.question[EnumQuestionType.LinearArrangement].enabled) {
+            arrangementChoices.push(7);
+        }
+        if (settings.question[EnumQuestionType.CircularArrangement].enabled) {
+            arrangementChoices.push(8);
+        }
+        if (arrangementChoices.length) {
+            choiceIndices.push(pickUniqueItems(arrangementChoices, 1).picked[0]);
+        }*/
+    
+        const choiceIndex = pickUniqueItems(choiceIndices, 1).picked[0];
+
+        let question = new Question(topType);
+        let isValidSame;
+        let a, b, c, d;
+        let indexOfA, indexOfB, indexOfC, indexOfD;
+
+        const flip = coinFlip();
+
+        switch (choiceIndex) {
+            case 0:
+                question = this.createDistinction(length);
+                question.type = topType;
+                question.conclusion = "";
+        
+                [a, b, c, d] = pickUniqueItems([...question.buckets[0], ...question.buckets[1]], 4).picked;
+                question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
+
+                [
+                    indexOfA,
+                    indexOfB,
+                    indexOfC,
+                    indexOfD
+                ] = [
+                    Number(question.buckets[0].indexOf(a) !== -1),
+                    Number(question.buckets[0].indexOf(b) !== -1),
+                    Number(question.buckets[0].indexOf(c) !== -1),
+                    Number(question.buckets[0].indexOf(d) !== -1)
+                ];
+                isValidSame = (indexOfA === indexOfB && indexOfC === indexOfD) || (indexOfA !== indexOfB && indexOfC !== indexOfD);
+                break;
+            case 1:
+            case 2:
+                const type = (choiceIndex === 1) 
+                    ? EnumQuestionType.ComparisonNumerical
+                    : EnumQuestionType.ComparisonChronological;
+                question = this.createComparison(length, type);
+                question.type = topType;
+                question.conclusion = "";
+
+                [a, b, c, d] = pickUniqueItems(question.bucket, 4).picked;
+                question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
+
+                [indexOfA, indexOfB] = [question.bucket.indexOf(a), question.bucket.indexOf(b)];
+                [indexOfC, indexOfD] = [question.bucket.indexOf(c), question.bucket.indexOf(d)];
+                isValidSame = (indexOfA > indexOfB && indexOfC > indexOfD) || (indexOfA < indexOfB && indexOfC < indexOfD);
+                break;
+            case 3:
+                while (flip !== isValidSame) {
+                    question = this.createDirection(length);
+                    question.type = topType;
+                    question.conclusion = "";
+
+                    [a, b, c, d] = pickUniqueItems(Object.keys(question.wordCoordMap), 4).picked;
+                    question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
+        
+                    const dirA = findDirection(question.wordCoordMap[a] as any, question.wordCoordMap[b] as any);
+                    const dirB = findDirection(question.wordCoordMap[c] as any, question.wordCoordMap[d] as any);
+                    isValidSame = dirA === dirB;
+                }
+                break;
+            case 4:
+            case 5:
+                while (flip !== isValidSame) {
+                    const type = (choiceIndex === 4) 
+                        ? EnumQuestionType.Direction3DSpatial
+                        : EnumQuestionType.Direction3DTemporal;
+                    const isTemporal = type === EnumQuestionType.Direction3DTemporal;
+                    question = this.createDirection3D(length, type);
+                    question.type = topType;
+                    question.conclusion = "";
+
+                    [a, b, c, d] = pickUniqueItems(Object.keys(question.wordCoordMap), 4).picked;
+                    question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
+
+                    const dirA = findDirection3D(
+                        question.wordCoordMap[a] as any,
+                        question.wordCoordMap[b] as any,
+                        isTemporal
+                    );
+                    const dirB = findDirection3D(
+                        question.wordCoordMap[c] as any,
+                        question.wordCoordMap[d] as any,
+                        isTemporal
+                    );
+                    isValidSame = dirA === dirB;
+                }
+                break;
+            case 6:
+                while (flip !== isValidSame) {
+                    question = this.createDirection4D(length);
+                    question.type = topType;
+                    question.conclusion = "";
+
+                    [a, b, c, d] = pickUniqueItems(Object.keys(question.wordCoordMap), 4).picked;
+                    question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
+
+                    const { spatial, temporal } = findDirection4D(question.wordCoordMap[a] as any, question.wordCoordMap[b] as any);
+                    const { spatial: spatial2, temporal: temporal2 } = findDirection4D(question.wordCoordMap[c] as any, question.wordCoordMap[d] as any);
+                    isValidSame = (spatial === spatial2) && (temporal === temporal2);
+                }
+                break;
+            case 7: {
+                // TODO: Linear arrangement
+                break;
+            }
+            case 8: {
+                // TODO: Circular arrangement
+                break;
+            }
+        }
+
+        if (isValidSame === undefined) {
+            throw new Error("Shouldn't be here...");
+        }
+
+        const isSameRelation = coinFlip();
+        question.isValid = isSameRelation ? isValidSame : !isValidSame;
+
+        if (settings.enable.negation && coinFlip()) {
+            question.negations++;
+            if (isSameRelation) {
+                if (choiceIndex < 1) {
+                    question.conclusion += '<div class="analogy-conclusion-relation is-negated">is different from</div>';
+                } else {
+                    question.conclusion += '<div class="analogy-conclusion-relation is-negated">has a different relation from</div>';
+                }
+            } else {
+                if (choiceIndex < 1) {
+                    question.conclusion += '<div class="analogy-conclusion-relation is-negated">is the same as</div>';
+                } else {
+                    question.conclusion += '<div class="analogy-conclusion-relation is-negated">has the same relation as</div>';
+                }
+            }
+        } else {
+            if (isSameRelation) {
+                if (choiceIndex < 1) {
+                    question.conclusion += '<div class="analogy-conclusion-relation">is the same as</div>';
+                } else {
+                    question.conclusion += '<div class="analogy-conclusion-relation">has the same relation as</div>';
+                }
+            } else {
+                if (choiceIndex < 1) {
+                    question.conclusion += '<div class="analogy-conclusion-relation">is different from</div>';
+                } else {
+                    question.conclusion += '<div class="analogy-conclusion-relation">has a different relation from</div>';
+                }
+            }
+        }
+
+        question.conclusion += `<span class="subject">${c}</span> to <span class="subject">${d}</span>`;
+    
+        return question;
+    }
+
+    createBinary(numOfPremises: number) {
+        const topType = EnumQuestionType.Binary;
+        const settings = this.settings;
+
+        if (!canGenerateQuestion(topType, numOfPremises, settings)) {
+            throw new Error("Cannot generate.");
+        }
+
+        const operands = [];
+        const operandNames = [];
+        const operandTemplates = [];
+    
+        if (settings.enable.binary.and) {
+            operands.push("a&&b");
+            operandNames.push("AND");
+            operandTemplates.push('$a <div class="is-connector">and</div> $b');
+        }
+        if (settings.enable.binary.nand) {
+            operands.push("!(a&&b)");
+            operandNames.push("NAND");
+            operandTemplates.push('$a <div class="is-connector">and</div> $b <div class="is-connector">are not both true</div>');
+        }
+        if (settings.enable.binary.or) {
+            operands.push("a||b");
+            operandNames.push("OR");
+            operandTemplates.push('$a <div class="is-connector">or</div> $b');
+        }
+        if (settings.enable.binary.nor) {
+            operands.push("!(a||b)");
+            operandNames.push("NOR");
+            operandTemplates.push('$a <div class="is-connector">and</div> $b <div class="is-connector">are both false</div>');
+        }
+        if (settings.enable.binary.xor) {
+            operands.push("!(a&&b)&&(a||b)");
+            operandNames.push("XOR");
+            operandTemplates.push('$a <div class="is-connector">differs from</div> $b');
+        }
+        if (settings.enable.binary.xnor) {
+            operands.push("!(!(a&&b)&&(a||b))");
+            operandNames.push("XNOR");
+            operandTemplates.push('$a <div class="is-connector">is equal to</div> $b');
+        }
+        
+        const choices = [
+            this.createRandomQuestion(Math.floor(numOfPremises / 2)),
+            this.createRandomQuestion(Math.ceil(numOfPremises / 2)),
+        ];
+
+        const question = new Question(topType);
+        const flip = coinFlip();
+        const operandIndex = Math.floor(Math.random()*operands.length);
+        const operand = operands[operandIndex];
+
+        do {
+            question.premises = [...choices[0].premises, ...choices[1].premises];
+            shuffle(question.premises);
+        
+            question.conclusion = operandTemplates[operandIndex]
+                .replace("$a", choices[0].conclusion)
+                .replace("$b", choices[1].conclusion);
+
+            question.isValid = eval(
+                operand
+                    .replaceAll("a", String(choices[0].isValid))
+                    .replaceAll("b", String(choices[1].isValid))
+            );
+        } while (flip !== question.isValid);
+    
         return question;
     }
 }

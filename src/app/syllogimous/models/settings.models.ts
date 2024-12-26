@@ -78,6 +78,10 @@ export class QuestionSetting {
         this.basic = basic;
         this.group = group;
     }
+
+    clampNumOfPremises(numOfPremises: number) {
+        return Math.max(this.min, Math.min(this.max, numOfPremises))
+    }
 }
 
 export class Settings {
