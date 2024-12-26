@@ -52,21 +52,11 @@ export class PlaygroundModeComponent {
             });
         }
 
-        // Create binary boolean controls
-        for (const [field, value] of this.binaryEnables) {
-            this.fields.push({
-                type: "checkbox",
-                label: decomposeCamelCase(field),
-                field,
-                value,
-            });
-        }
-
         // Create controls for questions (enable checkbox and num of premises slider)
         for (const [qt, qs] of this.questionControls) {
             this.fields.push(
                 { 
-                    filler: "<div></div>",
+                    filler: "<div class='pt-3'></div>",
                     field: "",
                     label: ""
                 },
@@ -86,6 +76,16 @@ export class PlaygroundModeComponent {
                     step: 1
                 }
             );
+        }
+
+        // Create binary boolean controls
+        for (const [field, value] of this.binaryEnables) {
+            this.fields.push({
+                type: "checkbox",
+                label: decomposeCamelCase(field),
+                field,
+                value,
+            });
         }
     }
 
