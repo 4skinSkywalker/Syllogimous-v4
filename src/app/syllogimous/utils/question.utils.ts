@@ -1,6 +1,6 @@
-import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, FORMS, NOUNS, STRINGS, TIME_NAMES, VALID_RULES } from "../constants/engine.constants";
-import { EnumArrangementRelations, EnumQuestionType } from "../constants/question.constants";
-import { Question } from "../models/question.models";
+import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_TEMPORAL, FORMS, NOUNS, STRINGS, TIME_NAMES, VALID_RULES } from "../constants/question.constants";
+import { EnumArrangements, EnumQuestionType } from "../constants/question.constants";
+import { IRawArrangementPremise, Question } from "../models/question.models";
 import { Settings, Picked } from "../models/settings.models";
 
 export const b2n = (b: boolean) => +b as number;
@@ -334,118 +334,167 @@ export function makeMetaRelationsNew(settings: Settings, question: Question, len
     }
 }
 
-export function alterArrangementWithMetaRelations(settings: Settings, question: Question, premises: string[][]) {
+/** This methods modifies some premises with meta-relationships */
+export function metarelateArrangement(settings: Settings, question: Question, premises: IRawArrangementPremise[]) {
     if (settings.enabled.meta && coinFlip()) {
-        const premisesByRelation: { [key: string]: { same: string[][], opposite: string[][] }} = {};
-        for (const p of premises) {
-            premisesByRelation[p[1]] = premisesByRelation[p[1]] || { same: [], opposite: [] };
-            premisesByRelation[p[1]].same.push([...p]);
-        }
-
-        for (const rel in premisesByRelation) {
-            switch (rel) {
-                case EnumArrangementRelations.AdjLeft: {
-                    premisesByRelation[rel].opposite = premisesByRelation[EnumArrangementRelations.AdjRight]?.same || [];
-                    break;
-                }
-                case EnumArrangementRelations.AdjRight: {
-                    premisesByRelation[rel].opposite = premisesByRelation[EnumArrangementRelations.AdjLeft]?.same || [];
-                    break;
-                }
-                case EnumArrangementRelations.Left: {
-                    premisesByRelation[rel].opposite = premisesByRelation[EnumArrangementRelations.Right]?.same || [];
-                    break;
-                }
-                case EnumArrangementRelations.Right: {
-                    premisesByRelation[rel].opposite = premisesByRelation[EnumArrangementRelations.Left]?.same || [];
-                    break;
-                }
-                case EnumArrangementRelations.Next: {
-                    premisesByRelation[rel].opposite = premisesByRelation[EnumArrangementRelations.NotNext]?.same || [];
-                    break;
-                }
-                case EnumArrangementRelations.NotNext: {
-                    premisesByRelation[rel].opposite = premisesByRelation[EnumArrangementRelations.Next]?.same || [];
-                    break;
-                }
-                case EnumArrangementRelations.InFront: {
-                    premisesByRelation[rel].opposite = premisesByRelation[EnumArrangementRelations.NotInFront]?.same || [];
-                    break;
-                }
-                case EnumArrangementRelations.NotInFront: {
-                    premisesByRelation[rel].opposite = premisesByRelation[EnumArrangementRelations.InFront]?.same || [];
-                    break;
-                }
-            }
-        }
-
-        let sameRelations = Object.values(premisesByRelation)
-            .filter(({ same }) => same.length > 1)
-            .map(({ same }) => same);
-        let howManySame = Math.floor(Math.random()*sameRelations.length);
-        while (howManySame--) {
-            const { picked, remaining } = pickUniqueItems(sameRelations, 1);
-            sameRelations = remaining;
-            const [a, b] = pickUniqueItems(picked[0], 2).picked;
-            const premise = premises.find(p => p[3] === a[3])!;
-            premise[1] = `has the same relationship of <span class="subject">${b[0]}</span> to <span class="subject">${b[2]}</span> with`;
-            console.warn("altered same meta-relation", premise);
-            question.metaRelations++;
-        }
-        
-        let oppositeRelations = Object.values(premisesByRelation)
-            .filter(({ same, opposite }) => same.length && opposite.length);
-        let howManyOpposite = Math.floor(Math.random()*oppositeRelations.length);
-        while (howManyOpposite--) {
-            const { picked, remaining } = pickUniqueItems(oppositeRelations, 1);
-            oppositeRelations = remaining;
-
-            const rndRelation = pickUniqueItems(picked, 1).picked[0];
-            const a = pickUniqueItems(rndRelation.same, 1).picked[0];
-            const b = pickUniqueItems(rndRelation.opposite, 1).picked[0];
-
-            const shouldSwitch = coinFlip();
-            const _a = shouldSwitch ? a : b;
-            const _b = shouldSwitch ? b : a;
-
-            const premise = premises.find(p => p[3] === _a[3])!;
-            premise[1] = `has the opposite relationship of <span class="subject">${_b[0]}</span> to <span class="subject">${_b[2]}</span> with`;
-            console.warn("altered opposite meta-relation", premise);
-            question.metaRelations++;
-        }
+        // TODO: Implement meta-relationships for arrangements
     }
 }
 
-export function randomlyReverseFewSubjectsInArrangement(premises: string[][]) {
-    premises = premises.map(([a, rel, b, guid])  => {
-        if (rel && coinFlip()) {
-            switch (rel) {
-                case EnumArrangementRelations.AdjLeft: {
-                    return [b, EnumArrangementRelations.AdjRight, a, guid];
+export function horizontalShuffleArrangement(premises: IRawArrangementPremise[]) {
+    const switchSubjects = (premise: IRawArrangementPremise) => 
+        [premise.a, premise.b] = [premise.b, premise.a];
+
+    premises.forEach(premise => {
+        if (premise.relationship && coinFlip()) {
+            switch (premise.relationship.description) {
+                case EnumArrangements.AdjacentLeft: {
+                    premise.relationship.description = EnumArrangements.AdjacentRight;
+                    switchSubjects(premise);
+                    break;
                 }
-                case EnumArrangementRelations.AdjRight: {
-                    return [b, EnumArrangementRelations.AdjLeft, a, guid];
+                case EnumArrangements.AdjacentRight: {
+                    premise.relationship.description = EnumArrangements.AdjacentLeft;
+                    switchSubjects(premise);
+                    break;
                 }
-                case EnumArrangementRelations.InFront: {
-                    return [b, EnumArrangementRelations.InFront, a, guid];
+                case EnumArrangements.NStepsLeft: {
+                    premise.relationship.description = EnumArrangements.NStepsRight;
+                    switchSubjects(premise);
+                    break;
                 }
-                case EnumArrangementRelations.NotInFront: {
-                    return [b, EnumArrangementRelations.NotInFront, a, guid];
+                case EnumArrangements.NStepsRight: {
+                    premise.relationship.description = EnumArrangements.NStepsLeft;
+                    switchSubjects(premise);
+                    break;
                 }
-                case EnumArrangementRelations.Next: {
-                    return [b, EnumArrangementRelations.Next, a, guid];
+                case EnumArrangements.Next: {
+                    switchSubjects(premise);
+                    break;
                 }
-                case EnumArrangementRelations.NotNext: {
-                    return [b, EnumArrangementRelations.NotNext, a, guid];
+                case EnumArrangements.InFront: {
+                    switchSubjects(premise);
+                    break;
                 }
-                case EnumArrangementRelations.Left: {
-                    return [b, EnumArrangementRelations.Right, a, guid];
+                case EnumArrangements.Left: {
+                    premise.relationship.description = EnumArrangements.Right;
+                    switchSubjects(premise);
+                    break;
                 }
-                case EnumArrangementRelations.Right: {
-                    return [b, EnumArrangementRelations.Left, a, guid];
+                case EnumArrangements.Right: {
+                    premise.relationship.description = EnumArrangements.Left;
+                    switchSubjects(premise);
+                    break;
                 }
             }
         }
-        return [a, rel, b, guid];
     });
 }
+
+export function getLinearWays(i: number, j: number, numOfEls: number, forConclusion = false) {
+    const isAdjLeft = i+1 === j;
+    const isAdjRight = i-1 === j;
+    const isNext = isAdjLeft || isAdjRight;
+    const isLeft = i < j;
+    const isRight = i > j;
+    const steps = Math.abs(i - j);
+
+    const ways: Record<string, { possible: boolean, steps: number }> = {
+        [EnumArrangements.AdjacentLeft]: {
+            possible: isAdjLeft,
+            steps
+        },
+        [EnumArrangements.AdjacentRight]: {
+            possible: isAdjRight,
+            steps
+        },
+        [EnumArrangements.NStepsLeft]: {
+            possible: isLeft && !isAdjLeft,
+            steps
+        },
+        [EnumArrangements.NStepsRight]: {
+            possible: isRight && !isAdjRight,
+            steps 
+        },
+    };
+
+    if (forConclusion) {
+        ways[EnumArrangements.Next] = {
+            possible: isNext,
+            steps
+        };
+        ways[EnumArrangements.Left] = {
+            possible: isLeft,
+            steps: -Infinity
+        };
+        ways[EnumArrangements.Right] = {
+            possible: isRight,
+            steps: -Infinity
+        };
+    }
+
+    return ways;
+};
+
+export function getCircularWays(i: number, j: number, numOfEls: number, forConclusion = false) {
+    const getAdjLeft = (i: number) => (numOfEls+(i+1))%numOfEls;
+    const getAdjRight = (i: number) => (numOfEls+(i-1))%numOfEls;
+    const getInFront = (i: number) => (i+(numOfEls/2))%numOfEls;
+    const getCWDist = (i: number, j: number) => (j-i+numOfEls)%numOfEls;
+    const getCCWDist = (i: number, j: number) => numOfEls-getCWDist(i, j);
+
+    // Set i to 0 and calc j relative to that
+    j = (numOfEls+(j-i))%numOfEls;
+    i = 0;
+
+    const isAdjLeft = getAdjLeft(i) === j;
+    const isAdjRight = getAdjRight(i) === j;
+    const isNext = isAdjLeft || isAdjRight;
+    const isLeft = j < getInFront(i);
+    const isRight = j > getInFront(i);
+    const steps = Math.min(getCWDist(i, j), getCCWDist(i, j));
+
+    const ways: Record<string, { possible: boolean, steps: number }>  = {
+        [EnumArrangements.AdjacentLeft]: {
+            possible: isAdjLeft,
+            steps
+        },
+        [EnumArrangements.AdjacentRight]: {
+            possible: isAdjRight,
+            steps
+        },
+        [EnumArrangements.NStepsLeft]: {
+            possible: isLeft && !isAdjLeft,
+            steps
+        },
+        [EnumArrangements.NStepsRight]: {
+            possible: isRight && !isAdjRight,
+            steps 
+        },
+    };
+
+    // Odd num of els do not make for diametrically opposite els
+    if (numOfEls%2 === 0) {
+        ways[EnumArrangements.InFront] = {
+            possible: getInFront(i) === j,
+            steps
+        };
+    }
+
+    if (forConclusion) {
+        ways[EnumArrangements.Next] = {
+            possible: isNext,
+            steps
+        };
+        ways[EnumArrangements.Left] = {
+            possible: isLeft,
+            steps: -Infinity
+        };
+        ways[EnumArrangements.Right] = {
+            possible: isRight,
+            steps: -Infinity
+        };
+    }
+
+    return ways;
+};

@@ -1,6 +1,6 @@
 import { EnumQuestionType } from "../constants/question.constants";
 import { EnumQuestionGroup, COMPARISON_PARAMS, DIRECTION_PARAMS, ARRANGEMENT_PARAMS, BASIC_PARAMS, ANALOGY_PARAMS, BINARY_PARAMS, DEFAULT_ENABLED_FLAGS } from "../constants/settings.constants";
-import { b2n } from "../utils/engine.utils";
+import { b2n } from "../utils/question.utils";
 
 const getNumOfEnabledQuestions = (settings: Settings, basicQuestionFilter: boolean) => {
     return Object.values(settings.question)

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { Question } from "../models/question.models";
-import { alterArrangementWithMetaRelations, coinFlip, extractSubjects, findDirection, findDirection3D, findDirection4D, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, makeMetaRelationsNew, pickUniqueItems, randomlyReverseFewSubjectsInArrangement, shuffle } from "../utils/engine.utils";
-import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, DIRECTION_NAMES_INVERSE, TIME_NAMES, TIME_NAMES_INVERSE } from "../constants/engine.constants";
+import { IRawArrangementPremise, Question } from "../models/question.models";
+import { coinFlip, extractSubjects, findDirection, findDirection3D, findDirection4D, getCircularWays, getLinearWays, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, makeMetaRelationsNew, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle } from "../utils/question.utils";
+import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, DIRECTION_NAMES_INVERSE, TIME_NAMES, TIME_NAMES_INVERSE } from "../constants/question.constants";
 import { EnumScreens, EnumTiers, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES, TIER_SETTINGS } from "../constants/syllogimous.constants";
 import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local-storage.constants";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -10,7 +10,7 @@ import { Router } from "@angular/router";
 import { canGenerateQuestion, QuestionSettings, Settings } from "../models/settings.models";
 import { DailyProgressService } from "./daily-progress.service";
 import { guid } from "src/app/utils/uuid";
-import { EnumArrangementRelations, EnumQuestionType } from "../constants/question.constants";
+import { EnumArrangements, EnumQuestionType } from "../constants/question.constants";
 import { EnumQuestionGroup } from "../constants/settings.constants";
 
 @Injectable({
@@ -86,18 +86,18 @@ export class SyllogimousService {
     /** Given question type and number of premises, returns a question creator function */
     getCreateFn(questionType: EnumQuestionType, qtyPremises: number) {
         return {
-            [EnumQuestionType.Distinction]: () => this.createDistinction(qtyPremises),
-            [EnumQuestionType.Syllogism]: () => this.createSyllogism(qtyPremises),
-            [EnumQuestionType.Analogy]: () => this.createAnalogy(qtyPremises),
-            [EnumQuestionType.Binary]: () => this.createBinary(qtyPremises),
-            [EnumQuestionType.ComparisonNumerical]: () => this.createComparison(qtyPremises, EnumQuestionType.ComparisonNumerical),
+            [EnumQuestionType.Distinction]:             () => this.createDistinction(qtyPremises),
+            [EnumQuestionType.Syllogism]:               () => this.createSyllogism(qtyPremises),
+            [EnumQuestionType.Analogy]:                 () => this.createAnalogy(qtyPremises),
+            [EnumQuestionType.Binary]:                  () => this.createBinary(qtyPremises),
+            [EnumQuestionType.ComparisonNumerical]:     () => this.createComparison(qtyPremises, EnumQuestionType.ComparisonNumerical),
             [EnumQuestionType.ComparisonChronological]: () => this.createComparison(qtyPremises, EnumQuestionType.ComparisonChronological),
-            [EnumQuestionType.LinearArrangement]: () => this.createLinearArrangement(qtyPremises),
-            [EnumQuestionType.CircularArrangement]: () => this.createCircularArrangement(qtyPremises),
-            [EnumQuestionType.Direction]: () => this.createDirection(qtyPremises),
-            [EnumQuestionType.Direction3DSpatial]: () => this.createDirection3D(qtyPremises, EnumQuestionType.Direction3DSpatial),
-            [EnumQuestionType.Direction3DTemporal]: () => this.createDirection3D(qtyPremises, EnumQuestionType.Direction3DTemporal),
-            [EnumQuestionType.Direction4D]: () => this.createDirection4D(qtyPremises),
+            [EnumQuestionType.LinearArrangement]:       () => this.createArrangement(qtyPremises, EnumQuestionType.LinearArrangement),
+            [EnumQuestionType.CircularArrangement]:     () => this.createArrangement(qtyPremises, EnumQuestionType.CircularArrangement),
+            [EnumQuestionType.Direction]:               () => this.createDirection(qtyPremises),
+            [EnumQuestionType.Direction3DSpatial]:      () => this.createDirection3D(qtyPremises, EnumQuestionType.Direction3DSpatial),
+            [EnumQuestionType.Direction3DTemporal]:     () => this.createDirection3D(qtyPremises, EnumQuestionType.Direction3DTemporal),
+            [EnumQuestionType.Direction4D]:             () => this.createDirection4D(qtyPremises),
         }[questionType];
     }
 
@@ -668,253 +668,101 @@ export class SyllogimousService {
         return question;
     }
 
-    createLinearArrangement(numOfEls: number) {
-        console.log("createLinearArrangement");
+    createArrangement(numOfPremises: number, type: EnumQuestionType.LinearArrangement | EnumQuestionType.CircularArrangement) {
+        console.log("createArrangement");
 
-        numOfEls = Math.max(3, numOfEls);
-
-        const type = EnumQuestionType.LinearArrangement;
         const settings = this.settings;
+
+        if (!canGenerateQuestion(type, numOfPremises, settings)) {
+            throw new Error("Cannot generate.");
+        }
+
+        const numOfEls = numOfPremises + 1;
+        const isLinear = type === EnumQuestionType.LinearArrangement;
+        const getWays = isLinear ? getLinearWays : getCircularWays;
         const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, numOfEls).picked;
         const question = new Question(type);
-        question.instructions = `There are ${numOfEls} subjects along a LINEAR path.`;
+        question.instructions = `There are ${numOfEls} subjects along a ${isLinear ? "LINEAR" : "CIRCULAR"} path.`;
 
-        /**
-         * TODO:
-         * 1. Add left/right (w/o steps) to the conclusion (boolean flag in getWays?)
-         * 2. Randomly reverse some subjects
-         * 3. Alter with meta relationships
-         * 4. Integrate with analogy type
-         */
-        const getWays = (i: number, j: number) => {
-            const ways = {
-                [EnumArrangementRelations.AdjLeft]: {
-                    possible: i+1 === j,
-                    steps: 1
-                },
-                [EnumArrangementRelations.AdjRight]: {
-                    possible: i-1 === j,
-                    steps: 1
-                },
-                [EnumArrangementRelations.Next]: {
-                    possible: (i+1 === j) || (i-1 === j),
-                    steps: 1
-                },
-                [EnumArrangementRelations.Left]: {
-                    possible: i < j - 1,
-                    steps: j - i
-                },
-                [EnumArrangementRelations.Right]: {
-                    possible: i > j + 1,
-                    steps: i - j
-                },
-            };
-
-            return ways;
-        };
-        (question as any)._getWays = getWays; // Used in analogies
+        const relationshipAlreadyExistent = (a: string, b: string) =>
+            premises.find(({ a: pA, b: pB }) => (pA === a && pB === b) || (pA === b && pB === a));
         
-        let premises: string[][] = [];
+        let premises: IRawArrangementPremise[] = [];
         let subjects = [...words];
         let a: string | undefined = undefined;
-        for (let safe = 1e2; safe && premises.length < numOfEls-1; safe--) {
-            let premise: string[] | undefined = undefined;
+        let safe = 1e2;
+        while (safe-- && premises.length < numOfEls-1) {
+            let premise: IRawArrangementPremise | undefined = undefined;
             let safe = 1e2;
-            for (; safe && premise == undefined; safe--) {
-                a = a || pickUniqueItems(subjects, 1).picked[0];
-                console.log("a", a);
-                const aid = words.indexOf(a);
-
-                const existsAndNotRepeated = (b: string | undefined) => {
-                    return b && !premises.find(([_a, _, _b]) => _a === b || _b === b);
-                }
-
-                const b = pickUniqueItems(subjects, 1).picked[0];
-                console.log("b", b);
-                const bid = words.indexOf(b);
-                const [ wayDescription, wayData ] = pickUniqueItems(Object.entries(getWays(aid, bid)), 1).picked[0];
-                if (wayData.possible && existsAndNotRepeated(b)) {
-                    const enrichedWayDescr = wayDescription.replace("#", String(wayData.steps));
-                    premise = [a, enrichedWayDescr, b];
-                    subjects = subjects.filter(s => s !== a && s !== b)
-                    a = b;
-                }
-            }
-            premises.push([...premise!, guid()]);
-        }
-
-        randomlyReverseFewSubjectsInArrangement(premises);
-
-        shuffle(premises);
-
-        alterArrangementWithMetaRelations(settings, question, premises);
-
-        let b: string | undefined = undefined;
-        for (let safe = 1e2; safe && b == undefined; safe--) {
-            const subject = pickUniqueItems(words, 1).picked[0];
-            const alreadyRelated = premises.find(([_a, _, _b]) => (_a === a && _b === subject) || (_a === subject && _b === a));
-            if (subject !== a && !alreadyRelated) {
-                b = subject;
-            }
-        }
-        const [aid, bid] = [words.indexOf(a!), words.indexOf(b!)];
-        const ways = getWays(aid, bid);
-        console.log(a, b);
-
-        question.isValid = coinFlip();
-        const conclusionWayDescriptions = Object.entries(ways)
-            .filter(([wayDescription, wayData]) => wayData.possible === question.isValid)
-            .map(([wayDescription, wayData]) => wayDescription.replace("#", String(Math.abs(wayData.steps))));
-        question.conclusion = `<span class="subject">${a}</span> ${pickUniqueItems(conclusionWayDescriptions, 1).picked[0]} <span class="subject">${b}</span>`;
-
-        question.rule = words.join(", ");
-        (question as any).rawPremises = premises;
-        question.premises = premises.map(([a, rel, b]) => `<span class="subject">${a}</span> ${rel} <span class="subject">${b}</span>`);
-
-        return question;
-    }
-
-    createCircularArrangement(numOfEls: number) {
-        console.log("createCircularArrangement");
-
-        numOfEls = Math.max(3, numOfEls);
-
-        const type = EnumQuestionType.CircularArrangement;
-        const settings = this.settings;
-        const symbols = getSymbols(settings);
-        const words = pickUniqueItems(symbols, numOfEls).picked;
-        const question = new Question(type);
-        question.instructions = `There are ${numOfEls} subjects along a CIRCULAR path.`;
-
-        const getAdjLeft = (i: number) => (numOfEls+(i+1))%numOfEls;
-        const getAdjRight = (i: number) => (numOfEls+(i-1))%numOfEls;
-        const getInFront = (i: number) => (i+(numOfEls/2))%numOfEls;
-        const getWays = (i: number, j: number) => {
-            j = (numOfEls+(j-i))%numOfEls;
-            i = 0;
-
-            const isAdjLeft = getAdjLeft(i) === j;
-            const isAdjRight = getAdjRight(i) === j;
-            const isNext = isAdjLeft || isAdjRight;
-            const isInFront = getInFront(i) === j;
-            const ways = {
-                [EnumArrangementRelations.AdjLeft]: isAdjLeft,       // 1 way,
-                [EnumArrangementRelations.AdjRight]: isAdjRight,     // 1 way
-                [EnumArrangementRelations.Next]: isNext,             // 2 ways
-                [EnumArrangementRelations.Left]: j < getInFront(i),  // N/2-1 ways
-                [EnumArrangementRelations.Right]: j > getInFront(i), // N/2-1 ways
-                [EnumArrangementRelations.InFront]: isInFront,       // 1 way
-            };
-
-            // Odd num of els do not make for diametrically opposite els
-            if (numOfEls%2 !== 0) {
-                delete (ways as any)[EnumArrangementRelations.InFront];
-            }
-
-            return ways;
-        };
-        (question as any)._getWays = getWays; // Used in analogies
-        
-        let premises: string[][] = [];
-        let subjects = [...words];
-        let a: string | undefined = undefined;
-        for (let safe = 1e2; safe && premises.length < numOfEls-1; safe--) {
-            const ways = [];
-
-            const defWays = [EnumArrangementRelations.AdjLeft, EnumArrangementRelations.AdjRight];
-            if (numOfEls%2 === 0) { // Even num of els make for diametrically opposite els
-                defWays.push(EnumArrangementRelations.InFront);
-            }
-
-            ways.push(...defWays);
-            if (premises.length > 2) {
-                ways.push(EnumArrangementRelations.Next);
-            }
-            if (premises.length >= subjects.length) {
-                ways.push(EnumArrangementRelations.Left, EnumArrangementRelations.Right);
-            }
-
-            let premise: string[] | undefined = undefined;
-            let safe = 1e2;
-            for (; safe && premise == undefined; safe--) {
+            while (safe-- && premise == undefined) {
+                // Pick A
                 a = a || pickUniqueItems(subjects, 1).picked[0];
                 // console.log("a", a);
                 const aid = words.indexOf(a);
 
-                // It should try to go a def route first...
-                if (ways.length === defWays.length) {
-                    const bidLeft = getAdjLeft(aid);
-                    const bidRight = getAdjRight(aid);
-                    const bidFront = getInFront(aid);
-                    const bLeft = words[bidLeft];
-                    const bRight = words[bidRight];
-                    const bFront = words[bidFront];
-
-                    const existsAndNotRepeated = (b: string | undefined) => {
-                        return b && !premises.find(([_a, _, _b]) => _a === b || _b === b);
-                    }
-
-                    const bWays = [];
-                    if (existsAndNotRepeated(bLeft)) {
-                        bWays.push([EnumArrangementRelations.AdjLeft, bLeft]);
-                    }
-                    if (existsAndNotRepeated(bRight)) {
-                        bWays.push([EnumArrangementRelations.AdjRight, bRight]);
-                    }
-                    if (existsAndNotRepeated(bFront) && numOfEls%2 === 0) { // Even num of els make for diametrically opposite els
-                        bWays.push([EnumArrangementRelations.InFront, bFront]);
-                    }
-
-                    if (bWays.length) {
-                        const [ targetWay, b ] = pickUniqueItems(bWays, 1).picked[0];
-                        // console.log("b", b);
-                        premise = [a, targetWay, b];
-                        subjects = subjects.filter(s => s !== a && s !== b);
-                        a = b;
-                        break;
-                    }
-                }
-
-                // ...otherwise pick any available route
-                const b = pickUniqueItems(subjects, 1).picked[0];
-                // console.log("b non-def", b);
+                // Pick B
+                const b = pickUniqueItems(subjects.filter(sub => sub !== a), 1).picked[0];
+                // console.log("b", b);
                 const bid = words.indexOf(b);
-                const [ targetWay, canGoThere ] = pickUniqueItems(Object.entries(getWays(aid, bid)), 1).picked[0];
-                if (canGoThere) {
-                    premise = [a, targetWay, b];
+
+                // Pick a way between A and B and check there are no connections already established between A and B
+                const [ wayDescription, wayData ] = pickUniqueItems(Object.entries(getWays(aid, bid, numOfEls)), 1).picked[0];
+                if (wayData.possible && !relationshipAlreadyExistent(a, b)) {
+                    premise = {
+                        a,
+                        b,
+                        relationship: {
+                            description: wayDescription as EnumArrangements,
+                            steps: wayData.steps
+                        },
+                        uid: guid()
+                    };
                     subjects = subjects.filter(s => s !== a && s !== b)
                     a = b;
                 }
             }
-            premises.push([...premise!, guid()]);
+            if (safe <= 0) {
+                throw new Error("MAXIMUM ITERATION COUNT REACHED!");
+            }
+            premises.push(premise!);
+        }
+        if (safe <= 0) {
+            throw new Error("MAXIMUM ITERATION COUNT REACHED!");
         }
 
-        randomlyReverseFewSubjectsInArrangement(premises);
-
+        horizontalShuffleArrangement(premises);
         shuffle(premises);
-
-        alterArrangementWithMetaRelations(settings, question, premises);
+        metarelateArrangement(settings, question, premises); // TODO: Implement this
 
         let b: string | undefined = undefined;
-        for (let safe = 1e2; safe && b == undefined; safe--) {
+        safe = 1e2;
+        while (safe-- && b == undefined) {
             const subject = pickUniqueItems(words, 1).picked[0];
-            const alreadyRelated = premises.find(([_a, _, _b]) => (_a === a && _b === subject) || (_a === subject && _b === a));
-            if (subject !== a && !alreadyRelated) {
+            if (subject !== a && !relationshipAlreadyExistent(a!, subject)) {
                 b = subject;
             }
         }
+        if (safe <= 0) {
+            throw new Error("MAXIMUM ITERATION COUNT REACHED!");
+        }
+
         const [aid, bid] = [words.indexOf(a!), words.indexOf(b!)];
-        const ways = getWays(aid, bid);
-        // console.log(a, b);
+        const ways = getWays(aid, bid, numOfEls, true);
+        // console.log(a, b, ways);
 
         question.isValid = coinFlip();
-        const conclusionWays = Object.entries(ways).filter(([_, b]) => b === question.isValid).map(x => x[0]);
-        question.conclusion = `<span class="subject">${a}</span> ${pickUniqueItems(conclusionWays, 1).picked[0]} <span class="subject">${b}</span>`;
+        const conclusions = Object.entries(ways).filter(([ description, data ]) => data.possible === question.isValid);
+        const [ description, data ] = pickUniqueItems(conclusions, 1).picked[0];
+        const interpolated = description.replace("#", String(data.steps));
+        question.conclusion = `<span class="subject">${a}</span> ${interpolated} <span class="subject">${b}</span>`;
 
         question.rule = words.join(", ");
-        (question as any).rawPremises = premises;
-        question.premises = premises.map(([a, rel, b]) => `<span class="subject">${a}</span> ${rel} <span class="subject">${b}</span>`);
+        question.premises = premises.map(({ a, b, relationship }) => {
+            const { description, steps } = relationship;
+            const interpolated = description.replace("#", String(steps));
+            return `<span class="subject">${a}</span> ${interpolated} <span class="subject">${b}</span>`
+        });
 
         return question;
     }
@@ -1078,43 +926,16 @@ export class SyllogimousService {
                     isValidSame = (spatial === spatial2) && (temporal === temporal2);
                 }
                 break;
-            case 7: {
-                question = this.createLinearArrangement(length);
+            case 7:
+            case 8: {
+                const type = (choiceIndex === 7) 
+                    ? EnumQuestionType.LinearArrangement
+                    : EnumQuestionType.CircularArrangement;
+                const isLinear = type === EnumQuestionType.LinearArrangement;
+                question = this.createArrangement(length, type);
                 question.type = topType;
                 question.conclusion = "";
                 
-                const subjects = question.rule.split(", ");
-                [a, b, c, d] = pickUniqueItems(subjects, 4).picked;
-                question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
-
-                let [ idxA, idxB, idxC, idxD ] = [
-                    subjects.indexOf(a),
-                    subjects.indexOf(b),
-                    subjects.indexOf(c),
-                    subjects.indexOf(d)
-                ];
-
-                const waysA2B = (question as any)._getWays(idxA, idxB);
-                const waysC2D = (question as any)._getWays(idxC, idxD);
-                //console.log(subjects);
-                //console.log(idxA, idxB, idxC, idxD);
-
-                question.instructions += "<br><b>Note</b>: Proximity makes the relationship alike.";
-
-                isValidSame = false;
-                for (const key in waysA2B) {
-                    if (waysA2B[key] && waysC2D[key]) {
-                        isValidSame = true;
-                    }
-                }
-
-                break;
-            }
-            case 8: {
-                question = this.createCircularArrangement(length);
-                question.type = topType;
-                question.conclusion = "";
-        
                 const subjects = question.rule.split(", ");
                 [a, b, c, d] = pickUniqueItems(subjects, 4).picked;
                 question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
@@ -1126,12 +947,16 @@ export class SyllogimousService {
                     subjects.indexOf(d)
                 ];
 
-                const waysA2B = (question as any)._getWays(idxA, idxB);
-                const waysC2D = (question as any)._getWays(idxC, idxD);
+                const getWays = isLinear ? getLinearWays : getCircularWays;
+
+                const waysA2B = getWays(idxA, idxB, length+1);
+                const waysC2D = getWays(idxC, idxD, length+1);
                 //console.log(subjects);
                 //console.log(idxA, idxB, idxC, idxD);
 
-                question.instructions += "<br><b>Note</b>: Proximity and diametrical opposition make the relationship alike.";
+                if (!isLinear) {
+                    question.instructions += "<br><b>Note</b>: Diametrical opposition makes it alike.";
+                } 
 
                 isValidSame = false;
                 for (const key in waysA2B) {
@@ -1153,7 +978,7 @@ export class SyllogimousService {
 
         if (settings.enabled.negation && coinFlip()) {
             question.negations++;
-            question.conclusion += `<div class="analogy-conclusion-relation is-negated">is ${isSameRelation ? 'unlinke' : 'alike'}</div>`;
+            question.conclusion += `<div class="analogy-conclusion-relation is-negated">is ${isSameRelation ? 'unlike' : 'alike'}</div>`;
         } else {
             question.conclusion += `<div class="analogy-conclusion-relation">is ${isSameRelation ? 'alike' : 'unlike'}</div>`;
         }
@@ -1247,7 +1072,7 @@ export class SyllogimousService {
         } while (safe-- && flip !== question.isValid);
 
         if (safe <= 0) {
-            console.warn("MAXIMUM NUMBER OF ITERATIONS REACHED!");
+            throw new Error("MAXIMUM NUMBER OF ITERATIONS REACHED!");
         }
     
         return question;

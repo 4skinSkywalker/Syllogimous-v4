@@ -36,7 +36,7 @@ export const DIRECTION_PARAMS = {
 
 export const ARRANGEMENT_PARAMS = {
     enabled: true,
-    minNumOfPremises: 3,
+    minNumOfPremises: 2,
     maxNumOfPremises: 20,
     basic: true,
     group: EnumQuestionGroup.Arrangement

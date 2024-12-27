@@ -1,4 +1,14 @@
-import { EnumQuestionType } from "../constants/question.constants";
+import { EnumArrangements, EnumQuestionType } from "../constants/question.constants";
+
+export interface IRawArrangementPremise {
+    a: string;
+    b: string;
+    relationship: {
+        description: EnumArrangements,
+        steps: number
+    };
+    uid: string;
+}
 
 export class Question {
     instructions?: string;
