@@ -1,16 +1,16 @@
 export enum EnumQuestionType {
-    Syllogism = "Syllogism",
     Distinction = "Distinction",
     ComparisonNumerical = "Comparison Numerical",
     ComparisonChronological = "Comparison Chronological",
-    Binary = "Binary",
+    Syllogism = "Syllogism",
     Direction = "Direction",
     Direction3DSpatial = "Direction3D Spatial",
     Direction3DTemporal = "Direction3D Temporal",
     Direction4D = "Direction4D",
-    Analogy = "Analogy",
     LinearArrangement = "Linear Arrangement",
     CircularArrangement = "Circular Arrangement",
+    Analogy = "Analogy",
+    Binary = "Binary",
 }
 
 export enum EnumArrangementRelations {
