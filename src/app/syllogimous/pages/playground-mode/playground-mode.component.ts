@@ -64,7 +64,7 @@ export class PlaygroundModeComponent {
                     field: qt,
                     label: "Enable " + decomposeCamelCase(qt),
                     type: "checkbox",
-                    value: qs.actual,
+                    value: qs.enabled,
                 },
                 {
                     field: qt + "premises",

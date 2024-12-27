@@ -156,7 +156,9 @@ function showEnabledQuestionTypes(tier: EnumTiers, settings: Settings) {
             console.log(qt.toUpperCase(), "WITH", qs.actual, "PREMISES");
         }
     }
-    console.log("##############################################");
+    if (settings.enable.meta || settings.enable.negation) {
+        console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+    }
     if (settings.enable.meta) {
         console.log("WITH META")
     }

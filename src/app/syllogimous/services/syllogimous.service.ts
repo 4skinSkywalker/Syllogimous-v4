@@ -217,6 +217,8 @@ export class SyllogimousService {
     }
 
     createSyllogism(numOfPremises: number) {
+        console.log("createSyllogism");
+
         const type = EnumQuestionType.Syllogism;
         const settings = this.settings;
 
@@ -259,6 +261,8 @@ export class SyllogimousService {
     }
 
     createDistinction(numOfPremises: number) {
+        console.log("createDistinction");
+
         const type = EnumQuestionType.Distinction;
         const settings = this.settings;
 
@@ -316,6 +320,8 @@ export class SyllogimousService {
     }
 
     createComparison(numOfPremises: number, type: EnumQuestionType.ComparisonNumerical | EnumQuestionType.ComparisonChronological) {
+        console.log("createComparison");
+        
         const settings = this.settings;
 
         if (!canGenerateQuestion(type, numOfPremises, settings)) {
@@ -366,6 +372,8 @@ export class SyllogimousService {
     }
 
     createDirection(qtyPremises: number) {
+        console.log("createDirection");
+
         const type = EnumQuestionType.Direction;
         const settings = this.settings;
 
@@ -459,6 +467,8 @@ export class SyllogimousService {
     }
 
     createDirection3D(numOfPremises: number, type: EnumQuestionType.Direction3DSpatial | EnumQuestionType.Direction3DTemporal) {
+        console.log("createDirection3D");
+        
         const settings = this.settings;
 
         if (!canGenerateQuestion(type, numOfPremises, settings)) {
@@ -556,6 +566,8 @@ export class SyllogimousService {
     }
 
     createDirection4D(numOfPremises: number) {
+        console.log("createDirection4D");
+
         const type = EnumQuestionType.Direction4D;
         const settings = this.settings;
 
@@ -652,6 +664,8 @@ export class SyllogimousService {
     }
 
     createLinearArrangement(numOfEls: number) {
+        console.log("createLinearArrangement");
+
         const getAdjLeft = (i: number) => i+1;
         const getAdjRight = (i: number) => i-1;
 
@@ -775,6 +789,8 @@ export class SyllogimousService {
     }
 
     createCircularArrangement(numOfEls: number) {
+        console.log("createCircularArrangement");
+
         const getAdjLeft = (i: number) => (numOfEls+(i+1))%numOfEls;
         const getAdjRight = (i: number) => (numOfEls+(i-1))%numOfEls;
         const getInFront = (i: number) => (i+(numOfEls/2))%numOfEls;
@@ -917,6 +933,8 @@ export class SyllogimousService {
     }
 
     createAnalogy(length: number) {
+        console.log("createAnalogy");
+
         const topType = EnumQuestionType.Analogy;
         const settings = this.settings;
 
@@ -1127,6 +1145,8 @@ export class SyllogimousService {
     }
 
     createBinary(numOfPremises: number) {
+        console.log("createBinary");
+
         const topType = EnumQuestionType.Binary;
         const settings = this.settings;
 
