@@ -4,47 +4,61 @@ export enum EnumQuestionGroup {
     Arrangement = "Arrangement",
 }
 
-export const COMPARISON_OPTIONS = {
+export const DEFAULT_ENABLE = {
+    meaningfulWords: true,
+    meta: true,
+    negation: true,
+    binary: {
+        and: true,
+        nand: true,
+        or: true,
+        nor: true,
+        xor: true,
+        xnor: true,
+    },
+};
+
+export const COMPARISON_PARAMS = {
     enabled: true,
-    min: 2,
-    max: 20,
+    minNumOfPremises: 2,
+    maxNumOfPremises: 20,
     basic: true,
     group: EnumQuestionGroup.Comparison
 };
 
-export const DIRECTION_OPTIONS = {
+export const DIRECTION_PARAMS = {
     enabled: true,
-    min: 2,
-    max: 20,
+    minNumOfPremises: 2,
+    maxNumOfPremises: 20,
     basic: true,
     group: EnumQuestionGroup.Direction
 };
 
-export const ARRANGEMENT_OPTIONS = {
+export const ARRANGEMENT_PARAMS = {
     enabled: true,
-    min: 3,
-    max: 20,
+    minNumOfPremises: 3,
+    maxNumOfPremises: 20,
     basic: false,
     group: EnumQuestionGroup.Arrangement
 };
 
-export const BASIC_OPTIONS = {
+export const BASIC_PARAMS = {
     enabled: true,
-    min: 2,
-    max: 20,
+    minNumOfPremises: 2,
+    maxNumOfPremises: 20,
     basic: true
 };
 
-export const ANALOGY_OPTIONS = {
+export const ANALOGY_PARAMS = {
     enabled: true,
-    min: 3,
-    max: 20,
+    minNumOfPremises: 3,
+    maxNumOfPremises: 20,
     basic: false
 };
 
-export const BINARY_OPTIONS = {
+export const BINARY_PARAMS = {
     enabled: true,
-    min: 4,
-    max: 20,
+    minNumOfPremises: 4,
+    maxNumOfPremises: 20,
     basic: false
 };

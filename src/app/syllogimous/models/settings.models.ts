@@ -1,5 +1,5 @@
 import { EnumQuestionType } from "../constants/question.constants";
-import { EnumQuestionGroup, COMPARISON_OPTIONS, DIRECTION_OPTIONS, ARRANGEMENT_OPTIONS, BASIC_OPTIONS, ANALOGY_OPTIONS, BINARY_OPTIONS } from "../constants/settings.constants";
+import { EnumQuestionGroup, COMPARISON_PARAMS, DIRECTION_PARAMS, ARRANGEMENT_PARAMS, BASIC_PARAMS, ANALOGY_PARAMS, BINARY_PARAMS, DEFAULT_ENABLE } from "../constants/settings.constants";
 import { b2n } from "../utils/engine.utils";
 
 const getNumOfEnabledQuestions = (settings: Settings, basicQuestionFilter: boolean) => {
@@ -24,10 +24,10 @@ export function canGenerateQuestion(
     settings: Settings
 ) {
     if (settings.question[questionType].basic) {
-        return numOfPremises >= settings.question[questionType].min;
+        return numOfPremises >= settings.question[questionType].minNumOfPremises;
     }
 
-    return numOfPremises >= settings.question[questionType].min 
+    return numOfPremises >= settings.question[questionType].minNumOfPremises 
         && getNumOfEnabledQuestions(settings, true) >= 2;
 }
 
@@ -51,33 +51,28 @@ export function areSettingsInvalid(settings: Settings) {
     return null;
 }
 
-export interface IQuestionSettingsOpts {
-    enabled: boolean;
-    min: number;
-    max: number;
+export interface IQuestionSettingsParams {
+    minNumOfPremises: number;
+    maxNumOfPremises: number;
     basic: boolean;
     group?: EnumQuestionGroup;
+    enabled: boolean;
+    numOfPremises?: number;
 }
 
 export class QuestionSettings {
     enabled: boolean;
-    min: number; // Min number of premises
-    private _actual!: number; // Actual number of premises
-    set actual(numOfPremises: number) {
-        this._actual = this.clampNumOfPremises(numOfPremises);
-    }
-    get actual() {
-        return this._actual;
-    }
-    max: number; // Max number of premises
+    minNumOfPremises: number; // Min number of premises
+    private numOfPremises!: number; // Actual number of premises
+    maxNumOfPremises: number; // Max number of premises
     basic: boolean; // Basic questions can be used by other questions (ex. Analogy, Binary, ...)
     group?: EnumQuestionGroup; // Group that this question belongs to (ex. Direction, ...)
 
-    constructor(opt: IQuestionSettingsOpts) {
-        this.min = opt.min;
-        this.max = opt.max;
-        this.basic = opt.basic;
-        this.group = opt.group;
+    constructor(params: IQuestionSettingsParams) {
+        this.minNumOfPremises = params.minNumOfPremises;
+        this.maxNumOfPremises = params.maxNumOfPremises;
+        this.basic = params.basic;
+        this.group = params.group;
 
         // Some props are immutable because they are user for validation
         this.freezeProp("min");
@@ -85,68 +80,69 @@ export class QuestionSettings {
         this.freezeProp("basic");
         this.freezeProp("group");
         
-        this.enabled = opt.enabled;
-        this.actual = opt.min;
+        this.enabled = params.enabled;
+        this.setNumOfPremises(params.numOfPremises || params.minNumOfPremises);
     }
     
     freezeProp(prop: string) {
         Object.defineProperty(this, prop, { configurable: false, writable: false });
     }
 
+    setNumOfPremises(numOfPremises: number) {
+        this.numOfPremises = this.clampNumOfPremises(numOfPremises);
+    }
+
+    getNumOfPremises() {
+        return this.numOfPremises;
+    }
+
     clampNumOfPremises(numOfPremises: number) {
-        return Math.max(this.min, Math.min(this.max, numOfPremises))
+        return Math.max(this.minNumOfPremises, Math.min(this.maxNumOfPremises, numOfPremises))
     }
 }
 
 export class Settings {
-    question = {
-        // Comparisons
-        [EnumQuestionType.ComparisonNumerical]: new QuestionSettings(COMPARISON_OPTIONS),
-        [EnumQuestionType.ComparisonChronological]: new QuestionSettings(COMPARISON_OPTIONS),
-        // Directions
-        [EnumQuestionType.Direction]: new QuestionSettings(DIRECTION_OPTIONS),
-        [EnumQuestionType.Direction3DSpatial]: new QuestionSettings(DIRECTION_OPTIONS),
-        [EnumQuestionType.Direction3DTemporal]: new QuestionSettings(DIRECTION_OPTIONS),
-        [EnumQuestionType.Direction4D]: new QuestionSettings(DIRECTION_OPTIONS),
-        // Arrangements
-        [EnumQuestionType.LinearArrangement]: new QuestionSettings(ARRANGEMENT_OPTIONS),
-        [EnumQuestionType.CircularArrangement]: new QuestionSettings(ARRANGEMENT_OPTIONS),
-        // Others
-        [EnumQuestionType.Distinction]: new QuestionSettings(BASIC_OPTIONS),
-        [EnumQuestionType.Syllogism]: new QuestionSettings(BASIC_OPTIONS),
-        [EnumQuestionType.Analogy]: new QuestionSettings(ANALOGY_OPTIONS),
-        [EnumQuestionType.Binary]: new QuestionSettings(BINARY_OPTIONS),
-    };
+    question!: Record<EnumQuestionType, QuestionSettings>;
+    enable: typeof DEFAULT_ENABLE;
 
-    enable = {
-        meaningfulWords: true,
-        meta: true,
-        negation: true,
-        binary: {
-            and: true,
-            nand: true,
-            or: true,
-            nor: true,
-            xor: true,
-            xnor: true,
-        },
-    };
+    private configSettings?: Settings;
+
+    constructor(settings?: Settings) {
+        this.configSettings = settings;
+        this.enable = settings?.enable || DEFAULT_ENABLE;
+        //                                         Question Type            Default Config
+        this.initQuestionSettings(EnumQuestionType.ComparisonNumerical,     COMPARISON_PARAMS);
+        this.initQuestionSettings(EnumQuestionType.ComparisonChronological, COMPARISON_PARAMS);
+        this.initQuestionSettings(EnumQuestionType.Direction,               DIRECTION_PARAMS);
+        this.initQuestionSettings(EnumQuestionType.Direction3DSpatial,      DIRECTION_PARAMS);
+        this.initQuestionSettings(EnumQuestionType.Direction3DTemporal,     DIRECTION_PARAMS);
+        this.initQuestionSettings(EnumQuestionType.Direction4D,             DIRECTION_PARAMS);
+        this.initQuestionSettings(EnumQuestionType.LinearArrangement,       ARRANGEMENT_PARAMS);
+        this.initQuestionSettings(EnumQuestionType.CircularArrangement,     ARRANGEMENT_PARAMS);
+        this.initQuestionSettings(EnumQuestionType.Distinction,             BASIC_PARAMS);
+        this.initQuestionSettings(EnumQuestionType.Syllogism,               BASIC_PARAMS);
+        this.initQuestionSettings(EnumQuestionType.Analogy,                 ANALOGY_PARAMS);
+        this.initQuestionSettings(EnumQuestionType.Binary,                  BINARY_PARAMS);
+    }
+
+    initQuestionSettings(type: EnumQuestionType, defOpts: IQuestionSettingsParams) {
+        if (!this.question) {
+            this.question = {} as any;
+        }
+        this.question[type] = new QuestionSettings(
+            // @ts-ignore
+            this.configSettings?.question[type] || defOpts
+        );
+    }
 
     setEnable(prop: "meaningfulWords"|"meta"|"negation", value: boolean) {
         this.enable[prop] = value;
         return this;
     }
 
-    setQuestionSetting(type: EnumQuestionType, enabled: boolean, numOfPremises: number) {
+    setQuestionSettings(type: EnumQuestionType, enabled: boolean, numOfPremises: number) {
         this.question[type].enabled = enabled;
-        this.question[type].actual = numOfPremises;
-
-        // Enable/disable all operators at once on binary questions
-        if (type === EnumQuestionType.Binary) {
-            for (const key in this.enable.binary) {
-                (this.enable.binary as any)[key] = enabled;
-            }
-        }
+        this.question[type].setNumOfPremises(numOfPremises);
         return this;
     }
 }

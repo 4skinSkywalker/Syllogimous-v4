@@ -115,7 +115,7 @@ function calcSettingsFromTier(tierToCalc: EnumTiers) {
         .setEnable("negation", false);
     const questionTypes = Object.values(EnumQuestionType) as EnumQuestionType[];
     for (const qt of questionTypes) {
-        tierSettings.setQuestionSetting(qt, false, -1);
+        tierSettings.setQuestionSettings(qt, false, -1);
     }
     
     // Algorithm to calculate settings progression based on tier
@@ -125,7 +125,7 @@ function calcSettingsFromTier(tierToCalc: EnumTiers) {
             const qts = orderedQuestionGroups[j];
             for (const qt of qts) {
                 const qs = tierSettings.question[qt];
-                tierSettings.setQuestionSetting(qt, true, (qs.enabled ? qs.actual+1 : qs.actual));
+                tierSettings.setQuestionSettings(qt, true, (qs.enabled ? qs.getNumOfPremises()+1 : qs.getNumOfPremises()));
             }
         }
         if (tierToCalc === currTier) break;
@@ -153,7 +153,7 @@ function showEnabledQuestionTypes(tier: EnumTiers, settings: Settings) {
     for (const qt of Object.values(EnumQuestionType)) {
         const qs = settings.question[qt];
         if (qs.enabled) {
-            console.log(qt.toUpperCase(), "WITH", qs.actual, "PREMISES");
+            console.log(qt.toUpperCase(), "WITH", qs.getNumOfPremises(), "PREMISES");
         }
     }
     if (settings.enable.meta || settings.enable.negation) {

@@ -6,6 +6,7 @@ import { areSettingsInvalid, QuestionSettings, Settings } from 'src/app/syllogim
 import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.service';
 import { EnumScreens } from '../../constants/syllogimous.constants';
 import { EnumQuestionType } from '../../constants/question.constants';
+import { LS_PG_SETTINGS } from '../../constants/local-storage.constants';
 
 function capitalize(val: string) {
     return val[0].toUpperCase() + val.slice(1);
@@ -36,7 +37,7 @@ export class PlaygroundModeComponent {
         private modalService: NgbModal,
         private sylSrv: SyllogimousService,
     ) {
-        const settings = this.sylSrv.playgroundSettings || new Settings();
+        const settings = this.loadPlaygroundSettings() || new Settings();
 
         this.genericEnables = Object.entries(settings.enable).filter(([field]) => field !== "binary") as [string, boolean][];
         this.binaryEnables = Object.entries(settings.enable.binary);
@@ -70,9 +71,9 @@ export class PlaygroundModeComponent {
                     field: qt + "premises",
                     label: decomposeCamelCase(qt) + " Premises",
                     type: "range",
-                    value: qs.actual,
-                    min: qs.min,
-                    max: qs.max,
+                    value: qs.getNumOfPremises(),
+                    min: qs.minNumOfPremises,
+                    max: qs.maxNumOfPremises,
                     step: 1
                 }
             );
@@ -106,7 +107,7 @@ export class PlaygroundModeComponent {
         for (const [qt, qs] of this.questionControls) {
             const _qt = qt as EnumQuestionType;
             settings.question[_qt].enabled = this.formData[_qt];
-            settings.question[_qt].actual = this.formData[_qt + "premises"];
+            settings.question[_qt].setNumOfPremises(this.formData[_qt + "premises"]);
         }
         
         // Check configuration
@@ -118,7 +119,21 @@ export class PlaygroundModeComponent {
         
         this.sylSrv.playgroundSettings = settings;
         console.log("Playground settings", settings);
+        this.savePlaygroundSettings(settings);
 
         this.sylSrv.play();
+    }
+
+    loadPlaygroundSettings() {
+        const serialized = localStorage.getItem(LS_PG_SETTINGS);
+        if (serialized) {
+            const deserialized = JSON.parse(serialized) as Settings;
+            return new Settings(deserialized);
+        }
+        return undefined;
+    }
+
+    savePlaygroundSettings(settings: Settings) {
+        localStorage.setItem(LS_PG_SETTINGS, JSON.stringify(settings));
     }
 }

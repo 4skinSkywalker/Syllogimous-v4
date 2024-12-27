@@ -102,7 +102,7 @@ export class SyllogimousService {
     }
 
     /** Return a random question based on the current settings */
-    createRandomQuestion(numOfPremises?: number) {
+    createRandomQuestion(numOfPremises?: number, basic?: boolean) {
         const settings = this.settings;
 
         const typeSettingTuples =  Object.entries(settings.question) as [EnumQuestionType, QuestionSettings][];
@@ -122,13 +122,18 @@ export class SyllogimousService {
             const isUndefinedGroup = grouped === groupsOfQuestions[0];
             const groupChoices: Array<() => Question> = isUndefinedGroup ? choices : [];
             for (const [qt, qs] of grouped) {
-                if (qs.enabled) {
-                    groupChoices.push(this.getCreateFn(qt, qs.clampNumOfPremises(numOfPremises || qs.actual)));
+                const shouldIncludeQuestion = (basic == undefined) ? true : qs.basic === basic;
+                if (qs.enabled && shouldIncludeQuestion) {
+                    groupChoices.push(this.getCreateFn(qt, qs.clampNumOfPremises(numOfPremises || qs.getNumOfPremises())));
                 }
             }
             if (!isUndefinedGroup && groupChoices.length) {
                 choices.push(pickUniqueItems(groupChoices, 1).picked[0]);
             }
+        }
+
+        if (!choices.length) {
+            console.warn("NO CHOICES AVAILABLE!");
         }
     
         const randomQuestion = pickUniqueItems(choices, 1).picked[0]();
@@ -1188,18 +1193,18 @@ export class SyllogimousService {
             operandNames.push("XNOR");
             operandTemplates.push('$a <div class="is-connector">is equal to</div> $b');
         }
-        
-        const choices = [
-            this.createRandomQuestion(Math.floor(numOfPremises / 2)),
-            this.createRandomQuestion(Math.ceil(numOfPremises / 2)),
-        ];
 
         const question = new Question(topType);
         const flip = coinFlip();
         const operandIndex = Math.floor(Math.random()*operands.length);
         const operand = operands[operandIndex];
 
+        let safe = 1e2;
         do {
+            const choices = [
+                this.createRandomQuestion(Math.floor(numOfPremises / 2), true),
+                this.createRandomQuestion(Math.ceil(numOfPremises / 2), true),
+            ];
             question.premises = [...choices[0].premises, ...choices[1].premises];
             shuffle(question.premises);
         
@@ -1212,7 +1217,11 @@ export class SyllogimousService {
                     .replaceAll("a", String(choices[0].isValid))
                     .replaceAll("b", String(choices[1].isValid))
             );
-        } while (flip !== question.isValid);
+        } while (safe-- && flip !== question.isValid);
+
+        if (safe <= 0) {
+            console.warn("MAXIMUM NUMBER OF ITERATIONS REACHED!");
+        }
     
         return question;
     }

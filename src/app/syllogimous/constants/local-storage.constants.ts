@@ -4,3 +4,4 @@ export const LS_HISTORY = "SYL_HISTORY";
 export const LS_TIMER = "SYL_TIMER_TYPE";
 export const LS_GAME_MODE = "SYL_GAME_MODE";
 export const LS_DAILY_PROGRESS = "SYL_DAILY_PROGRESS";
+export const LS_PG_SETTINGS = "SYL_PG_SETTINGSv1";
