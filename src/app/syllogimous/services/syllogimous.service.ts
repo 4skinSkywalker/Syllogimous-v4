@@ -671,11 +671,17 @@ export class SyllogimousService {
     createLinearArrangement(numOfEls: number) {
         console.log("createLinearArrangement");
 
-        const getAdjLeft = (i: number) => i+1;
-        const getAdjRight = (i: number) => i-1;
-
         numOfEls = Math.max(3, numOfEls);
 
+        const type = EnumQuestionType.LinearArrangement;
+        const settings = this.settings;
+        const symbols = getSymbols(settings);
+        const words = pickUniqueItems(symbols, numOfEls).picked;
+        const question = new Question(type);
+        question.instructions = `There are ${numOfEls} subjects along a LINEAR path.`;
+
+        const getAdjLeft = (i: number) => i+1;
+        const getAdjRight = (i: number) => i-1;
         const getWays = (i: number, j: number) => {
             const isAdjLeft = getAdjLeft(i) === j;
             const isAdjRight = getAdjRight(i) === j;
@@ -690,13 +696,7 @@ export class SyllogimousService {
 
             return ways;
         };
-
-        const settings = this.settings;
-        const symbols = getSymbols(settings);
-        const words = pickUniqueItems(symbols, numOfEls).picked;
-        const question = new Question(EnumQuestionType.LinearArrangement);
-        question.instructions = `There are ${numOfEls} subjects along a LINEAR path.`;
-        // console.log(words);
+        (question as any)._getWays = getWays; // Used in analogies
         
         let premises: string[][] = [];
         let subjects = [...words];
@@ -796,12 +796,18 @@ export class SyllogimousService {
     createCircularArrangement(numOfEls: number) {
         console.log("createCircularArrangement");
 
+        numOfEls = Math.max(3, numOfEls);
+
+        const type = EnumQuestionType.CircularArrangement;
+        const settings = this.settings;
+        const symbols = getSymbols(settings);
+        const words = pickUniqueItems(symbols, numOfEls).picked;
+        const question = new Question(type);
+        question.instructions = `There are ${numOfEls} subjects along a CIRCULAR path.`;
+
         const getAdjLeft = (i: number) => (numOfEls+(i+1))%numOfEls;
         const getAdjRight = (i: number) => (numOfEls+(i-1))%numOfEls;
         const getInFront = (i: number) => (i+(numOfEls/2))%numOfEls;
-
-        numOfEls = Math.max(3, numOfEls);
-
         const getWays = (i: number, j: number) => {
             j = (numOfEls+(j-i))%numOfEls;
             i = 0;
@@ -826,13 +832,7 @@ export class SyllogimousService {
 
             return ways;
         };
-
-        const settings = this.settings;
-        const symbols = getSymbols(settings);
-        const words = pickUniqueItems(symbols, numOfEls).picked;
-        const question = new Question(EnumQuestionType.CircularArrangement);
-        question.instructions = `There are ${numOfEls} subjects along a CIRCULAR path.`;
-        // console.log(words);
+        (question as any)._getWays = getWays; // Used in analogies
         
         let premises: string[][] = [];
         let subjects = [...words];
@@ -982,8 +982,8 @@ export class SyllogimousService {
             choiceIndices.push(pickUniqueItems(directionsChoices, 1).picked[0]);
         }
 
-        // TODO: Randomly pick one arrangement question from the arrangement questions enabled
-        /* const arrangementChoices = [];
+        // Randomly pick one arrangement from enabled arrangements
+        const arrangementChoices = [];
         if (settings.question[EnumQuestionType.LinearArrangement].enabled) {
             arrangementChoices.push(7);
         }
@@ -992,7 +992,7 @@ export class SyllogimousService {
         }
         if (arrangementChoices.length) {
             choiceIndices.push(pickUniqueItems(arrangementChoices, 1).picked[0]);
-        }*/
+        }
     
         const choiceIndex = pickUniqueItems(choiceIndices, 1).picked[0];
 
@@ -1097,11 +1097,67 @@ export class SyllogimousService {
                 }
                 break;
             case 7: {
-                // TODO: Linear arrangement
+                question = this.createLinearArrangement(length + 1);
+                question.type = topType;
+                question.conclusion = "";
+                
+                const subjects = question.rule.split(", ");
+                [a, b, c, d] = pickUniqueItems(subjects, 4).picked;
+                question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
+
+                let [ idxA, idxB, idxC, idxD ] = [
+                    subjects.indexOf(a),
+                    subjects.indexOf(b),
+                    subjects.indexOf(c),
+                    subjects.indexOf(d)
+                ];
+
+                const waysA2B = (question as any)._getWays(idxA, idxB);
+                const waysC2D = (question as any)._getWays(idxC, idxD);
+                //console.log(subjects);
+                //console.log(idxA, idxB, idxC, idxD);
+
+                question.instructions += "<br><b>Note</b>: Proximity makes the relationship alike.";
+
+                isValidSame = false;
+                for (const key in waysA2B) {
+                    if (waysA2B[key] && waysC2D[key]) {
+                        isValidSame = true;
+                    }
+                }
+
                 break;
             }
             case 8: {
-                // TODO: Circular arrangement
+                question = this.createCircularArrangement(length + 1);
+                question.type = topType;
+                question.conclusion = "";
+        
+                const subjects = question.rule.split(", ");
+                [a, b, c, d] = pickUniqueItems(subjects, 4).picked;
+                question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
+
+                const [ idxA, idxB, idxC, idxD ] = [
+                    subjects.indexOf(a),
+                    subjects.indexOf(b),
+                    subjects.indexOf(c),
+                    subjects.indexOf(d)
+                ];
+
+                const waysA2B = (question as any)._getWays(idxA, idxB);
+                const waysC2D = (question as any)._getWays(idxC, idxD);
+                //console.log(subjects);
+                //console.log(idxA, idxB, idxC, idxD);
+
+                question.instructions += "<br><b>Note</b>: Proximity and diametrical opposition make the relationship alike.";
+
+                isValidSame = false;
+                for (const key in waysA2B) {
+                    if (waysA2B[key] && waysC2D[key]) {
+                        isValidSame = true;
+                    }
+                }
+
                 break;
             }
         }
@@ -1201,10 +1257,23 @@ export class SyllogimousService {
 
         let safe = 1e2;
         do {
-            const choices = [
-                this.createRandomQuestion(Math.floor(numOfPremises / 2), true),
-                this.createRandomQuestion(Math.ceil(numOfPremises / 2), true),
-            ];
+            const a = this.createRandomQuestion(Math.floor(numOfPremises / 2), true);
+            const b = this.createRandomQuestion(Math.ceil(numOfPremises / 2), true);
+            const choices = [a, b];
+
+            const fixInstructions = (q: Question) => {
+                const htmlify = (rule: string) => rule.split(", ").map(str => `<span class="subject">${str}</span>`).join(", ");
+                if (q.type === EnumQuestionType.LinearArrangement) {
+                    return htmlify(q.rule) + " are arranged in a LINEAR fashion";
+                } else if (q.type === EnumQuestionType.CircularArrangement) {
+                    return htmlify(q.rule) + " are arranged in a CIRCULAR fashion";
+                } else {
+                    return "";
+                }
+            };
+
+            question.instructions = [fixInstructions(a), fixInstructions(b)].join("<br>");
+
             question.premises = [...choices[0].premises, ...choices[1].premises];
             shuffle(question.premises);
         

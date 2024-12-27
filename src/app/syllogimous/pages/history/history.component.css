@@ -5,6 +5,14 @@
     overflow: auto;
 }
 
+.instructions {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+    border-left: 4px solid;
+    padding-left: 0.5rem;
+}
+
 .correct {
     background-color: #D4EDDA88;
     color: #000;

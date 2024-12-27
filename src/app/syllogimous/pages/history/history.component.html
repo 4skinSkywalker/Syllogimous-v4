@@ -20,6 +20,7 @@
                 >Playground Mode</div>
 
                 <div class="overflow-auto" style="max-height: 250px; padding: 0.5rem 0.75rem;">
+                    <div *ngIf="q.instructions" class="instructions" [innerHTML]="q.instructions"></div>
                     <div *ngFor="let p of q.premises" class="premise" [innerHTML]="p"></div>
                     <div class="mt-2" [innerHTML]="q.conclusion"></div>
                 </div>

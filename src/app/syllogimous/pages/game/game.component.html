@@ -51,7 +51,7 @@
         <div [hidden]="gameMode === '1'">
             <ng-container *ngIf="sylSrv.question.instructions as instr">
                 <small class="d-block text-muted">Instructions</small>
-                <div class="fst-italic mb-3" [innerHTML]="instr"></div>
+                <div class="fst-italic small mb-3" [innerHTML]="instr"></div>
             </ng-container>
 
             <small class="d-block text-muted">Premises</small>

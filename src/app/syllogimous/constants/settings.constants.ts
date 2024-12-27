@@ -38,7 +38,7 @@ export const ARRANGEMENT_PARAMS = {
     enabled: true,
     minNumOfPremises: 3,
     maxNumOfPremises: 20,
-    basic: false,
+    basic: true,
     group: EnumQuestionGroup.Arrangement
 };
 
