@@ -1097,7 +1097,7 @@ export class SyllogimousService {
                 }
                 break;
             case 7: {
-                question = this.createLinearArrangement(length + 1);
+                question = this.createLinearArrangement(length);
                 question.type = topType;
                 question.conclusion = "";
                 
@@ -1129,7 +1129,7 @@ export class SyllogimousService {
                 break;
             }
             case 8: {
-                question = this.createCircularArrangement(length + 1);
+                question = this.createCircularArrangement(length);
                 question.type = topType;
                 question.conclusion = "";
         
@@ -1171,33 +1171,9 @@ export class SyllogimousService {
 
         if (settings.enabled.negation && coinFlip()) {
             question.negations++;
-            if (isSameRelation) {
-                if (choiceIndex < 1) {
-                    question.conclusion += '<div class="analogy-conclusion-relation is-negated">is different from</div>';
-                } else {
-                    question.conclusion += '<div class="analogy-conclusion-relation is-negated">has a different relation from</div>';
-                }
-            } else {
-                if (choiceIndex < 1) {
-                    question.conclusion += '<div class="analogy-conclusion-relation is-negated">is the same as</div>';
-                } else {
-                    question.conclusion += '<div class="analogy-conclusion-relation is-negated">has the same relation as</div>';
-                }
-            }
+            question.conclusion += `<div class="analogy-conclusion-relation is-negated">is ${isSameRelation ? 'unlinke' : 'alike'}</div>`;
         } else {
-            if (isSameRelation) {
-                if (choiceIndex < 1) {
-                    question.conclusion += '<div class="analogy-conclusion-relation">is the same as</div>';
-                } else {
-                    question.conclusion += '<div class="analogy-conclusion-relation">has the same relation as</div>';
-                }
-            } else {
-                if (choiceIndex < 1) {
-                    question.conclusion += '<div class="analogy-conclusion-relation">is different from</div>';
-                } else {
-                    question.conclusion += '<div class="analogy-conclusion-relation">has a different relation from</div>';
-                }
-            }
+            question.conclusion += `<div class="analogy-conclusion-relation">is ${isSameRelation ? 'alike' : 'unlike'}</div>`;
         }
 
         question.conclusion += `<span class="subject">${c}</span> to <span class="subject">${d}</span>`;
