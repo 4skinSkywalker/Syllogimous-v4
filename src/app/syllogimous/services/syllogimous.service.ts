@@ -1,16 +1,17 @@
 import { Injectable } from "@angular/core";
-import { EnumArrangementRelations, EnumQuestionType, Question } from "../models/question.models";
+import { Question } from "../models/question.models";
 import { alterArrangementWithMetaRelations, coinFlip, extractSubjects, findDirection, findDirection3D, findDirection4D, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, makeMetaRelationsNew, pickUniqueItems, randomlyReverseFewSubjectsInArrangement, shuffle } from "../utils/engine.utils";
 import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, DIRECTION_NAMES_INVERSE, TIME_NAMES, TIME_NAMES_INVERSE } from "../constants/engine.constants";
-import { EnumScreens, EnumTiers } from "../models/syllogimous.models";
-import { TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES, TIER_SETTINGS } from "../constants/syllogimous.constants";
+import { EnumScreens, EnumTiers, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES, TIER_SETTINGS } from "../constants/syllogimous.constants";
 import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local-storage.constants";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ModalLevelChangeComponent } from "../components/modal-level-change/modal-level-change.component";
 import { Router } from "@angular/router";
-import { canGenerateQuestion, EnumQuestionGroup, QuestionSetting, Settings } from "../models/settings.models";
+import { canGenerateQuestion, QuestionSettings, Settings } from "../models/settings.models";
 import { DailyProgressService } from "./daily-progress.service";
 import { guid } from "src/app/utils/uuid";
+import { EnumArrangementRelations, EnumQuestionType } from "../constants/question.constants";
+import { EnumQuestionGroup } from "../constants/settings.constants";
 
 @Injectable({
     providedIn: "root"
@@ -104,7 +105,7 @@ export class SyllogimousService {
     createRandomQuestion(numOfPremises?: number) {
         const settings = this.settings;
 
-        const typeSettingTuples =  Object.entries(settings.question) as [EnumQuestionType, QuestionSetting][];
+        const typeSettingTuples =  Object.entries(settings.question) as [EnumQuestionType, QuestionSettings][];
         const getQuestionGroup = (qg?: EnumQuestionGroup) => typeSettingTuples.filter(([qt, qs]) => qs.group == qg);
         const groupsOfQuestions = [
             getQuestionGroup(undefined),

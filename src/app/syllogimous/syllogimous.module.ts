@@ -13,7 +13,6 @@ import { GameComponent } from './pages/game/game.component';
 import { FeedbackComponent } from './pages/feedback/feedback.component';
 import { StatsComponent } from './pages/stats/stats.component';
 import { TutorialsComponent } from './pages/tutorials/tutorials.component';
-import { EnumScreens } from './models/syllogimous.models';
 import { TutorialDistinctionComponent } from './pages/tutorial/distinction/distinction.component';
 import { TutorialSyllogismComponent } from './pages/tutorial/syllogism/syllogism.component';
 import { TutorialComparisonNumericalComponent } from './pages/tutorial/comparison-numerical/comparison-numerical.component';
@@ -26,7 +25,6 @@ import { TutorialAnalogyComponent } from './pages/tutorial/analogy/analogy.compo
 import { TutorialBinaryComponent } from './pages/tutorial/binary/binary.component';
 import { TutorialLinearArrangementComponent } from './pages/tutorial/linear-arrangement/linear-arrangement.component';
 import { TutorialCircularArrangementComponent } from './pages/tutorial/circular-arrangement/circular-arrangement.component';
-import { EnumQuestionType } from './models/question.models';
 import { AccuracyStatsComponent } from './pages/stats/accuracy-stats/accuracy-stats.component';
 import { ErrorAnalysisComponent } from './pages/stats/error-analysis/error-analysis.component';
 import { TierStatsComponent } from './pages/stats/tier-stats/tier-stats.component';
@@ -38,6 +36,8 @@ import { TimerChooseComponent } from './components/timer-choose/timer-choose.com
 import { PlaygroundModeComponent } from './pages/playground-mode/playground-mode.component';
 import { DailyProgressComponent } from './components/daily-progress/daily-progress.component';
 import { GameModeChooseComponent } from './components/game-mode-choose/game-mode-choose.component';
+import { EnumQuestionType } from './constants/question.constants';
+import { EnumScreens } from './constants/syllogimous.constants';
 
 const routes: Routes = [
   {

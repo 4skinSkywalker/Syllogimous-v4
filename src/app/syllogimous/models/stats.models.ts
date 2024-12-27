@@ -1,4 +1,4 @@
-import { EnumQuestionType } from "./question.models";
+import { EnumQuestionType } from "../constants/question.constants";
 
 export class TypeBasedStats {
     [EnumQuestionType.Syllogism] = new TypeBasedStatsInner(EnumQuestionType.Syllogism);

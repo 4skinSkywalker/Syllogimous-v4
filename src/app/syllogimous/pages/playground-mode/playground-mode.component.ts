@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IDynamicField } from 'src/app/shared/components/dynamic-form/dynamic-form.component';
-import { areSettingsInvalid, QuestionSetting, Settings } from 'src/app/syllogimous/models/settings.models';
-import { EnumScreens } from 'src/app/syllogimous/models/syllogimous.models';
+import { areSettingsInvalid, QuestionSettings, Settings } from 'src/app/syllogimous/models/settings.models';
 import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.service';
-import { EnumQuestionType } from '../../models/question.models';
+import { EnumScreens } from '../../constants/syllogimous.constants';
+import { EnumQuestionType } from '../../constants/question.constants';
 
 function capitalize(val: string) {
     return val[0].toUpperCase() + val.slice(1);
@@ -29,7 +29,7 @@ export class PlaygroundModeComponent {
 
     genericEnables: [string, boolean][];
     binaryEnables: [string, boolean][];
-    questionControls: [string, QuestionSetting][];
+    questionControls: [string, QuestionSettings][];
 
     constructor(
         public router: Router,

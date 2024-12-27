@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { Question } from '../../models/question.models';
 import { SyllogimousService } from '../../services/syllogimous.service';
 import { LS_HISTORY } from '../../constants/local-storage.constants';
-import { EnumScreens } from '../../models/syllogimous.models';
 import { Router } from '@angular/router';
+import { EnumScreens } from '../../constants/syllogimous.constants';
 
 @Component({
     selector: 'app-tutorials',

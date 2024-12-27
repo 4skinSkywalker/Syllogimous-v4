@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { TIER_SCORE_RANGES } from 'src/app/syllogimous/constants/syllogimous.constants';
-import { EnumTiers } from 'src/app/syllogimous/models/syllogimous.models';
+import { EnumTiers, TIER_SCORE_RANGES } from 'src/app/syllogimous/constants/syllogimous.constants';
 import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.service';
 
 @Component({

@@ -1,5 +1,6 @@
 import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, FORMS, NOUNS, STRINGS, TIME_NAMES, VALID_RULES } from "../constants/engine.constants";
-import { EnumArrangementRelations, EnumQuestionType, Question } from "../models/question.models";
+import { EnumArrangementRelations, EnumQuestionType } from "../constants/question.constants";
+import { Question } from "../models/question.models";
 import { Settings, Picked } from "../models/settings.models";
 
 export const b2n = (b: boolean) => +b as number;

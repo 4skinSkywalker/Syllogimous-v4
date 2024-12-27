@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE } from 'src/app/syllogimous/constants/local-storage.constants';
-import { EnumQuestionType } from 'src/app/syllogimous/models/question.models';
-import { EnumScreens } from 'src/app/syllogimous/models/syllogimous.models';
+import { EnumQuestionType } from 'src/app/syllogimous/constants/question.constants';
+import { EnumScreens } from 'src/app/syllogimous/constants/syllogimous.constants';
 import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.service';
 
 @Component({

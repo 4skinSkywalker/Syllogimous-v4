@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SyllogimousService } from '../../services/syllogimous.service';
 import { Router } from '@angular/router';
-import { EnumScreens } from '../../models/syllogimous.models';
+import { EnumScreens } from '../../constants/syllogimous.constants';
 
 @Component({
     selector: 'app-feedback',

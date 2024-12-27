@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Subject } from 'rxjs';
-import { EnumQuestionType } from 'src/app/syllogimous/models/question.models';
+import { EnumQuestionType } from 'src/app/syllogimous/constants/question.constants';
 import { TypeBasedStats } from 'src/app/syllogimous/models/stats.models';
 import { StatsService } from 'src/app/syllogimous/services/stats.service';
 import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.service';

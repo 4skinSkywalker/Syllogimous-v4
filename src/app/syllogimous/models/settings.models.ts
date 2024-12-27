@@ -1,5 +1,6 @@
+import { EnumQuestionType } from "../constants/question.constants";
+import { EnumQuestionGroup, COMPARISON_OPTIONS, DIRECTION_OPTIONS, ARRANGEMENT_OPTIONS, BASIC_OPTIONS, ANALOGY_OPTIONS, BINARY_OPTIONS } from "../constants/settings.constants";
 import { b2n } from "../utils/engine.utils";
-import { EnumQuestionType } from "./question.models";
 
 const getNumOfEnabledQuestions = (settings: Settings, basicQuestionFilter: boolean) => {
     return Object.values(settings.question)
@@ -50,37 +51,46 @@ export function areSettingsInvalid(settings: Settings) {
     return null;
 }
 
-export enum EnumQuestionGroup {
-    Comparison = "Comparison",
-    Direction = "Direction",
-    Arrangement = "Arrangement",
-}
-
-export class QuestionSetting {
+export interface IQuestionSettingsOpts {
     enabled: boolean;
     min: number;
-    actual: number; // TODO: set via minmmax function
     max: number;
-    basic: boolean; // A basic question type can be utilized by high-order questions
+    basic: boolean;
     group?: EnumQuestionGroup;
+}
 
-    constructor(
-        enabled: boolean,
-        min: number,
-        max: number,
-        basic: boolean,
-        group?: EnumQuestionGroup
-    ) {
-        this.enabled = enabled;
-        this.min = min;     // Min number of premises
-        this.actual = min;  // Actual number of premises
-        this.max = max;     // Max number of premises
-        this.basic = basic;
-        this.group = group;
+export class QuestionSettings {
+    enabled: boolean;
+    min: number; // Min number of premises
+    private _actual!: number; // Actual number of premises
+    set actual(numOfPremises: number) {
+        this._actual = this.clampNumOfPremises(numOfPremises);
     }
+    get actual() {
+        return this._actual;
+    }
+    max: number; // Max number of premises
+    basic: boolean; // Basic questions can be used by other questions (ex. Analogy, Binary, ...)
+    group?: EnumQuestionGroup; // Group that this question belongs to (ex. Direction, ...)
 
-    setActual(numOfPremises: number) {
-        this.actual = this.clampNumOfPremises(numOfPremises);
+    constructor(opt: IQuestionSettingsOpts) {
+        this.min = opt.min;
+        this.max = opt.max;
+        this.basic = opt.basic;
+        this.group = opt.group;
+
+        // Some props are immutable because they are user for validation
+        this.freezeProp("min");
+        this.freezeProp("max");
+        this.freezeProp("basic");
+        this.freezeProp("group");
+        
+        this.enabled = opt.enabled;
+        this.actual = opt.min;
+    }
+    
+    freezeProp(prop: string) {
+        Object.defineProperty(this, prop, { configurable: false, writable: false });
     }
 
     clampNumOfPremises(numOfPremises: number) {
@@ -91,21 +101,21 @@ export class QuestionSetting {
 export class Settings {
     question = {
         // Comparisons
-        [EnumQuestionType.ComparisonNumerical]: new QuestionSetting(true, 2, 9, true, EnumQuestionGroup.Comparison),
-        [EnumQuestionType.ComparisonChronological]: new QuestionSetting(true, 2, 9, true, EnumQuestionGroup.Comparison),
+        [EnumQuestionType.ComparisonNumerical]: new QuestionSettings(COMPARISON_OPTIONS),
+        [EnumQuestionType.ComparisonChronological]: new QuestionSettings(COMPARISON_OPTIONS),
         // Directions
-        [EnumQuestionType.Direction]: new QuestionSetting(true, 2, 9, true, EnumQuestionGroup.Direction),
-        [EnumQuestionType.Direction3DSpatial]: new QuestionSetting(true, 2, 9, true, EnumQuestionGroup.Direction),
-        [EnumQuestionType.Direction3DTemporal]: new QuestionSetting(true, 2, 9, true, EnumQuestionGroup.Direction),
-        [EnumQuestionType.Direction4D]: new QuestionSetting(true, 2, 9, true, EnumQuestionGroup.Direction),
+        [EnumQuestionType.Direction]: new QuestionSettings(DIRECTION_OPTIONS),
+        [EnumQuestionType.Direction3DSpatial]: new QuestionSettings(DIRECTION_OPTIONS),
+        [EnumQuestionType.Direction3DTemporal]: new QuestionSettings(DIRECTION_OPTIONS),
+        [EnumQuestionType.Direction4D]: new QuestionSettings(DIRECTION_OPTIONS),
         // Arrangements
-        [EnumQuestionType.LinearArrangement]: new QuestionSetting(true, 3, 9, false, EnumQuestionGroup.Arrangement),
-        [EnumQuestionType.CircularArrangement]: new QuestionSetting(true, 3, 9, false, EnumQuestionGroup.Arrangement),
+        [EnumQuestionType.LinearArrangement]: new QuestionSettings(ARRANGEMENT_OPTIONS),
+        [EnumQuestionType.CircularArrangement]: new QuestionSettings(ARRANGEMENT_OPTIONS),
         // Others
-        [EnumQuestionType.Distinction]: new QuestionSetting(true, 2, 9, true),
-        [EnumQuestionType.Syllogism]: new QuestionSetting(true, 2, 9, true),
-        [EnumQuestionType.Analogy]: new QuestionSetting(true, 3, 9, false),
-        [EnumQuestionType.Binary]: new QuestionSetting(true, 4, 9, false),
+        [EnumQuestionType.Distinction]: new QuestionSettings(BASIC_OPTIONS),
+        [EnumQuestionType.Syllogism]: new QuestionSettings(BASIC_OPTIONS),
+        [EnumQuestionType.Analogy]: new QuestionSettings(ANALOGY_OPTIONS),
+        [EnumQuestionType.Binary]: new QuestionSettings(BINARY_OPTIONS),
     };
 
     enable = {
@@ -122,16 +132,16 @@ export class Settings {
         },
     };
 
-    setGenericEnable(prop: "meaningfulWords"|"meta"|"negation", value: boolean) {
+    setEnable(prop: "meaningfulWords"|"meta"|"negation", value: boolean) {
         this.enable[prop] = value;
         return this;
     }
 
-    setQuestionSetting(type: EnumQuestionType, enabled: boolean, actual: number) {
+    setQuestionSetting(type: EnumQuestionType, enabled: boolean, numOfPremises: number) {
         this.question[type].enabled = enabled;
-        this.question[type].actual = actual;
+        this.question[type].actual = numOfPremises;
 
-        // Enable all operators at once on binary questions
+        // Enable/disable all operators at once on binary questions
         if (type === EnumQuestionType.Binary) {
             for (const key in this.enable.binary) {
                 (this.enable.binary as any)[key] = enabled;

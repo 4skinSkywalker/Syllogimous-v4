@@ -1,6 +1,5 @@
 import { Component } from "@angular/core";
-import { TIER_COLORS, TIER_SCORE_RANGES } from "../../constants/syllogimous.constants";
-import { EnumTiers } from "../../models/syllogimous.models";
+import { EnumTiers, TIER_COLORS, TIER_SCORE_RANGES } from "../../constants/syllogimous.constants";
 import { SyllogimousService } from "../../services/syllogimous.service";
 
 @Component({

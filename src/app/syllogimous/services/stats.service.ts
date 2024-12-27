@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { SyllogimousService } from "./syllogimous.service";
 import { jsonCopy } from "src/app/utils/json";
 import { TypeBasedStats } from "../models/stats.models";
-import { EnumQuestionType } from "../models/question.models";
+import { EnumQuestionType } from "../constants/question.constants";
 
 @Injectable({
     providedIn: "root"
