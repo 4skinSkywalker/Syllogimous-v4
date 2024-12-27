@@ -680,18 +680,35 @@ export class SyllogimousService {
         const question = new Question(type);
         question.instructions = `There are ${numOfEls} subjects along a LINEAR path.`;
 
-        const getAdjLeft = (i: number) => i+1;
-        const getAdjRight = (i: number) => i-1;
+        /**
+         * TODO:
+         * 1. Add left/right (w/o steps) to the conclusion (boolean flag in getWays?)
+         * 2. Randomly reverse some subjects
+         * 3. Alter with meta relationships
+         * 4. Integrate with analogy type
+         */
         const getWays = (i: number, j: number) => {
-            const isAdjLeft = getAdjLeft(i) === j;
-            const isAdjRight = getAdjRight(i) === j;
-            const isNext = isAdjLeft || isAdjRight;
             const ways = {
-                [EnumArrangementRelations.AdjLeft]: isAdjLeft,       // 1 way,
-                [EnumArrangementRelations.AdjRight]: isAdjRight,     // 1 way
-                [EnumArrangementRelations.Next]: isNext,             // 2 ways
-                [EnumArrangementRelations.Left]: i < j,              // N/2-1 ways
-                [EnumArrangementRelations.Right]: i > j,             // N/2-1 ways
+                [EnumArrangementRelations.AdjLeft]: {
+                    possible: i+1 === j,
+                    steps: 1
+                },
+                [EnumArrangementRelations.AdjRight]: {
+                    possible: i-1 === j,
+                    steps: 1
+                },
+                [EnumArrangementRelations.Next]: {
+                    possible: (i+1 === j) || (i-1 === j),
+                    steps: 1
+                },
+                [EnumArrangementRelations.Left]: {
+                    possible: i < j - 1,
+                    steps: j - i
+                },
+                [EnumArrangementRelations.Right]: {
+                    possible: i > j + 1,
+                    steps: i - j
+                },
             };
 
             return ways;
@@ -702,61 +719,24 @@ export class SyllogimousService {
         let subjects = [...words];
         let a: string | undefined = undefined;
         for (let safe = 1e2; safe && premises.length < numOfEls-1; safe--) {
-            const ways = [];
-
-            const defWays = [EnumArrangementRelations.AdjLeft, EnumArrangementRelations.AdjRight];
-
-            ways.push(...defWays);
-            if (premises.length > 2) {
-                ways.push(EnumArrangementRelations.Next);
-            }
-            if (premises.length >= subjects.length) {
-                ways.push(EnumArrangementRelations.Left, EnumArrangementRelations.Right);
-            }
-
             let premise: string[] | undefined = undefined;
             let safe = 1e2;
             for (; safe && premise == undefined; safe--) {
                 a = a || pickUniqueItems(subjects, 1).picked[0];
-                // console.log("a", a);
+                console.log("a", a);
                 const aid = words.indexOf(a);
 
-                // It should try to go a def route first...
-                if (ways.length === defWays.length) {
-                    const bidLeft = getAdjLeft(aid);
-                    const bidRight = getAdjRight(aid);
-                    const bLeft = words[bidLeft];
-                    const bRight = words[bidRight];
-
-                    const existsAndNotRepeated = (b: string | undefined) => {
-                        return b && !premises.find(([_a, _, _b]) => _a === b || _b === b);
-                    }
-
-                    const bWays = [];
-                    if (existsAndNotRepeated(bLeft)) {
-                        bWays.push([EnumArrangementRelations.AdjLeft, bLeft]);
-                    }
-                    if (existsAndNotRepeated(bRight)) {
-                        bWays.push([EnumArrangementRelations.AdjRight, bRight]);
-                    }
-
-                    if (bWays.length) {
-                        const [ targetWay, b ] = pickUniqueItems(bWays, 1).picked[0];
-                        // console.log("b", b);
-                        premise = [a, targetWay, b];
-                        subjects = subjects.filter(s => s !== a && s !== b);
-                        a = b;
-                        break;
-                    }
+                const existsAndNotRepeated = (b: string | undefined) => {
+                    return b && !premises.find(([_a, _, _b]) => _a === b || _b === b);
                 }
 
-                // ...otherwise pick any available route
                 const b = pickUniqueItems(subjects, 1).picked[0];
-                // console.log("b non-def", b);
+                console.log("b", b);
                 const bid = words.indexOf(b);
-                const [ targetWay, canGoThere ] = pickUniqueItems(Object.entries(getWays(aid, bid)), 1).picked[0];
-                if (canGoThere) {
-                    premise = [a, targetWay, b];
+                const [ wayDescription, wayData ] = pickUniqueItems(Object.entries(getWays(aid, bid)), 1).picked[0];
+                if (wayData.possible && existsAndNotRepeated(b)) {
+                    const enrichedWayDescr = wayDescription.replace("#", String(wayData.steps));
+                    premise = [a, enrichedWayDescr, b];
                     subjects = subjects.filter(s => s !== a && s !== b)
                     a = b;
                 }
@@ -780,11 +760,13 @@ export class SyllogimousService {
         }
         const [aid, bid] = [words.indexOf(a!), words.indexOf(b!)];
         const ways = getWays(aid, bid);
-        // console.log(a, b);
+        console.log(a, b);
 
         question.isValid = coinFlip();
-        const conclusionWays = Object.entries(ways).filter(([_, b]) => b === question.isValid).map(x => x[0]);
-        question.conclusion = `<span class="subject">${a}</span> ${pickUniqueItems(conclusionWays, 1).picked[0]} <span class="subject">${b}</span>`;
+        const conclusionWayDescriptions = Object.entries(ways)
+            .filter(([wayDescription, wayData]) => wayData.possible === question.isValid)
+            .map(([wayDescription, wayData]) => wayDescription.replace("#", String(Math.abs(wayData.steps))));
+        question.conclusion = `<span class="subject">${a}</span> ${pickUniqueItems(conclusionWayDescriptions, 1).picked[0]} <span class="subject">${b}</span>`;
 
         question.rule = words.join(", ");
         (question as any).rawPremises = premises;

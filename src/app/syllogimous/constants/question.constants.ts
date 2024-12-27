@@ -14,12 +14,12 @@ export enum EnumQuestionType {
 }
 
 export enum EnumArrangementRelations {
-    AdjLeft = "is to the immediate left of",
-    AdjRight = "is to the immediate right of",
+    AdjLeft = "is adjacent to the left of",
+    AdjRight = "is adjacent to the right of",
     Next = "is next to",
     NotNext = "is not next to",
-    Left = "is at the left of",
-    Right = "is at the right of",
+    Left = "is # steps left of",
+    Right = "is # steps right of",
     InFront = "is diametrically opposite to", // not used by linear
     NotInFront = "is not diametrically opposite to", // not used by linear
 };
