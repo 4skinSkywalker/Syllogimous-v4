@@ -4,7 +4,7 @@ export enum EnumQuestionGroup {
     Arrangement = "Arrangement",
 }
 
-export const DEFAULT_ENABLE = {
+export const DEFAULT_ENABLED_FLAGS = {
     meaningfulWords: true,
     meta: true,
     negation: true,

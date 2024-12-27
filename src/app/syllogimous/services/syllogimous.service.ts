@@ -414,7 +414,7 @@ export class SyllogimousService {
                     wordCoordMap[words[i]][1] + dirCoord[1]  // y
                 ];
 
-                if (settings.enable.negation && coinFlip()) {
+                if (settings.enabled.negation && coinFlip()) {
                     question.negations++;
                     if (coinFlip()) {
                         question.premises.push(`<span class="subject">${words[i+1]}</span> is <span class="is-negated">${(DIRECTION_NAMES_INVERSE as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
@@ -451,7 +451,7 @@ export class SyllogimousService {
                 : findDirection(bCoords, aCoords);
         }
 
-        if (settings.enable.negation && coinFlip()) {
+        if (settings.enabled.negation && coinFlip()) {
             question.negations++;
             if (coinFlip()) {
                 question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> is <span class="is-negated">${(DIRECTION_NAMES_INVERSE as any)[conclusionDirection]}</span> of <span class="subject">${conclusionSubjects[1]}</span>`;
@@ -513,7 +513,7 @@ export class SyllogimousService {
                     wordCoordMap[words[i]][2] + dirCoord[2], // z
                 ];
 
-                if (settings.enable.negation && coinFlip()) {
+                if (settings.enabled.negation && coinFlip()) {
                     question.negations++;
                     if (coinFlip()) {
                         question.premises.push(`<span class="subject">${words[i+1]}</span> is <span class="is-negated">${(direction_names_inverse as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
@@ -550,7 +550,7 @@ export class SyllogimousService {
                 : findDirection3D(bCoords, aCoords, isTemporal);
         }
 
-        if (settings.enable.negation && coinFlip()) {
+        if (settings.enabled.negation && coinFlip()) {
             question.negations++;
             if (coinFlip()) {
                 question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> is <span class="is-negated">${(direction_names_inverse as any)[conclusionDirection]}</span> of <span class="subject">${conclusionSubjects[1]}</span>`;
@@ -612,7 +612,7 @@ export class SyllogimousService {
                     wordCoordMap[words[i]][3] + timeIndex,   // time
                 ];
 
-                if (settings.enable.negation && coinFlip()) {
+                if (settings.enabled.negation && coinFlip()) {
                     question.negations++;
                     if (coinFlip()) {
                         question.premises.push(`<span class="subject">${words[i+1]}</span> ${timeName} <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
@@ -648,7 +648,7 @@ export class SyllogimousService {
                 ? findDirection4D(aCoords, bCoords)
                 : findDirection4D(bCoords, aCoords);
         }
-        if (settings.enable.negation && coinFlip()) {
+        if (settings.enabled.negation && coinFlip()) {
             question.negations++;
             if (coinFlip()) {
                 question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> ${conclusionDirection.temporal} <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[conclusionDirection.spatial]}</span> of <span class="subject">${conclusionSubjects[1]}</span>`;
@@ -1113,7 +1113,7 @@ export class SyllogimousService {
         const isSameRelation = coinFlip();
         question.isValid = isSameRelation ? isValidSame : !isValidSame;
 
-        if (settings.enable.negation && coinFlip()) {
+        if (settings.enabled.negation && coinFlip()) {
             question.negations++;
             if (isSameRelation) {
                 if (choiceIndex < 1) {
@@ -1163,32 +1163,32 @@ export class SyllogimousService {
         const operandNames = [];
         const operandTemplates = [];
     
-        if (settings.enable.binary.and) {
+        if (settings.enabled.binary.and) {
             operands.push("a&&b");
             operandNames.push("AND");
             operandTemplates.push('$a <div class="is-connector">and</div> $b');
         }
-        if (settings.enable.binary.nand) {
+        if (settings.enabled.binary.nand) {
             operands.push("!(a&&b)");
             operandNames.push("NAND");
             operandTemplates.push('$a <div class="is-connector">and</div> $b <div class="is-connector">are not both true</div>');
         }
-        if (settings.enable.binary.or) {
+        if (settings.enabled.binary.or) {
             operands.push("a||b");
             operandNames.push("OR");
             operandTemplates.push('$a <div class="is-connector">or</div> $b');
         }
-        if (settings.enable.binary.nor) {
+        if (settings.enabled.binary.nor) {
             operands.push("!(a||b)");
             operandNames.push("NOR");
             operandTemplates.push('$a <div class="is-connector">and</div> $b <div class="is-connector">are both false</div>');
         }
-        if (settings.enable.binary.xor) {
+        if (settings.enabled.binary.xor) {
             operands.push("!(a&&b)&&(a||b)");
             operandNames.push("XOR");
             operandTemplates.push('$a <div class="is-connector">differs from</div> $b');
         }
-        if (settings.enable.binary.xnor) {
+        if (settings.enabled.binary.xnor) {
             operands.push("!(!(a&&b)&&(a||b))");
             operandNames.push("XNOR");
             operandTemplates.push('$a <div class="is-connector">is equal to</div> $b');

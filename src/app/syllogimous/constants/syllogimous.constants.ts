@@ -156,13 +156,13 @@ function showEnabledQuestionTypes(tier: EnumTiers, settings: Settings) {
             console.log(qt.toUpperCase(), "WITH", qs.getNumOfPremises(), "PREMISES");
         }
     }
-    if (settings.enable.meta || settings.enable.negation) {
+    if (settings.enabled.meta || settings.enabled.negation) {
         console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
     }
-    if (settings.enable.meta) {
+    if (settings.enabled.meta) {
         console.log("WITH META")
     }
-    if (settings.enable.negation) {
+    if (settings.enabled.negation) {
         console.log("WITH NEGATION")
     }
 }

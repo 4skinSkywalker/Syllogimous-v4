@@ -39,8 +39,8 @@ export class PlaygroundModeComponent {
     ) {
         const settings = this.loadPlaygroundSettings() || new Settings();
 
-        this.genericEnables = Object.entries(settings.enable).filter(([field]) => field !== "binary") as [string, boolean][];
-        this.binaryEnables = Object.entries(settings.enable.binary);
+        this.genericEnables = Object.entries(settings.enabled).filter(([field]) => field !== "binary") as [string, boolean][];
+        this.binaryEnables = Object.entries(settings.enabled.binary);
         this.questionControls = Object.entries(settings.question);
 
         // Create generic boolean controls
@@ -57,19 +57,19 @@ export class PlaygroundModeComponent {
         for (const [qt, qs] of this.questionControls) {
             this.fields.push(
                 { 
-                    filler: "<div class='pt-3'></div>",
+                    filler: "<div class='pt-4'></div>",
                     field: "",
                     label: ""
                 },
                 {
                     field: qt,
-                    label: "Enable " + decomposeCamelCase(qt),
+                    label: `${decomposeCamelCase(qt)} ${qs.basic ? "(Basic)" : ""}`,
                     type: "checkbox",
                     value: qs.enabled,
                 },
                 {
                     field: qt + "premises",
-                    label: decomposeCamelCase(qt) + " Premises",
+                    label: "Number of Premises",
                     type: "range",
                     value: qs.getNumOfPremises(),
                     min: qs.minNumOfPremises,
@@ -95,12 +95,12 @@ export class PlaygroundModeComponent {
 
         // Set generic boolean values
         for (const [field, value] of this.genericEnables) {
-            (settings.enable as any)[field] = this.formData[field];
+            (settings.enabled as any)[field] = this.formData[field];
         }
 
         // Set binary boolean values
         for (const [field, value] of this.binaryEnables) {
-            (settings.enable.binary as any)[field] = this.formData[field];
+            (settings.enabled.binary as any)[field] = this.formData[field];
         }
 
         // Set question enables and num of premises

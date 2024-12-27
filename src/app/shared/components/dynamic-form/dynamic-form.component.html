@@ -1,4 +1,4 @@
-<div class="d-grid gap-3">
+<div class="d-grid" [style.gap]="gap">
     <ng-container *ngFor="let f of _fields">
         <div *ngIf="f.filler; else inputField" [innerHTML]="f.filler"></div>
         <ng-template #inputField>

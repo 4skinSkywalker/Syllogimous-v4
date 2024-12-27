@@ -1,5 +1,5 @@
 import { EnumQuestionType } from "../constants/question.constants";
-import { EnumQuestionGroup, COMPARISON_PARAMS, DIRECTION_PARAMS, ARRANGEMENT_PARAMS, BASIC_PARAMS, ANALOGY_PARAMS, BINARY_PARAMS, DEFAULT_ENABLE } from "../constants/settings.constants";
+import { EnumQuestionGroup, COMPARISON_PARAMS, DIRECTION_PARAMS, ARRANGEMENT_PARAMS, BASIC_PARAMS, ANALOGY_PARAMS, BINARY_PARAMS, DEFAULT_ENABLED_FLAGS } from "../constants/settings.constants";
 import { b2n } from "../utils/engine.utils";
 
 const getNumOfEnabledQuestions = (settings: Settings, basicQuestionFilter: boolean) => {
@@ -9,7 +9,7 @@ const getNumOfEnabledQuestions = (settings: Settings, basicQuestionFilter: boole
 };
 
 const getNumOfEnabledOperators = (settings: Settings) => {
-    return Object.values(settings.enable.binary)
+    return Object.values(settings.enabled.binary)
         .reduce((a, c) => a + b2n(c), 0);
 };
 
@@ -103,24 +103,24 @@ export class QuestionSettings {
 
 export class Settings {
     question!: Record<EnumQuestionType, QuestionSettings>;
-    enable: typeof DEFAULT_ENABLE;
+    enabled: typeof DEFAULT_ENABLED_FLAGS;
 
     private configSettings?: Settings;
 
     constructor(settings?: Settings) {
         this.configSettings = settings;
-        this.enable = settings?.enable || DEFAULT_ENABLE;
+        this.enabled = settings?.enabled || DEFAULT_ENABLED_FLAGS;
         //                                         Question Type            Default Config
+        this.initQuestionSettings(EnumQuestionType.Distinction,             BASIC_PARAMS);
         this.initQuestionSettings(EnumQuestionType.ComparisonNumerical,     COMPARISON_PARAMS);
         this.initQuestionSettings(EnumQuestionType.ComparisonChronological, COMPARISON_PARAMS);
+        this.initQuestionSettings(EnumQuestionType.Syllogism,               BASIC_PARAMS);
         this.initQuestionSettings(EnumQuestionType.Direction,               DIRECTION_PARAMS);
         this.initQuestionSettings(EnumQuestionType.Direction3DSpatial,      DIRECTION_PARAMS);
         this.initQuestionSettings(EnumQuestionType.Direction3DTemporal,     DIRECTION_PARAMS);
         this.initQuestionSettings(EnumQuestionType.Direction4D,             DIRECTION_PARAMS);
         this.initQuestionSettings(EnumQuestionType.LinearArrangement,       ARRANGEMENT_PARAMS);
         this.initQuestionSettings(EnumQuestionType.CircularArrangement,     ARRANGEMENT_PARAMS);
-        this.initQuestionSettings(EnumQuestionType.Distinction,             BASIC_PARAMS);
-        this.initQuestionSettings(EnumQuestionType.Syllogism,               BASIC_PARAMS);
         this.initQuestionSettings(EnumQuestionType.Analogy,                 ANALOGY_PARAMS);
         this.initQuestionSettings(EnumQuestionType.Binary,                  BINARY_PARAMS);
     }
@@ -136,7 +136,7 @@ export class Settings {
     }
 
     setEnable(prop: "meaningfulWords"|"meta"|"negation", value: boolean) {
-        this.enable[prop] = value;
+        this.enabled[prop] = value;
         return this;
     }
 

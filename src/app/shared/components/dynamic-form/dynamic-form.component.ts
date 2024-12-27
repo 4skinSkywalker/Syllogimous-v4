@@ -28,6 +28,7 @@ interface IDynamicFieldControl extends IDynamicField {
     styleUrls: ["./dynamic-form.component.css"]
 })
 export class DynamicFormComponent implements OnChanges, OnDestroy {
+    @Input("gap") gap = "1rem";
     @Input("fields") fields: IDynamicField[] = [];
     @Input("emitInitial") emitInitial = false
     @Output("formValueChanged") formValueChanged = new EventEmitter();
