@@ -16,8 +16,8 @@ export enum EnumQuestionType {
 }
 
 export enum EnumArrangements {
-    AdjacentLeft = "is adjacent to the left of",
-    AdjacentRight = "is adjacent to the right of",
+    AdjacentLeft = "is adjacent and left of",
+    AdjacentRight = "is adjacent and right of",
     Next = "is next to",
     NStepsLeft = "is # steps left of",
     NStepsRight = "is # steps right of",

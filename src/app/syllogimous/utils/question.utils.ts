@@ -503,7 +503,7 @@ export function interpolateArrangementRelationship(relationship: IArrangementRel
     const numWord = NUMBER_WORDS[relationship.steps];
     return relationship.description.replace(/# steps/, () =>
         relationship.steps === 1
-            ? " adjacent to the"
+            ? " adjacent and"
             : ((numWord || relationship.steps) + " steps")
     );
 }

@@ -685,7 +685,7 @@ export class SyllogimousService {
         const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, numOfEls).picked;
         const question = new Question(type);
-        question.instructions = `There are ${numOfEls} subjects along a ${isLinear ? "LINE" : "CIRCLE"}.`;
+        question.instructions = `There are ${numOfEls} subjects along a ${isLinear ? "LINEAR" : "CIRCULAR"} path.`;
 
         const relationshipAlreadyExistent = (a: string, b: string) =>
             premises.find(({ a: pA, b: pB }) => (pA === a && pB === b) || (pA === b && pB === a));
@@ -953,21 +953,25 @@ export class SyllogimousService {
 
                 const getWays = isLinear ? getLinearWays : getCircularWays;
 
-                const waysA2B = getWays(idxA, idxB, length+1);
-                const waysC2D = getWays(idxC, idxD, length+1);
+                const waysA2B = getWays(idxA, idxB, length+1, true);
+                const waysC2D = getWays(idxC, idxD, length+1, true);
                 //console.log(subjects);
                 //console.log(idxA, idxB, idxC, idxD);
+                //console.log(waysA2B, waysC2D);
 
-                if (!isLinear) {
-                    question.instructions += "<br><b>Note</b>: Diametrical opposition makes it alike.";
+                if (isLinear) {
+                    question.instructions += "<br><b>Note</b>: Proximity makes the relationship alike.";
+                } else {
+                    question.instructions += "<br><b>Note</b>: Proximity and diametrical opposition makes the relationship alike.";
                 } 
 
                 isValidSame = false;
                 for (const key in waysA2B) {
-                    if (waysA2B[key] && waysC2D[key]) {
+                    if (waysA2B[key].possible && waysC2D[key].possible) {
                         isValidSame = true;
                     }
                 }
+                //console.log('Is a valid "same" relationship?', isValidSame);
 
                 break;
             }
@@ -977,14 +981,14 @@ export class SyllogimousService {
             throw new Error("Shouldn't be here...");
         }
 
-        const isSameRelation = coinFlip();
-        question.isValid = isSameRelation ? isValidSame : !isValidSame;
+        const isSameRelationship = coinFlip();
+        question.isValid = isSameRelationship ? isValidSame : !isValidSame;
 
         if (settings.enabled.negation && coinFlip()) {
             question.negations++;
-            question.conclusion += `<div class="analogy-conclusion-relation is-negated">is ${isSameRelation ? 'unlike' : 'alike'}</div>`;
+            question.conclusion += `<div class="analogy-conclusion is-negated">is ${isSameRelationship ? 'unlike' : 'alike'}</div>`;
         } else {
-            question.conclusion += `<div class="analogy-conclusion-relation">is ${isSameRelation ? 'alike' : 'unlike'}</div>`;
+            question.conclusion += `<div class="analogy-conclusion">is ${isSameRelationship ? 'alike' : 'unlike'}</div>`;
         }
 
         question.conclusion += `<span class="subject">${c}</span> to <span class="subject">${d}</span>`;
