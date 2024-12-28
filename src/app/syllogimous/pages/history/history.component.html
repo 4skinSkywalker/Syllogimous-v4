@@ -13,11 +13,11 @@
                 [class.correct]="q.userAnswer !== undefined && q.userAnswer === q.isValid"
                 [class.incorrect]="q.userAnswer !== undefined && q.userAnswer !== q.isValid"
             >
-                <div
-                    *ngIf="q.playgroundMode"
-                    class="text-muted"
-                    style="padding-top: 0.5rem;padding-left: 0.75rem;font-size: 0.9rem;margin-bottom: -0.25rem;"
-                >Playground Mode</div>
+                <div class="mode-title">{{q.playgroundMode ? "Playground Mode" : "Arcade Mode"}}</div>
+
+                <button class="btn btn-sm btn-secondary copy-paste" (click)="copyQuestion(q)">
+                    <i class="bi bi-clipboard"></i> Copy
+                </button>
 
                 <div class="overflow-auto" style="max-height: 250px; padding: 0.5rem 0.75rem;">
                     <div *ngIf="q.instructions" class="instructions" [innerHTML]="q.instructions"></div>

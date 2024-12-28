@@ -22,18 +22,4 @@ export class TypeBasedStatsComponent {
         this.types = types;
         this.typeBasedStats = typeBasedStats;
     }
-
-    getTabInfoForType(type: EnumQuestionType) {
-        if (type === EnumQuestionType.LinearArrangement || type === EnumQuestionType.CircularArrangement) {
-            return {
-                initial: '3',
-                premises: ['3','4','5','6+'],
-            };
-        } else {
-            return {
-                initial: '2',
-                premises: ['2','3','4','5','6+'],
-            };
-        }
-    }
 }

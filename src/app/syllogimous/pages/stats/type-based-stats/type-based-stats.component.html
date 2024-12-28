@@ -20,7 +20,7 @@
             </li>
         </ul>
     
-        <div *ngIf="getTabInfoForType(type) as tabInfo">
+        <div *ngIf="{ initial: '2', premises: ['2','3','4','5','6+'] } as tabInfo">
             <ul ngbNav #nav="ngbNav" [(activeId)]="tabInfo.initial" class="nav-tabs">
                 <ng-container *ngFor="let ps of tabInfo.premises">
                     <li [ngbNavItem]="ps">

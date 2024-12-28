@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { LS_DAILY_PROGRESS } from "../constants/local-storage.constants";
 
-const GOAL = 15 * 60 * 1000;
+const GOAL = 30 * 60 * 1000;
 
 @Injectable({
     providedIn: 'root'
