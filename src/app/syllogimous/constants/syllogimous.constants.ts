@@ -13,6 +13,7 @@ export enum EnumScreens {
     Tutorials = "Tutorials",
     Stats = "Stats",
     PlaygroundMode = "Playground Mode",
+    TiersMatrix = "Tiers Matrix",
 }
 
 export enum EnumTiers {
@@ -121,38 +122,39 @@ export const ORDERED_QUESTION_TYPES = [
  * for tiers
  */
 export const TIERS_MATRIX: Record<number, [ number, number, number, number, number, number, number, number, number, number, number, number ]> = {
-     0: [  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1, -1 ],
-     1: [  3,  3,  3,  2, -1, -1, -1, -1,  2, -1, -1, -1 ],
-     2: [  4,  4,  4,  3,  2, -1, -1, -1,  3,  2, -1, -1 ],
-     3: [  5,  5,  5,  4,  3,  2,  2, -1,  4,  3,  3, -1 ],
-     4: [  6,  6,  6,  5,  4,  3,  3,  2,  5,  4,  4,  4 ],
-     5: [  7,  7,  7,  6,  5,  4,  4,  3,  6,  5,  5,  5 ],
-     6: [  8,  8,  8,  7,  6,  5,  5,  4,  7,  6,  6,  6 ],
-     7: [  9,  9,  9,  8,  7,  6,  6,  5,  8,  7,  7,  7 ],
-     8: [ 10, 10, 10,  9,  8,  7,  7,  6,  9,  8,  8,  8 ],
-     9: [ 11, 11, 11, 10,  9,  8,  8,  7, 10,  9,  9,  9 ],
-    10: [ 12, 12, 12, 11, 10,  9,  9,  8, 11, 10, 10, 10 ],
-    11: [ 13, 13, 13, 12, 11, 10, 10,  9, 12, 11, 11, 11 ],
-    12: [ 14, 14, 14, 13, 12, 11, 11, 10, 13, 12, 12, 12 ],
-    13: [ 15, 15, 15, 14, 13, 12, 12, 11, 14, 13, 13, 13 ],
-    14: [ 16, 16, 16, 15, 14, 13, 13, 12, 15, 14, 14, 14 ],
+     0: [  2,  2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ],
+     1: [  3,  3,  2, -1, -1, -1, -1, -1, -1, -1, -1, -1 ],
+     2: [  4,  4,  3,  2, -1, -1, -1, -1, -1, -1, -1, -1 ],
+     3: [  5,  5,  4,  3,  2, -1,  2, -1, -1, -1, -1, -1 ],
+     4: [  6,  6,  5,  4,  3,  2,  3,  2,  2, -1, -1, -1 ],
+     5: [  7,  7,  6,  5,  4,  3,  4,  3,  3,  3, -1, -1 ],
+     6: [  8,  8,  7,  6,  5,  4,  5,  4,  4,  4,  2,  4 ],
+     7: [  9,  9,  8,  7,  6,  5,  6,  5,  5,  5,  3,  5 ],
+     8: [ 10, 10,  9,  8,  7,  6,  7,  6,  6,  6,  4,  6 ],
+     9: [ 11, 11, 10,  9,  8,  7,  8,  7,  7,  7,  5,  7 ],
+    10: [ 12, 12, 11, 10,  9,  8,  9,  8,  8,  8,  6,  8 ],
+    11: [ 13, 13, 12, 11, 10,  9, 10,  9,  9,  9,  7,  9 ],
+    12: [ 14, 14, 13, 12, 11, 10, 11, 10, 10, 10,  8, 10 ],
+    13: [ 15, 15, 14, 13, 12, 11, 12, 11, 11, 11,  9, 11 ],
+    14: [ 16, 16, 15, 14, 13, 12, 13, 12, 12, 12, 10, 12 ],
 };
 
 /** Given an EnumTiers value construct a Settings instance */
 export function getSettingsFromTier(tier: EnumTiers) {
     const tierIdx = ORDERED_TIERS.findIndex(_tier => _tier === tier);
     const settings = new Settings();
-    let allActive = true;
     for (let i = 0; i < TIERS_MATRIX[tierIdx].length; i++) {
         const questionType = ORDERED_QUESTION_TYPES[i];
         const numOfPremises = TIERS_MATRIX[tierIdx][i];
         const activeQuestion = numOfPremises > -1 ? true : false;
-        allActive = activeQuestion && activeQuestion;
         settings.setQuestionSettings(questionType, activeQuestion, numOfPremises);
     }
-    settings
-        .setEnable("meta", allActive)
-        .setEnable("negation", allActive);
+    if (tierIdx === 7) {
+        settings.setEnable("meta", true);
+    }
+    if (tierIdx === 8) {
+        settings.setEnable("negation", true);
+    }
     console.log(tier, "matrix row", TIERS_MATRIX[tierIdx]);
     console.log(tier, "settings", settings);
     return settings;

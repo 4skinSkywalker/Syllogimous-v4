@@ -38,6 +38,7 @@ import { DailyProgressComponent } from './components/daily-progress/daily-progre
 import { GameModeChooseComponent } from './components/game-mode-choose/game-mode-choose.component';
 import { EnumQuestionType } from './constants/question.constants';
 import { EnumScreens } from './constants/syllogimous.constants';
+import { TiersMatrixComponent } from './pages/tiers-matrix/tiers-matrix.component';
 
 const routes: Routes = [
   {
@@ -70,10 +71,8 @@ const routes: Routes = [
         ]
       },
       { path: EnumScreens.Stats, component: StatsComponent },
-      { 
-        path: EnumScreens.PlaygroundMode,
-        component: PlaygroundModeComponent,
-      }
+      { path: EnumScreens.PlaygroundMode, component: PlaygroundModeComponent },
+      { path: EnumScreens.TiersMatrix, component: TiersMatrixComponent }
     ]
   }
 ];
@@ -113,6 +112,7 @@ const routes: Routes = [
     TimerChooseComponent,
     DailyProgressComponent,
     GameModeChooseComponent,
+    TiersMatrixComponent,
   ],
   imports: [
     CommonModule,

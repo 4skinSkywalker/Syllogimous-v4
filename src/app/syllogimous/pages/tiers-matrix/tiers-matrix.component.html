@@ -1,0 +1,23 @@
+<app-card>
+    <div body>
+        <div class="mb-3">
+            <div><b>Tier</b> {{tier}}</div>
+            <div><b>Question Type</b> {{questionType}}</div>
+            <div><b>Number of Premises</b> {{numOfPremises}}</div>
+        </div>
+
+        <div class="matrix">
+            <ng-container *ngFor="let item of entriesOfMatrix; let i = index">
+                <div [ngClass]="'tier-'+i" [class.current-tier]="i === userTierIdx">
+                    <ng-container *ngFor="let numOfPremises of item[1]; let j = index">
+                        <span 
+                            [ngClass]="'question-type-'+j"
+                            [class.cell-selected]="i === cellSelI && j === cellSelJ"
+                            (click)="showDetails(i, j)"
+                        >{{numOfPremises}}</span>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</app-card>
