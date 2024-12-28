@@ -69,105 +69,91 @@ export const TIER_SCORE_RANGES: Record<EnumTiers, { minScore: number, maxScore: 
     [EnumTiers.Transcendent]:   { minScore: 15400,  maxScore: INF },
 };
 
+export const TIER_SCORE_ADJUSTMENTS: Record<EnumTiers, { increment: number, decrement: number }> = {
+    [EnumTiers.Adept]:          { increment: 10, decrement: 5 },
+    [EnumTiers.Scholar]:        { increment: 10, decrement: 5 },
+    [EnumTiers.Savant]:         { increment: 10, decrement: 5 },
+    [EnumTiers.Expert]:         { increment: 10, decrement: 5 },
+    [EnumTiers.Mastermind]:     { increment: 10, decrement: 5 },
+    [EnumTiers.Visionary]:      { increment: 8,  decrement: 5 },
+    [EnumTiers.Genius]:         { increment: 8,  decrement: 5 },
+    [EnumTiers.Virtuoso]:       { increment: 8,  decrement: 5 },
+    [EnumTiers.Luminary]:       { increment: 8,  decrement: 5 },
+    [EnumTiers.Prodigy]:        { increment: 8,  decrement: 5 },
+    [EnumTiers.Oracle]:         { increment: 5,  decrement: 5 },
+    [EnumTiers.Sage]:           { increment: 5,  decrement: 5 },
+    [EnumTiers.Philosopher]:    { increment: 5,  decrement: 5 },
+    [EnumTiers.Mystic]:         { increment: 5,  decrement: 5 },
+    [EnumTiers.Transcendent]:   { increment: 5,  decrement: 5 },
+};
+
 export const ORDERED_TIERS = Object.keys(TIER_SCORE_RANGES) as EnumTiers[];
 
-export const TIER_SCORE_ADJUSTMENTS = ORDERED_TIERS.reduce((tierIncrementMap, tier, idx) => {
-    const increments = [
-        { increment: 10, decrement: 5 },
-        { increment: 8,  decrement: 5 },
-        { increment: 5,  decrement: 5 },
-    ];
-    const tiersToIncrementsRatio = Math.floor(ORDERED_TIERS.length/increments.length);
-    const incrementIdx = Math.min(Math.floor(idx/tiersToIncrementsRatio), increments.length-1);
-    tierIncrementMap[tier] = increments[incrementIdx];
-    return tierIncrementMap;
-}, {} as Record<EnumTiers, { increment: number, decrement: number }>);
+export const ORDERED_QUESTION_TYPES = [ 
+    EnumQuestionType.Distinction,
+    EnumQuestionType.ComparisonNumerical,
+    EnumQuestionType.ComparisonChronological,
+    EnumQuestionType.Syllogism,
+    EnumQuestionType.LinearArrangement,
+    EnumQuestionType.CircularArrangement,
+    EnumQuestionType.Direction,
+    EnumQuestionType.Direction3DSpatial,
+    EnumQuestionType.Direction3DTemporal,
+    EnumQuestionType.Analogy,
+    EnumQuestionType.Direction4D,
+    EnumQuestionType.Binary,
+];
 
-function calcSettingsFromTier(tierToCalc: EnumTiers) {
-    const orderedQuestionGroups = [
-        [ 
-            EnumQuestionType.Distinction,
-            EnumQuestionType.ComparisonNumerical,
-            EnumQuestionType.ComparisonChronological,
-        ],
-        [
-            EnumQuestionType.Syllogism,
-            EnumQuestionType.LinearArrangement,
-        ],
-        [
-            EnumQuestionType.CircularArrangement,
-            EnumQuestionType.Direction,
-        ],
-        [
-            EnumQuestionType.Direction3DSpatial,
-            EnumQuestionType.Direction3DTemporal,
-            EnumQuestionType.Analogy,
-        ],
-        [
-            EnumQuestionType.Direction4D,
-            EnumQuestionType.Binary,
-        ],
-    ];
+/**
+ * The following is a matrix that represents
+ * configurations of question types over tiers
+ * 
+ *        q1  q2  q3  q4  q5  q6
+ *    t1 [ 2, -1, -1, -1, -1, -1 ]
+ *    t2 [ 2,  2, -1, -1, -1, -1 ]
+ *    t3 [ 2,  2,  2, -1, -1, -1 ]
+ *    t4 [ 2,  2,  2,  2, -1, -1 ]
+ *    t5 [ 2,  2,  2,  2,  2, -1 ]
+ *    t6 [ 2,  2,  2,  2,  2,  2 ]
+ *    t7 [ 2,  2,  2,  2,  2,  2 ]
+ * 
+ * Where q stands for question types and t stands
+ * for tiers
+ */
+export const TIERS_MATRIX: Record<number, [ number, number, number, number, number, number, number, number, number, number, number, number ]> = {
+     0: [  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1, -1 ],
+     1: [  3,  3,  3,  2, -1, -1, -1, -1,  2, -1, -1, -1 ],
+     2: [  4,  4,  4,  3,  2, -1, -1, -1,  3,  2, -1, -1 ],
+     3: [  5,  5,  5,  4,  3,  2,  2, -1,  4,  3,  3, -1 ],
+     4: [  6,  6,  6,  5,  4,  3,  3,  2,  5,  4,  4,  4 ],
+     5: [  7,  7,  7,  6,  5,  4,  4,  3,  6,  5,  5,  5 ],
+     6: [  8,  8,  8,  7,  6,  5,  5,  4,  7,  6,  6,  6 ],
+     7: [  9,  9,  9,  8,  7,  6,  6,  5,  8,  7,  7,  7 ],
+     8: [ 10, 10, 10,  9,  8,  7,  7,  6,  9,  8,  8,  8 ],
+     9: [ 11, 11, 11, 10,  9,  8,  8,  7, 10,  9,  9,  9 ],
+    10: [ 12, 12, 12, 11, 10,  9,  9,  8, 11, 10, 10, 10 ],
+    11: [ 13, 13, 13, 12, 11, 10, 10,  9, 12, 11, 11, 11 ],
+    12: [ 14, 14, 14, 13, 12, 11, 11, 10, 13, 12, 12, 12 ],
+    13: [ 15, 15, 15, 14, 13, 12, 12, 11, 14, 13, 13, 13 ],
+    14: [ 16, 16, 16, 15, 14, 13, 13, 12, 15, 14, 14, 14 ],
+};
 
-    // Create new settings with defaults
-    const tierSettings = new Settings()
-        .setEnable("meta", false)
-        .setEnable("negation", false);
-    const questionTypes = Object.values(EnumQuestionType) as EnumQuestionType[];
-    for (const qt of questionTypes) {
-        tierSettings.setQuestionSettings(qt, false, -1);
+/** Given an EnumTiers value construct a Settings instance */
+export function getSettingsFromTier(tier: EnumTiers) {
+    const tierIdx = ORDERED_TIERS.findIndex(_tier => _tier === tier);
+    const settings = new Settings();
+    let allActive = true;
+    for (let i = 0; i < TIERS_MATRIX[tierIdx].length; i++) {
+        const questionType = ORDERED_QUESTION_TYPES[i];
+        const numOfPremises = TIERS_MATRIX[tierIdx][i];
+        const activeQuestion = numOfPremises > -1 ? true : false;
+        allActive = activeQuestion && activeQuestion;
+        settings.setQuestionSettings(questionType, activeQuestion, numOfPremises);
     }
-    
-    // Algorithm to calculate settings progression based on tier
-    for (let i = 0; i < ORDERED_TIERS.length; i++) {
-        const currTier = ORDERED_TIERS[i];
-        for (let j = 0; j <= Math.min(i, orderedQuestionGroups.length-1); j++) {
-            const qts = orderedQuestionGroups[j];
-            for (const qt of qts) {
-                const qs = tierSettings.question[qt];
-                tierSettings.setQuestionSettings(qt, true, (qs.enabled ? qs.getNumOfPremises()+1 : qs.getNumOfPremises()));
-            }
-        }
-        if (tierToCalc === currTier) break;
-    }
-
-    // Enable meta and negation as soon as all questions have been enabled
-    const allQuestionsEnabled = Object.values(tierSettings.question).every(qs => qs.enabled);
-    if (allQuestionsEnabled) {
-        tierSettings
-            .setEnable("meta", true)
-            .setEnable("negation", true);
-    }
-
-    return tierSettings;
-}
-
-export const TIER_SETTINGS = ORDERED_TIERS.reduce((tierSettingsMap, tier) => {
-    tierSettingsMap[tier] = calcSettingsFromTier(tier);
-    return tierSettingsMap;
-}, {} as Record<EnumTiers, Settings>);
-
-function showEnabledQuestionTypes(tier: EnumTiers, settings: Settings) {
-    console.log("ENABLED QUESTION TYPES FOR", tier.toUpperCase());
-    console.log("==============================================");
-    for (const qt of Object.values(EnumQuestionType)) {
-        const qs = settings.question[qt];
-        if (qs.enabled) {
-            console.log(qt.toUpperCase(), "WITH", qs.getNumOfPremises(), "PREMISES");
-        }
-    }
-    if (settings.enabled.meta || settings.enabled.negation) {
-        console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    }
-    if (settings.enabled.meta) {
-        console.log("WITH META")
-    }
-    if (settings.enabled.negation) {
-        console.log("WITH NEGATION")
-    }
-}
-
-for (const tier of ORDERED_TIERS) {
-    showEnabledQuestionTypes(tier, calcSettingsFromTier(tier));
-    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    settings
+        .setEnable("meta", allActive)
+        .setEnable("negation", allActive);
+    console.log(tier, "matrix row", TIERS_MATRIX[tierIdx]);
+    console.log(tier, "settings", settings);
+    return settings;
 }

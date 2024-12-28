@@ -77,7 +77,7 @@ export class StatsService {
             };
         }
 
-        console.log("stats", { types, typeBasedStats });
+        console.log("Stats", { types, typeBasedStats });
 
         return { types, questions, typeBasedStats: jsonCopy(typeBasedStats) as TypeBasedStats};
     }

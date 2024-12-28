@@ -1,3 +1,4 @@
+import { jsonCopy } from "src/app/utils/json";
 import { EnumQuestionType } from "../constants/question.constants";
 import { EnumQuestionGroup, COMPARISON_PARAMS, DIRECTION_PARAMS, ARRANGEMENT_PARAMS, BASIC_PARAMS, ANALOGY_PARAMS, BINARY_PARAMS, DEFAULT_ENABLED_FLAGS } from "../constants/settings.constants";
 import { b2n } from "../utils/question.utils";
@@ -75,8 +76,8 @@ export class QuestionSettings {
         this.group = params.group;
 
         // Some props are immutable because they are user for validation
-        this.freezeProp("min");
-        this.freezeProp("max");
+        this.freezeProp("minNumOfPremises");
+        this.freezeProp("maxNumOfPremises");
         this.freezeProp("basic");
         this.freezeProp("group");
         
@@ -109,7 +110,7 @@ export class Settings {
 
     constructor(settings?: Settings) {
         this.configSettings = settings;
-        this.enabled = settings?.enabled || DEFAULT_ENABLED_FLAGS;
+        this.enabled = settings?.enabled || jsonCopy(DEFAULT_ENABLED_FLAGS);
         //                                         Question Type            Default Config
         this.initQuestionSettings(EnumQuestionType.Distinction,             BASIC_PARAMS);
         this.initQuestionSettings(EnumQuestionType.ComparisonNumerical,     COMPARISON_PARAMS);

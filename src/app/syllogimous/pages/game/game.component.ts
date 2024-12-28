@@ -28,10 +28,12 @@ export class GameComponent {
         switch(this.timerType) {
             case '1': {
                 console.log("Custom timer");
+
                 const customTimers = JSON.parse(localStorage.getItem(LS_CUSTOM_TIMERS_KEY) || "{}");
                 this.timerFull = customTimers[this.sylSrv.question.type] || 90;                
                 this.timerLeft = this.timerFull;
                 this.kickTimer();
+                
                 break;
             }
             case '2': {

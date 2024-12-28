@@ -57,6 +57,6 @@ export class TimeBasedStatsComponent {
             }
         }
 
-        console.log("timeBasedStats", this.timeBasedStats);
+        console.log("Time based stats", this.timeBasedStats);
     }
 }

@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { IRawArrangementPremise, Question } from "../models/question.models";
 import { coinFlip, extractSubjects, findDirection, findDirection3D, findDirection4D, getCircularWays, getLinearWays, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, makeMetaRelationsNew, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle } from "../utils/question.utils";
 import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, DIRECTION_NAMES_INVERSE, TIME_NAMES, TIME_NAMES_INVERSE } from "../constants/question.constants";
-import { EnumScreens, EnumTiers, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES, TIER_SETTINGS } from "../constants/syllogimous.constants";
+import { EnumScreens, EnumTiers, getSettingsFromTier, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES } from "../constants/syllogimous.constants";
 import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local-storage.constants";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ModalLevelChangeComponent } from "../components/modal-level-change/modal-level-change.component";
@@ -42,7 +42,8 @@ export class SyllogimousService {
     }
 
     get settings() {
-        return this.playgroundSettings || TIER_SETTINGS[this.tier]; // Playground settings override normal settings
+        // Playground settings override normal settings
+        return this.playgroundSettings || getSettingsFromTier(this.tier);
     }
 
     get questionsFromLS() {
@@ -84,26 +85,27 @@ export class SyllogimousService {
     }
 
     /** Given question type and number of premises, returns a question creator function */
-    getCreateFn(questionType: EnumQuestionType, qtyPremises: number) {
+    getCreateFn(questionType: EnumQuestionType, numOfPremises: number) {
         return {
-            [EnumQuestionType.Distinction]:             () => this.createDistinction(qtyPremises),
-            [EnumQuestionType.Syllogism]:               () => this.createSyllogism(qtyPremises),
-            [EnumQuestionType.Analogy]:                 () => this.createAnalogy(qtyPremises),
-            [EnumQuestionType.Binary]:                  () => this.createBinary(qtyPremises),
-            [EnumQuestionType.ComparisonNumerical]:     () => this.createComparison(qtyPremises, EnumQuestionType.ComparisonNumerical),
-            [EnumQuestionType.ComparisonChronological]: () => this.createComparison(qtyPremises, EnumQuestionType.ComparisonChronological),
-            [EnumQuestionType.LinearArrangement]:       () => this.createArrangement(qtyPremises, EnumQuestionType.LinearArrangement),
-            [EnumQuestionType.CircularArrangement]:     () => this.createArrangement(qtyPremises, EnumQuestionType.CircularArrangement),
-            [EnumQuestionType.Direction]:               () => this.createDirection(qtyPremises),
-            [EnumQuestionType.Direction3DSpatial]:      () => this.createDirection3D(qtyPremises, EnumQuestionType.Direction3DSpatial),
-            [EnumQuestionType.Direction3DTemporal]:     () => this.createDirection3D(qtyPremises, EnumQuestionType.Direction3DTemporal),
-            [EnumQuestionType.Direction4D]:             () => this.createDirection4D(qtyPremises),
+            [EnumQuestionType.Distinction]:             () => this.createDistinction(numOfPremises),
+            [EnumQuestionType.Syllogism]:               () => this.createSyllogism(numOfPremises),
+            [EnumQuestionType.Analogy]:                 () => this.createAnalogy(numOfPremises),
+            [EnumQuestionType.Binary]:                  () => this.createBinary(numOfPremises),
+            [EnumQuestionType.ComparisonNumerical]:     () => this.createComparison(numOfPremises, EnumQuestionType.ComparisonNumerical),
+            [EnumQuestionType.ComparisonChronological]: () => this.createComparison(numOfPremises, EnumQuestionType.ComparisonChronological),
+            [EnumQuestionType.LinearArrangement]:       () => this.createArrangement(numOfPremises, EnumQuestionType.LinearArrangement),
+            [EnumQuestionType.CircularArrangement]:     () => this.createArrangement(numOfPremises, EnumQuestionType.CircularArrangement),
+            [EnumQuestionType.Direction]:               () => this.createDirection(numOfPremises),
+            [EnumQuestionType.Direction3DSpatial]:      () => this.createDirection3D(numOfPremises, EnumQuestionType.Direction3DSpatial),
+            [EnumQuestionType.Direction3DTemporal]:     () => this.createDirection3D(numOfPremises, EnumQuestionType.Direction3DTemporal),
+            [EnumQuestionType.Direction4D]:             () => this.createDirection4D(numOfPremises),
         }[questionType];
     }
 
     /** Return a random question based on the current settings */
     createRandomQuestion(numOfPremises?: number, basic?: boolean) {
         const settings = this.settings;
+        console.log("Settings", settings);
 
         const typeSettingTuples =  Object.entries(settings.question) as [EnumQuestionType, QuestionSettings][];
         const getQuestionGroup = (qg?: EnumQuestionGroup) => typeSettingTuples.filter(([qt, qs]) => qs.group == qg);
@@ -137,7 +139,7 @@ export class SyllogimousService {
         }
     
         const randomQuestion = pickUniqueItems(choices, 1).picked[0]();
-        console.log("Generated random question", randomQuestion);
+        console.log("Random question", randomQuestion);
         return randomQuestion;
     }
 
@@ -325,7 +327,7 @@ export class SyllogimousService {
     }
 
     createComparison(numOfPremises: number, type: EnumQuestionType.ComparisonNumerical | EnumQuestionType.ComparisonChronological) {
-        console.log("createComparison");
+        console.log("createComparison:", type);
         
         const settings = this.settings;
 
@@ -472,7 +474,7 @@ export class SyllogimousService {
     }
 
     createDirection3D(numOfPremises: number, type: EnumQuestionType.Direction3DSpatial | EnumQuestionType.Direction3DTemporal) {
-        console.log("createDirection3D");
+        console.log("createDirection3D:", type);
         
         const settings = this.settings;
 
@@ -669,7 +671,7 @@ export class SyllogimousService {
     }
 
     createArrangement(numOfPremises: number, type: EnumQuestionType.LinearArrangement | EnumQuestionType.CircularArrangement) {
-        console.log("createArrangement");
+        console.log("createArrangement:", type);
 
         const settings = this.settings;
 
@@ -683,7 +685,7 @@ export class SyllogimousService {
         const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, numOfEls).picked;
         const question = new Question(type);
-        question.instructions = `There are ${numOfEls} subjects along a ${isLinear ? "LINEAR" : "CIRCULAR"} path.`;
+        question.instructions = `There are ${numOfEls} subjects along a ${isLinear ? "LINE" : "CIRCLE"}.`;
 
         const relationshipAlreadyExistent = (a: string, b: string) =>
             premises.find(({ a: pA, b: pB }) => (pA === a && pB === b) || (pA === b && pB === a));
@@ -1047,9 +1049,9 @@ export class SyllogimousService {
             const fixInstructions = (q: Question) => {
                 const htmlify = (rule: string) => rule.split(", ").map(str => `<span class="subject">${str}</span>`).join(", ");
                 if (q.type === EnumQuestionType.LinearArrangement) {
-                    return htmlify(q.rule) + " are arranged in a LINEAR fashion";
+                    return htmlify(q.rule) + " are arranged in a LINEAR way.";
                 } else if (q.type === EnumQuestionType.CircularArrangement) {
-                    return htmlify(q.rule) + " are arranged in a CIRCULAR fashion";
+                    return htmlify(q.rule) + " are arranged in a CIRCULAR way.";
                 } else {
                     return "";
                 }
