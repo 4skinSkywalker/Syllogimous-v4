@@ -26,6 +26,8 @@ export enum EnumArrangements {
     InFront = "is diametrically opposite to", // not used by linear
 };
 
+export const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+
 export const STRINGS = [
     "QAW",
     "QAR",

@@ -1,12 +1,14 @@
 import { EnumArrangements, EnumQuestionType } from "../constants/question.constants";
 
-export interface IRawArrangementPremise {
+export interface IArrangementRelationship {
+    description: EnumArrangements;
+    steps: number;
+}
+
+export interface IArrangementPremise {
     a: string;
     b: string;
-    relationship: {
-        description: EnumArrangements,
-        steps: number
-    };
+    relationship: IArrangementRelationship;
     uid: string;
 }
 
