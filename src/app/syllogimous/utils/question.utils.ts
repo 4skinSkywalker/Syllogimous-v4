@@ -1,6 +1,6 @@
-import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_TEMPORAL, FORMS, NOUNS, STRINGS, TIME_NAMES, VALID_RULES } from "../constants/question.constants";
+import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_TEMPORAL, FORMS, NOUNS, NUMBER_WORDS, STRINGS, TIME_NAMES, VALID_RULES } from "../constants/question.constants";
 import { EnumArrangements, EnumQuestionType } from "../constants/question.constants";
-import { IRawArrangementPremise, Question } from "../models/question.models";
+import { IArrangementPremise, IArrangementRelationship, Question } from "../models/question.models";
 import { Settings, Picked } from "../models/settings.models";
 
 export const b2n = (b: boolean) => +b as number;
@@ -335,14 +335,14 @@ export function makeMetaRelationsNew(settings: Settings, question: Question, len
 }
 
 /** This methods modifies some premises with meta-relationships */
-export function metarelateArrangement(settings: Settings, question: Question, premises: IRawArrangementPremise[]) {
+export function metarelateArrangement(settings: Settings, question: Question, premises: IArrangementPremise[]) {
     if (settings.enabled.meta && coinFlip()) {
         // TODO: Implement meta-relationships for arrangements
     }
 }
 
-export function horizontalShuffleArrangement(premises: IRawArrangementPremise[]) {
-    const switchSubjects = (premise: IRawArrangementPremise) => 
+export function horizontalShuffleArrangement(premises: IArrangementPremise[]) {
+    const switchSubjects = (premise: IArrangementPremise) => 
         [premise.a, premise.b] = [premise.b, premise.a];
 
     premises.forEach(premise => {
@@ -409,12 +409,12 @@ export function getLinearWays(i: number, j: number, numOfEls: number, forConclus
             steps
         },
         [EnumArrangements.NStepsLeft]: {
-            possible: isLeft && !isAdjLeft,
+            possible: isLeft,
             steps
         },
         [EnumArrangements.NStepsRight]: {
-            possible: isRight && !isAdjRight,
-            steps 
+            possible: isRight,
+            steps
         },
     };
 
@@ -464,12 +464,12 @@ export function getCircularWays(i: number, j: number, numOfEls: number, forConcl
             steps
         },
         [EnumArrangements.NStepsLeft]: {
-            possible: isLeft && !isAdjLeft,
+            possible: isLeft,
             steps
         },
         [EnumArrangements.NStepsRight]: {
-            possible: isRight && !isAdjRight,
-            steps 
+            possible: isRight,
+            steps
         },
     };
 
@@ -498,3 +498,12 @@ export function getCircularWays(i: number, j: number, numOfEls: number, forConcl
 
     return ways;
 };
+
+export function interpolateArrangementRelationship(relationship: IArrangementRelationship) {
+    const numWord = NUMBER_WORDS[relationship.steps];
+    return relationship.description.replace(/# steps/, () =>
+        relationship.steps === 1
+            ? " adjacent to the"
+            : ((numWord || relationship.steps) + " steps")
+    );
+}
