@@ -510,11 +510,26 @@ export function interpolateArrangementRelationship(relationship: IArrangementRel
             : ((numWord || relationship.steps) + " steps")
     );
 
-    let modifiedWithNegation = interpolatedWithSteps;
     if (settings.enabled.negation && coinFlip()) {
-        modifiedWithNegation = modifiedWithNegation.replace("left", '<span class="is-negated">right</span>');
-        modifiedWithNegation = modifiedWithNegation.replace("right", '<span class="is-negated">left</span>');
+        return interpolatedWithSteps.replaceAll(/(left|right)/g, substr => 
+            `<span class="is-negated">${(substr === "left") ? "right" : "left"}</span>`
+        );
     }
 
-    return modifiedWithNegation;
+    return interpolatedWithSteps;
+}
+
+export function fixBinaryInstructions(q: Question) {
+    const htmlify = (rule: string) => rule.split(", ").map(str => `<span class="subject">${str}</span>`).join(", ");
+    switch (q.type) {
+        case EnumQuestionType.LinearArrangement: {
+            return htmlify(q.rule) + " are arranged in a <b>linear</b> way.";
+        }
+        case EnumQuestionType.CircularArrangement: {
+            return htmlify(q.rule) + " are arranged in a <b>circular</b> way.";
+        }
+        default: {
+            return "";
+        }
+    }
 }

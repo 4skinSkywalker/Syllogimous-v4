@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { IArrangementPremise, Question } from "../models/question.models";
-import { coinFlip, extractSubjects, findDirection, findDirection3D, findDirection4D, getCircularWays, getLinearWays, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, makeMetaRelationsNew, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship } from "../utils/question.utils";
+import { coinFlip, extractSubjects, findDirection, findDirection3D, findDirection4D, getCircularWays, getLinearWays, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, makeMetaRelationsNew, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions } from "../utils/question.utils";
 import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, DIRECTION_NAMES_INVERSE, NUMBER_WORDS, TIME_NAMES, TIME_NAMES_INVERSE } from "../constants/question.constants";
 import { EnumScreens, EnumTiers, getSettingsFromTier, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES } from "../constants/syllogimous.constants";
 import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local-storage.constants";
@@ -766,8 +766,8 @@ export class SyllogimousService {
         const metaRelationshipLookupMap: Record<string, boolean> = {};
         question.premises = premises.map(({ a, b, relationship, metaRelationships, uid }) => {
             if (settings.enabled.meta && coinFlip() && metaRelationships.length && !metaRelationshipLookupMap[uid]) {
-                metaRelationshipLookupMap[uid] = true;
                 const premise = pickUniqueItems(metaRelationships, 1).picked[0];
+                metaRelationshipLookupMap[premise.uid] = true;
                 return `<span class="subject">${a}</span> to <span class="subject">${b}</span> has the same relation as <span class="subject">${premise.a}</span> to <span class="subject">${premise.b}</span>`;
             }
 
@@ -1058,19 +1058,9 @@ export class SyllogimousService {
             const a = this.createRandomQuestion(Math.floor(numOfPremises / 2), true);
             const b = this.createRandomQuestion(Math.ceil(numOfPremises / 2), true);
             const choices = [a, b];
+            question.instructions = [];
 
-            const fixInstructions = (q: Question) => {
-                const htmlify = (rule: string) => rule.split(", ").map(str => `<span class="subject">${str}</span>`).join(", ");
-                if (q.type === EnumQuestionType.LinearArrangement) {
-                    return htmlify(q.rule) + " are arranged in a <b>linear</b> way.";
-                } else if (q.type === EnumQuestionType.CircularArrangement) {
-                    return htmlify(q.rule) + " are arranged in a <b>circular</b> way.";
-                } else {
-                    return "";
-                }
-            };
-
-            question.instructions.push(fixInstructions(a), fixInstructions(b));
+            question.instructions.push(fixBinaryInstructions(a), fixBinaryInstructions(b));
 
             question.premises = [...choices[0].premises, ...choices[1].premises];
             shuffle(question.premises);
