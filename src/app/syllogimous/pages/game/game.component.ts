@@ -15,6 +15,7 @@ export class GameComponent {
     timerFull = 0;
     timerLeft = 0;
     timer: any;
+    trueButtonToTheRight = false;
 
     constructor(
         public sylSrv: SyllogimousService,
@@ -22,6 +23,7 @@ export class GameComponent {
     ) {
         this.timerType = localStorage.getItem(LS_TIMER) || '0';
         this.gameMode = localStorage.getItem(LS_GAME_MODE) || '0';
+        this.trueButtonToTheRight = Math.random() > 0.5;
     }
 
     ngOnInit() {
