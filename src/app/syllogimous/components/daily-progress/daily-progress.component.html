@@ -1,5 +1,5 @@
 <div class="timerbar-wrap">
-    <div class="progress timerbar mb-2">
+    <div class="progress timerbar" [class.mb-2]="showWeeklyProgress">
         <div
             class="progress-bar progress-1"
             [class.progress-2]="this.dailyProgressPercentage > 10"
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div class="progress timerbar">
+    <div class="progress timerbar" *ngIf="showWeeklyProgress">
         <div
             class="progress-bar progress-1"
             [class.progress-2]="this.weeklyProgressPercentage > 10"
