@@ -8,7 +8,7 @@ import { DailyProgressService } from '../../services/daily-progress.service';
 })
 export class DailyProgressComponent {
     @Input("showTimePlayedToday") showTimePlayedToday = false;
-    @Input("showWeeklyProgress") showWeeklyProgress = false;  // Add this line
+    @Input("showWeeklyProgress") showWeeklyProgress = false;
 
     dailyProgressPercentage = 0;
     weeklyProgressPercentage = 0;
