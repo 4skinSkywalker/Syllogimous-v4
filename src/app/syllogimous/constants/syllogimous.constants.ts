@@ -14,6 +14,7 @@ export enum EnumScreens {
     Stats = "Stats",
     PlaygroundMode = "Playground Mode",
     TiersMatrix = "Tiers Matrix",
+    OtherGames = "Other Games",
 }
 
 export enum EnumTiers {

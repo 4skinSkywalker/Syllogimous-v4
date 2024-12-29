@@ -13,6 +13,7 @@ import { ToastService } from 'src/app/services/toast.service';
 export class HistoryComponent {
     EnumScreens = EnumScreens;
     questions: Question[] = [];
+    sliceIdx = -1;
     
     constructor(
         public sylSrv: SyllogimousService,
@@ -21,7 +22,12 @@ export class HistoryComponent {
     ) { }
 
     ngOnInit() {
-        this.questions = this.sylSrv.questionsFromLS;
+        this.loadMoreQuestions();
+    }
+
+    loadMoreQuestions() {
+        this.sliceIdx++;
+        this.questions.push(...this.sylSrv.questionsFromLS.slice(this.sliceIdx, this.sliceIdx+25));
     }
 
     copyQuestion(q: Question) {
@@ -31,7 +37,7 @@ export class HistoryComponent {
         el.focus();
         el.select();
         document.execCommand("copy");
-        this.toaster.show("Question copied into your clipboard!", { classname: "bg-success text-light" });
+        this.toaster.show("Question raw JSON data copied into your clipboard!", { classname: "bg-success text-light" });
         document.body.removeChild(el);
     }
 }
