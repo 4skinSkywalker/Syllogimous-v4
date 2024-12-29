@@ -335,10 +335,12 @@ export function makeMetaRelationsNew(settings: Settings, question: Question, len
 }
 
 /** This methods modifies some premises with meta-relationships */
-export function metarelateArrangement(settings: Settings, question: Question, premises: IArrangementPremise[]) {
-    if (settings.enabled.meta && coinFlip()) {
-        // TODO: Implement meta-relationships for arrangements
-    }
+export function metarelateArrangement(premises: IArrangementPremise[]) {
+    premises.forEach(premise => {
+        premise.metaRelationships = premises
+            .filter(p => p.uid !== premise.uid)
+            .filter(p => p.relationship.description === premise.relationship.description && p.relationship.steps === premise.relationship.steps);
+    });
 }
 
 export function horizontalShuffleArrangement(premises: IArrangementPremise[]) {

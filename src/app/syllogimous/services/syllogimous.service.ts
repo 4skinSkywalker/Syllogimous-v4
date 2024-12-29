@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { IArrangementPremise, Question } from "../models/question.models";
 import { coinFlip, extractSubjects, findDirection, findDirection3D, findDirection4D, getCircularWays, getLinearWays, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, makeMetaRelationsNew, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship } from "../utils/question.utils";
-import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, DIRECTION_NAMES_INVERSE, TIME_NAMES, TIME_NAMES_INVERSE } from "../constants/question.constants";
+import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, DIRECTION_NAMES_INVERSE, NUMBER_WORDS, TIME_NAMES, TIME_NAMES_INVERSE } from "../constants/question.constants";
 import { EnumScreens, EnumTiers, getSettingsFromTier, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES } from "../constants/syllogimous.constants";
 import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local-storage.constants";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -685,7 +685,7 @@ export class SyllogimousService {
         const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, numOfEls).picked;
         const question = new Question(type);
-        question.instructions = `There are ${numOfEls} subjects along a ${isLinear ? "LINEAR" : "CIRCULAR"} path.`;
+        question.instructions.push(`There are <b>${NUMBER_WORDS[numOfEls] || numOfEls} subjects</b> along a <b>${isLinear ? "linear" : "circular"}</b> path.`);
 
         const relationshipAlreadyExistent = (a: string, b: string) =>
             premises.find(({ a: pA, b: pB }) => (pA === a && pB === b) || (pA === b && pB === a));
@@ -718,6 +718,7 @@ export class SyllogimousService {
                             description: wayDescription as EnumArrangements,
                             steps: wayData.steps
                         },
+                        metaRelationships: [],
                         uid: guid()
                     };
                     subjects = subjects.filter(s => s !== a && s !== b)
@@ -735,7 +736,7 @@ export class SyllogimousService {
 
         horizontalShuffleArrangement(premises);
         shuffle(premises);
-        metarelateArrangement(settings, question, premises); // TODO: Implement this
+        metarelateArrangement(premises);
 
         let b: string | undefined = undefined;
         safe = 1e2;
@@ -762,10 +763,17 @@ export class SyllogimousService {
         question.conclusion = `<span class="subject">${a}</span> ${interpolated} <span class="subject">${b}</span>`;
 
         question.rule = words.join(", ");
-        question.premises = premises.map(({ a, b, relationship }) => {
+        const metaRelationshipLookupMap: Record<string, boolean> = {};
+        question.premises = premises.map(({ a, b, relationship, metaRelationships, uid }) => {
+            if (settings.enabled.meta && coinFlip() && metaRelationships.length && !metaRelationshipLookupMap[uid]) {
+                metaRelationshipLookupMap[uid] = true;
+                const premise = pickUniqueItems(metaRelationships, 1).picked[0];
+                return `<span class="subject">${a}</span> to <span class="subject">${b}</span> has the same relation as <span class="subject">${premise.a}</span> to <span class="subject">${premise.b}</span>`;
+            }
+
             const { description, steps } = relationship;
             const interpolated = interpolateArrangementRelationship({ description, steps }, settings);
-            return `<span class="subject">${a}</span> ${interpolated} <span class="subject">${b}</span>`
+            return `<span class="subject">${a}</span> ${interpolated} <span class="subject">${b}</span>`;
         });
 
         return question;
@@ -939,6 +947,11 @@ export class SyllogimousService {
                 question = this.createArrangement(length, type);
                 question.type = topType;
                 question.conclusion = "";
+                if (isLinear) {
+                    question.notes.push("Proximity makes the relationship alike.");
+                } else {
+                    question.notes.push("Proximity and diametrical opposition makes the relationship alike.");
+                }
                 
                 const subjects = question.rule.split(", ");
                 [a, b, c, d] = pickUniqueItems(subjects, 4).picked;
@@ -958,12 +971,6 @@ export class SyllogimousService {
                 //console.log(subjects);
                 //console.log(idxA, idxB, idxC, idxD);
                 //console.log(waysA2B, waysC2D);
-
-                if (isLinear) {
-                    question.instructions += "<br><b>Note</b>: Proximity makes the relationship alike.";
-                } else {
-                    question.instructions += "<br><b>Note</b>: Proximity and diametrical opposition makes the relationship alike.";
-                } 
 
                 isValidSame = false;
                 for (const key in waysA2B) {
@@ -1055,15 +1062,15 @@ export class SyllogimousService {
             const fixInstructions = (q: Question) => {
                 const htmlify = (rule: string) => rule.split(", ").map(str => `<span class="subject">${str}</span>`).join(", ");
                 if (q.type === EnumQuestionType.LinearArrangement) {
-                    return htmlify(q.rule) + " are arranged in a LINEAR way.";
+                    return htmlify(q.rule) + " are arranged in a <b>linear</b> way.";
                 } else if (q.type === EnumQuestionType.CircularArrangement) {
-                    return htmlify(q.rule) + " are arranged in a CIRCULAR way.";
+                    return htmlify(q.rule) + " are arranged in a <b>circular</b> way.";
                 } else {
                     return "";
                 }
             };
 
-            question.instructions = [fixInstructions(a), fixInstructions(b)].join("<br>");
+            question.instructions.push(fixInstructions(a), fixInstructions(b));
 
             question.premises = [...choices[0].premises, ...choices[1].premises];
             shuffle(question.premises);
