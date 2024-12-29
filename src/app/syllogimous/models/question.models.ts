@@ -9,11 +9,13 @@ export interface IArrangementPremise {
     a: string;
     b: string;
     relationship: IArrangementRelationship;
+    metaRelationships: IArrangementPremise[],
     uid: string;
 }
 
 export class Question {
-    instructions?: string;
+    instructions: string[] = [];
+    notes: string[] = [];
     type: EnumQuestionType;
     isValid = false;
     rule = "";

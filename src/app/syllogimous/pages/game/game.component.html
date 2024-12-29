@@ -1,3 +1,25 @@
+<ng-template #questionInstructionsAndNotes>
+    <ng-container *ngIf="{ instructions: sylSrv.question.instructions, notes: sylSrv.question.notes } as info">
+        <div *ngIf="info.instructions.length || info.notes.length">
+
+            <div *ngIf="info.instructions.length">
+                <div class="small text-muted">Instructions</div>
+                <div class="d-grid gap-2">
+                    <div *ngFor="let instruction of info.instructions" [innerHTML]="instruction"></div>
+                </div>
+            </div>
+    
+            <div
+                *ngIf="info.notes.length"
+                class="d-grid gap-1 small pt-1 px-2"
+                style="line-height: 1.3;"
+            >
+                <div *ngFor="let note of info.notes" [innerHTML]>{{note}}</div>
+            </div>
+        </div>
+    </ng-container>
+</ng-template>
+
 <app-card>
     <div body class="battlefield" [ngStyle]="{ width: (gameMode === '1') ? '100%' : 'auto' }">
         <div class="timerbar-wrap">
@@ -6,7 +28,7 @@
             </ngb-progressbar>
         </div>
 
-        <div [hidden]="gameMode !== '1'">
+        <div [class.d-none]="gameMode !== '1'">
             <ngb-carousel
                 #carousel
                 [interval]="999999999"
@@ -14,12 +36,9 @@
                 [showNavigationIndicators]="false"
                 style="border: 0; box-shadow: none;"
             >
-                <ng-template ngbSlide *ngIf="sylSrv.question.instructions as instr">
+                <ng-template ngbSlide *ngIf="sylSrv.question.instructions.length || sylSrv.question.notes.length">
                     <div style="display: grid; place-items: center;">
-                        <div>
-                            <small class="text-muted">Instructions</small>
-                            <div class="fst-italic" [innerHTML]="instr"></div>
-                        </div>
+                        <ng-container *ngTemplateOutlet="questionInstructionsAndNotes"></ng-container>
                     </div>
                 </ng-template>
 
@@ -48,22 +67,32 @@
             </div>
         </div>
         
-        <div [hidden]="gameMode === '1'">
-            <ng-container *ngIf="sylSrv.question.instructions as instr">
-                <small class="d-block text-muted">Instructions</small>
-                <div class="fst-italic small mb-3" [innerHTML]="instr"></div>
-            </ng-container>
+        <div class="d-grid gap-4" [class.d-none]="gameMode === '1'">
+            <ng-container *ngTemplateOutlet="questionInstructionsAndNotes"></ng-container>
 
-            <small class="d-block text-muted">Premises</small>
-            <div *ngFor="let p of sylSrv.question.premises" class="premise" [innerHTML]="p"></div>
+            <div>
+                <div class="small text-muted">Premises</div>
+                <div *ngIf="sylSrv.question.premises as premises" class="d-grid gap-2">
+                    <div 
+                        *ngFor="let p of premises; let odd = odd; let even = even"
+                        [innerHTML]="p"
+                        class="premise"
+                        [class.premise--odd]="premises.length > 3 && odd"
+                        [class.premise--even]="premises.length > 3 && even"
+                    ></div>
+                </div>
+            </div>
 
-            <small class="d-block text-muted mt-3">Conclusion</small>
-            <div class="conclusion" [innerHTML]="sylSrv.question.conclusion"></div>
+            <div>
+                <div class="small text-muted">Conclusion</div>
+                <div [innerHTML]="sylSrv.question.conclusion"></div>
+            </div>
         </div>
     </div>
 
     <div footer class="d-flex gap-3 justify-content-center">
+        <button *ngIf="!trueButtonToTheRight" class="btn btn-lg btn-success col-md-3 col-4" (click)="sylSrv.checkQuestion(true)">True</button>
         <button class="btn btn-lg btn-danger col-md-3 col-4" (click)="sylSrv.checkQuestion(false)">False</button>
-        <button class="btn btn-lg btn-success col-md-3 col-4" (click)="sylSrv.checkQuestion(true)">True</button>
+        <button *ngIf="trueButtonToTheRight" class="btn btn-lg btn-success col-md-3 col-4" (click)="sylSrv.checkQuestion(true)">True</button>
     </div>
 </app-card>

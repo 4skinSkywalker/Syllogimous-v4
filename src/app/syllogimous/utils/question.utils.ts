@@ -335,10 +335,12 @@ export function makeMetaRelationsNew(settings: Settings, question: Question, len
 }
 
 /** This methods modifies some premises with meta-relationships */
-export function metarelateArrangement(settings: Settings, question: Question, premises: IArrangementPremise[]) {
-    if (settings.enabled.meta && coinFlip()) {
-        // TODO: Implement meta-relationships for arrangements
-    }
+export function metarelateArrangement(premises: IArrangementPremise[]) {
+    premises.forEach(premise => {
+        premise.metaRelationships = premises
+            .filter(p => p.uid !== premise.uid)
+            .filter(p => p.relationship.description === premise.relationship.description && p.relationship.steps === premise.relationship.steps);
+    });
 }
 
 export function horizontalShuffleArrangement(premises: IArrangementPremise[]) {
@@ -499,11 +501,35 @@ export function getCircularWays(i: number, j: number, numOfEls: number, forConcl
     return ways;
 };
 
-export function interpolateArrangementRelationship(relationship: IArrangementRelationship) {
+export function interpolateArrangementRelationship(relationship: IArrangementRelationship, settings: Settings) {
     const numWord = NUMBER_WORDS[relationship.steps];
-    return relationship.description.replace(/# steps/, () =>
+
+    const interpolatedWithSteps = relationship.description.replace(/# steps/, () =>
         relationship.steps === 1
-            ? " adjacent to the"
+            ? " adjacent and"
             : ((numWord || relationship.steps) + " steps")
     );
+
+    if (settings.enabled.negation && coinFlip()) {
+        return interpolatedWithSteps.replaceAll(/(left|right)/g, substr => 
+            `<span class="is-negated">${(substr === "left") ? "right" : "left"}</span>`
+        );
+    }
+
+    return interpolatedWithSteps;
+}
+
+export function fixBinaryInstructions(q: Question) {
+    const htmlify = (rule: string) => rule.split(", ").map(str => `<span class="subject">${str}</span>`).join(", ");
+    switch (q.type) {
+        case EnumQuestionType.LinearArrangement: {
+            return htmlify(q.rule) + " are arranged in a <b>linear</b> way.";
+        }
+        case EnumQuestionType.CircularArrangement: {
+            return htmlify(q.rule) + " are arranged in a <b>circular</b> way.";
+        }
+        default: {
+            return "";
+        }
+    }
 }
