@@ -27,6 +27,7 @@ export class StartComponent {
     currentStreak: Question[] = [];
     longestStreak: Question[] = [];
     timePlayedToday = 0;
+    timePlayedThisWeek = 0;
 
     constructor(
         public sylSrv: SyllogimousService,
@@ -34,6 +35,8 @@ export class StartComponent {
         private dailyProgressService: DailyProgressService
     ) {
         this.timePlayedToday = dailyProgressService.getTimePlayed(dailyProgressService.getToday());
+        this.timePlayedThisWeek = dailyProgressService.getTimePlayedThisWeek(dailyProgressService.getToday());
+
     }
 
     ngOnInit() {

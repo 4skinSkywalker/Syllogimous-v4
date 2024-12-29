@@ -57,4 +57,20 @@ export class DailyProgressService {
     getTimePlayed(isoDate: string) {
         return this.getDailyProgressLS()[isoDate] || 0;
     }
+    
+    getTimePlayedThisWeek(isoDate: string) {
+        const weekStartDate = this.getWeekStartDate(isoDate);
+        const dailyProgress = this.getDailyProgressLS();
+        let weeklyTotal = 0;
+        
+        // Sum up all days in the week
+        for (let i = 0; i < 7; i++) {
+            const date = new Date(weekStartDate);
+            date.setDate(date.getDate() + i);
+            const currentDate = date.toISOString().split('T')[0];
+            weeklyTotal += dailyProgress[currentDate] || 0;
+        }
+    
+        return weeklyTotal;
+    }
 }
