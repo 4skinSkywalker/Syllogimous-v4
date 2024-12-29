@@ -499,11 +499,20 @@ export function getCircularWays(i: number, j: number, numOfEls: number, forConcl
     return ways;
 };
 
-export function interpolateArrangementRelationship(relationship: IArrangementRelationship) {
+export function interpolateArrangementRelationship(relationship: IArrangementRelationship, settings: Settings) {
     const numWord = NUMBER_WORDS[relationship.steps];
-    return relationship.description.replace(/# steps/, () =>
+
+    const interpolatedWithSteps = relationship.description.replace(/# steps/, () =>
         relationship.steps === 1
             ? " adjacent and"
             : ((numWord || relationship.steps) + " steps")
     );
+
+    let modifiedWithNegation = interpolatedWithSteps;
+    if (settings.enabled.negation && coinFlip()) {
+        modifiedWithNegation = modifiedWithNegation.replace("left", '<span class="is-negated">right</span>');
+        modifiedWithNegation = modifiedWithNegation.replace("right", '<span class="is-negated">left</span>');
+    }
+
+    return modifiedWithNegation;
 }

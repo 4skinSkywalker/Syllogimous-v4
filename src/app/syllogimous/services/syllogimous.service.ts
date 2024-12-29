@@ -758,13 +758,13 @@ export class SyllogimousService {
         const picked = pickUniqueItems(conclusions, 1).picked[0];
         const description = picked[0] as EnumArrangements;
         const steps = picked[1].steps;
-        const interpolated = interpolateArrangementRelationship({ description, steps });
+        const interpolated = interpolateArrangementRelationship({ description, steps }, settings);
         question.conclusion = `<span class="subject">${a}</span> ${interpolated} <span class="subject">${b}</span>`;
 
         question.rule = words.join(", ");
         question.premises = premises.map(({ a, b, relationship }) => {
             const { description, steps } = relationship;
-            const interpolated = interpolateArrangementRelationship({ description, steps });
+            const interpolated = interpolateArrangementRelationship({ description, steps }, settings);
             return `<span class="subject">${a}</span> ${interpolated} <span class="subject">${b}</span>`
         });
 
