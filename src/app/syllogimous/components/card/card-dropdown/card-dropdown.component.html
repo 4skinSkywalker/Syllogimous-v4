@@ -22,8 +22,8 @@
             <button ngbDropdownItem (click)="router.navigate([EnumScreens.Stats])">Stats</button>
             <button ngbDropdownItem (click)="router.navigate([EnumScreens.History])">History</button>
             <button ngbDropdownItem (click)="router.navigate([EnumScreens.Tutorials])">Tutorials</button>
-            <button ngbDropdownItem (click)="router.navigate([EnumScreens.TiersMatrix])">Tiers Matrix</button>
-            <button ngbDropdownItem (click)="router.navigate([EnumScreens.PlaygroundMode])">Playground Mode</button>
+            <!--<button ngbDropdownItem (click)="router.navigate([EnumScreens.TiersMatrix])">Tiers Matrix</button>-->
+            <button ngbDropdownItem (click)="router.navigate([EnumScreens.PlaygroundMode])">Playground</button>
             <div class="dropdown-divider"></div>
             <small class="text-muted ms-3">Functions</small>
             <button ngbDropdownItem (click)="toggleDarkmode()">
@@ -35,8 +35,10 @@
                 </ng-template>
             </button>
             <button ngbDropdownItem (click)="resetGame(content)"><i class="bi bi-trash3"></i> Reset Game</button>
-            <a ngbDropdownItem href="https://www.linkedin.com/in/f3d3r1c07r0774/" target="_blank">About the Creator</a>
+            <div class="dropdown-divider"></div>
+            <small class="text-muted ms-3">Links</small>
             <button ngbDropdownItem (click)="router.navigate([EnumScreens.OtherGames])">Other Games</button>
+            <a ngbDropdownItem href="https://www.linkedin.com/in/f3d3r1c07r0774/" target="_blank">About the Author</a>
         </div>
     </div>
 </div>

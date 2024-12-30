@@ -12,6 +12,7 @@ import { ToastService } from 'src/app/services/toast.service';
 })
 export class HistoryComponent {
     EnumScreens = EnumScreens;
+    allQuestions: Question[] = [];
     questions: Question[] = [];
     sliceIdx = -1;
     
@@ -22,12 +23,13 @@ export class HistoryComponent {
     ) { }
 
     ngOnInit() {
+        this.allQuestions = this.sylSrv.questionsFromLS;
         this.loadMoreQuestions();
     }
 
     loadMoreQuestions() {
         this.sliceIdx++;
-        this.questions.push(...this.sylSrv.questionsFromLS.slice(this.sliceIdx, this.sliceIdx+25));
+        this.questions.push(...this.allQuestions.slice(this.sliceIdx, this.sliceIdx+25));
     }
 
     copyQuestion(q: Question) {
