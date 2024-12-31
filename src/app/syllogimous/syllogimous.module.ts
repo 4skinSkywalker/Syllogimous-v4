@@ -40,6 +40,7 @@ import { EnumQuestionType } from './constants/question.constants';
 import { EnumScreens } from './constants/syllogimous.constants';
 import { TiersMatrixComponent } from './pages/tiers-matrix/tiers-matrix.component';
 import { OtherGamesComponent } from './pages/other-games/other-games.component';
+import { TutorialNegationCueComponent } from './pages/tutorial/negation-cue/negation-cue.component';
 
 const routes: Routes = [
   {
@@ -91,6 +92,7 @@ const routes: Routes = [
     FeedbackComponent,
     TutorialsComponent,
     TutorialComponent,
+    TutorialNegationCueComponent,
     TutorialDistinctionComponent,
     TutorialSyllogismComponent,
     TutorialComparisonNumericalComponent,

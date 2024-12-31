@@ -14,7 +14,7 @@ export class HistoryComponent {
     EnumScreens = EnumScreens;
     allQuestions: Question[] = [];
     questions: Question[] = [];
-    sliceIdx = -1;
+    sliceIdx = -25;
     
     constructor(
         public sylSrv: SyllogimousService,
@@ -28,7 +28,7 @@ export class HistoryComponent {
     }
 
     loadMoreQuestions() {
-        this.sliceIdx++;
+        this.sliceIdx += 25;
         this.questions.push(...this.allQuestions.slice(this.sliceIdx, this.sliceIdx+25));
     }
 

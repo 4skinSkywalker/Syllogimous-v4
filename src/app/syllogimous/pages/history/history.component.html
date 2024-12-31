@@ -5,7 +5,7 @@
             <button class="btn btn-lg btn-primary" (click)="sylSrv.playArcadeMode()">Press to Play</button>
         </div>
 
-        <div class="d-grid gap-5">
+        <div class="d-grid gap-4">
             <div
                 class="card"
                 *ngFor="let q of questions"
@@ -46,7 +46,7 @@
                 </small>
             </div>
 
-            <div *ngIf="questions.length" class="d-flex justify-content-center">
+            <div *ngIf="questions.length && questions.length !== allQuestions.length" class="d-flex justify-content-center">
                 <button class="btn btn-primary" (click)="loadMoreQuestions()">Load More</button>
             </div>
         </div>
