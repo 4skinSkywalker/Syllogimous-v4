@@ -180,26 +180,29 @@ export class SyllogimousService {
         this.question.answeredAt = Date.now();
         this.question.timerTypeOnAnswer = localStorage.getItem(LS_TIMER) || "0";
         this.question.playgroundMode = this.settings === this.playgroundSettings;
-
+    
         // Playground doesn't progress points
         if (!this.question.playgroundMode) {
             const currTier = this.tier;
-    
+        
             let ds = 0;
-            if (this.question.userAnswer === this.question.isValid) {
-                this.score += TIER_SCORE_ADJUSTMENTS[this.tier].increment;
-                ds += 1;
-            } else {
-                this.score = Math.max(0, this.score - TIER_SCORE_ADJUSTMENTS[this.tier].decrement);
-                if (this.score !== 0) {
-                    ds -= 1;
+            // Only change score if there was an actual answer (not a timeout)
+            if (value !== undefined) {
+                if (this.question.userAnswer === this.question.isValid) {
+                    this.score += TIER_SCORE_ADJUSTMENTS[this.tier].increment;
+                    ds += 1;
+                } else {
+                    this.score = Math.max(0, this.score - TIER_SCORE_ADJUSTMENTS[this.tier].decrement);
+                    if (this.score !== 0) {
+                        ds -= 1;
+                    }
                 }
             }
-    
+        
             this.question.userScore = this.score;
-    
+        
             const nextTier = this.tier;
-    
+        
             // Level up/down
             if (currTier !== nextTier) {
                 const modalRef = this.modalService.open(ModalLevelChangeComponent, { centered: true });
@@ -208,18 +211,18 @@ export class SyllogimousService {
                     modalRef.componentInstance.content = "Your hard work is paying off.\nKeep going to unlock more features and rewards!";
                 } else if (ds < 0) { // level down
                     modalRef.componentInstance.title = "Level Down\nLet's Regroup!";
-                    modalRef.componentInstance.content = "Take this as a learning step.\nRefocus your efforts and you’ll be back on top in no time!";
+                    modalRef.componentInstance.content = "Take this as a learning step.\nRefocus your efforts and you'll be back on top in no time!";
                 }
             }
         }
-
+    
         this.pushIntoHistory(this.question);
-
+    
         this.dailyProgressService.setDailyProgressLS(
             this.dailyProgressService.getToday(),
             this.question.answeredAt - this.question.createdAt
         );
-
+    
         this.router.navigate([EnumScreens.Feedback]);
     }
 
