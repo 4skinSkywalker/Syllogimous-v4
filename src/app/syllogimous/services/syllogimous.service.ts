@@ -393,84 +393,98 @@ export class SyllogimousService {
         const words = pickUniqueItems(symbols, length).picked;
         const question = new Question(type);
 
-        let wordCoordMap: Record<string, [number, number]> = {};
-        let conclusionSubjects = ["", ""];
-        let conclusionDirection = "";
+        // 1. Generate a grid of len-by-len size
+        // 2. Place items randomly in the grid
+        // 3. Choose an item to start from
+        // 4. Pick one amount the 3 nearest items and save the relationship between them
+        // 5. Repeat step 4 until all relationships have been established
+        // 6. Flip a coin based on the outcome either generate a valid or an invalid conclusion
 
-        while (!conclusionDirection) {
-            wordCoordMap = {};
-            question.wordCoordMap = wordCoordMap;
-            question.premises = [];
-    
-            for (let i = 0; i < words.length - 1; i++) {
-                const dirIndex = 1 + Math.floor(Math.random()*(DIRECTION_NAMES.length - 1));
-                const dirName = DIRECTION_NAMES[dirIndex]!;
-                const dirCoord = DIRECTION_COORDS[dirIndex];
+        // A is two meters North and three meters East of B
+        // A is adjacent and North-East to B
+        // Maybe enlarging the grid each N + 2 increments can reduce dispersion
+        // sideSize = 1 + Math.round(Math.sqrt(numOfEls))
 
-                if (i === 0) {
-                    wordCoordMap[words[i]] = [0,0];
-                }
-
-                wordCoordMap[words[i+1]] = [
-                    wordCoordMap[words[i]][0] + dirCoord[0], // x
-                    wordCoordMap[words[i]][1] + dirCoord[1]  // y
-                ];
-
-                if (settings.enabled.negation && coinFlip()) {
-                    question.negations++;
-                    if (coinFlip()) {
-                        question.premises.push(`<span class="subject">${words[i+1]}</span> is <span class="is-negated">${(DIRECTION_NAMES_INVERSE as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
-                    } else {
-                        question.premises.push(`<span class="subject">${words[i]}</span> is <span class="is-negated">${dirName}</span> of <span class="subject">${words[i+1]}</span>`);
-                    }
-                } else {
-                    if (coinFlip()) {
-                        question.premises.push(`<span class="subject">${words[i+1]}</span> is ${dirName} of <span class="subject">${words[i]}</span>`);
-                    } else {
-                        question.premises.push(`<span class="subject">${words[i]}</span> is ${(DIRECTION_NAMES_INVERSE as any)[dirName]} of <span class="subject">${words[i+1]}</span>`);
-                    }
-                }
-            }
-
-            const { picked: pickedPremises } = pickUniqueItems(question.premises, 2);
-            const premisesSubjects = pickedPremises.map(extractSubjects);
-
-            while (conclusionSubjects[0] === conclusionSubjects[1]) {
-                const [ a, b ] = premisesSubjects.reduce((acc, curr) => [ ...acc, pickUniqueItems(curr, 1).picked[0] ], [] as string[]);
-                if (premisesSubjects.find(([ c, d ]) => c + d === a + b || d + c === a + b)) {
-                    continue;
-                }
-                conclusionSubjects[0] = a;
-                conclusionSubjects[1] = b;
-            }
-
-            const aCoords = wordCoordMap[conclusionSubjects[0]];
-            const bCoords = wordCoordMap[conclusionSubjects[1]];
-
-            question.isValid = coinFlip();
-            conclusionDirection = (question.isValid)
-                ? findDirection(aCoords, bCoords)
-                : findDirection(bCoords, aCoords);
-        }
-
-        if (settings.enabled.negation && coinFlip()) {
-            question.negations++;
-            if (coinFlip()) {
-                question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> is <span class="is-negated">${(DIRECTION_NAMES_INVERSE as any)[conclusionDirection]}</span> of <span class="subject">${conclusionSubjects[1]}</span>`;
-            } else {
-                question.conclusion = `<span class="subject">${conclusionSubjects[1]}</span> is <span class="is-negated">${conclusionDirection}</span> of <span class="subject">${conclusionSubjects[0]}</span>`;
-            }
-        } else {
-            if (coinFlip()) {
-                question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> is ${conclusionDirection} of <span class="subject">${conclusionSubjects[1]}</span>`;
-            } else {
-                question.conclusion = `<span class="subject">${conclusionSubjects[1]}</span> is ${(DIRECTION_NAMES_INVERSE as any)[conclusionDirection]} of <span class="subject">${conclusionSubjects[0]}</span>`;
-            }
-        }
-    
-        shuffle(question.premises);
-        
         return question;
+
+        // let wordCoordMap: Record<string, [number, number]> = {};
+        // let conclusionSubjects = ["", ""];
+        // let conclusionDirection = "";
+
+        // while (!conclusionDirection) {
+        //     wordCoordMap = {};
+        //     question.wordCoordMap = wordCoordMap;
+        //     question.premises = [];
+    
+        //     for (let i = 0; i < words.length - 1; i++) {
+        //         const dirIndex = 1 + Math.floor(Math.random()*(DIRECTION_NAMES.length - 1));
+        //         const dirName = DIRECTION_NAMES[dirIndex]!;
+        //         const dirCoord = DIRECTION_COORDS[dirIndex];
+
+        //         if (i === 0) {
+        //             wordCoordMap[words[i]] = [0,0];
+        //         }
+
+        //         wordCoordMap[words[i+1]] = [
+        //             wordCoordMap[words[i]][0] + dirCoord[0], // x
+        //             wordCoordMap[words[i]][1] + dirCoord[1]  // y
+        //         ];
+
+        //         if (settings.enabled.negation && coinFlip()) {
+        //             question.negations++;
+        //             if (coinFlip()) {
+        //                 question.premises.push(`<span class="subject">${words[i+1]}</span> is <span class="is-negated">${(DIRECTION_NAMES_INVERSE as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
+        //             } else {
+        //                 question.premises.push(`<span class="subject">${words[i]}</span> is <span class="is-negated">${dirName}</span> of <span class="subject">${words[i+1]}</span>`);
+        //             }
+        //         } else {
+        //             if (coinFlip()) {
+        //                 question.premises.push(`<span class="subject">${words[i+1]}</span> is ${dirName} of <span class="subject">${words[i]}</span>`);
+        //             } else {
+        //                 question.premises.push(`<span class="subject">${words[i]}</span> is ${(DIRECTION_NAMES_INVERSE as any)[dirName]} of <span class="subject">${words[i+1]}</span>`);
+        //             }
+        //         }
+        //     }
+
+        //     const { picked: pickedPremises } = pickUniqueItems(question.premises, 2);
+        //     const premisesSubjects = pickedPremises.map(extractSubjects);
+
+        //     while (conclusionSubjects[0] === conclusionSubjects[1]) {
+        //         const [ a, b ] = premisesSubjects.reduce((acc, curr) => [ ...acc, pickUniqueItems(curr, 1).picked[0] ], [] as string[]);
+        //         if (premisesSubjects.find(([ c, d ]) => c + d === a + b || d + c === a + b)) {
+        //             continue;
+        //         }
+        //         conclusionSubjects[0] = a;
+        //         conclusionSubjects[1] = b;
+        //     }
+
+        //     const aCoords = wordCoordMap[conclusionSubjects[0]];
+        //     const bCoords = wordCoordMap[conclusionSubjects[1]];
+
+        //     question.isValid = coinFlip();
+        //     conclusionDirection = (question.isValid)
+        //         ? findDirection(aCoords, bCoords)
+        //         : findDirection(bCoords, aCoords);
+        // }
+
+        // if (settings.enabled.negation && coinFlip()) {
+        //     question.negations++;
+        //     if (coinFlip()) {
+        //         question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> is <span class="is-negated">${(DIRECTION_NAMES_INVERSE as any)[conclusionDirection]}</span> of <span class="subject">${conclusionSubjects[1]}</span>`;
+        //     } else {
+        //         question.conclusion = `<span class="subject">${conclusionSubjects[1]}</span> is <span class="is-negated">${conclusionDirection}</span> of <span class="subject">${conclusionSubjects[0]}</span>`;
+        //     }
+        // } else {
+        //     if (coinFlip()) {
+        //         question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> is ${conclusionDirection} of <span class="subject">${conclusionSubjects[1]}</span>`;
+        //     } else {
+        //         question.conclusion = `<span class="subject">${conclusionSubjects[1]}</span> is ${(DIRECTION_NAMES_INVERSE as any)[conclusionDirection]} of <span class="subject">${conclusionSubjects[0]}</span>`;
+        //     }
+        // }
+    
+        // shuffle(question.premises);
+        
+        // return question;
     }
 
     createDirection3D(numOfPremises: number, type: EnumQuestionType.Direction3DSpatial | EnumQuestionType.Direction3DTemporal) {
