@@ -511,7 +511,8 @@ export function interpolateArrangementRelationship(relationship: IArrangementRel
     );
 
     if (settings.enabled.negation && coinFlip()) {
-        return interpolatedWithSteps.replaceAll(/(left|right)/g, substr => 
+        // TODO: This method should return the number of negations applied
+        return interpolatedWithSteps.replaceAll(/(left|right)/gi, substr => 
             `<span class="is-negated">${(substr === "left") ? "right" : "left"}</span>`
         );
     }

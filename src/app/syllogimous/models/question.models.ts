@@ -13,6 +13,13 @@ export interface IArrangementPremise {
     uid: string;
 }
 
+export interface IDirectionProposition {
+    pair: [ [ string, number, number ], [ string, number, number ] ];
+    cardinals: [string, number][];
+    relationship: string;
+    uid: string;
+}
+
 export class Question {
     instructions: string[] = [];
     notes: string[] = [];
