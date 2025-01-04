@@ -73,7 +73,7 @@
             <div>
                 <div class="small text-muted">Premises</div>
                 <div class="premises" *ngIf="sylSrv.question.premises as premises">
-                    <div class="premise" *ngFor="let p of premises" [innerHTML]="p"></div>
+                    <div *ngFor="let p of premises" [innerHTML]="p"></div>
                 </div>
             </div>
 
