@@ -25,10 +25,6 @@ export class Question {
     notes: string[] = [];
     type: EnumQuestionType;
     isValid = false;
-    rule = "";
-    bucket: string[] = [];
-    buckets: string[][][] = [];
-    wordCoordMap: Record<string, [number, number] | [number, number, number] | [number, number, number, number]> = {};
     premises: string[] = [];
     conclusion = "";
     createdAt = new Date().getTime();
@@ -39,6 +35,12 @@ export class Question {
     timerTypeOnAnswer = "0";
     userScore = 0;
     playgroundMode = false;
+    // Technical fields
+    rule = "";
+    bucket: string[] = [];
+    buckets: string[][][] = [];
+    coords: [string, number, number][] = [];
+    wordCoordMap: Record<string, [number, number] | [number, number, number] | [number, number, number, number]> = {};
 
     constructor(type: EnumQuestionType) {
         this.type = type;

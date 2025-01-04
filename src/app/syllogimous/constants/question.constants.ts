@@ -2052,41 +2052,6 @@ export const FORMS = [
     ],
 ];
 
-export const DIRECTION_NAMES = [
-    null,
-    "North",
-    "North-East",
-    "East",
-    "South-East",
-    "South",
-    "South-West",
-    "West",
-    "North-West"
-];
-
-export const DIRECTION_NAMES_INVERSE = {
-    "North": "South",
-    "East":  "West",
-    "South": "North",
-    "West":  "East",
-    "North-East": "South-West",
-    "South-East": "North-West",
-    "South-West": "North-East",
-    "North-West": "South-East"
-};
-
-export const DIRECTION_COORDS = [
-    [ 0,  0],
-    [ 0, -1],
-    [ 1, -1],
-    [ 1,  0],
-    [ 1,  1],
-    [ 0,  1],
-    [-1,  1],
-    [-1,  0],
-    [-1, -1]
-];
-
 export const DIRECTION_COORDS_3D: [number, number, number][] = [];
 export const DIRECTION_NAMES_3D: string[] = [];
 export const DIRECTION_NAMES_3D_TEMPORAL: string[] = [];

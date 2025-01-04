@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { IArrangementPremise, IDirectionProposition, Question } from "../models/question.models";
-import { coinFlip, extractSubjects, findDirection, findDirection3D, findDirection4D, getCircularWays, getLinearWays, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, makeMetaRelationsNew, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions } from "../utils/question.utils";
-import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, DIRECTION_NAMES_INVERSE, NUMBER_WORDS, TIME_NAMES, TIME_NAMES_INVERSE } from "../constants/question.constants";
+import { coinFlip, extractSubjects, findDirection3D, findDirection4D, getCircularWays, getLinearWays, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, createMetaRelationships, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions } from "../utils/question.utils";
+import { DIRECTION_COORDS_3D, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, NUMBER_WORDS, TIME_NAMES, TIME_NAMES_INVERSE } from "../constants/question.constants";
 import { EnumScreens, EnumTiers, getSettingsFromTier, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES } from "../constants/syllogimous.constants";
 import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local-storage.constants";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -310,7 +310,7 @@ export class SyllogimousService {
                 prev = curr;
             }
 
-            makeMetaRelationsNew(settings, question, length);
+            createMetaRelationships(settings, question, length);
             
             const isSameAs = coinFlip();
             const relation = getRelation(settings, type, isSameAs);
@@ -356,7 +356,7 @@ export class SyllogimousService {
                 question.premises.push(`<span class="subject">${first}</span> is ${relation} <span class="subject">${last}</span>`);
             }
 
-            makeMetaRelationsNew(settings, question, length);
+            createMetaRelationships(settings, question, length);
 
             const a = Math.floor(Math.random() * question.bucket.length);
             let b = Math.floor(Math.random() * question.bucket.length);
@@ -416,6 +416,7 @@ export class SyllogimousService {
             coords.push([picked[0], ri, rj]);
             pool = remaining;
         }
+        question.coords = coords;
         console.log("Coords", coords);
 
         // Create pairs of subjects
@@ -457,9 +458,11 @@ export class SyllogimousService {
                     relationship +=  "-" + cardinals[1][0];
                 }
             } else {
-                relationship = cardinals[0][1] + " meter" + (cardinals[0][1] > 1 ? "s" : "") + " " + cardinals[0][0];
+                const numStepsVertical = NUMBER_WORDS[cardinals[0][1]] || cardinals[0][1];
+                relationship = numStepsVertical + " step" + (cardinals[0][1] > 1 ? "s" : "") + " " + cardinals[0][0];
                 if (cardinals.length === 2) {
-                    relationship += " and " + cardinals[1][1] + " meter" + (cardinals[1][1] > 1 ? "s" : "") + " " + cardinals[1][0];
+                    const numStepsHorizontal = NUMBER_WORDS[cardinals[1][1]] || cardinals[1][1];
+                    relationship += " and " + numStepsHorizontal + " step" + (cardinals[1][1] > 1 ? "s" : "") + " " + cardinals[1][0];
                 } 
             }
             return relationship;
@@ -522,7 +525,7 @@ export class SyllogimousService {
         console.log("Conclusion", conclusion);
 
         const negateRelationship = (rel: string) => {
-            rel.replaceAll(/(north|south|east|west)/gi, substr => {
+            return rel.replaceAll(/(north|south|east|west)/gi, substr => {
                 if (coinFlip()) {
                     question.negations++;
                     return `<span class="is-negated">${cardinalOppositeMap[substr]}</span>`;
@@ -540,6 +543,8 @@ export class SyllogimousService {
         question.isValid = isValid;
         question.premises = premises.map(stringifyProposition);
         question.conclusion = stringifyProposition(conclusion);
+
+        // TODO: Create meta relationship
 
         return question;
     }
@@ -960,12 +965,16 @@ export class SyllogimousService {
                     question.type = topType;
                     question.conclusion = "";
 
-                    [a, b, c, d] = pickUniqueItems(Object.keys(question.wordCoordMap), 4).picked;
+                    const [coordsa, coordsb, coordsc, coordsd] = pickUniqueItems(question.coords, 4).picked;
+                    [a, b, c, d] = [coordsa[0], coordsb[0], coordsc[0], coordsd[0]];
                     question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
+
+                    const dxatob = coordsa[1] - coordsb[1];
+                    const dyatob = coordsa[2] - coordsb[2];
+                    const dxctod = coordsc[1] - coordsd[1];
+                    const dyctod = coordsc[2] - coordsd[2];
         
-                    const dirA = findDirection(question.wordCoordMap[a] as any, question.wordCoordMap[b] as any);
-                    const dirB = findDirection(question.wordCoordMap[c] as any, question.wordCoordMap[d] as any);
-                    isValidSame = dirA === dirB;
+                    isValidSame = (dxatob === dxctod) && (dyatob === dyctod);
                 }
                 break;
             case 4:

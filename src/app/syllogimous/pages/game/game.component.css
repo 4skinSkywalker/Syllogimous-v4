@@ -19,9 +19,12 @@
     text-align: right;
 }
 
-.premise.premise--odd {
-    padding: 0.5rem;
-    line-height: 1;
-    background-color: #00000011;
-    border-radius: 0.5rem;
+.premises {
+    display: grid;
+    gap: 0.25rem;
+}
+
+.premise:not(:first-child) {
+    border-top: 1px solid rgba(var(--app-gray_100));
+    padding-top: 0.25rem;
 }

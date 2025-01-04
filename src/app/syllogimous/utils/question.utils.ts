@@ -1,4 +1,4 @@
-import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_TEMPORAL, FORMS, NOUNS, NUMBER_WORDS, STRINGS, TIME_NAMES, VALID_RULES } from "../constants/question.constants";
+import { DIRECTION_COORDS_3D, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_TEMPORAL, FORMS, NOUNS, NUMBER_WORDS, STRINGS, TIME_NAMES, VALID_RULES } from "../constants/question.constants";
 import { EnumArrangements, EnumQuestionType } from "../constants/question.constants";
 import { IArrangementPremise, IArrangementRelationship, Question } from "../models/question.models";
 import { Settings, Picked } from "../models/settings.models";
@@ -72,21 +72,6 @@ export function getDirectionString(x: number, y: number, z: number, isTemporal =
         res += "West";
     }
     return res;
-}
-
-export function findDirection(aCoord: [number, number], bCoord: [number, number]) {
-    const x = aCoord[0];
-    const y = aCoord[1];
-    const x2 = bCoord[0];
-    const y2 = bCoord[1];
-
-    const dx = ((x - x2) / Math.abs(x - x2)) || 0;
-    const dy = ((y - y2) / Math.abs(y - y2)) || 0;
-
-    const dirIndex = DIRECTION_COORDS.findIndex(c => c[0] === dx && c[1] === dy);
-    const dirName = DIRECTION_NAMES[dirIndex];
-
-    return dirName!;
 }
 
 export function findDirection3D(aCoord: [number, number, number], bCoord: [number, number, number], isTemporal = false) {
@@ -252,29 +237,7 @@ export function getRelation(settings: Settings, type: EnumQuestionType, isPositi
     return relation;
 }
 
-export function makeMetaRelationsOld(settings: Settings, question: Question, length: number) {
-    if (settings.enabled.meta && coinFlip()) {
-        const numOfMetaRelations = 1 + Math.floor(Math.random() * Math.floor((length - 1) / 2));
-        question.metaRelations += numOfMetaRelations;
-        let _premises = pickUniqueItems(question.premises, numOfMetaRelations * 2);
-        question.premises = [ ..._premises.remaining ];
-    
-        while (_premises.picked.length) {
-            const choosenPair = pickUniqueItems(_premises.picked, 2);
-            const negations = choosenPair.picked.map(p => /is-negated/.test(p));
-            const relations = choosenPair.picked.map(p => p.match(/is (?:<span class="is-negated">)*(.*?)(?:<\/span>)* /)![1]);
-    
-            const replacer = getMetaReplacer(settings, choosenPair, relations, negations);
-            const newPremise = choosenPair.picked[1].replace(/(is) (.*)(?=<span class="subject">)/, replacer);
-    
-            question.premises.push(choosenPair.picked[0], newPremise);
-    
-            _premises = { picked: choosenPair.remaining, remaining: [] };
-        }
-    }
-}
-
-export function makeMetaRelationsNew(settings: Settings, question: Question, length: number) {
+export function createMetaRelationships(settings: Settings, question: Question, length: number) {
     // Substitute a variable number of premises with meta-relations
     if (settings.enabled.meta && coinFlip()) {
         const numOfMetaRelationships = 1 + Math.floor(Math.random() * Math.floor((length - 1) / 2));
