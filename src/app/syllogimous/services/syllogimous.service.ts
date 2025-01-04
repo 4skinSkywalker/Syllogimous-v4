@@ -388,22 +388,138 @@ export class SyllogimousService {
             throw new Error("Cannot generate.");
         }
 
-        const length = qtyPremises + 1;
+        const numOfEls = qtyPremises + 1;
         const symbols = getSymbols(settings);
-        const words = pickUniqueItems(symbols, length).picked;
+        const words = pickUniqueItems(symbols, numOfEls).picked;
         const question = new Question(type);
 
-        // 1. Generate a grid of len-by-len size
-        // 2. Place items randomly in the grid
-        // 3. Choose an item to start from
-        // 4. Pick one amount the 3 nearest items and save the relationship between them
-        // 5. Repeat step 4 until all relationships have been established
-        // 6. Flip a coin based on the outcome either generate a valid or an invalid conclusion
+        const sideSize = 1 + Math.round(Math.sqrt(numOfEls));
 
-        // A is two meters North and three meters East of B
-        // A is adjacent and North-East to B
-        // Maybe enlarging the grid each N + 2 increments can reduce dispersion
-        // sideSize = 1 + Math.round(Math.sqrt(numOfEls))
+        // Give random coords to each subject
+        const coords: [string, number, number][] = [];
+        let pool = [...words];
+        while (pool.length) {
+            let ri: number | undefined;
+            let rj: number | undefined;
+            while (ri == null || rj == null || coords.find(([_, x, y]) => ri === x && rj === y)) {
+                ri = Math.floor(Math.random()*sideSize);
+                rj = Math.floor(Math.random()*sideSize);
+            }
+            const { picked, remaining } = pickUniqueItems(pool, 1);
+            coords.push([picked[0], ri, rj]);
+            pool = remaining;
+        }
+        console.log("Coords", coords);
+
+        // Create pairs of subjects
+        let copyOfCoords = [...coords];
+        const pairs: [typeof coords[0], typeof coords[0]][] = [];
+        const subjectsAlreadyIncluded = (a: string, b: string) =>
+            pairs.find(([x, y]) => (x[0] === a && y[0] === b) || (x[0] === b && y[0] === a));
+        for (let i = 0; i < numOfEls - 1; i++) {
+            const { picked, remaining } = pickUniqueItems(copyOfCoords, 1);
+            const subject = i === 0
+                ? pickUniqueItems(remaining, 1).picked[0]
+                : pickUniqueItems(pairs, 1).picked[0][Math.floor(Math.random()*2)];
+            const a = picked[0][0];
+            const b = subject[0];
+            if (a === b || subjectsAlreadyIncluded(a, b)) {
+                i--;
+                continue;
+            }
+            pairs.push([picked[0], subject]);
+            copyOfCoords = remaining;
+        }
+        console.log("Pairs pre", pairs);
+
+        // Add one more pair that will represent the conclusion
+        let coorda, coordb;
+        while (!coorda || !coordb || subjectsAlreadyIncluded(coorda[0], coordb[0])) {
+            [ coorda, coordb ] = pickUniqueItems(coords, 2).picked;
+        }
+        pairs.push([coorda, coordb]);
+        console.log("Pairs post", pairs);
+
+        // Calculate cardinals and relationship of each pair
+        const premises: { pair: typeof pairs[0], cardinals: [string, number][], relationship: string, uid: string }[] = [];
+        const getRelationship = (cardinals: [string, number][]) => {
+            let relationship = "";
+            if (cardinals.every(c => c[1] === 1)) {
+                relationship = "adjacent and " + cardinals[0][0]
+                if (cardinals.length === 2) {
+                    relationship +=  "-" + cardinals[1][0];
+                }
+            } else {
+                relationship = cardinals[0][1] + " meter" + (cardinals[0][1] > 1 ? "s" : "") + " " + cardinals[0][0];
+                if (cardinals.length === 2) {
+                    relationship += " and " + cardinals[1][1] + " meter" + (cardinals[1][1] > 1 ? "s" : "") + " " + cardinals[1][0];
+                } 
+            }
+            return relationship;
+        };
+        for (const pair of pairs) {
+            const [subja, subjb] = pair;
+            const [a, ax, ay] = subja;
+            const [b, bx, by] = subjb;
+
+            const cardinals: [string, number][] = [];
+            const diffy = ay - by;
+            const absdiffy = Math.abs(diffy);
+            const diffx = ax - bx;
+            const absdiffx = Math.abs(diffx);
+
+            if (diffy > 0) {
+                cardinals.push(["North", absdiffy]);
+            } else if (diffy < 0) {
+                cardinals.push(["South", absdiffy]);
+            }
+
+            if (diffx > 0) {
+                cardinals.push(["East", absdiffx]);
+            } else if (diffx < 0) {
+                cardinals.push(["West", absdiffx]);
+            }
+
+            premises.push({
+                pair,
+                cardinals,
+                relationship: getRelationship(cardinals),
+                uid: guid()
+            })
+        }
+        console.log("Premises", premises);
+
+        // Extract the last premise and say it's the conclusion
+        // Flip a coin and either keep or tweak the conclusion
+        let conclusion = premises.pop()!;
+        if (coinFlip()) {
+            console.log("Keep conclusion");
+            // If two cardinals, we could also remove one cardinal
+            if (coinFlip() && conclusion.cardinals.length === 2) {
+                console.log("One cardinal got plucked");
+                conclusion.cardinals = [ pickUniqueItems(conclusion.cardinals, 1).picked[0] ];
+            }
+        } else {
+            console.log("Tweak conclusion");
+            const cardinalOppositeMap: Record<string, string> = {
+                "North": "South",
+                "South": "North",
+                 "East": "West",
+                 "West": "East"
+            };
+            if (coinFlip()) {
+                console.log("Add one to one cardinal");
+                const rndIdx = Math.floor(Math.random()*conclusion.cardinals.length);
+                conclusion.cardinals[rndIdx][1]++;
+            } else {
+                console.log("One cardinal flipped");
+                const rndIdx = Math.floor(Math.random()*conclusion.cardinals.length);
+                conclusion.cardinals[rndIdx][0] = cardinalOppositeMap[conclusion.cardinals[rndIdx][0]];
+            }
+        }
+        // Regenerate conclusion relationship
+        conclusion.relationship = getRelationship(conclusion.cardinals);
+        console.log("Conclusion", conclusion);
 
         return question;
 

@@ -158,7 +158,7 @@ export function getSettingsFromTier(tier: EnumTiers) {
     if (tierIdx > 6) {
         settings.setEnable("meta", true);
     }
-    console.log(tier, "matrix row", TIERS_MATRIX[tierIdx]);
-    console.log(tier, "settings", settings);
+    // console.log(tier, "matrix row", TIERS_MATRIX[tierIdx]);
+    // console.log(tier, "settings", settings);
     return settings;
 }
