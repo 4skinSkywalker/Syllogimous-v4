@@ -20,7 +20,6 @@ import { TutorialComparisonChronologicalComponent } from './pages/tutorial/compa
 import { TutorialDirectionComponent } from './pages/tutorial/direction/direction.component';
 import { TutorialDirection3DSpatialComponent } from './pages/tutorial/direction3D-spatial/direction3D-spatial.component';
 import { TutorialDirection3DTemporalComponent } from './pages/tutorial/direction3D-temporal/direction3D-temporal.component';
-import { TutorialDirection4DComponent } from './pages/tutorial/direction4D/direction4D.component';
 import { TutorialAnalogyComponent } from './pages/tutorial/analogy/analogy.component';
 import { TutorialBinaryComponent } from './pages/tutorial/binary/binary.component';
 import { TutorialLinearArrangementComponent } from './pages/tutorial/linear-arrangement/linear-arrangement.component';
@@ -65,7 +64,6 @@ const routes: Routes = [
           { path: EnumQuestionType.Direction, component: TutorialDirectionComponent },
           { path: EnumQuestionType.Direction3DSpatial, component: TutorialDirection3DSpatialComponent },
           { path: EnumQuestionType.Direction3DTemporal, component: TutorialDirection3DTemporalComponent },
-          { path: EnumQuestionType.Direction4D, component: TutorialDirection4DComponent },
           { path: EnumQuestionType.Analogy, component: TutorialAnalogyComponent },
           { path: EnumQuestionType.Binary, component: TutorialBinaryComponent },
           { path: EnumQuestionType.LinearArrangement, component: TutorialLinearArrangementComponent },
@@ -100,7 +98,6 @@ const routes: Routes = [
     TutorialDirectionComponent,
     TutorialDirection3DSpatialComponent,
     TutorialDirection3DTemporalComponent,
-    TutorialDirection4DComponent,
     TutorialAnalogyComponent,
     TutorialBinaryComponent,
     TutorialLinearArrangementComponent,

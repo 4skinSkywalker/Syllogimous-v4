@@ -9,7 +9,6 @@ export class TypeBasedStats {
     [EnumQuestionType.Direction] = new TypeBasedStatsInner(EnumQuestionType.Direction);
     [EnumQuestionType.Direction3DSpatial] = new TypeBasedStatsInner(EnumQuestionType.Direction3DSpatial);
     [EnumQuestionType.Direction3DTemporal] = new TypeBasedStatsInner(EnumQuestionType.Direction3DTemporal);
-    [EnumQuestionType.Direction4D] = new TypeBasedStatsInner(EnumQuestionType.Direction4D);
     [EnumQuestionType.Analogy] = new TypeBasedStatsInner(EnumQuestionType.Analogy);
     [EnumQuestionType.LinearArrangement] = new TypeBasedStatsInner(EnumQuestionType.LinearArrangement);
     [EnumQuestionType.CircularArrangement] = new TypeBasedStatsInner(EnumQuestionType.CircularArrangement);

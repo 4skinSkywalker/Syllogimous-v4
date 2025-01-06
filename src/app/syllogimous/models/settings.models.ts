@@ -116,12 +116,11 @@ export class Settings {
         this.initQuestionSettings(EnumQuestionType.ComparisonNumerical,     COMPARISON_PARAMS);
         this.initQuestionSettings(EnumQuestionType.ComparisonChronological, COMPARISON_PARAMS);
         this.initQuestionSettings(EnumQuestionType.Syllogism,               BASIC_PARAMS);
+        this.initQuestionSettings(EnumQuestionType.LinearArrangement,       ARRANGEMENT_PARAMS);
+        this.initQuestionSettings(EnumQuestionType.CircularArrangement,     ARRANGEMENT_PARAMS);
         this.initQuestionSettings(EnumQuestionType.Direction,               DIRECTION_PARAMS);
         this.initQuestionSettings(EnumQuestionType.Direction3DSpatial,      DIRECTION_PARAMS);
         this.initQuestionSettings(EnumQuestionType.Direction3DTemporal,     DIRECTION_PARAMS);
-        this.initQuestionSettings(EnumQuestionType.Direction4D,             DIRECTION_PARAMS);
-        this.initQuestionSettings(EnumQuestionType.LinearArrangement,       ARRANGEMENT_PARAMS);
-        this.initQuestionSettings(EnumQuestionType.CircularArrangement,     ARRANGEMENT_PARAMS);
         this.initQuestionSettings(EnumQuestionType.Analogy,                 ANALOGY_PARAMS);
         this.initQuestionSettings(EnumQuestionType.Binary,                  BINARY_PARAMS);
     }

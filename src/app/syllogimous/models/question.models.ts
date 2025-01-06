@@ -48,8 +48,8 @@ export class Question {
     rule = "";
     bucket: string[] = [];
     buckets: string[][][] = [];
-    coords: Array<[string, number, number] | [string, number, number, number]> = [];
-    wordCoordMap: Record<string, [number, number] | [number, number, number] | [number, number, number, number]> = {};
+    coords: [string, number, number][] = [];
+    coords3D: [string, number, number, number][] = [];
 
     constructor(type: EnumQuestionType) {
         this.type = type;

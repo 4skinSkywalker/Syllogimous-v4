@@ -1,5 +1,3 @@
-import { getDirectionString } from "../utils/question.utils";
-
 export enum EnumQuestionType {
     Distinction = "Distinction",
     ComparisonNumerical = "Comparison Numerical",
@@ -8,7 +6,6 @@ export enum EnumQuestionType {
     Direction = "Direction",
     Direction3DSpatial = "Direction3D Spatial",
     Direction3DTemporal = "Direction3D Temporal",
-    Direction4D = "Direction4D",
     LinearArrangement = "Linear Arrangement",
     CircularArrangement = "Circular Arrangement",
     Analogy = "Analogy",
@@ -2051,31 +2048,3 @@ export const FORMS = [
         'Some <span class="subject">$</span> <span class="is-negated">is</span> <span class="subject">$</span>'
     ],
 ];
-
-export const DIRECTION_COORDS_3D: [number, number, number][] = [];
-export const DIRECTION_NAMES_3D: string[] = [];
-export const DIRECTION_NAMES_3D_TEMPORAL: string[] = [];
-export const DIRECTION_NAMES_3D_INVERSE: Record<string, string> = {};
-export const DIRECTION_NAMES_3D_INVERSE_TEMPORAL: Record<string, string> = {};
-
-const nums = Array(3).fill(0).map((_, i) => i-1)
-nums.map(x =>
-    nums.map(y =>
-        nums.map(z => {
-            if (x === 0 && y === 0 && z === 0) return;
-            DIRECTION_COORDS_3D.push([ x, y, z ]);
-            DIRECTION_NAMES_3D.push(getDirectionString(x, y, z));
-            DIRECTION_NAMES_3D_TEMPORAL.push(getDirectionString(x, y, z, true));
-            DIRECTION_NAMES_3D_INVERSE[getDirectionString(x, y, z)] = getDirectionString(-x, -y, -z);
-            DIRECTION_NAMES_3D_INVERSE_TEMPORAL[getDirectionString(x, y, z, true)] = getDirectionString(-x, -y, -z, true);
-        })
-    )
-);
-
-export const TIME_NAMES = ["was", "is", "will be"];
-
-export const TIME_NAMES_INVERSE = {
-    "was": "will be",
-    "is": "is",
-    "will be": "was"
-};

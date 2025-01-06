@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { IArrangementPremise, IDirection3DProposition, IDirectionProposition, Question } from "../models/question.models";
-import { coinFlip, extractSubjects, findDirection3D, findDirection4D, getCircularWays, getLinearWays, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, createMetaRelationships, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions } from "../utils/question.utils";
-import { DIRECTION_COORDS_3D, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, NUMBER_WORDS, TIME_NAMES, TIME_NAMES_INVERSE } from "../constants/question.constants";
+import { coinFlip, extractSubjects, getCircularWays, getLinearWays, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, createMetaRelationships, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions } from "../utils/question.utils";
+import { NUMBER_WORDS } from "../constants/question.constants";
 import { EnumScreens, EnumTiers, getSettingsFromTier, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES } from "../constants/syllogimous.constants";
 import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local-storage.constants";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -98,7 +98,6 @@ export class SyllogimousService {
             [EnumQuestionType.Direction]:               () => this.createDirection(numOfPremises),
             [EnumQuestionType.Direction3DSpatial]:      () => this.createDirection3D(numOfPremises, EnumQuestionType.Direction3DSpatial),
             [EnumQuestionType.Direction3DTemporal]:     () => this.createDirection3D(numOfPremises, EnumQuestionType.Direction3DTemporal),
-            [EnumQuestionType.Direction4D]:             () => this.createDirection4D(numOfPremises),
         }[questionType];
     }
 
@@ -605,7 +604,7 @@ export class SyllogimousService {
             coords.push([picked[0], ri, rj, rt]);
             pool = remaining;
         }
-        question.coords = coords;
+        question.coords3D = coords;
         console.log("Coords", coords);
 
         // Create pairs of subjects
@@ -751,7 +750,8 @@ export class SyllogimousService {
             
             const rndIdx = Math.floor(Math.random()*conclusion.cardinals.length);
             if (conclusion.cardinals[rndIdx][0] === "!") {
-                conclusion.cardinals[rndIdx][0] = pickUniqueItems(Object.keys(cardinalOppositeMap), 1).picked[0];
+                const rndDir = (rndIdx === 0) ? ["North", "South"] : ["East", "West"];
+                conclusion.cardinals[rndIdx][0] = pickUniqueItems(rndDir, 1).picked[0];
             }
             if (coinFlip()) {
                 console.log("Add one to one cardinal");
@@ -799,104 +799,6 @@ export class SyllogimousService {
 
         // TODO: Create meta relationship
 
-        return question;
-    }
-
-    createDirection4D(numOfPremises: number) {
-        console.log("createDirection4D");
-
-        const type = EnumQuestionType.Direction4D;
-        const settings = this.settings;
-
-        if (!canGenerateQuestion(type, numOfPremises, settings)) {
-            throw new Error("Cannot generate.");
-        }
-
-        const length = numOfPremises + 1;
-        const symbols = getSymbols(settings);
-        const words = pickUniqueItems(symbols, length).picked;
-        const question = new Question(type);
-    
-        let wordCoordMap: Record<string, [number, number, number, number]> = {};
-        let conclusionSubjects = ["", ""];
-        let conclusionDirection = { spatial: "", temporal: "" };
-
-        while (!conclusionDirection.spatial) {
-            wordCoordMap = {};
-            question.wordCoordMap = wordCoordMap;
-            question.premises = [];
-    
-            for (let i = 0; i < words.length - 1; i++) {
-                const timeIndex =  pickUniqueItems([-1,0,1], 1).picked[0];
-                const timeName = TIME_NAMES[timeIndex + 1];
-                const dirIndex = 1 + Math.floor(Math.random()*(DIRECTION_NAMES_3D.length - 1));
-                const dirName = DIRECTION_NAMES_3D[dirIndex];
-                const dirCoord = DIRECTION_COORDS_3D[dirIndex];
-
-                if (i === 0) {
-                    wordCoordMap[words[i]] = [0,0,0,0];
-                }
-
-                wordCoordMap[words[i+1]] = [
-                    wordCoordMap[words[i]][0] + dirCoord[0], // x
-                    wordCoordMap[words[i]][1] + dirCoord[1], // y
-                    wordCoordMap[words[i]][2] + dirCoord[2], // z
-                    wordCoordMap[words[i]][3] + timeIndex,   // time
-                ];
-
-                if (settings.enabled.negation && coinFlip()) {
-                    question.negations++;
-                    if (coinFlip()) {
-                        question.premises.push(`<span class="subject">${words[i+1]}</span> ${timeName} <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
-                    } else {
-                        question.premises.push(`<span class="subject">${words[i]}</span> ${(TIME_NAMES_INVERSE as any)[timeName]} <span class="is-negated">${dirName}</span> of <span class="subject">${words[i+1]}</span>`);
-                    }
-                } else {
-                    if (coinFlip()) {
-                        question.premises.push(`<span class="subject">${words[i+1]}</span> ${timeName} ${dirName} of <span class="subject">${words[i]}</span>`);
-                    } else {
-                        question.premises.push(`<span class="subject">${words[i]}</span> ${(TIME_NAMES_INVERSE as any)[timeName]} ${(DIRECTION_NAMES_3D_INVERSE as any)[dirName]} of <span class="subject">${words[i+1]}</span>`);
-                    }
-                }
-            }
-
-            const { picked: pickedPremises } = pickUniqueItems(question.premises, 2);
-            const premisesSubjects = pickedPremises.map(extractSubjects);
-
-            while (conclusionSubjects[0] === conclusionSubjects[1]) {
-                const [ a, b ] = premisesSubjects.reduce((acc, curr) => [ ...acc, pickUniqueItems(curr, 1).picked[0] ], [] as string[]);
-                if (premisesSubjects.find(([ c, d ]) => c + d === a + b || d + c === a + b)) {
-                    continue;
-                }
-                conclusionSubjects[0] = a;
-                conclusionSubjects[1] = b;
-            }
-
-            const aCoords = wordCoordMap[conclusionSubjects[0]];
-            const bCoords = wordCoordMap[conclusionSubjects[1]];
-
-            question.isValid = coinFlip();
-            conclusionDirection = (question.isValid)
-                ? findDirection4D(aCoords, bCoords)
-                : findDirection4D(bCoords, aCoords);
-        }
-        if (settings.enabled.negation && coinFlip()) {
-            question.negations++;
-            if (coinFlip()) {
-                question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> ${conclusionDirection.temporal} <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[conclusionDirection.spatial]}</span> of <span class="subject">${conclusionSubjects[1]}</span>`;
-            } else {
-                question.conclusion = `<span class="subject">${conclusionSubjects[1]}</span> ${conclusionDirection.temporal} <span class="is-negated">${conclusionDirection.spatial}</span> of <span class="subject">${conclusionSubjects[0]}</span>`;
-            }
-        } else {
-            if (coinFlip()) {
-                question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> ${conclusionDirection.temporal} ${conclusionDirection.spatial} of <span class="subject">${conclusionSubjects[1]}</span>`;
-            } else {
-                question.conclusion = `<span class="subject">${conclusionSubjects[1]}</span> ${conclusionDirection.temporal} ${(DIRECTION_NAMES_3D_INVERSE as any)[conclusionDirection.spatial]} of <span class="subject">${conclusionSubjects[0]}</span>`;
-            }
-        }
-
-        shuffle(question.premises);
-        
         return question;
     }
 
@@ -1047,9 +949,6 @@ export class SyllogimousService {
         if (settings.question[EnumQuestionType.Direction3DTemporal].enabled) {
             directionsChoices.push(5);
         }
-        if (settings.question[EnumQuestionType.Direction4D].enabled) {
-            directionsChoices.push(6);
-        }
         if (directionsChoices.length) {
             choiceIndices.push(pickUniqueItems(directionsChoices, 1).picked[0]);
         }
@@ -1057,10 +956,10 @@ export class SyllogimousService {
         // Randomly pick one arrangement from enabled arrangements
         const arrangementChoices = [];
         if (settings.question[EnumQuestionType.LinearArrangement].enabled) {
-            arrangementChoices.push(7);
+            arrangementChoices.push(6);
         }
         if (settings.question[EnumQuestionType.CircularArrangement].enabled) {
-            arrangementChoices.push(8);
+            arrangementChoices.push(7);
         }
         if (arrangementChoices.length) {
             choiceIndices.push(pickUniqueItems(arrangementChoices, 1).picked[0]);
@@ -1125,6 +1024,7 @@ export class SyllogimousService {
 
                     const dxatob = coordsa[1] - coordsb[1];
                     const dyatob = coordsa[2] - coordsb[2];
+                    
                     const dxctod = coordsc[1] - coordsd[1];
                     const dyctod = coordsc[2] - coordsd[2];
         
@@ -1132,49 +1032,34 @@ export class SyllogimousService {
                 }
                 break;
             case 4:
-            case 5:
+            case 5: {
+                const type = (choiceIndex === 4)
+                    ? EnumQuestionType.Direction3DSpatial
+                    : EnumQuestionType.Direction3DTemporal;
                 while (flip !== isValidSame) {
-                    const type = (choiceIndex === 4) 
-                        ? EnumQuestionType.Direction3DSpatial
-                        : EnumQuestionType.Direction3DTemporal;
-                    const isTemporal = type === EnumQuestionType.Direction3DTemporal;
                     question = this.createDirection3D(length, type);
                     question.type = topType;
                     question.conclusion = "";
 
-                    [a, b, c, d] = pickUniqueItems(Object.keys(question.wordCoordMap), 4).picked;
+                    const [coordsa, coordsb, coordsc, coordsd] = pickUniqueItems(question.coords3D, 4).picked;
+                    [a, b, c, d] = [coordsa[0], coordsb[0], coordsc[0], coordsd[0]];
                     question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
 
-                    const dirA = findDirection3D(
-                        question.wordCoordMap[a] as any,
-                        question.wordCoordMap[b] as any,
-                        isTemporal
-                    );
-                    const dirB = findDirection3D(
-                        question.wordCoordMap[c] as any,
-                        question.wordCoordMap[d] as any,
-                        isTemporal
-                    );
-                    isValidSame = dirA === dirB;
+                    const dxatob = coordsa[1] - coordsb[1];
+                    const dyatob = coordsa[2] - coordsb[2];
+                    const dtatob = coordsa[3] - coordsb[3];
+
+                    const dxctod = coordsc[1] - coordsd[1];
+                    const dyctod = coordsc[2] - coordsd[2];
+                    const dtctod = coordsc[3] - coordsd[3];
+        
+                    isValidSame = (dxatob === dxctod) && (dyatob === dyctod) && (dtatob === dtctod);
                 }
                 break;
+            }
             case 6:
-                while (flip !== isValidSame) {
-                    question = this.createDirection4D(length);
-                    question.type = topType;
-                    question.conclusion = "";
-
-                    [a, b, c, d] = pickUniqueItems(Object.keys(question.wordCoordMap), 4).picked;
-                    question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
-
-                    const { spatial, temporal } = findDirection4D(question.wordCoordMap[a] as any, question.wordCoordMap[b] as any);
-                    const { spatial: spatial2, temporal: temporal2 } = findDirection4D(question.wordCoordMap[c] as any, question.wordCoordMap[d] as any);
-                    isValidSame = (spatial === spatial2) && (temporal === temporal2);
-                }
-                break;
-            case 7:
-            case 8: {
-                const type = (choiceIndex === 7) 
+            case 7: {
+                const type = (choiceIndex === 6)
                     ? EnumQuestionType.LinearArrangement
                     : EnumQuestionType.CircularArrangement;
                 const isLinear = type === EnumQuestionType.LinearArrangement;

@@ -1,4 +1,4 @@
-import { DIRECTION_COORDS_3D, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_TEMPORAL, FORMS, NOUNS, NUMBER_WORDS, STRINGS, TIME_NAMES, VALID_RULES } from "../constants/question.constants";
+import { FORMS, NOUNS, NUMBER_WORDS, STRINGS, VALID_RULES } from "../constants/question.constants";
 import { EnumArrangements, EnumQuestionType } from "../constants/question.constants";
 import { IArrangementPremise, IArrangementRelationship, Question } from "../models/question.models";
 import { Settings, Picked } from "../models/settings.models";
@@ -32,73 +32,6 @@ export function shuffle<T>(array: T[]) {
         [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
     }
     return array;
-}
-
-export function getDirectionString(x: number, y: number, z: number, isTemporal = false) {
-    let res = "";
-
-    if (z === 0) {
-        if (x === 0 && y === 0) {
-            res = isTemporal ? "in the present and in the same location" : "";
-        } else {
-            res = isTemporal ? "in the present" : "";
-        }
-    }
-
-    if (z === 1) {
-        res = isTemporal ? "in the future" : "above";
-    }
-    if (z === -1) {
-        res = isTemporal ? "in the past" : "below";
-    }
-
-    if ((z || isTemporal) && (x || y)) {
-        res += " and ";
-    }
-
-    if (y === 1) {
-        res += "North";
-    }
-    if (y === -1) {
-        res += "South";
-    }
-    if (y && x) {
-        res += "-";
-    }
-    if (x === 1) {
-        res += "East";
-    }
-    if (x === -1) {
-        res += "West";
-    }
-    return res;
-}
-
-export function findDirection3D(aCoord: [number, number, number], bCoord: [number, number, number], isTemporal = false) {
-    const x = aCoord[0];
-    const y = aCoord[1];
-    const z = aCoord[2];
-    const x2 = bCoord[0];
-    const y2 = bCoord[1];
-    const z2 = bCoord[2];
-
-    const dx = ((x - x2) / Math.abs(x - x2)) || 0;
-    const dy = ((y - y2) / Math.abs(y - y2)) || 0;
-    const dz = ((z - z2) / Math.abs(z - z2)) || 0;
-
-    const dirIndex = DIRECTION_COORDS_3D.findIndex(c => c[0] === dx && c[1] === dy && c[2] === dz);
-    const dirName = (isTemporal ? DIRECTION_NAMES_3D_TEMPORAL : DIRECTION_NAMES_3D)[dirIndex];
-    return dirName;
-}
-
-export function findDirection4D(aCoord: [number, number, number, number], bCoord: [number, number, number, number]) {
-    const a = aCoord[3];
-    const a2 = bCoord[3];
-
-    return {
-        spatial: findDirection3D(aCoord as any, bCoord as any),
-        temporal: TIME_NAMES[Math.sign(a-a2) + 1]
-    };
 }
 
 export function getRandomRuleValid() {
