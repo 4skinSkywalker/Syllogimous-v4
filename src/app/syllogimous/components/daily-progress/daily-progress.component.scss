@@ -1,4 +1,17 @@
-.timerbar-wrap {
+:host ::ng-deep {
+    .progressbar.progress {
+        border-radius: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+    }
+
+    .progressbar .progress-bar {
+        text-align: right;
+    }
+}
+
+.progressbars-wrap {
     padding: 8px;
     position: absolute;
     width: 100%;
@@ -7,13 +20,22 @@
     z-index: 1;
 }
 
-.timerbar {
+.progressbars {
+    border-radius: var(--border-radius_md);
+    border: 1px solid rgba(var(--app-gray_900), 1);
+    box-shadow: var(--shadow-sm);
+    margin: 0 var(--shadow-size-sm) var(--shadow-size-sm) 0;
+    overflow: hidden;
+}
+
+.progressbar {
     height: 1.25rem;
 }
 
-::ng-deep .timerbar .progress-bar {
-    text-align: right;
+.progressbar:not(:last-child) {
+    border-bottom: 1px solid !important;
 }
+
 
 .progress-1 {
     background-color: #E74C3C;

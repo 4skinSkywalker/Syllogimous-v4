@@ -11,7 +11,7 @@
     "build-prod": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "gh-pages": "ng build --output-path docs --base-href /Syllogimous-v4/"
+    "gh-pages": "ng build --output-path docs --base-href /Syllogimous-v4/ && node -e \"require('fs').copyFileSync('docs/index.html', 'docs/404.html')\""
   },
   "private": true,
   "dependencies": {
