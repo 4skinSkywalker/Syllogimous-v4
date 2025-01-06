@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { IArrangementPremise, Question } from "../models/question.models";
-import { coinFlip, extractSubjects, findDirection, findDirection3D, findDirection4D, getCircularWays, getLinearWays, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, makeMetaRelationsNew, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions } from "../utils/question.utils";
-import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, DIRECTION_NAMES_INVERSE, NUMBER_WORDS, TIME_NAMES, TIME_NAMES_INVERSE } from "../constants/question.constants";
+import { IArrangementPremise, IDirection3DProposition, IDirectionProposition, Question } from "../models/question.models";
+import { coinFlip, extractSubjects, getCircularWays, getLinearWays, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, createMetaRelationships, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions } from "../utils/question.utils";
+import { NUMBER_WORDS } from "../constants/question.constants";
 import { EnumScreens, EnumTiers, getSettingsFromTier, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES } from "../constants/syllogimous.constants";
 import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local-storage.constants";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -98,7 +98,6 @@ export class SyllogimousService {
             [EnumQuestionType.Direction]:               () => this.createDirection(numOfPremises),
             [EnumQuestionType.Direction3DSpatial]:      () => this.createDirection3D(numOfPremises, EnumQuestionType.Direction3DSpatial),
             [EnumQuestionType.Direction3DTemporal]:     () => this.createDirection3D(numOfPremises, EnumQuestionType.Direction3DTemporal),
-            [EnumQuestionType.Direction4D]:             () => this.createDirection4D(numOfPremises),
         }[questionType];
     }
 
@@ -310,7 +309,7 @@ export class SyllogimousService {
                 prev = curr;
             }
 
-            makeMetaRelationsNew(settings, question, length);
+            createMetaRelationships(settings, question, length);
             
             const isSameAs = coinFlip();
             const relation = getRelation(settings, type, isSameAs);
@@ -356,7 +355,7 @@ export class SyllogimousService {
                 question.premises.push(`<span class="subject">${first}</span> is ${relation} <span class="subject">${last}</span>`);
             }
 
-            makeMetaRelationsNew(settings, question, length);
+            createMetaRelationships(settings, question, length);
 
             const a = Math.floor(Math.random() * question.bucket.length);
             let b = Math.floor(Math.random() * question.bucket.length);
@@ -378,295 +377,428 @@ export class SyllogimousService {
         return question;
     }
 
-    createDirection(qtyPremises: number) {
+    createDirection(numOfPremises: number) {
         console.log("createDirection");
 
         const type = EnumQuestionType.Direction;
         const settings = this.settings;
 
-        if (!canGenerateQuestion(type, qtyPremises, settings)) {
+        if (!canGenerateQuestion(type, numOfPremises, settings)) {
             throw new Error("Cannot generate.");
         }
 
-        const length = qtyPremises + 1;
+        const numOfEls = numOfPremises + 1;
         const symbols = getSymbols(settings);
-        const words = pickUniqueItems(symbols, length).picked;
+        const words = pickUniqueItems(symbols, numOfEls).picked;
         const question = new Question(type);
 
-        let wordCoordMap: Record<string, [number, number]> = {};
-        let conclusionSubjects = ["", ""];
-        let conclusionDirection = "";
+        const sideSize = 1 + Math.round(Math.sqrt(numOfEls));
 
-        while (!conclusionDirection) {
-            wordCoordMap = {};
-            question.wordCoordMap = wordCoordMap;
-            question.premises = [];
-    
-            for (let i = 0; i < words.length - 1; i++) {
-                const dirIndex = 1 + Math.floor(Math.random()*(DIRECTION_NAMES.length - 1));
-                const dirName = DIRECTION_NAMES[dirIndex]!;
-                const dirCoord = DIRECTION_COORDS[dirIndex];
+        const cardinalOppositeMap: Record<string, string> = {
+            "North": "South",
+            "South": "North",
+             "East": "West",
+             "West": "East"
+        };
 
-                if (i === 0) {
-                    wordCoordMap[words[i]] = [0,0];
-                }
-
-                wordCoordMap[words[i+1]] = [
-                    wordCoordMap[words[i]][0] + dirCoord[0], // x
-                    wordCoordMap[words[i]][1] + dirCoord[1]  // y
-                ];
-
-                if (settings.enabled.negation && coinFlip()) {
-                    question.negations++;
-                    if (coinFlip()) {
-                        question.premises.push(`<span class="subject">${words[i+1]}</span> is <span class="is-negated">${(DIRECTION_NAMES_INVERSE as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
-                    } else {
-                        question.premises.push(`<span class="subject">${words[i]}</span> is <span class="is-negated">${dirName}</span> of <span class="subject">${words[i+1]}</span>`);
-                    }
-                } else {
-                    if (coinFlip()) {
-                        question.premises.push(`<span class="subject">${words[i+1]}</span> is ${dirName} of <span class="subject">${words[i]}</span>`);
-                    } else {
-                        question.premises.push(`<span class="subject">${words[i]}</span> is ${(DIRECTION_NAMES_INVERSE as any)[dirName]} of <span class="subject">${words[i+1]}</span>`);
-                    }
-                }
+        // Give random coords to each subject
+        const coords: [string, number, number][] = [];
+        let pool = [...words];
+        while (pool.length) {
+            let ri: number | undefined;
+            let rj: number | undefined;
+            while (ri == null || rj == null || coords.find(([_, x, y]) => ri === x && rj === y)) {
+                ri = Math.floor(Math.random()*sideSize);
+                rj = Math.floor(Math.random()*sideSize);
             }
-
-            const { picked: pickedPremises } = pickUniqueItems(question.premises, 2);
-            const premisesSubjects = pickedPremises.map(extractSubjects);
-
-            while (conclusionSubjects[0] === conclusionSubjects[1]) {
-                const [ a, b ] = premisesSubjects.reduce((acc, curr) => [ ...acc, pickUniqueItems(curr, 1).picked[0] ], [] as string[]);
-                if (premisesSubjects.find(([ c, d ]) => c + d === a + b || d + c === a + b)) {
-                    continue;
-                }
-                conclusionSubjects[0] = a;
-                conclusionSubjects[1] = b;
-            }
-
-            const aCoords = wordCoordMap[conclusionSubjects[0]];
-            const bCoords = wordCoordMap[conclusionSubjects[1]];
-
-            question.isValid = coinFlip();
-            conclusionDirection = (question.isValid)
-                ? findDirection(aCoords, bCoords)
-                : findDirection(bCoords, aCoords);
+            const { picked, remaining } = pickUniqueItems(pool, 1);
+            coords.push([picked[0], ri, rj]);
+            pool = remaining;
         }
+        question.coords = coords;
+        console.log("Coords", coords);
 
-        if (settings.enabled.negation && coinFlip()) {
-            question.negations++;
-            if (coinFlip()) {
-                question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> is <span class="is-negated">${(DIRECTION_NAMES_INVERSE as any)[conclusionDirection]}</span> of <span class="subject">${conclusionSubjects[1]}</span>`;
+        // Create pairs of subjects
+        let copyOfCoords = [...coords];
+        const pairs: [typeof coords[0], typeof coords[0]][] = [];
+        const subjectsAlreadyIncluded = (a: string, b: string) =>
+            pairs.find(([x, y]) => (x[0] === a && y[0] === b) || (x[0] === b && y[0] === a));
+        for (let i = 0; i < numOfEls - 1; i++) {
+            const { picked, remaining } = pickUniqueItems(copyOfCoords, 1);
+            const subject = i === 0
+                ? pickUniqueItems(remaining, 1).picked[0]
+                : pickUniqueItems(pairs, 1).picked[0][Math.floor(Math.random()*2)];
+            const a = picked[0][0];
+            const b = subject[0];
+            if (a === b || subjectsAlreadyIncluded(a, b)) {
+                i--;
+                continue;
+            }
+            pairs.push([picked[0], subject]);
+            copyOfCoords = remaining;
+        }
+        console.log("Pairs pre", pairs);
+
+        // Add one more pair that will represent the conclusion
+        let coorda, coordb;
+        while (!coorda || !coordb || subjectsAlreadyIncluded(coorda[0], coordb[0])) {
+            [ coorda, coordb ] = pickUniqueItems(coords, 2).picked;
+        }
+        pairs.push([coorda, coordb]);
+        console.log("Pairs post", pairs);
+
+        // Calculate cardinals and relationship of each pair
+        const premises: IDirectionProposition[] = [];
+
+        const getRelationship = (cardinals: [string, number][]) => {
+            let relationship = "";
+
+            if (cardinals.every(c => c[1] === 1)) {
+                relationship = "adjacent and " + cardinals[0][0];
+
+                if (cardinals.length === 2) {
+                    relationship +=  "-" + cardinals[1][0];
+                }
             } else {
-                question.conclusion = `<span class="subject">${conclusionSubjects[1]}</span> is <span class="is-negated">${conclusionDirection}</span> of <span class="subject">${conclusionSubjects[0]}</span>`;
+                const numStepsVertical = NUMBER_WORDS[cardinals[0][1]] || cardinals[0][1];
+                relationship = numStepsVertical + " step" + (cardinals[0][1] > 1 ? "s" : "") + " " + cardinals[0][0];
+
+                if (cardinals.length === 2) {
+                    const numStepsHorizontal = NUMBER_WORDS[cardinals[1][1]] || cardinals[1][1];
+                    relationship += " and " + numStepsHorizontal + " step" + (cardinals[1][1] > 1 ? "s" : "") + " " + cardinals[1][0];
+                } 
+            }
+
+            return relationship;
+        };
+
+        for (const pair of pairs) {
+            const [subja, subjb] = pair;
+            const [a, ax, ay] = subja;
+            const [b, bx, by] = subjb;
+
+            const cardinals: [string, number][] = [];
+            const diffy = ay - by;
+            const absdiffy = Math.abs(diffy);
+            const diffx = ax - bx;
+            const absdiffx = Math.abs(diffx);
+
+            if (diffy > 0) {
+                cardinals.push(["North", absdiffy]);
+            } else if (diffy < 0) {
+                cardinals.push(["South", absdiffy]);
+            }
+
+            if (diffx > 0) {
+                cardinals.push(["East", absdiffx]);
+            } else if (diffx < 0) {
+                cardinals.push(["West", absdiffx]);
+            }
+
+            premises.push({
+                pair,
+                cardinals,
+                relationship: getRelationship(cardinals),
+                uid: guid()
+            })
+        }
+        console.log("Premises", premises);
+
+        // Extract the last premise and say it's the conclusion
+        // Flip a coin and either keep or tweak the conclusion
+        let conclusion = premises.pop()!;
+        const isValid = coinFlip();
+        if (isValid) {
+            console.log("Keep conclusion");
+            if (coinFlip() && conclusion.cardinals.length === 2) {
+                console.log("One cardinal got plucked");
+                conclusion.cardinals = [ pickUniqueItems(conclusion.cardinals, 1).picked[0] ];
             }
         } else {
+            console.log("Tweak conclusion");
+            const rndIdx = Math.floor(Math.random()*conclusion.cardinals.length);
             if (coinFlip()) {
-                question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> is ${conclusionDirection} of <span class="subject">${conclusionSubjects[1]}</span>`;
+                console.log("Add one to one cardinal");
+                conclusion.cardinals[rndIdx][1]++;
             } else {
-                question.conclusion = `<span class="subject">${conclusionSubjects[1]}</span> is ${(DIRECTION_NAMES_INVERSE as any)[conclusionDirection]} of <span class="subject">${conclusionSubjects[0]}</span>`;
+                console.log("One cardinal flipped");
+                conclusion.cardinals[rndIdx][0] = cardinalOppositeMap[conclusion.cardinals[rndIdx][0]];
             }
         }
-    
-        shuffle(question.premises);
-        
+        // Regenerate conclusion relationship
+        conclusion.relationship = getRelationship(conclusion.cardinals);
+        console.log("Conclusion", conclusion);
+
+        const negateRelationship = (relationship: string) => {
+            return relationship.replaceAll(/(north|south|east|west)/gi, substr => {
+                if (coinFlip()) {
+                    question.negations++;
+                    return `<span class="is-negated">${cardinalOppositeMap[substr]}</span>`;
+                }
+                return substr;
+            });
+        };
+
+        const stringifyProposition = (p: IDirectionProposition) => {
+            const relationship = settings.enabled.negation ? negateRelationship(p.relationship) : p.relationship;
+            return `<span class="subject">${p.pair[0][0]}</span> is ${relationship} of <span class="subject">${p.pair[1][0]}</span>`;
+        };
+
+        shuffle(premises);
+        question.isValid = isValid;
+        question.premises = premises.map(stringifyProposition);
+        question.conclusion = stringifyProposition(conclusion);
+
+        // TODO: Create meta relationship
+
         return question;
     }
 
     createDirection3D(numOfPremises: number, type: EnumQuestionType.Direction3DSpatial | EnumQuestionType.Direction3DTemporal) {
-        console.log("createDirection3D:", type);
-        
+        console.log("createDirection3D");
         const settings = this.settings;
 
         if (!canGenerateQuestion(type, numOfPremises, settings)) {
             throw new Error("Cannot generate.");
         }
 
-        const length = numOfPremises + 1;
+        const numOfEls = numOfPremises + 1;
         const symbols = getSymbols(settings);
-        const words = pickUniqueItems(symbols, length).picked;
+        const words = pickUniqueItems(symbols, numOfEls).picked;
         const question = new Question(type);
-        const isTemporal = type === EnumQuestionType.Direction3DTemporal;
-        const [ direction_names, direction_names_inverse ] = isTemporal
-            ? [ DIRECTION_NAMES_3D_TEMPORAL, DIRECTION_NAMES_3D_INVERSE_TEMPORAL ]
-            : [ DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE ];
-    
-        let wordCoordMap: Record<string, [number, number, number]> = {};
-        let conclusionSubjects = ["", ""];
-        let conclusionDirection = "";
+        const isSpatial = type === EnumQuestionType.Direction3DSpatial;
 
-        while (!conclusionDirection) {
-            wordCoordMap = {};
-            question.wordCoordMap = wordCoordMap;
-            question.premises = [];
-    
-            for (let i = 0; i < words.length - 1; i++) {
-                const dirIndex = 1 + Math.floor(Math.random() * (direction_names.length - 1));
-                const dirName = direction_names[dirIndex];
-                const dirCoord = DIRECTION_COORDS_3D[dirIndex];
+        const sideSize = 1 + Math.round(Math.cbrt(numOfEls));
 
-                if (i === 0) {
-                    wordCoordMap[words[i]] = [0,0,0];
-                }
+        const trasversalOpposite: Record<string, string> = {
+            "before": "after",
+             "after": "before",
+             "below": "above",
+             "above": "below"
+        };
+        const cardinalOppositeMap: Record<string, string> = {
+            "North": "South",
+            "South": "North",
+             "East": "West",
+             "West": "East"
+        };
 
-                wordCoordMap[words[i+1]] = [
-                    wordCoordMap[words[i]][0] + dirCoord[0], // x
-                    wordCoordMap[words[i]][1] + dirCoord[1], // y
-                    wordCoordMap[words[i]][2] + dirCoord[2], // z
-                ];
-
-                if (settings.enabled.negation && coinFlip()) {
-                    question.negations++;
-                    if (coinFlip()) {
-                        question.premises.push(`<span class="subject">${words[i+1]}</span> is <span class="is-negated">${(direction_names_inverse as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
-                    } else {
-                        question.premises.push(`<span class="subject">${words[i]}</span> is <span class="is-negated">${dirName}</span> of <span class="subject">${words[i+1]}</span>`);
-                    }
-                } else {
-                    if (coinFlip()) {
-                        question.premises.push(`<span class="subject">${words[i+1]}</span> is ${dirName} of <span class="subject">${words[i]}</span>`);
-                    } else {
-                        question.premises.push(`<span class="subject">${words[i]}</span> is ${(direction_names_inverse as any)[dirName]} of <span class="subject">${words[i+1]}</span>`);
-                    }
-                }
+        // Give random coords to each subject
+        const coords: [string, number, number, number][] = [];
+        const alreadyHasCoords = (ri: number, rj: number, rk: number) => {
+            return coords.find(([_, x, y, k]) =>
+                ri === x && rj === y && rk === k
+            );
+        };
+        let pool = [...words];
+        while (pool.length) {
+            let ri: number | undefined;
+            let rj: number | undefined;
+            let rt: number | undefined;
+            while (ri == null || rj == null || rt == null || alreadyHasCoords(ri, rj, rt)) {
+                ri = Math.floor(Math.random()*sideSize);
+                rj = Math.floor(Math.random()*sideSize);
+                rt = Math.floor(Math.random()*sideSize);
             }
-
-            const { picked: pickedPremises } = pickUniqueItems(question.premises, 2);
-            const premisesSubjects = pickedPremises.map(extractSubjects);
-
-            while (conclusionSubjects[0] === conclusionSubjects[1]) {
-                const [ a, b ] = premisesSubjects.reduce((acc, curr) => [ ...acc, pickUniqueItems(curr, 1).picked[0] ], [] as string[]);
-                if (premisesSubjects.find(([ c, d ]) => c + d === a + b || d + c === a + b)) {
-                    continue;
-                }
-                conclusionSubjects[0] = a;
-                conclusionSubjects[1] = b;
-            }
-
-            const aCoords = wordCoordMap[conclusionSubjects[0]];
-            const bCoords = wordCoordMap[conclusionSubjects[1]];
-
-            question.isValid = coinFlip();
-            conclusionDirection = (question.isValid)
-                ? findDirection3D(aCoords, bCoords, isTemporal)
-                : findDirection3D(bCoords, aCoords, isTemporal);
+            const { picked, remaining } = pickUniqueItems(pool, 1);
+            coords.push([picked[0], ri, rj, rt]);
+            pool = remaining;
         }
+        question.coords3D = coords;
+        console.log("Coords", coords);
 
-        if (settings.enabled.negation && coinFlip()) {
-            question.negations++;
-            if (coinFlip()) {
-                question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> is <span class="is-negated">${(direction_names_inverse as any)[conclusionDirection]}</span> of <span class="subject">${conclusionSubjects[1]}</span>`;
+        // Create pairs of subjects
+        let copyOfCoords = [...coords];
+        const pairs: [typeof coords[0], typeof coords[0]][] = [];
+        const subjectsAlreadyIncluded = (a: string, b: string) =>
+            pairs.find(([x, y]) => (x[0] === a && y[0] === b) || (x[0] === b && y[0] === a));
+        for (let i = 0; i < numOfEls - 1; i++) {
+            const { picked, remaining } = pickUniqueItems(copyOfCoords, 1);
+            const subject = i === 0
+                ? pickUniqueItems(remaining, 1).picked[0]
+                : pickUniqueItems(pairs, 1).picked[0][Math.floor(Math.random()*2)];
+            const a = picked[0][0];
+            const b = subject[0];
+            if (a === b || subjectsAlreadyIncluded(a, b)) {
+                i--;
+                continue;
+            }
+            pairs.push([picked[0], subject]);
+            copyOfCoords = remaining;
+        }
+        console.log("Pairs pre", pairs);
+
+        // Add one more pair that will represent the conclusion
+        let coorda, coordb;
+        while (!coorda || !coordb || subjectsAlreadyIncluded(coorda[0], coordb[0])) {
+            [ coorda, coordb ] = pickUniqueItems(coords, 2).picked;
+        }
+        pairs.push([coorda, coordb]);
+        console.log("Pairs post", pairs);
+
+        // Calculate relationship of each pair
+        const premises: IDirection3DProposition[] = [];
+
+        const getTrasversalRelationship = (tdiff: number) => {
+            const absdiff = Math.abs(tdiff);
+            const s = (absdiff > 1) ? "s" : "";
+            const n = NUMBER_WORDS[absdiff] || absdiff;
+            if (isSpatial) {
+                if (tdiff === 0) {
+                    return ["simultaneous", "concurrent", "at the same time"][Math.floor(Math.random()*3)];
+                } else if (tdiff < 0) {
+                    return `${n} hour${s} before`;
+                } else {
+                    return `${n} hour${s} after`;
+                }
             } else {
-                question.conclusion = `<span class="subject">${conclusionSubjects[1]}</span> is <span class="is-negated">${conclusionDirection}</span> of <span class="subject">${conclusionSubjects[0]}</span>`;
+                if (tdiff === 0) {
+                    return ["at eye level", "on the same level", "vertically aligned"][Math.floor(Math.random()*3)];
+                } else if (tdiff < 0) {
+                    return `${n} level${s} below`;
+                } else {
+                    return `${n} level${s} above`;
+                } 
+            }
+        };
+
+        const SAME_CARDINAL_POSITION = "in the same cardinal position";
+        const getCardinalRelationship = (_cardinals: [string, number][]) => {
+            if (_cardinals.every(c => c[1] === 0)) {
+                return SAME_CARDINAL_POSITION;
+            }
+
+            const cardinals = _cardinals.filter(c => c[1] !== 0);
+
+            let relationship = "";
+            const numStepsVertical = NUMBER_WORDS[cardinals[0][1]] || cardinals[0][1];
+            const s = cardinals[0][1] > 1 ? "s" : "";
+
+            relationship = `${numStepsVertical} step${s} ${cardinals[0][0]}`;
+
+            if (cardinals.length === 2) {
+                const numStepsHorizontal = NUMBER_WORDS[cardinals[1][1]] || cardinals[1][1];
+                const s = cardinals[1][1] > 1 ? "s" : "";
+
+                relationship += ` and ${numStepsHorizontal} step${s} ${cardinals[1][0]}`;
+            }
+
+            return relationship;
+        };
+
+        for (const pair of pairs) {
+            const [subja, subjb] = pair;
+            const [a, ax, ay, at] = subja;
+            const [b, bx, by, bt] = subjb;
+
+            const trasversalDifference = at - bt;
+
+            const cardinals: [string, number][] = [];
+            const diffy = ay - by;
+            const absdiffy = Math.abs(diffy);
+            const diffx = ax - bx;
+            const absdiffx = Math.abs(diffx);
+
+            if (diffy > 0) {
+                cardinals.push(["North", absdiffy]);
+            } else if (diffy < 0) {
+                cardinals.push(["South", absdiffy]);
+            } else {
+                cardinals.push(["!", 0]);
+            }
+
+            if (diffx > 0) {
+                cardinals.push(["East", absdiffx]);
+            } else if (diffx < 0) {
+                cardinals.push(["West", absdiffx]);
+            } else {
+                cardinals.push(["!", 0]);
+            }
+
+            const trasversalRelationship = getTrasversalRelationship(trasversalDifference);
+            const cardinalRelationship = getCardinalRelationship(cardinals);
+            const connector = (cardinalRelationship === SAME_CARDINAL_POSITION) ? " and " : (cardinalRelationship.indexOf(" and ") > -1) ? ", " : " and ";
+            const relationship = trasversalRelationship + connector + cardinalRelationship;
+
+            premises.push({
+                pair,
+                trasversalDifference,
+                cardinals,
+                relationship,
+                uid: guid()
+            })
+        }
+        console.log("Premises", premises);
+
+        // Extract the last premise and say it's the conclusion
+        // Flip a coin and either keep or tweak the conclusion
+        let conclusion = premises.pop()!;
+        const isValid = coinFlip();
+        if (isValid) {
+            console.log("Keep conclusion");
+            if (coinFlip() && conclusion.cardinals.length === 2) {
+                console.log("One cardinal got plucked");
+                conclusion.cardinals = [ pickUniqueItems(conclusion.cardinals, 1).picked[0] ];
             }
         } else {
+            console.log("Tweak conclusion");
+
             if (coinFlip()) {
-                question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> is ${conclusionDirection} of <span class="subject">${conclusionSubjects[1]}</span>`;
+                console.log("Invert trasversal difference");
+                conclusion.trasversalDifference = conclusion.trasversalDifference * -1;
+            }
+            
+            const rndIdx = Math.floor(Math.random()*conclusion.cardinals.length);
+            if (conclusion.cardinals[rndIdx][0] === "!") {
+                const rndDir = (rndIdx === 0) ? ["North", "South"] : ["East", "West"];
+                conclusion.cardinals[rndIdx][0] = pickUniqueItems(rndDir, 1).picked[0];
+            }
+            if (coinFlip()) {
+                console.log("Add one to one cardinal");
+                conclusion.cardinals[rndIdx][1]++;
             } else {
-                question.conclusion = `<span class="subject">${conclusionSubjects[1]}</span> is ${(direction_names_inverse as any)[conclusionDirection]} of <span class="subject">${conclusionSubjects[0]}</span>`;
+                console.log("One cardinal flipped");
+                conclusion.cardinals[rndIdx][0] = cardinalOppositeMap[conclusion.cardinals[rndIdx][0]];
             }
         }
-    
-        shuffle(question.premises);
-        
-        return question;
-    }
+        // Regenerate conclusion relationship
+        conclusion.trasversalDifference = conclusion.pair[0][3] - conclusion.pair[1][3];
+        const trasversalRelationship = getTrasversalRelationship(conclusion.trasversalDifference);
+        const cardinalRelationship = getCardinalRelationship(conclusion.cardinals);
+        const connector = (cardinalRelationship === SAME_CARDINAL_POSITION) ? " and " : (cardinalRelationship.indexOf(" and ") > -1) ? ", " : " and ";
+        conclusion.relationship = trasversalRelationship + connector + cardinalRelationship;
+        console.log("Conclusion", conclusion);
 
-    createDirection4D(numOfPremises: number) {
-        console.log("createDirection4D");
-
-        const type = EnumQuestionType.Direction4D;
-        const settings = this.settings;
-
-        if (!canGenerateQuestion(type, numOfPremises, settings)) {
-            throw new Error("Cannot generate.");
-        }
-
-        const length = numOfPremises + 1;
-        const symbols = getSymbols(settings);
-        const words = pickUniqueItems(symbols, length).picked;
-        const question = new Question(type);
-    
-        let wordCoordMap: Record<string, [number, number, number, number]> = {};
-        let conclusionSubjects = ["", ""];
-        let conclusionDirection = { spatial: "", temporal: "" };
-
-        while (!conclusionDirection.spatial) {
-            wordCoordMap = {};
-            question.wordCoordMap = wordCoordMap;
-            question.premises = [];
-    
-            for (let i = 0; i < words.length - 1; i++) {
-                const timeIndex =  pickUniqueItems([-1,0,1], 1).picked[0];
-                const timeName = TIME_NAMES[timeIndex + 1];
-                const dirIndex = 1 + Math.floor(Math.random()*(DIRECTION_NAMES_3D.length - 1));
-                const dirName = DIRECTION_NAMES_3D[dirIndex];
-                const dirCoord = DIRECTION_COORDS_3D[dirIndex];
-
-                if (i === 0) {
-                    wordCoordMap[words[i]] = [0,0,0,0];
-                }
-
-                wordCoordMap[words[i+1]] = [
-                    wordCoordMap[words[i]][0] + dirCoord[0], // x
-                    wordCoordMap[words[i]][1] + dirCoord[1], // y
-                    wordCoordMap[words[i]][2] + dirCoord[2], // z
-                    wordCoordMap[words[i]][3] + timeIndex,   // time
-                ];
-
-                if (settings.enabled.negation && coinFlip()) {
-                    question.negations++;
+        const negateRelationship = (relationship: string) => {
+            return relationship
+                .replaceAll(/(before|after|below|above)/gi, substr => {
                     if (coinFlip()) {
-                        question.premises.push(`<span class="subject">${words[i+1]}</span> ${timeName} <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[dirName]}</span> of <span class="subject">${words[i]}</span>`);
-                    } else {
-                        question.premises.push(`<span class="subject">${words[i]}</span> ${(TIME_NAMES_INVERSE as any)[timeName]} <span class="is-negated">${dirName}</span> of <span class="subject">${words[i+1]}</span>`);
+                        question.negations++;
+                        return `<span class="is-negated">${trasversalOpposite[substr]}</span>`;
                     }
-                } else {
+                    return substr;
+                })
+                .replaceAll(/(north|south|east|west)/gi, substr => {
                     if (coinFlip()) {
-                        question.premises.push(`<span class="subject">${words[i+1]}</span> ${timeName} ${dirName} of <span class="subject">${words[i]}</span>`);
-                    } else {
-                        question.premises.push(`<span class="subject">${words[i]}</span> ${(TIME_NAMES_INVERSE as any)[timeName]} ${(DIRECTION_NAMES_3D_INVERSE as any)[dirName]} of <span class="subject">${words[i+1]}</span>`);
+                        question.negations++;
+                        return `<span class="is-negated">${cardinalOppositeMap[substr]}</span>`;
                     }
-                }
-            }
+                    return substr;
+                });
+        };
 
-            const { picked: pickedPremises } = pickUniqueItems(question.premises, 2);
-            const premisesSubjects = pickedPremises.map(extractSubjects);
+        const stringifyProposition = (p: IDirection3DProposition) => {
+            const relationship = settings.enabled.negation ? negateRelationship(p.relationship) : p.relationship;
+            return `<span class="subject">${p.pair[0][0]}</span> is ${relationship} of <span class="subject">${p.pair[1][0]}</span>`;
+        };
 
-            while (conclusionSubjects[0] === conclusionSubjects[1]) {
-                const [ a, b ] = premisesSubjects.reduce((acc, curr) => [ ...acc, pickUniqueItems(curr, 1).picked[0] ], [] as string[]);
-                if (premisesSubjects.find(([ c, d ]) => c + d === a + b || d + c === a + b)) {
-                    continue;
-                }
-                conclusionSubjects[0] = a;
-                conclusionSubjects[1] = b;
-            }
+        shuffle(premises);
+        question.isValid = isValid;
+        question.premises = premises.map(stringifyProposition);
+        question.conclusion = stringifyProposition(conclusion);
 
-            const aCoords = wordCoordMap[conclusionSubjects[0]];
-            const bCoords = wordCoordMap[conclusionSubjects[1]];
+        // TODO: Create meta relationship
 
-            question.isValid = coinFlip();
-            conclusionDirection = (question.isValid)
-                ? findDirection4D(aCoords, bCoords)
-                : findDirection4D(bCoords, aCoords);
-        }
-        if (settings.enabled.negation && coinFlip()) {
-            question.negations++;
-            if (coinFlip()) {
-                question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> ${conclusionDirection.temporal} <span class="is-negated">${(DIRECTION_NAMES_3D_INVERSE as any)[conclusionDirection.spatial]}</span> of <span class="subject">${conclusionSubjects[1]}</span>`;
-            } else {
-                question.conclusion = `<span class="subject">${conclusionSubjects[1]}</span> ${conclusionDirection.temporal} <span class="is-negated">${conclusionDirection.spatial}</span> of <span class="subject">${conclusionSubjects[0]}</span>`;
-            }
-        } else {
-            if (coinFlip()) {
-                question.conclusion = `<span class="subject">${conclusionSubjects[0]}</span> ${conclusionDirection.temporal} ${conclusionDirection.spatial} of <span class="subject">${conclusionSubjects[1]}</span>`;
-            } else {
-                question.conclusion = `<span class="subject">${conclusionSubjects[1]}</span> ${conclusionDirection.temporal} ${(DIRECTION_NAMES_3D_INVERSE as any)[conclusionDirection.spatial]} of <span class="subject">${conclusionSubjects[0]}</span>`;
-            }
-        }
-
-        shuffle(question.premises);
-        
         return question;
     }
 
@@ -817,9 +949,6 @@ export class SyllogimousService {
         if (settings.question[EnumQuestionType.Direction3DTemporal].enabled) {
             directionsChoices.push(5);
         }
-        if (settings.question[EnumQuestionType.Direction4D].enabled) {
-            directionsChoices.push(6);
-        }
         if (directionsChoices.length) {
             choiceIndices.push(pickUniqueItems(directionsChoices, 1).picked[0]);
         }
@@ -827,10 +956,10 @@ export class SyllogimousService {
         // Randomly pick one arrangement from enabled arrangements
         const arrangementChoices = [];
         if (settings.question[EnumQuestionType.LinearArrangement].enabled) {
-            arrangementChoices.push(7);
+            arrangementChoices.push(6);
         }
         if (settings.question[EnumQuestionType.CircularArrangement].enabled) {
-            arrangementChoices.push(8);
+            arrangementChoices.push(7);
         }
         if (arrangementChoices.length) {
             choiceIndices.push(pickUniqueItems(arrangementChoices, 1).picked[0]);
@@ -889,58 +1018,48 @@ export class SyllogimousService {
                     question.type = topType;
                     question.conclusion = "";
 
-                    [a, b, c, d] = pickUniqueItems(Object.keys(question.wordCoordMap), 4).picked;
+                    const [coordsa, coordsb, coordsc, coordsd] = pickUniqueItems(question.coords, 4).picked;
+                    [a, b, c, d] = [coordsa[0], coordsb[0], coordsc[0], coordsd[0]];
                     question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
+
+                    const dxatob = coordsa[1] - coordsb[1];
+                    const dyatob = coordsa[2] - coordsb[2];
+                    
+                    const dxctod = coordsc[1] - coordsd[1];
+                    const dyctod = coordsc[2] - coordsd[2];
         
-                    const dirA = findDirection(question.wordCoordMap[a] as any, question.wordCoordMap[b] as any);
-                    const dirB = findDirection(question.wordCoordMap[c] as any, question.wordCoordMap[d] as any);
-                    isValidSame = dirA === dirB;
+                    isValidSame = (dxatob === dxctod) && (dyatob === dyctod);
                 }
                 break;
             case 4:
-            case 5:
+            case 5: {
+                const type = (choiceIndex === 4)
+                    ? EnumQuestionType.Direction3DSpatial
+                    : EnumQuestionType.Direction3DTemporal;
                 while (flip !== isValidSame) {
-                    const type = (choiceIndex === 4) 
-                        ? EnumQuestionType.Direction3DSpatial
-                        : EnumQuestionType.Direction3DTemporal;
-                    const isTemporal = type === EnumQuestionType.Direction3DTemporal;
                     question = this.createDirection3D(length, type);
                     question.type = topType;
                     question.conclusion = "";
 
-                    [a, b, c, d] = pickUniqueItems(Object.keys(question.wordCoordMap), 4).picked;
+                    const [coordsa, coordsb, coordsc, coordsd] = pickUniqueItems(question.coords3D, 4).picked;
+                    [a, b, c, d] = [coordsa[0], coordsb[0], coordsc[0], coordsd[0]];
                     question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
 
-                    const dirA = findDirection3D(
-                        question.wordCoordMap[a] as any,
-                        question.wordCoordMap[b] as any,
-                        isTemporal
-                    );
-                    const dirB = findDirection3D(
-                        question.wordCoordMap[c] as any,
-                        question.wordCoordMap[d] as any,
-                        isTemporal
-                    );
-                    isValidSame = dirA === dirB;
+                    const dxatob = coordsa[1] - coordsb[1];
+                    const dyatob = coordsa[2] - coordsb[2];
+                    const dtatob = coordsa[3] - coordsb[3];
+
+                    const dxctod = coordsc[1] - coordsd[1];
+                    const dyctod = coordsc[2] - coordsd[2];
+                    const dtctod = coordsc[3] - coordsd[3];
+        
+                    isValidSame = (dxatob === dxctod) && (dyatob === dyctod) && (dtatob === dtctod);
                 }
                 break;
+            }
             case 6:
-                while (flip !== isValidSame) {
-                    question = this.createDirection4D(length);
-                    question.type = topType;
-                    question.conclusion = "";
-
-                    [a, b, c, d] = pickUniqueItems(Object.keys(question.wordCoordMap), 4).picked;
-                    question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
-
-                    const { spatial, temporal } = findDirection4D(question.wordCoordMap[a] as any, question.wordCoordMap[b] as any);
-                    const { spatial: spatial2, temporal: temporal2 } = findDirection4D(question.wordCoordMap[c] as any, question.wordCoordMap[d] as any);
-                    isValidSame = (spatial === spatial2) && (temporal === temporal2);
-                }
-                break;
-            case 7:
-            case 8: {
-                const type = (choiceIndex === 7) 
+            case 7: {
+                const type = (choiceIndex === 6)
                     ? EnumQuestionType.LinearArrangement
                     : EnumQuestionType.CircularArrangement;
                 const isLinear = type === EnumQuestionType.LinearArrangement;

@@ -102,42 +102,26 @@ export const ORDERED_QUESTION_TYPES = [
     EnumQuestionType.Direction3DSpatial,
     EnumQuestionType.Direction3DTemporal,
     EnumQuestionType.Analogy,
-    EnumQuestionType.Direction4D,
     EnumQuestionType.Binary,
 ];
 
-/**
- * The following is a matrix that represents
- * configurations of question types over tiers
- * 
- *        q1  q2  q3  q4  q5  q6
- *    t1 [ 2, -1, -1, -1, -1, -1 ]
- *    t2 [ 2,  2, -1, -1, -1, -1 ]
- *    t3 [ 2,  2,  2, -1, -1, -1 ]
- *    t4 [ 2,  2,  2,  2, -1, -1 ]
- *    t5 [ 2,  2,  2,  2,  2, -1 ]
- *    t6 [ 2,  2,  2,  2,  2,  2 ]
- *    t7 [ 2,  2,  2,  2,  2,  2 ]
- * 
- * Where q stands for question types and t stands
- * for tiers
- */
-export const TIERS_MATRIX: Record<number, [ number, number, number, number, number, number, number, number, number, number, number, number ]> = {
-     0: [  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1, -1 ],
-     1: [  3,  3,  3,  2, -1, -1, -1, -1, -1, -1, -1, -1 ],
-     2: [  4,  4,  4,  3,  2, -1,  2, -1, -1, -1, -1, -1 ],
-     3: [  5,  5,  5,  4,  3,  2,  3,  2,  2, -1, -1, -1 ],
-     4: [  6,  6,  6,  5,  4,  3,  4,  3,  3,  3, -1, -1 ],
-     5: [  7,  7,  7,  6,  5,  4,  5,  4,  4,  4,  2,  4 ],
-     6: [  8,  8,  8,  7,  6,  5,  6,  5,  5,  5,  3,  5 ],
-     7: [  9,  9,  9,  8,  7,  6,  7,  6,  6,  6,  4,  6 ],
-     8: [ 10, 10, 10,  9,  8,  7,  8,  7,  7,  7,  5,  7 ],
-     9: [ 11, 11, 11, 10,  9,  8,  9,  8,  8,  8,  6,  8 ],
-    10: [ 12, 12, 12, 11, 10,  9, 10,  9,  9,  9,  7,  9 ],
-    11: [ 13, 13, 13, 12, 11, 10, 11, 10, 10, 10,  8, 10 ],
-    12: [ 14, 14, 14, 13, 12, 11, 12, 11, 11, 11,  9, 11 ],
-    13: [ 15, 15, 15, 14, 13, 12, 13, 12, 12, 12, 10, 12 ],
-    14: [ 16, 16, 16, 15, 14, 13, 14, 13, 13, 13, 11, 13 ],
+/** The following is a matrix that represents configurations of question types over tiers */
+export const TIERS_MATRIX: Record<number, [ number, number, number, number, number, number, number, number, number, number, number ]> = {
+     0: [  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1 ],
+     1: [  3,  3,  3,  2, -1, -1, -1, -1, -1, -1, -1 ],
+     2: [  4,  4,  4,  3,  2, -1, -1, -1, -1, -1, -1 ],
+     3: [  5,  5,  5,  4,  3,  2, -1, -1, -1, -1, -1 ],
+     4: [  6,  6,  6,  5,  4,  3,  2, -1, -1, -1, -1 ],
+     5: [  7,  7,  7,  6,  5,  4,  3,  2,  2,  3, -1 ],
+     6: [  8,  8,  8,  7,  6,  5,  4,  3,  3,  4,  4 ],
+     7: [  9,  9,  9,  8,  7,  6,  5,  4,  4,  5,  5 ],
+     8: [ 10, 10, 10,  9,  8,  7,  6,  5,  5,  6,  6 ],
+     9: [ 11, 11, 11, 10,  9,  8,  7,  6,  6,  7,  7 ],
+    10: [ 12, 12, 12, 11, 10,  9,  8,  7,  7,  8,  8 ],
+    11: [ 13, 13, 13, 12, 11, 10,  9,  8,  8,  9,  9 ],
+    12: [ 14, 14, 14, 13, 12, 11, 10,  9,  9, 10, 10 ],
+    13: [ 15, 15, 15, 14, 13, 12, 11, 10, 10, 11, 11 ],
+    14: [ 16, 16, 16, 15, 14, 13, 12, 11, 11, 12, 12 ],
 };
 
 /** Given an EnumTiers value construct a Settings instance */
@@ -158,7 +142,7 @@ export function getSettingsFromTier(tier: EnumTiers) {
     if (tierIdx > 6) {
         settings.setEnable("meta", true);
     }
-    console.log(tier, "matrix row", TIERS_MATRIX[tierIdx]);
-    console.log(tier, "settings", settings);
+    // console.log(tier, "matrix row", TIERS_MATRIX[tierIdx]);
+    // console.log(tier, "settings", settings);
     return settings;
 }

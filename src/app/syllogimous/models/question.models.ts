@@ -13,15 +13,27 @@ export interface IArrangementPremise {
     uid: string;
 }
 
+export interface IDirectionProposition {
+    pair: [ [ string, number, number ], [ string, number, number ] ];
+    trasversalDifference?: number;
+    cardinals: [string, number][];
+    relationship: string;
+    uid: string;
+}
+
+export interface IDirection3DProposition {
+    pair: [ [ string, number, number, number ], [ string, number, number, number ] ];
+    trasversalDifference: number;
+    cardinals: [string, number][];
+    relationship: string;
+    uid: string;
+}
+
 export class Question {
     instructions: string[] = [];
     notes: string[] = [];
     type: EnumQuestionType;
     isValid = false;
-    rule = "";
-    bucket: string[] = [];
-    buckets: string[][][] = [];
-    wordCoordMap: Record<string, [number, number] | [number, number, number] | [number, number, number, number]> = {};
     premises: string[] = [];
     conclusion = "";
     createdAt = new Date().getTime();
@@ -32,6 +44,12 @@ export class Question {
     timerTypeOnAnswer = "0";
     userScore = 0;
     playgroundMode = false;
+    // Technical fields
+    rule = "";
+    bucket: string[] = [];
+    buckets: string[][][] = [];
+    coords: [string, number, number][] = [];
+    coords3D: [string, number, number, number][] = [];
 
     constructor(type: EnumQuestionType) {
         this.type = type;

@@ -1,4 +1,4 @@
-import { DIRECTION_COORDS, DIRECTION_COORDS_3D, DIRECTION_NAMES, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_TEMPORAL, FORMS, NOUNS, NUMBER_WORDS, STRINGS, TIME_NAMES, VALID_RULES } from "../constants/question.constants";
+import { FORMS, NOUNS, NUMBER_WORDS, STRINGS, VALID_RULES } from "../constants/question.constants";
 import { EnumArrangements, EnumQuestionType } from "../constants/question.constants";
 import { IArrangementPremise, IArrangementRelationship, Question } from "../models/question.models";
 import { Settings, Picked } from "../models/settings.models";
@@ -32,88 +32,6 @@ export function shuffle<T>(array: T[]) {
         [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
     }
     return array;
-}
-
-export function getDirectionString(x: number, y: number, z: number, isTemporal = false) {
-    let res = "";
-
-    if (z === 0) {
-        if (x === 0 && y === 0) {
-            res = isTemporal ? "in the present and in the same location" : "";
-        } else {
-            res = isTemporal ? "in the present" : "";
-        }
-    }
-
-    if (z === 1) {
-        res = isTemporal ? "in the future" : "above";
-    }
-    if (z === -1) {
-        res = isTemporal ? "in the past" : "below";
-    }
-
-    if ((z || isTemporal) && (x || y)) {
-        res += " and ";
-    }
-
-    if (y === 1) {
-        res += "North";
-    }
-    if (y === -1) {
-        res += "South";
-    }
-    if (y && x) {
-        res += "-";
-    }
-    if (x === 1) {
-        res += "East";
-    }
-    if (x === -1) {
-        res += "West";
-    }
-    return res;
-}
-
-export function findDirection(aCoord: [number, number], bCoord: [number, number]) {
-    const x = aCoord[0];
-    const y = aCoord[1];
-    const x2 = bCoord[0];
-    const y2 = bCoord[1];
-
-    const dx = ((x - x2) / Math.abs(x - x2)) || 0;
-    const dy = ((y - y2) / Math.abs(y - y2)) || 0;
-
-    const dirIndex = DIRECTION_COORDS.findIndex(c => c[0] === dx && c[1] === dy);
-    const dirName = DIRECTION_NAMES[dirIndex];
-
-    return dirName!;
-}
-
-export function findDirection3D(aCoord: [number, number, number], bCoord: [number, number, number], isTemporal = false) {
-    const x = aCoord[0];
-    const y = aCoord[1];
-    const z = aCoord[2];
-    const x2 = bCoord[0];
-    const y2 = bCoord[1];
-    const z2 = bCoord[2];
-
-    const dx = ((x - x2) / Math.abs(x - x2)) || 0;
-    const dy = ((y - y2) / Math.abs(y - y2)) || 0;
-    const dz = ((z - z2) / Math.abs(z - z2)) || 0;
-
-    const dirIndex = DIRECTION_COORDS_3D.findIndex(c => c[0] === dx && c[1] === dy && c[2] === dz);
-    const dirName = (isTemporal ? DIRECTION_NAMES_3D_TEMPORAL : DIRECTION_NAMES_3D)[dirIndex];
-    return dirName;
-}
-
-export function findDirection4D(aCoord: [number, number, number, number], bCoord: [number, number, number, number]) {
-    const a = aCoord[3];
-    const a2 = bCoord[3];
-
-    return {
-        spatial: findDirection3D(aCoord as any, bCoord as any),
-        temporal: TIME_NAMES[Math.sign(a-a2) + 1]
-    };
 }
 
 export function getRandomRuleValid() {
@@ -252,29 +170,7 @@ export function getRelation(settings: Settings, type: EnumQuestionType, isPositi
     return relation;
 }
 
-export function makeMetaRelationsOld(settings: Settings, question: Question, length: number) {
-    if (settings.enabled.meta && coinFlip()) {
-        const numOfMetaRelations = 1 + Math.floor(Math.random() * Math.floor((length - 1) / 2));
-        question.metaRelations += numOfMetaRelations;
-        let _premises = pickUniqueItems(question.premises, numOfMetaRelations * 2);
-        question.premises = [ ..._premises.remaining ];
-    
-        while (_premises.picked.length) {
-            const choosenPair = pickUniqueItems(_premises.picked, 2);
-            const negations = choosenPair.picked.map(p => /is-negated/.test(p));
-            const relations = choosenPair.picked.map(p => p.match(/is (?:<span class="is-negated">)*(.*?)(?:<\/span>)* /)![1]);
-    
-            const replacer = getMetaReplacer(settings, choosenPair, relations, negations);
-            const newPremise = choosenPair.picked[1].replace(/(is) (.*)(?=<span class="subject">)/, replacer);
-    
-            question.premises.push(choosenPair.picked[0], newPremise);
-    
-            _premises = { picked: choosenPair.remaining, remaining: [] };
-        }
-    }
-}
-
-export function makeMetaRelationsNew(settings: Settings, question: Question, length: number) {
+export function createMetaRelationships(settings: Settings, question: Question, length: number) {
     // Substitute a variable number of premises with meta-relations
     if (settings.enabled.meta && coinFlip()) {
         const numOfMetaRelationships = 1 + Math.floor(Math.random() * Math.floor((length - 1) / 2));
@@ -511,7 +407,8 @@ export function interpolateArrangementRelationship(relationship: IArrangementRel
     );
 
     if (settings.enabled.negation && coinFlip()) {
-        return interpolatedWithSteps.replaceAll(/(left|right)/g, substr => 
+        // TODO: This method should return the number of negations applied
+        return interpolatedWithSteps.replaceAll(/(left|right)/gi, substr => 
             `<span class="is-negated">${(substr === "left") ? "right" : "left"}</span>`
         );
     }
