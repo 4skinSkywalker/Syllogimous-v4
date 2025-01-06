@@ -1,5 +1,5 @@
 <div class="timerbar-wrap">
-    <div class="progress timerbar">
+    <div class="progress timerbar" [class.mb-2]="showWeeklyProgress">
         <div
             class="progress-bar progress-1"
             [class.progress-2]="this.dailyProgressPercentage > 10"
@@ -19,6 +19,29 @@
         >
             <span *ngIf="this.dailyProgressPercentage > 5" class="me-2">{{dailyProgressPercentage}} %</span>
             <span style="position: absolute; left: 100%; padding-left: 4px; color: rgba(var(--app-gray_1000), 1);">Daily Progress</span>
+        </div>
+    </div>
+
+    <div class="progress timerbar" *ngIf="showWeeklyProgress">
+        <div
+            class="progress-bar progress-1"
+            [class.progress-2]="this.weeklyProgressPercentage > 10"
+            [class.progress-3]="this.weeklyProgressPercentage > 20"
+            [class.progress-4]="this.weeklyProgressPercentage > 30"
+            [class.progress-5]="this.weeklyProgressPercentage > 40"
+            [class.progress-6]="this.weeklyProgressPercentage > 50"
+            [class.progress-7]="this.weeklyProgressPercentage > 60"
+            [class.progress-8]="this.weeklyProgressPercentage > 70"
+            [class.progress-9]="this.weeklyProgressPercentage > 80"
+            [class.progress-10]="this.weeklyProgressPercentage > 90"
+            [ngStyle]="{
+                'width': this.weeklyProgressPercentage + '%',
+                'position': 'relative',
+                'overflow': 'visible'
+            }"
+        >
+            <span *ngIf="this.weeklyProgressPercentage > 5" class="me-2">{{weeklyProgressPercentage}} %</span>
+            <span style="position: absolute; left: 100%; padding-left: 4px; color: rgba(var(--app-gray_1000), 1);">Weekly Progress</span>
         </div>
     </div>
 </div>

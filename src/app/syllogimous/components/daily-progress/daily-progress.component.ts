@@ -7,14 +7,17 @@ import { DailyProgressService } from '../../services/daily-progress.service';
     styleUrls: ['./daily-progress.component.css']
 })
 export class DailyProgressComponent {
-
     @Input("showTimePlayedToday") showTimePlayedToday = false;
+    @Input("showWeeklyProgress") showWeeklyProgress = false;
 
     dailyProgressPercentage = 0;
+    weeklyProgressPercentage = 0;
 
     constructor(
         private dailyProgressService: DailyProgressService
     ) {
-        this.dailyProgressPercentage = dailyProgressService.calcDailyProgress(dailyProgressService.getToday());
+        const today = dailyProgressService.getToday();
+        this.dailyProgressPercentage = dailyProgressService.calcDailyProgress(today);
+        this.weeklyProgressPercentage = dailyProgressService.calcWeeklyProgress(today);
     }
 }
