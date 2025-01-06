@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { IArrangementPremise, IDirectionProposition, Question } from "../models/question.models";
+import { IArrangementPremise, IDirection3DProposition, IDirectionProposition, Question } from "../models/question.models";
 import { coinFlip, extractSubjects, findDirection3D, findDirection4D, getCircularWays, getLinearWays, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, createMetaRelationships, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions } from "../utils/question.utils";
 import { DIRECTION_COORDS_3D, DIRECTION_NAMES_3D, DIRECTION_NAMES_3D_INVERSE, DIRECTION_NAMES_3D_INVERSE_TEMPORAL, DIRECTION_NAMES_3D_TEMPORAL, NUMBER_WORDS, TIME_NAMES, TIME_NAMES_INVERSE } from "../constants/question.constants";
 import { EnumScreens, EnumTiers, getSettingsFromTier, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES } from "../constants/syllogimous.constants";
@@ -638,7 +638,7 @@ export class SyllogimousService {
         console.log("Pairs post", pairs);
 
         // Calculate relationship of each pair
-        const premises: IDirectionProposition[] = [];
+        const premises: IDirection3DProposition[] = [];
 
         const getTrasversalRelationship = (tdiff: number) => {
             const absdiff = Math.abs(tdiff);
@@ -646,26 +646,27 @@ export class SyllogimousService {
             const n = NUMBER_WORDS[absdiff] || absdiff;
             if (isSpatial) {
                 if (tdiff === 0) {
-                    return ["simultaneous", "concurrent", "at the same time"][Math.floor(Math.random()*3)] + " and";
+                    return ["simultaneous", "concurrent", "at the same time"][Math.floor(Math.random()*3)];
                 } else if (tdiff < 0) {
-                    return `${n} hour${s} before and`;
+                    return `${n} hour${s} before`;
                 } else {
-                    return `${n} hour${s} after and`;
+                    return `${n} hour${s} after`;
                 }
             } else {
                 if (tdiff === 0) {
-                    return ["at eye level", "on the same level", "aligned"][Math.floor(Math.random()*3)] + " and";
+                    return ["at eye level", "on the same level", "vertically aligned"][Math.floor(Math.random()*3)];
                 } else if (tdiff < 0) {
-                    return `${n} level${s} below and`;
+                    return `${n} level${s} below`;
                 } else {
-                    return `${n} level${s} above and`;
+                    return `${n} level${s} above`;
                 } 
             }
         };
 
+        const SAME_CARDINAL_POSITION = "in the same cardinal position";
         const getCardinalRelationship = (_cardinals: [string, number][]) => {
             if (_cardinals.every(c => c[1] === 0)) {
-                return "in the same cardinal position";
+                return SAME_CARDINAL_POSITION;
             }
 
             const cardinals = _cardinals.filter(c => c[1] !== 0);
@@ -715,7 +716,10 @@ export class SyllogimousService {
                 cardinals.push(["!", 0]);
             }
 
-            const relationship = getTrasversalRelationship(trasversalDifference) + " " + getCardinalRelationship(cardinals);
+            const trasversalRelationship = getTrasversalRelationship(trasversalDifference);
+            const cardinalRelationship = getCardinalRelationship(cardinals);
+            const connector = (cardinalRelationship === SAME_CARDINAL_POSITION) ? " and " : (cardinalRelationship.indexOf(" and ") > -1) ? ", " : " and ";
+            const relationship = trasversalRelationship + connector + cardinalRelationship;
 
             premises.push({
                 pair,
@@ -730,8 +734,6 @@ export class SyllogimousService {
         // Extract the last premise and say it's the conclusion
         // Flip a coin and either keep or tweak the conclusion
         let conclusion = premises.pop()!;
-        const cat = conclusion.pair[0][2];
-        const cbt = conclusion.pair[1][2];
         const isValid = coinFlip();
         if (isValid) {
             console.log("Keep conclusion");
@@ -744,10 +746,13 @@ export class SyllogimousService {
 
             if (coinFlip()) {
                 console.log("Invert trasversal difference");
-                conclusion.trasversalDifference = -(conclusion.trasversalDifference || 0);
+                conclusion.trasversalDifference = conclusion.trasversalDifference * -1;
             }
             
             const rndIdx = Math.floor(Math.random()*conclusion.cardinals.length);
+            if (conclusion.cardinals[rndIdx][0] === "!") {
+                conclusion.cardinals[rndIdx][0] = pickUniqueItems(Object.keys(cardinalOppositeMap), 1).picked[0];
+            }
             if (coinFlip()) {
                 console.log("Add one to one cardinal");
                 conclusion.cardinals[rndIdx][1]++;
@@ -757,8 +762,11 @@ export class SyllogimousService {
             }
         }
         // Regenerate conclusion relationship
-        conclusion.trasversalDifference = cat - cbt;
-        conclusion.relationship = getTrasversalRelationship(conclusion.trasversalDifference) + " " + getCardinalRelationship(conclusion.cardinals);
+        conclusion.trasversalDifference = conclusion.pair[0][3] - conclusion.pair[1][3];
+        const trasversalRelationship = getTrasversalRelationship(conclusion.trasversalDifference);
+        const cardinalRelationship = getCardinalRelationship(conclusion.cardinals);
+        const connector = (cardinalRelationship === SAME_CARDINAL_POSITION) ? " and " : (cardinalRelationship.indexOf(" and ") > -1) ? ", " : " and ";
+        conclusion.relationship = trasversalRelationship + connector + cardinalRelationship;
         console.log("Conclusion", conclusion);
 
         const negateRelationship = (relationship: string) => {
@@ -779,7 +787,7 @@ export class SyllogimousService {
                 });
         };
 
-        const stringifyProposition = (p: IDirectionProposition) => {
+        const stringifyProposition = (p: IDirection3DProposition) => {
             const relationship = settings.enabled.negation ? negateRelationship(p.relationship) : p.relationship;
             return `<span class="subject">${p.pair[0][0]}</span> is ${relationship} of <span class="subject">${p.pair[1][0]}</span>`;
         };
