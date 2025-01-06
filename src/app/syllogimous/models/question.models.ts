@@ -14,7 +14,8 @@ export interface IArrangementPremise {
 }
 
 export interface IDirectionProposition {
-    pair: [ [ string, number, number ], [ string, number, number ] ];
+    pair: [ [ string, number, number ] | [ string, number, number, number ], [ string, number, number ] | [ string, number, number, number ] ];
+    trasversalDifference?: number;
     cardinals: [string, number][];
     relationship: string;
     uid: string;
@@ -39,7 +40,7 @@ export class Question {
     rule = "";
     bucket: string[] = [];
     buckets: string[][][] = [];
-    coords: [string, number, number][] = [];
+    coords: Array<[string, number, number] | [string, number, number, number]> = [];
     wordCoordMap: Record<string, [number, number] | [number, number, number] | [number, number, number, number]> = {};
 
     constructor(type: EnumQuestionType) {
