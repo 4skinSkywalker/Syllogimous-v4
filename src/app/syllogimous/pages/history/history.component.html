@@ -17,10 +17,23 @@
 
                 <button class="copy-paste" (click)="copyQuestion(q)" ngbTooltip="Click here to copy the question raw JSON data">C</button>
 
-                <div class="overflow-auto" style="max-height: 250px; padding: 0.5rem 0.75rem;">
-                    <div *ngIf="q.instructions" class="instructions" [innerHTML]="q.instructions"></div>
-                    <div *ngFor="let p of q.premises" class="premise" [innerHTML]="p"></div>
-                    <div class="mt-2" [innerHTML]="q.conclusion"></div>
+                <div class="question-text">
+                    <div *ngIf="q.instructions.length">
+                        <div class="small text-muted mb-1">Instructions</div>
+                        <div class="instructions" [innerHTML]="q.instructions"></div>
+                    </div>
+
+                    <div>
+                        <div class="small text-muted mb-1">Premises</div>
+                        <div class="premises">
+                            <div class="premise" *ngFor="let p of q.premises" [innerHTML]="p"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="small text-muted mb-1">Conclusion</div>
+                        <div class="conclusion" [innerHTML]="q.conclusion"></div>
+                    </div>
                 </div>
     
                 <small class="d-grid" style="grid-template-columns: repeat(4, 1fr);">

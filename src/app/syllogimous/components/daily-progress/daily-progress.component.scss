@@ -1,11 +1,4 @@
 :host ::ng-deep {
-    .progressbar.progress {
-        border-radius: 0 !important;
-        border: none !important;
-        box-shadow: none !important;
-        margin: 0 !important;
-    }
-
     .progressbar .progress-bar {
         text-align: right;
     }
@@ -21,11 +14,8 @@
 }
 
 .progressbars {
-    border-radius: 0.5rem;
-    border: 1px solid rgba(var(--app-gray_900), 1);
-    box-shadow: var(--shadow-sm);
-    margin: 0 var(--shadow-size-sm) var(--shadow-size-sm) 0;
-    overflow: hidden;
+    display: grid;
+    gap: 0.5rem;
 }
 
 .progressbar {
