@@ -1,6 +1,9 @@
 <app-card>
     <div body>
-        <app-daily-progress></app-daily-progress>
+        <app-daily-progress
+            [hideWeekly]="true"
+            [hideTrainingUnit]="sylSrv.settings === sylSrv.playgroundSettings"
+        ></app-daily-progress>
 
         <div
             *ngIf="{

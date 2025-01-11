@@ -38,6 +38,7 @@ export class InputComponent implements OnInit, OnDestroy {
     @Input("type") type = "text";
     @Input("placeholder") placeholder = ' ';
     @Input("onlyCustomErrors") onlyCustomErrors = false;
+    @Input("noParenthesisValue") noParenthesisValue = false;
 
     @Input("step") step?: any;
 

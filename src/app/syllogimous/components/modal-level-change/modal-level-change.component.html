@@ -1,8 +1,8 @@
 <div class="modal-body p-5 text-center">
-    <h4>{{ title }}</h4>
+    <h4 [innerHTML]="title"></h4>
 
     <div class="my-4" style="font-size: 1.15rem;">
-        <div *ngFor="let content of contents">{{ content }}</div>
+        <div *ngFor="let content of contents" [innerHTML]="content"></div>
     </div>
 
     <button class="btn btn-primary" (click)="activeModal.close('Ok click')">Got It!</button>

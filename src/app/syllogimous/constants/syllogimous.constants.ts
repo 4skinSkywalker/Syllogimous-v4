@@ -1,8 +1,6 @@
 import { Settings } from "../models/settings.models";
 import { EnumQuestionType } from "./question.constants";
 
-const INF = Infinity;
-
 export enum EnumScreens {
     Intro = "Intro",
     Start = "Start",
@@ -54,43 +52,7 @@ export const TIER_COLORS: Record<EnumTiers, { bgColor: string, textColor: string
     [EnumTiers.Transcendent]:   { bgColor: "#4B0082", textColor: "#F0F8FF" },  // Indigo with Alice Blue
 };
 
-export const TIER_SCORE_RANGES: Record<EnumTiers, { minScore: number, maxScore: number }> = {
-    [EnumTiers.Adept]:          { minScore: -INF,   maxScore: 99 },
-    [EnumTiers.Scholar]:        { minScore: 100,    maxScore: 249 },
-    [EnumTiers.Savant]:         { minScore: 250,    maxScore: 549 },
-    [EnumTiers.Expert]:         { minScore: 550,    maxScore: 999 },
-    [EnumTiers.Mastermind]:     { minScore: 1000,   maxScore: 1599 },
-    [EnumTiers.Visionary]:      { minScore: 1600,   maxScore: 2399 },
-    [EnumTiers.Genius]:         { minScore: 2400,   maxScore: 3399 },
-    [EnumTiers.Virtuoso]:       { minScore: 3400,   maxScore: 4599 },
-    [EnumTiers.Luminary]:       { minScore: 4600,   maxScore: 5999 },
-    [EnumTiers.Prodigy]:        { minScore: 6000,   maxScore: 7599 },
-    [EnumTiers.Oracle]:         { minScore: 7600,   maxScore: 9399 },
-    [EnumTiers.Sage]:           { minScore: 9400,   maxScore: 11299 },
-    [EnumTiers.Philosopher]:    { minScore: 11300,  maxScore: 13299 },
-    [EnumTiers.Mystic]:         { minScore: 13300,  maxScore: 15399 },
-    [EnumTiers.Transcendent]:   { minScore: 15400,  maxScore: INF },
-};
-
-export const TIER_SCORE_ADJUSTMENTS: Record<EnumTiers, { increment: number, decrement: number }> = {
-    [EnumTiers.Adept]:          { increment: 10, decrement: 5 },
-    [EnumTiers.Scholar]:        { increment: 10, decrement: 5 },
-    [EnumTiers.Savant]:         { increment: 10, decrement: 5 },
-    [EnumTiers.Expert]:         { increment: 10, decrement: 5 },
-    [EnumTiers.Mastermind]:     { increment: 10, decrement: 5 },
-    [EnumTiers.Visionary]:      { increment: 8,  decrement: 5 },
-    [EnumTiers.Genius]:         { increment: 8,  decrement: 5 },
-    [EnumTiers.Virtuoso]:       { increment: 8,  decrement: 5 },
-    [EnumTiers.Luminary]:       { increment: 8,  decrement: 5 },
-    [EnumTiers.Prodigy]:        { increment: 8,  decrement: 5 },
-    [EnumTiers.Oracle]:         { increment: 5,  decrement: 5 },
-    [EnumTiers.Sage]:           { increment: 5,  decrement: 5 },
-    [EnumTiers.Philosopher]:    { increment: 5,  decrement: 5 },
-    [EnumTiers.Mystic]:         { increment: 5,  decrement: 5 },
-    [EnumTiers.Transcendent]:   { increment: 5,  decrement: 5 },
-};
-
-export const ORDERED_TIERS = Object.keys(TIER_SCORE_RANGES) as EnumTiers[];
+export const ORDERED_TIERS = Object.keys(TIER_COLORS) as EnumTiers[];
 
 export const ORDERED_QUESTION_TYPES = [ 
     EnumQuestionType.Distinction,

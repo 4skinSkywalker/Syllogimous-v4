@@ -19,7 +19,7 @@ export class GameComponent {
 
     constructor(
         public sylSrv: SyllogimousService,
-        private statsService: StatsService,
+        private statsService: StatsService
     ) {
         this.timerType = localStorage.getItem(LS_TIMER) || '0';
         this.gameMode = localStorage.getItem(LS_GAME_MODE) || '0';

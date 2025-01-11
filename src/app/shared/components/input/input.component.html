@@ -662,7 +662,7 @@
 
     <ng-container *ngSwitchCase="'range'">
         <div>
-            <label *ngIf="label" [for]="disabled ? 'nowhere' : _name" class="form-label">{{ label }} {{ (ngControl.value !== undefined && ngControl.value !== null && ngControl.value !== "") ? "(" + ngControl.value + ")" : "" }}</label>
+            <label *ngIf="label" [for]="disabled ? 'nowhere' : _name" class="form-label">{{ label }} {{ (!noParenthesisValue && ngControl.value !== undefined && ngControl.value !== null && ngControl.value !== "") ? "(" + ngControl.value + ")" : "" }}</label>
             <input
                 [class.pseudo-disabled]="disabled"
                 [tabindex]="disabled ? -1 : 0"

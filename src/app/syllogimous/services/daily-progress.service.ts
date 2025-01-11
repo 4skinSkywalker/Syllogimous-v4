@@ -1,8 +1,11 @@
 import { Injectable } from "@angular/core";
-import { LS_DAILY_GOAL, LS_DAILY_PROGRESS, LS_WEEKLY_GOAL } from "../constants/local-storage.constants";
+import { LS_DAILY_GOAL, LS_DAILY_PROGRESS, LS_TRAINING_UNIT, LS_WEEKLY_GOAL } from "../constants/local-storage.constants";
 
 export const DEFAULT_DAILY_GOAL = 30;
 export const DEFAULT_WEEKLY_GOAL = 120;
+export const DEFAULT_TRAINING_UNIT_LENGTH = 10;
+export const DEFAULT_LEVEL_UP_THRESHOLD = 0.8;
+export const DEFAULT_LEVEL_DOWN_THRESHOLD = 0.6;
 
 @Injectable({
     providedIn: 'root'
@@ -81,5 +84,40 @@ export class DailyProgressService {
         }
     
         return weeklyTotal;
+    }
+
+    getTrainingUnitLS() {
+        const ls = localStorage.getItem(LS_TRAINING_UNIT);
+        if (!ls) {
+            return { right: 0, timeout: 0, wrong: 0 };
+        }
+        return JSON.parse(ls) as { right: number, timeout: number, wrong: number };
+    }
+
+    updateTrainingUnitLS(right: number, timeout: number, wrong: number) {
+        const trainingUnit = this.getTrainingUnitLS();
+        trainingUnit.right += right;
+        trainingUnit.timeout += timeout;
+        trainingUnit.wrong += wrong;
+        localStorage.setItem(LS_TRAINING_UNIT, JSON.stringify(trainingUnit));
+    }
+
+    resetTrainingUnitLS() {
+        localStorage.setItem(LS_TRAINING_UNIT, JSON.stringify({ right: 0, timeout: 0, wrong: 0 }));
+    }
+
+    calcTrainingUnitsPercentage() {
+        const { right, timeout, wrong } = this.getTrainingUnitLS();
+        const rightPerc = Math.max(0, Math.min(1, right / DEFAULT_TRAINING_UNIT_LENGTH)) * 100;
+        const timeoutPerc = Math.max(0, Math.min(1, timeout / DEFAULT_TRAINING_UNIT_LENGTH)) * 100;
+        const wrongPerc = Math.max(0, Math.min(1, wrong / DEFAULT_TRAINING_UNIT_LENGTH)) * 100;
+        return {
+            right,
+            rightPerc,
+            timeout,
+            timeoutPerc,
+            wrong,
+            wrongPerc
+        };
     }
 }

@@ -2,13 +2,13 @@ import { Injectable } from "@angular/core";
 import { IArrangementPremise, IDirection3DProposition, IDirectionProposition, Question } from "../models/question.models";
 import { coinFlip, getCircularWays, getLinearWays, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, createMetaRelationships, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions } from "../utils/question.utils";
 import { NUMBER_WORDS } from "../constants/question.constants";
-import { EnumScreens, EnumTiers, getSettingsFromTier, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES } from "../constants/syllogimous.constants";
-import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local-storage.constants";
+import { EnumScreens, EnumTiers, getSettingsFromTier } from "../constants/syllogimous.constants";
+import { LS_DONT_SHOW, LS_HISTORY, LS_TIER_IDX, LS_TIMER } from "../constants/local-storage.constants";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ModalLevelChangeComponent } from "../components/modal-level-change/modal-level-change.component";
 import { Router } from "@angular/router";
 import { canGenerateQuestion, QuestionSettings, Settings } from "../models/settings.models";
-import { DailyProgressService } from "./daily-progress.service";
+import { DailyProgressService, DEFAULT_TRAINING_UNIT_LENGTH, DEFAULT_LEVEL_DOWN_THRESHOLD, DEFAULT_LEVEL_UP_THRESHOLD } from "./daily-progress.service";
 import { guid } from "src/app/utils/uuid";
 import { EnumArrangements, EnumQuestionType } from "../constants/question.constants";
 import { EnumQuestionGroup } from "../constants/settings.constants";
@@ -17,32 +17,26 @@ import { EnumQuestionGroup } from "../constants/settings.constants";
     providedIn: "root"
 })
 export class SyllogimousService {
-    _score = 0;
+    _tierIdx = 0;
     history: Question[] = [];
     question = this.createSyllogism(2);
     playgroundSettings?: Settings;
 
-    get score() {
-        return this._score;
+    get tierIdx() {
+        return this._tierIdx;
     }
 
-    set score(value: number) {
-        this._score = value;
-        localStorage.setItem(LS_SCORE, JSON.stringify(value));
+    set tierIdx(value: number) {
+        this._tierIdx = value;
+        localStorage.setItem(LS_TIER_IDX, JSON.stringify(value));
     }
 
     get tier() {
-        for (const tier of Object.values(EnumTiers)) {
-            const range = TIER_SCORE_RANGES[tier];
-            if (this.score >= range.minScore && this.score <= range.maxScore) {
-                return tier as EnumTiers;
-            }
-        }
-        return EnumTiers.Adept;
+        return Object.values(EnumTiers)[this.tierIdx] || EnumTiers.Adept;
     }
 
     get settings() {
-        // Playground settings override normal settings
+        // Playground settings override arcade settings
         return this.playgroundSettings || getSettingsFromTier(this.tier);
     }
 
@@ -60,15 +54,15 @@ export class SyllogimousService {
         private router: Router,
         private dailyProgressService: DailyProgressService
     ) {
-        this.loadScore();
+        this.loadTierIdx();
         this.loadHistory();
         (window as any).syllogimous = this;
     }
 
-    loadScore() {
-        const lsScore = localStorage.getItem(LS_SCORE);
-        if (lsScore) {
-            this.score = JSON.parse(lsScore);
+    loadTierIdx() {
+        const lsTierIdx = localStorage.getItem(LS_TIER_IDX);
+        if (lsTierIdx) {
+            this.tierIdx = JSON.parse(lsTierIdx);
         }
     }
 
@@ -180,34 +174,32 @@ export class SyllogimousService {
         this.question.timerTypeOnAnswer = localStorage.getItem(LS_TIMER) || "0";
         this.question.playgroundMode = this.settings === this.playgroundSettings;
 
-        // Playground doesn't progress points
+        // Playground doesn't progress tiers
         if (!this.question.playgroundMode) {
-            const currTier = this.tier;
-    
-            let ds = 0;
-            if (this.question.userAnswer === this.question.isValid) {
-                this.score += TIER_SCORE_ADJUSTMENTS[this.tier].increment;
-                ds += 1;
+            if (value == null) {
+                this.dailyProgressService.updateTrainingUnitLS(0, 1, 0);
+            } else if (this.question.userAnswer === this.question.isValid) {
+                this.dailyProgressService.updateTrainingUnitLS(1, 0, 0);
             } else {
-                this.score = Math.max(0, this.score - TIER_SCORE_ADJUSTMENTS[this.tier].decrement);
-                if (this.score !== 0) {
-                    ds -= 1;
-                }
+                this.dailyProgressService.updateTrainingUnitLS(0, 0, 1);
             }
-    
-            this.question.userScore = this.score;
-    
-            const nextTier = this.tier;
-    
-            // Level up/down
-            if (currTier !== nextTier) {
+
+            const { right, timeout, wrong } = this.dailyProgressService.calcTrainingUnitsPercentage();
+            if (right + timeout + wrong >= DEFAULT_TRAINING_UNIT_LENGTH) {
                 const modalRef = this.modalService.open(ModalLevelChangeComponent, { centered: true });
-                if (ds > 0) { // level up
-                    modalRef.componentInstance.title = "Congratulations\nYou've Leveled Up!";
-                    modalRef.componentInstance.content = "Your hard work is paying off.\nKeep going to unlock more features and rewards!";
-                } else if (ds < 0) { // level down
-                    modalRef.componentInstance.title = "Level Down\nLet's Regroup!";
-                    modalRef.componentInstance.content = "Take this as a learning step.\nRefocus your efforts and you’ll be back on top in no time!";
+                this.dailyProgressService.resetTrainingUnitLS();
+
+                if (right / DEFAULT_TRAINING_UNIT_LENGTH >= DEFAULT_LEVEL_UP_THRESHOLD) {
+                    modalRef.componentInstance.title = "Congratulations<br>You've Leveled Up!";
+                    modalRef.componentInstance.content = "Your hard work is paying off.<br>Keep going to unlock more features and rewards!";
+                    this.tierIdx = this.tierIdx + 1;
+                } else if ((timeout + wrong) / DEFAULT_TRAINING_UNIT_LENGTH >= DEFAULT_LEVEL_DOWN_THRESHOLD) {
+                    modalRef.componentInstance.title = "Level Down<br>Let's Regroup!";
+                    modalRef.componentInstance.content = "Take this as a learning step.<br>Refocus your efforts and you’ll be back on top in no time!";
+                    this.tierIdx = this.tierIdx - 1;
+                } else {
+                    modalRef.componentInstance.title = "You're Holding Steady<br>Keep Pushing!";
+                    modalRef.componentInstance.content = "Your hard work will pay off.<br>Keep going to improve and unlock more questions!";
                 }
             }
         }

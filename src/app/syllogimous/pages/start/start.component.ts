@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { EnumScreens, EnumTiers, TIER_SCORE_RANGES } from '../../constants/syllogimous.constants';
+import { EnumScreens, EnumTiers } from '../../constants/syllogimous.constants';
 import { Question } from '../../models/question.models';
 import { SyllogimousService } from '../../services/syllogimous.service';
 import { Router } from '@angular/router';
@@ -13,12 +13,10 @@ import { DailyProgressService } from '../../services/daily-progress.service';
 })
 export class StartComponent {
     EnumScreens = EnumScreens;
-    formatTime = formatTime;  // Explicitly declare as class property
+    formatTime = formatTime;
 
-    TIER_SCORE_RANGES = TIER_SCORE_RANGES;
     tiers = Object.values(EnumTiers);
     nextTier: EnumTiers | string = EnumTiers.Savant;
-    pointsRemaining = 0;
 
     questions: Question[] = [];
     correctQs: Question[] = [];
@@ -42,7 +40,6 @@ export class StartComponent {
     ngOnInit() {
         const currTierIdx = this.tiers.findIndex(tier => tier === this.sylSrv.tier);
         this.nextTier = this.tiers[currTierIdx + 1] || "--";
-        this.pointsRemaining = this.nextTier ? (TIER_SCORE_RANGES[this.nextTier as EnumTiers].minScore - this.sylSrv.score) : 0;
 
         this.questions = this.sylSrv.questionsFromLS;
 

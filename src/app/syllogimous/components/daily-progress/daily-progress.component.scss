@@ -15,7 +15,7 @@
 
 .progressbars {
     display: grid;
-    gap: 0.5rem;
+    gap: 0.25rem;
 }
 
 .progressbar {
@@ -65,4 +65,26 @@
 
 .progress-10 {
     background-color: #27AE60;
+}
+
+.progress-label {
+    position: absolute;
+    left: 100%;
+    padding-left: 4px;
+    color: rgba(var(--app-gray_1000), 1);
+}
+
+.progressbar.partials {
+    > :nth-child(1) {
+        background: #34A853;
+        color: #F1FFF3;
+    }
+    > :nth-child(2) {
+        background: #8A8A8A;
+        color: #F9F9F9;
+    }
+    > :nth-child(3) {
+        background: #B8535E;
+        color: #FFEFF0;
+    }
 }

@@ -1,11 +1,11 @@
 <app-card>
-    <div body style="min-width: 320px; padding-top: 24px;">
+    <div body style="min-width: 320px; padding-top: 68px;">
         <app-daily-progress></app-daily-progress>
         
         <ul class="list-group mb-4">
             <li class="list-group-item flex-between">
                 <b>Tier</b>
-                <div>{{ sylSrv.tier }} {{ sylSrv.score }} pts <small class="text-muted">(next {{nextTier}}<i [ngbTooltip]="pointsRemaining + ' pts left to this next level'" class="bi bi-info-circle ms-1"></i>)</small></div>
+                <div>{{ sylSrv.tier }}</div>
             </li>
     
             <li class="list-group-item flex-between">
