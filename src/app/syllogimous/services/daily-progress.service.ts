@@ -1,13 +1,22 @@
 import { Injectable } from "@angular/core";
-import { LS_DAILY_PROGRESS } from "../constants/local-storage.constants";
+import { LS_DAILY_GOAL, LS_DAILY_PROGRESS, LS_WEEKLY_GOAL } from "../constants/local-storage.constants";
 
-const DAILY_GOAL = 30 * 60 * 1000;
-const WEEKLY_GOAL = 105 * 60 * 1000;
+export const DEFAULT_DAILY_GOAL = 30;
+export const DEFAULT_WEEKLY_GOAL = 120;
 
 @Injectable({
     providedIn: 'root'
 })
 export class DailyProgressService {
+    get DAILY_GOAL() {
+        const dailyLS = localStorage.getItem(LS_DAILY_GOAL);
+        return Number(dailyLS || DEFAULT_DAILY_GOAL) * 60 * 1000;
+    }
+    get WEEKLY_GOAL() {
+        const weeklyLS = localStorage.getItem(LS_WEEKLY_GOAL);
+        return Number(weeklyLS || DEFAULT_WEEKLY_GOAL) * 60 * 1000;
+    }
+
     getToday() {
         return new Date().toISOString().split("T")[0];
     }
@@ -28,7 +37,7 @@ export class DailyProgressService {
     }
 
     calcDailyProgress(isoDate: string) {
-        return Math.max(0, Math.min(100, Math.floor(100 * (this.getDailyProgressLS()[isoDate] || 0) / DAILY_GOAL)));
+        return Math.max(0, Math.min(100, Math.floor(100 * (this.getDailyProgressLS()[isoDate] || 0) / this.DAILY_GOAL)));
     }
 
     getWeekStartDate(isoDate: string) {
@@ -51,7 +60,7 @@ export class DailyProgressService {
             weeklyTotal += dailyProgress[currentDate] || 0;
         }
 
-        return Math.max(0, Math.min(100, Math.floor(100 * weeklyTotal / WEEKLY_GOAL)));
+        return Math.max(0, Math.min(100, Math.floor(100 * weeklyTotal / this.WEEKLY_GOAL)));
     }
 
     getTimePlayed(isoDate: string) {
