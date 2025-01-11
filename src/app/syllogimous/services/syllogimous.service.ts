@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { IArrangementPremise, IDirection3DProposition, IDirectionProposition, Question } from "../models/question.models";
-import { coinFlip, extractSubjects, getCircularWays, getLinearWays, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, createMetaRelationships, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions } from "../utils/question.utils";
+import { coinFlip, getCircularWays, getLinearWays, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, createMetaRelationships, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions } from "../utils/question.utils";
 import { NUMBER_WORDS } from "../constants/question.constants";
 import { EnumScreens, EnumTiers, getSettingsFromTier, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES } from "../constants/syllogimous.constants";
 import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local-storage.constants";
@@ -377,7 +377,7 @@ export class SyllogimousService {
         return question;
     }
 
-    createDirection(numOfPremises: number) {
+    createDirection(numOfPremises: number): Question {
         console.log("createDirection");
 
         const type = EnumQuestionType.Direction;
@@ -437,15 +437,30 @@ export class SyllogimousService {
             pairs.push([picked[0], subject]);
             copyOfCoords = remaining;
         }
-        console.log("Pairs pre", pairs);
+
+        const usedCoords = Object.values(
+            pairs.reduce((a, c) => {
+                a[c[0][0]] = c[0];
+                a[c[1][0]] = c[1];
+                return a;
+            }, {} as Record<string, typeof coords[0]>)
+        );
 
         // Add one more pair that will represent the conclusion
-        let coorda, coordb;
-        while (!coorda || !coordb || subjectsAlreadyIncluded(coorda[0], coordb[0])) {
-            [ coorda, coordb ] = pickUniqueItems(coords, 2).picked;
+        let coorda!: typeof coords[0];
+        let coordb!: typeof coords[0];
+        let safe = 1e2;
+        while (safe-- && (!coorda || !coordb || subjectsAlreadyIncluded(coorda[0], coordb[0]))) {
+            [ coorda, coordb ] = pickUniqueItems(usedCoords, 2).picked;
         }
+
+        if (safe < 1) {
+            console.error("MAXIMUM ITERATION COUNT REACHED!");
+            return this.createDirection(numOfPremises);
+        }
+
         pairs.push([coorda, coordb]);
-        console.log("Pairs post", pairs);
+        console.log("Pairs", pairs);
 
         // Calculate cardinals and relationship of each pair
         const premises: IDirectionProposition[] = [];
@@ -554,7 +569,7 @@ export class SyllogimousService {
         return question;
     }
 
-    createDirection3D(numOfPremises: number, type: EnumQuestionType.Direction3DSpatial | EnumQuestionType.Direction3DTemporal) {
+    createDirection3D(numOfPremises: number, type: EnumQuestionType.Direction3DSpatial | EnumQuestionType.Direction3DTemporal): Question {
         console.log("createDirection3D");
         const settings = this.settings;
 
@@ -626,15 +641,30 @@ export class SyllogimousService {
             pairs.push([picked[0], subject]);
             copyOfCoords = remaining;
         }
-        console.log("Pairs pre", pairs);
+
+        const usedCoords = Object.values(
+            pairs.reduce((a, c) => {
+                a[c[0][0]] = c[0];
+                a[c[1][0]] = c[1];
+                return a;
+            }, {} as Record<string, typeof coords[0]>)
+        );
 
         // Add one more pair that will represent the conclusion
-        let coorda, coordb;
-        while (!coorda || !coordb || subjectsAlreadyIncluded(coorda[0], coordb[0])) {
-            [ coorda, coordb ] = pickUniqueItems(coords, 2).picked;
+        let coorda!: typeof coords[0];
+        let coordb!: typeof coords[0];
+        let safe = 1e2;
+        while (safe-- && (!coorda || !coordb || subjectsAlreadyIncluded(coorda[0], coordb[0]))) {
+            [ coorda, coordb ] = pickUniqueItems(usedCoords, 2).picked;
         }
+
+        if (safe < 1) {
+            console.error("MAXIMUM ITERATION COUNT REACHED!");
+            return this.createDirection3D(numOfPremises, type);
+        }
+
         pairs.push([coorda, coordb]);
-        console.log("Pairs post", pairs);
+        console.log("Pairs", pairs);
 
         // Calculate relationship of each pair
         const premises: IDirection3DProposition[] = [];
