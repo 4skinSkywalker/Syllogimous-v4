@@ -2,7 +2,9 @@
     <div class="p-3" body>
         <div class="text-center" *ngIf="!questions.length">
             <h3 class="mb-3">Play to see something here</h3>
-            <button class="btn btn-lg btn-primary" (click)="sylSrv.playArcadeMode()">Press to Play</button>
+            <button class="btn btn-lg btn-primary" (click)="sylSrv.playArcadeMode()">
+                <i class="bi bi-play-fill"></i> Play
+            </button>
         </div>
 
         <div class="d-grid gap-4">

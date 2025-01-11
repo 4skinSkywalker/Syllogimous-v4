@@ -2,7 +2,9 @@
     <div body>
         <div class="text-center" *ngIf="!questions.length">
             <h3 class="mb-3">Play to discover question types</h3>
-            <button class="btn btn-lg btn-primary" (click)="sylSrv.playArcadeMode()">Press to Play</button>
+            <button class="btn btn-lg btn-primary" (click)="sylSrv.playArcadeMode()">
+                <i class="bi bi-play-fill"></i> Play
+            </button>
         </div>
         
         <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" *ngIf="questions.length">
