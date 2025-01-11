@@ -1,35 +1,5 @@
 <div class="progressbars-wrap">
     <div class="progressbars">
-        <div *ngIf="!this.hideTrainingUnit" class="progress progressbar partials">
-            <div
-                class="progress-bar text-center"
-                [style.width]="trainingUnitPercentage.rightPerc + '%'"
-            >
-                <span class="px-2">
-                    {{trainingUnitPercentage.right}}
-                </span>
-            </div>
-
-            <div
-                class="progress-bar text-center"
-                [style.width]="trainingUnitPercentage.timeoutPerc + '%'"
-            >
-                <span class="px-2">
-                    {{trainingUnitPercentage.timeout}}
-                </span>
-            </div>
-
-            <div
-                class="progress-bar text-center position-relative overflow-visible"
-                [style.width]="trainingUnitPercentage.wrongPerc + '%'"
-            >
-                <span class="px-2">
-                    {{trainingUnitPercentage.wrong}}
-                </span>
-                <span class="progress-label">Training unit</span>
-            </div>
-        </div>
-        
         <div *ngIf="!this.hideDaily" class="progress progressbar">
             <div
                 class="progress-bar progress-1 position-relative overflow-visible"
@@ -65,6 +35,36 @@
             >
                 <span *ngIf="this.weeklyProgressPercentage > 5" class="me-2">{{weeklyProgressPercentage}} %</span>
                 <span class="progress-label">Weekly time goal</span>
+            </div>
+        </div>
+
+        <div *ngIf="!this.hideTrainingUnit" class="progress progressbar partials">
+            <div
+                class="progress-bar text-center"
+                [style.width]="trainingUnitPercentage.rightPerc + '%'"
+            >
+                <span class="px-2">
+                    {{trainingUnitPercentage.right}}
+                </span>
+            </div>
+
+            <div
+                class="progress-bar text-center"
+                [style.width]="trainingUnitPercentage.timeoutPerc + '%'"
+            >
+                <span class="px-2">
+                    {{trainingUnitPercentage.timeout}}
+                </span>
+            </div>
+
+            <div
+                class="progress-bar text-center position-relative overflow-visible"
+                [style.width]="trainingUnitPercentage.wrongPerc + '%'"
+            >
+                <span class="px-2">
+                    {{trainingUnitPercentage.wrong}}
+                </span>
+                <span class="progress-label">Performance tracker</span>
             </div>
         </div>
     </div>

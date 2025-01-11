@@ -13,7 +13,34 @@
         </div>
 
         <div>
-            <div class="small text-muted mb-2">Training unit settings</div>
+            <div class="small text-muted mb-2">Playtime settings</div>
+            <div class="d-grid" style="gap: 1rem;">
+                <app-input
+                    type="range"
+                    min="15"
+                    max="60"
+                    step="5"
+                    name="dailyProgressMinutes"
+                    [label]="'Daily goal: ' + dailyProgressMinutes.value + ' minutes'"
+                    [ngControl]="dailyProgressMinutes"
+                    [noParenthesisValue]="true"
+                ></app-input>
+        
+                <app-input
+                    type="range"
+                    min="60"
+                    max="240"
+                    step="5"
+                    name="weeklyProgressMinutes"
+                    [label]="'Weekly goal: ' + weeklyProgressMinutes.value + ' minutes'"
+                    [ngControl]="weeklyProgressMinutes"
+                    [noParenthesisValue]="true"
+                ></app-input>
+            </div>
+        </div>
+
+        <div>
+            <div class="small text-muted mb-2">Performance tracker settings</div>
             <div class="d-grid" style="gap: 1rem;">
                 <app-input
                     type="range"
@@ -21,7 +48,7 @@
                     max="30"
                     step="5"
                     name="trainingUnitLength"
-                    [label]="'Training unit length: ' + trainingUnitLength.value + ' questions'"
+                    [label]="'Sample size: ' + trainingUnitLength.value + ' questions'"
                     [ngControl]="trainingUnitLength"
                     [noParenthesisValue]="true"
                 ></app-input>
@@ -45,33 +72,6 @@
                     name="levelDownThreshold"
                     [label]="'Level down threshold ' + ((levelDownThreshold.value || 0)*100) + '%'"
                     [ngControl]="levelDownThreshold"
-                    [noParenthesisValue]="true"
-                ></app-input>
-            </div>
-        </div>
-
-        <div>
-            <div class="small text-muted mb-2">Playtime settings</div>
-            <div class="d-grid" style="gap: 1rem;">
-                <app-input
-                    type="range"
-                    min="15"
-                    max="60"
-                    step="5"
-                    name="dailyProgressMinutes"
-                    [label]="'Daily goal: ' + dailyProgressMinutes.value + ' minutes'"
-                    [ngControl]="dailyProgressMinutes"
-                    [noParenthesisValue]="true"
-                ></app-input>
-        
-                <app-input
-                    type="range"
-                    min="60"
-                    max="240"
-                    step="5"
-                    name="weeklyProgressMinutes"
-                    [label]="'Weekly goal: ' + weeklyProgressMinutes.value + ' minutes'"
-                    [ngControl]="weeklyProgressMinutes"
                     [noParenthesisValue]="true"
                 ></app-input>
             </div>
