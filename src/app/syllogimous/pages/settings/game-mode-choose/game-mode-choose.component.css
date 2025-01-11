@@ -1,0 +1,26 @@
+:host {
+    display: block;
+}
+
+.game-mode-choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+}
+
+.game-mode-choice {
+    white-space: nowrap;
+    display: flex;
+    gap: 0.25rem;
+}
+
+.game-mode-choice {
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .game-mode-choices {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+}

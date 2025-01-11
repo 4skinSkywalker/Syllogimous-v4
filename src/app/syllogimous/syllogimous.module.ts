@@ -31,15 +31,16 @@ import { TimeBasedStatsComponent } from './pages/stats/time-based-stats/time-bas
 import { TypeBasedStatsComponent } from './pages/stats/type-based-stats/type-based-stats.component';
 import { StatsExportService } from './services/stats-export.service';
 import { CardDropdownComponent } from './components/card/card-dropdown/card-dropdown.component';
-import { TimerChooseComponent } from './components/timer-choose/timer-choose.component';
+import { TimerChooseComponent } from './pages/settings/timer-choose/timer-choose.component';
 import { PlaygroundModeComponent } from './pages/playground-mode/playground-mode.component';
 import { DailyProgressComponent } from './components/daily-progress/daily-progress.component';
-import { GameModeChooseComponent } from './components/game-mode-choose/game-mode-choose.component';
+import { GameModeChooseComponent } from './pages/settings/game-mode-choose/game-mode-choose.component';
 import { EnumQuestionType } from './constants/question.constants';
 import { EnumScreens } from './constants/syllogimous.constants';
 import { TiersMatrixComponent } from './pages/tiers-matrix/tiers-matrix.component';
 import { OtherGamesComponent } from './pages/other-games/other-games.component';
 import { TutorialNegationCueComponent } from './pages/tutorial/negation-cue/negation-cue.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 
 const routes: Routes = [
   {
@@ -50,8 +51,10 @@ const routes: Routes = [
       { path: EnumScreens.Intro, component: IntroComponent },
       { path: EnumScreens.Start, component: StartComponent },
       { path: EnumScreens.Game, component: GameComponent },
+      { path: EnumScreens.Stats, component: StatsComponent },
       { path: EnumScreens.History, component: HistoryComponent },
       { path: EnumScreens.Feedback, component: FeedbackComponent },
+      { path: EnumScreens.Settings, component: SettingsComponent },
       { path: EnumScreens.Tutorials, component: TutorialsComponent },
       { 
         path: EnumScreens.Tutorial,
@@ -70,9 +73,8 @@ const routes: Routes = [
           { path: EnumQuestionType.CircularArrangement, component: TutorialCircularArrangementComponent },
         ]
       },
-      { path: EnumScreens.Stats, component: StatsComponent },
-      { path: EnumScreens.PlaygroundMode, component: PlaygroundModeComponent },
       { path: EnumScreens.TiersMatrix, component: TiersMatrixComponent },
+      { path: EnumScreens.PlaygroundMode, component: PlaygroundModeComponent },
       { path: EnumScreens.OtherGames, component: OtherGamesComponent },
     ]
   }
@@ -115,6 +117,7 @@ const routes: Routes = [
     GameModeChooseComponent,
     TiersMatrixComponent,
     OtherGamesComponent,
+    SettingsComponent,
   ],
   imports: [
     CommonModule,

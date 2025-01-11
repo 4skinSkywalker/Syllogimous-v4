@@ -1,0 +1,11 @@
+<div class="game-mode-choices">
+    <div class="game-mode-choice">
+        <input type="radio" id="mode-choice-0" name="mode-kind" (click)="setMode('0')">
+        <label for="mode-choice-0" ngbTooltip="View all premises on the screen simultaneously">View all premises</label>
+    </div>
+
+    <div class="game-mode-choice">
+        <input type="radio" id="mode-choice-1" name="mode-kind" (click)="setMode('1')">
+        <label for="mode-choice-1" ngbTooltip="View one premise at a time in a carousel format">Carousel</label>
+    </div>
+</div>

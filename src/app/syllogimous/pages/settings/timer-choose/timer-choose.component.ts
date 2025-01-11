@@ -9,8 +9,7 @@ import { ModalTimerSettingsComponent } from '../modal-timer-settings/modal-timer
     styleUrls: ['./timer-choose.component.css']
 })
 export class TimerChooseComponent {
-    @Input("forPlayground") forPlayground = false;
-
+    
     constructor(
         private modalService: NgbModal
     ) {}

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { LS_GAME_MODE } from '../../constants/local-storage.constants';
+import { LS_GAME_MODE } from '../../../constants/local-storage.constants';
 
 @Component({
     selector: 'app-game-mode-choose',
@@ -7,8 +7,7 @@ import { LS_GAME_MODE } from '../../constants/local-storage.constants';
     styleUrls: ['./game-mode-choose.component.css']
 })
 export class GameModeChooseComponent {
-    @Input("forPlayground") forPlayground = false;
-
+    
     constructor() { }
 
     ngAfterViewInit() {

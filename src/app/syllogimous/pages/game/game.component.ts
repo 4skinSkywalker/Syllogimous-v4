@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { SyllogimousService } from '../../services/syllogimous.service';
 import { StatsService } from '../../services/stats.service';
 import { LS_GAME_MODE, LS_TIMER } from '../../constants/local-storage.constants';
-import { LS_CUSTOM_TIMERS_KEY } from '../../components/modal-timer-settings/modal-timer-settings.component';
+import { LS_CUSTOM_TIMERS_KEY } from '../settings/modal-timer-settings/modal-timer-settings.component';
 
 @Component({
     selector: 'app-game',

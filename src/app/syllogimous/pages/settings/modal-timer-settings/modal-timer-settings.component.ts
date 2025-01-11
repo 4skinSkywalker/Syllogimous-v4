@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { IDynamicField } from 'src/app/shared/components/dynamic-form/dynamic-form.component';
-import { EnumQuestionType } from '../../constants/question.constants';
+import { EnumQuestionType } from 'src/app/syllogimous/constants/question.constants';
 
 export const LS_CUSTOM_TIMERS_KEY = "SYL_CUSTOM_TIMERS";
 

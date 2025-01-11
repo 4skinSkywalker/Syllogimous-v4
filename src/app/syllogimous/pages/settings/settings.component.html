@@ -1,0 +1,46 @@
+<app-card>
+    <div body class="d-grid" style="gap: 1.5rem;">
+        <div>
+            <div class="small text-muted mb-2">Game Mode</div>
+            <app-game-mode-choose></app-game-mode-choose>
+        </div>
+
+        <div>
+            <div class="small text-muted mb-2">Timer Mode</div>
+            <app-timer-choose></app-timer-choose>
+        </div>
+
+        <div class="d-grid mt-3" style="gap: 1.5rem;">
+            <app-input
+                type="range"
+                min="15"
+                max="60"
+                step="5"
+                name="dailyProgressMinutes"
+                label="Daily Minutes Goal"
+                [ngControl]="dailyProgressMinutes"
+            ></app-input>
+    
+            <app-input
+                type="range"
+                min="60"
+                max="240"
+                step="5"
+                name="weeklyProgressMinutes"
+                label="Weekly Minutes Goal"
+                [ngControl]="weeklyProgressMinutes"
+            ></app-input>
+        </div>
+    </div>
+
+    <div footer class="playcard-toolbar">
+        <div>
+            <button
+                class="btn btn-outline-primary"
+                (click)="router.navigate([EnumScreens.Start])"
+            >
+                <i class="bi bi-arrow-left"></i> Go to Start
+            </button>
+        </div>
+    </div>
+</app-card>

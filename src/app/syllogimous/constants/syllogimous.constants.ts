@@ -13,6 +13,7 @@ export enum EnumScreens {
     Tutorials = "Tutorials",
     Stats = "Stats",
     PlaygroundMode = "Playground Mode",
+    Settings = "Settings",
     TiersMatrix = "Tiers Matrix",
     OtherGames = "Other Games",
 }

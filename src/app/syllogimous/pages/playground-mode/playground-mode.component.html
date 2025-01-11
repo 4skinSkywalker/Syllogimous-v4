@@ -14,10 +14,21 @@
 <app-card>
     <div class="p-3" body style="max-width: 500px;">
         <p class="lead mb-5">Playground Mode is a free-form mode where questions are just for practice, they don't count for points or statistics.</p>
-        <app-game-mode-choose [forPlayground]="true"></app-game-mode-choose>
-        <app-timer-choose [forPlayground]="true"></app-timer-choose>
+        
+        <div class="d-grid" style="gap: 1.5rem;">
+            <div>
+                <div class="small text-muted mb-2">Game Mode</div>
+                <app-game-mode-choose></app-game-mode-choose>
+            </div>
+
+            <div>
+                <div class="small text-muted mb-2">Timer Mode</div>
+                <app-timer-choose></app-timer-choose>
+            </div>
+        </div>
+
         <div class="mt-5">
-            <small class="text-muted d-block mb-3">Questions & Premises</small>
+            <small class="text-muted d-block mb-2">Questions & Premises</small>
             <app-dynamic-form gap="0.5rem" class="d-block mb-5" [fields]="fields" (formValueChanged)="formData = $event" [emitInitial]="true"></app-dynamic-form>
         </div>
     </div>

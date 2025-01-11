@@ -1,0 +1,26 @@
+:host {
+    display: block;
+}
+
+.timer-choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+}
+
+.timer-choice {
+    white-space: nowrap;
+    display: flex;
+    gap: 0.25rem;
+}
+
+.timer-choice {
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .timer-choices {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+}

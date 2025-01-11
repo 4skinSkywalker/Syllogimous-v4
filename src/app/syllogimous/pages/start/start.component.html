@@ -44,9 +44,11 @@
             </li>
         </ul>
 
-        <app-game-mode-choose></app-game-mode-choose>
-
-        <app-timer-choose></app-timer-choose>
+        <div class="text-center">
+            <a class="btn btn-outline-primary" (click)="router.navigate([EnumScreens.Settings])">
+                <i class="bi bi-gear"></i> Settings
+            </a>
+        </div>
     </div>
 
     <div footer class="text-center">
