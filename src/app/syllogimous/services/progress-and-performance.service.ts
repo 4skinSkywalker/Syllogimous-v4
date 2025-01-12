@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { LS_DAILY_GOAL, LS_DAILY_PROGRESS, LS_TRAINING_UNIT, LS_WEEKLY_GOAL } from "../constants/local-storage.constants";
+import { LS_DAILY_GOAL, LS_DAILY_PROGRESS, LS_PREMISES_DOWN_THRESHOLD, LS_PREMISES_UP_THRESHOLD, LS_TRAINING_UNIT, LS_TRAINING_UNIT_LENGTH, LS_WEEKLY_GOAL } from "../constants/local-storage.constants";
 import { EnumQuestionType } from "../constants/question.constants";
-import { questionTypeMinNumOfPremises } from "../constants/settings.constants";
+import { questionTypeSettingParams } from "../constants/settings.constants";
 
 export const DEFAULT_DAILY_GOAL = 30;
 export const DEFAULT_WEEKLY_GOAL = 120;
@@ -95,11 +95,24 @@ export class ProgressAndPerformanceService {
         return weeklyTotal;
     }
 
+    getTrainingUnitSettings() {
+        const trainingUnitLengthLS = localStorage.getItem(LS_TRAINING_UNIT_LENGTH);
+        const trainingUnitLength = Number(trainingUnitLengthLS) || DEFAULT_TRAINING_UNIT_LENGTH;
+
+        const premisesDownThresholdLS = localStorage.getItem(LS_PREMISES_DOWN_THRESHOLD);
+        const premisesDownThreshold = Number(premisesDownThresholdLS) || DEFAULT_PREMISES_DOWN_THRESHOLD;
+
+        const premisesUpThresholdLS = localStorage.getItem(LS_PREMISES_UP_THRESHOLD);
+        const premisesUpThreshold = Number(premisesUpThresholdLS) || DEFAULT_PREMISES_UP_THRESHOLD;
+
+        return { trainingUnitLength, premisesUpThreshold, premisesDownThreshold };
+    }
+
     getTrainingUnit(type: EnumQuestionType) {
         const ls = localStorage.getItem(LS_TRAINING_UNIT + type);
         if (!ls) {
             return {
-                premises: questionTypeMinNumOfPremises[type],
+                premises: questionTypeSettingParams[type].minNumOfPremises,
                 right: 0,
                 timeout: 0,
                 wrong: 0
@@ -126,10 +139,8 @@ export class ProgressAndPerformanceService {
         }
     ) {
         const trainingUnit = this.getTrainingUnit(type);
-        if (opts.premises) {
-            opts.premises = Math.max(questionTypeMinNumOfPremises[type], opts.premises);
-        }
         trainingUnit.premises += opts.premises || 0;
+        trainingUnit.premises = Math.max(questionTypeSettingParams[type].minNumOfPremises, trainingUnit.premises);
         trainingUnit.right += opts.right || 0;
         trainingUnit.timeout += opts.timeout || 0;
         trainingUnit.wrong += opts.wrong || 0;

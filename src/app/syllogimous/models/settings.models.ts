@@ -1,6 +1,6 @@
 import { jsonCopy } from "src/app/utils/json";
 import { EnumQuestionType } from "../constants/question.constants";
-import { EnumQuestionGroup, COMPARISON_PARAMS, DIRECTION_PARAMS, ARRANGEMENT_PARAMS, BASIC_PARAMS, ANALOGY_PARAMS, BINARY_PARAMS, DEFAULT_ENABLED_FLAGS } from "../constants/settings.constants";
+import { EnumQuestionGroup, DEFAULT_ENABLED_FLAGS, questionTypeSettingParams } from "../constants/settings.constants";
 import { b2n } from "../utils/question.utils";
 
 const getNumOfEnabledQuestions = (settings: Settings, basicQuestionFilter: boolean) => {
@@ -111,27 +111,26 @@ export class Settings {
     constructor(settings?: Settings) {
         this.configSettings = settings;
         this.enabled = settings?.enabled || jsonCopy(DEFAULT_ENABLED_FLAGS);
-        //                                         Question Type            Default Config
-        this.initQuestionSettings(EnumQuestionType.Distinction,             BASIC_PARAMS);
-        this.initQuestionSettings(EnumQuestionType.ComparisonNumerical,     COMPARISON_PARAMS);
-        this.initQuestionSettings(EnumQuestionType.ComparisonChronological, COMPARISON_PARAMS);
-        this.initQuestionSettings(EnumQuestionType.Syllogism,               BASIC_PARAMS);
-        this.initQuestionSettings(EnumQuestionType.LinearArrangement,       ARRANGEMENT_PARAMS);
-        this.initQuestionSettings(EnumQuestionType.CircularArrangement,     ARRANGEMENT_PARAMS);
-        this.initQuestionSettings(EnumQuestionType.Direction,               DIRECTION_PARAMS);
-        this.initQuestionSettings(EnumQuestionType.Direction3DSpatial,      DIRECTION_PARAMS);
-        this.initQuestionSettings(EnumQuestionType.Direction3DTemporal,     DIRECTION_PARAMS);
-        this.initQuestionSettings(EnumQuestionType.Analogy,                 ANALOGY_PARAMS);
-        this.initQuestionSettings(EnumQuestionType.Binary,                  BINARY_PARAMS);
+        this.initQuestionSettings(EnumQuestionType.Distinction);
+        this.initQuestionSettings(EnumQuestionType.ComparisonNumerical);
+        this.initQuestionSettings(EnumQuestionType.ComparisonChronological);
+        this.initQuestionSettings(EnumQuestionType.Syllogism);
+        this.initQuestionSettings(EnumQuestionType.LinearArrangement);
+        this.initQuestionSettings(EnumQuestionType.CircularArrangement);
+        this.initQuestionSettings(EnumQuestionType.Direction);
+        this.initQuestionSettings(EnumQuestionType.Direction3DSpatial);
+        this.initQuestionSettings(EnumQuestionType.Direction3DTemporal);
+        this.initQuestionSettings(EnumQuestionType.Analogy);
+        this.initQuestionSettings(EnumQuestionType.Binary);
     }
 
-    initQuestionSettings(type: EnumQuestionType, defOpts: IQuestionSettingsParams) {
+    initQuestionSettings(type: EnumQuestionType) {
         if (!this.question) {
             this.question = {} as any;
         }
         this.question[type] = new QuestionSettings(
             // @ts-ignore
-            this.configSettings?.question[type] || defOpts
+            this.configSettings?.question[type] || questionTypeSettingParams[type]
         );
     }
 

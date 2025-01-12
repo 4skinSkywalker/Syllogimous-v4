@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { EnumScreens } from '../../constants/syllogimous.constants';
 import { FormControl } from '@angular/forms';
-import { DEFAULT_DAILY_GOAL, DEFAULT_PREMISES_DOWN_THRESHOLD, DEFAULT_PREMISES_UP_THRESHOLD, DEFAULT_TRAINING_UNIT_LENGTH, DEFAULT_WEEKLY_GOAL } from '../../services/progress-and-performance.service';
+import { DEFAULT_DAILY_GOAL, DEFAULT_PREMISES_DOWN_THRESHOLD, DEFAULT_PREMISES_UP_THRESHOLD, DEFAULT_TRAINING_UNIT_LENGTH, DEFAULT_WEEKLY_GOAL, ProgressAndPerformanceService } from '../../services/progress-and-performance.service';
 import { LS_DAILY_GOAL, LS_PREMISES_DOWN_THRESHOLD, LS_PREMISES_UP_THRESHOLD, LS_TRAINING_UNIT_LENGTH, LS_WEEKLY_GOAL } from '../../constants/local-storage.constants';
 
 @Component({
@@ -21,7 +21,10 @@ export class SettingsComponent {
     premisesUpThreshold = new FormControl(DEFAULT_PREMISES_UP_THRESHOLD);
     premisesDownThreshold = new FormControl(DEFAULT_PREMISES_DOWN_THRESHOLD);
 
-    constructor(public router: Router) {
+    constructor(
+        public router: Router,
+        private progressAndPerformanceService: ProgressAndPerformanceService
+    ) {
         // Playtime stuff     
         const daily = localStorage.getItem(LS_DAILY_GOAL);
         this.dailyProgressMinutes.setValue(Number(daily) || DEFAULT_DAILY_GOAL);
@@ -34,18 +37,17 @@ export class SettingsComponent {
             .subscribe(v => localStorage.setItem(LS_WEEKLY_GOAL, String(v)));
 
         // Training unit stuff
-        const trainingUnitLength = localStorage.getItem(LS_TRAINING_UNIT_LENGTH);
-        this.trainingUnitLength.setValue(Number(trainingUnitLength) || DEFAULT_TRAINING_UNIT_LENGTH);
+        const { trainingUnitLength, premisesUpThreshold, premisesDownThreshold } = this.progressAndPerformanceService.getTrainingUnitSettings();
+        
+        this.trainingUnitLength.setValue(trainingUnitLength);
         this.trainingUnitLength.valueChanges
             .subscribe(v => localStorage.setItem(LS_TRAINING_UNIT_LENGTH, String(v)));
 
-        const premisesUpThreshold = localStorage.getItem(LS_PREMISES_UP_THRESHOLD);
-        this.premisesUpThreshold.setValue(Number(premisesUpThreshold) || DEFAULT_PREMISES_UP_THRESHOLD);
+        this.premisesUpThreshold.setValue(premisesUpThreshold);
         this.premisesUpThreshold.valueChanges
             .subscribe(v => localStorage.setItem(LS_PREMISES_UP_THRESHOLD, String(v)));
 
-        const premisesDownThreshold = localStorage.getItem(LS_PREMISES_DOWN_THRESHOLD);
-        this.premisesDownThreshold.setValue(Number(premisesDownThreshold) || DEFAULT_PREMISES_DOWN_THRESHOLD);
+        this.premisesDownThreshold.setValue(premisesDownThreshold);
         this.premisesDownThreshold.valueChanges
             .subscribe(v => localStorage.setItem(LS_PREMISES_DOWN_THRESHOLD, String(v)));
     }
