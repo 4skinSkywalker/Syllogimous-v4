@@ -9,18 +9,23 @@
             </li>
     
             <li class="list-group-item flex-between">
-                <b>Right</b>
+                <b>Correct</b>
                 <div>{{ correctQs.length }}</div>
             </li>
-        
+
             <li class="list-group-item flex-between">
-                <b>Wrong</b>
+                <b>Timeout</b>
+                <div>{{ unansweredQs.length }}</div>
+            </li>
+
+            <li class="list-group-item flex-between">
+                <b>Incorrect</b>
                 <div>{{ incorrectQs.length }}</div>
             </li>
-        
+
             <li class="list-group-item flex-between">
-                <b>Timedout</b>
-                <div>{{ unansweredQs.length }}</div>
+                <b>Longest Streak</b>
+                <div>{{ longestStreak.length }}</div>
             </li>
         
             <li class="list-group-item flex-between">
@@ -29,17 +34,12 @@
             </li>
         
             <li class="list-group-item flex-between">
-                <b>Longest Streak</b>
-                <div>{{ longestStreak.length }}</div>
-            </li>
-
-            <li class="list-group-item flex-between">
-                <b>Time Played Today</b>
+                <b>Playtime Today</b>
                 <div>{{ formatTime(timePlayedToday) }}</div>
             </li>
 
             <li class="list-group-item flex-between">
-                <b>Time Played This Week</b>
+                <b>Playtime This Week</b>
                 <div>{{ formatTime(timePlayedThisWeek) }}</div>
             </li>
         </ul>
