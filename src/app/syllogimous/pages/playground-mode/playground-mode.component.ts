@@ -47,17 +47,20 @@ export class PlaygroundModeComponent {
         for (const [field, value] of this.genericEnables) {
             this.fields.push({
                 type: "checkbox",
-                label: decomposeCamelCase(field),
+                label: "Enable " + decomposeCamelCase(field),
                 field,
                 value,
             });
         }
 
         // Create controls for questions (enable checkbox and num of premises slider)
+        let isFirst = true;
         for (const [qt, qs] of this.questionControls) {
+            const filler = isFirst ? '<div class="pt-3"></div>' : "<div></div>";
+            isFirst = false;
             this.fields.push(
                 { 
-                    filler: "<div class='pt-4'></div>",
+                    filler,
                     field: "",
                     label: ""
                 },

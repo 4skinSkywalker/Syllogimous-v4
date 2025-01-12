@@ -12,24 +12,33 @@
 </ng-template>
 
 <app-card>
-    <div class="p-3" body style="max-width: 500px;">
-        <p class="lead mb-5">Playground Mode is a free-form mode where questions are just for practice, they don't count for points or statistics.</p>
-        
-        <div class="d-grid" style="gap: 1rem;">
-            <div>
-                <div class="small text-muted mb-2">Game Mode</div>
+    <div body class="d-grid py-3 px-md-3" style="gap: 2rem;">
+        <div class="text-center lead">Playground is a freestyle mode where questions are just for practice, they don't count for points or stats.</div>
+
+        <div class="card shadow-sm">
+            <div class="card-header py-2 small">Game mode</div>
+            <div class="card-body">
                 <app-game-mode-choose></app-game-mode-choose>
             </div>
+        </div>
 
-            <div>
-                <div class="small text-muted mb-2">Timer Mode</div>
+        <div class="card shadow-sm">
+            <div class="card-header py-2 small">Timer mode</div>
+            <div class="card-body">
                 <app-timer-choose></app-timer-choose>
             </div>
         </div>
 
-        <div class="mt-5">
-            <div class="small text-muted mb-2">Questions & Premises</div>
-            <app-dynamic-form gap="0.5rem" class="d-block mb-5" [fields]="fields" (formValueChanged)="formData = $event" [emitInitial]="true"></app-dynamic-form>
+        <div class="card shadow-sm">
+            <div class="card-header py-2 small">Questions and premises</div>
+            <div class="card-body">
+                <app-dynamic-form
+                    gap="0.5rem"
+                    [fields]="fields"
+                    (formValueChanged)="formData = $event"
+                    [emitInitial]="true"
+                ></app-dynamic-form>
+            </div>
         </div>
     </div>
 

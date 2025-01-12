@@ -1,5 +1,5 @@
 <app-card>
-    <div class="p-3" body>
+    <div body class="p-3">
         <div class="text-center" *ngIf="!questions.length">
             <h3 class="mb-3">Play to see something here</h3>
             <button class="btn btn-lg btn-primary" (click)="sylSrv.playArcadeMode()">
@@ -7,9 +7,9 @@
             </button>
         </div>
 
-        <div class="d-grid gap-4">
+        <div class="d-grid py-3" style="gap: 2rem;">
             <div
-                class="card"
+                class="card mx-md-3"
                 *ngFor="let q of questions"
                 [class.timeout]="q.userAnswer === undefined"
                 [class.correct]="q.userAnswer !== undefined && q.userAnswer === q.isValid"

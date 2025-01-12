@@ -57,3 +57,12 @@ html[darkmode] {
 div:has(> input[type="range"]) ~ .form-text.input-helper {
     margin-top: -0.5rem;
 }
+
+.section-minititle {
+    font-size: 0.9rem;
+    line-height: 1.1;
+    color: rgba(var(--app-gray_700), 1);
+    border-left: 0.25rem solid;
+    padding-left: 0.5rem;
+    margin-bottom: 0.5rem;
+}

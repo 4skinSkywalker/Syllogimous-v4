@@ -14,7 +14,6 @@ export class TiersMatrixComponent {
 
     tier = "--click below--";
     questionType = "--click below--";
-    numOfPremises = "--click below--";
     cellSelI = -1;
     cellSelJ = -1;
 
