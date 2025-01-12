@@ -3,7 +3,7 @@
         <router-outlet class="d-none"></router-outlet>
     </div>
 
-    <div *ngIf="!showBack; else showBack" footer class="playcard-toolbar">
+    <div *ngIf="!showBack; else showBackTemplate" footer class="playcard-toolbar">
         <div>
             <div class="form-check">
                 <input #dontShowAnymore class="form-check-input" type="checkbox" value="" id="dontShowAnymore">
@@ -19,7 +19,7 @@
             >Skip Tutorial</button>
         </div>
     </div>
-    <ng-template #showBack>
+    <ng-template #showBackTemplate>
         <div footer class="playcard-toolbar">
             <div>
                 <button

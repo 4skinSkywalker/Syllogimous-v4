@@ -19,6 +19,7 @@ export class TutorialComponent {
     ) {
         const navigation = this.router.getCurrentNavigation();
         this.showBack = navigation?.extras.state?.data?.showBack;
+        console.log("Show back", this.showBack);
     }
 
 }
