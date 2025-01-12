@@ -87,22 +87,19 @@
     </div>
 
     <div footer class="playcard-toolbar">
+        <button
+            class="btn btn-outline-primary"
+            (click)="router.navigate([EnumScreens.Start])"
+        >
+            <i class="bi bi-arrow-left"></i> Start
+        </button>
         <div>
             <button
-                class="btn btn-outline-primary"
-                (click)="router.navigate([EnumScreens.Start])"
+                class="btn btn-primary"
+                (click)="sylSrv.playArcadeMode()"
             >
-                <i class="bi bi-arrow-left"></i> Start
+                Play <i class="bi bi-play-fill"></i>
             </button>
-
-            <div>
-                <button
-                    class="btn btn-primary"
-                    (click)="sylSrv.playArcadeMode()"
-                >
-                    Play <i class="bi bi-play-fill"></i>
-                </button>
-            </div>
         </div>
     </div>
 </app-card>
