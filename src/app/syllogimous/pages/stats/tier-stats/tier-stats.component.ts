@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { EnumTiers } from 'src/app/syllogimous/constants/syllogimous.constants';
+import { EnumTiers, TIER_SCORE_RANGES } from 'src/app/syllogimous/constants/syllogimous.constants';
 import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.service';
 
 @Component({
@@ -8,8 +8,10 @@ import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.ser
     styleUrls: ['./tier-stats.component.css']
 })
 export class TierStatsComponent {
+    TIER_SCORE_RANGES = TIER_SCORE_RANGES;
     tiers = Object.values(EnumTiers);
     nextTier = EnumTiers.Savant;
+    pointsRemaining = 0;
 
     constructor(
         public sylSrv: SyllogimousService
@@ -18,5 +20,6 @@ export class TierStatsComponent {
     ngOnInit() {
         const currTierIdx = this.tiers.findIndex(tier => tier === this.sylSrv.tier);
         this.nextTier = this.tiers[currTierIdx + 1] || "--";
+        this.pointsRemaining = this.nextTier ? (TIER_SCORE_RANGES[this.nextTier].minScore - this.sylSrv.score) : 0;
     }
 }

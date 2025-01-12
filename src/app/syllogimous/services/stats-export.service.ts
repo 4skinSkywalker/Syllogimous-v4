@@ -38,15 +38,21 @@ export class StatsExportService {
             "User Answer",
             "Result",
             "Timer Setting",
+            "User Score",
             "Has Negation",
             "Has Meta Relations",
             "Negation Count",
             "Meta Relations Count"
         ].join(",") + "\n";
+
+        let lastArcadeScore = 0;
         
         // Add data rows
         questions.forEach((q, index) => {
             const timeTaken = (q.answeredAt - q.createdAt) / 1000;
+            if (!q.playgroundMode) {
+                lastArcadeScore = q.userScore;
+            }
             const row = [
                 index + 1,
                 this.formatDateTime(q.createdAt),
@@ -58,6 +64,7 @@ export class StatsExportService {
                 q.userAnswer === undefined ? '- - -' : q.userAnswer,
                 q.userAnswer === undefined ? 'Timeout' : (q.userAnswer === q.isValid ? 'Correct' : 'Incorrect'),
                 this.getTimerSetting(q.timerTypeOnAnswer),
+                q.playgroundMode ? lastArcadeScore : q.userScore,
                 q.negations > 0 ? 'Yes' : 'No',
                 q.metaRelations > 0 ? 'Yes' : 'No',
                 q.negations || 0,

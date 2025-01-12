@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LS_DAILY_GOAL, LS_DAILY_PROGRESS, LS_DONT_SHOW, LS_GAME_MODE, LS_HISTORY, LS_PG_SETTINGS, LS_TIER_IDX, LS_TIMER, LS_TRAINING_UNIT, LS_WEEKLY_GOAL } from 'src/app/syllogimous/constants/local-storage.constants';
+import { LS_DAILY_GOAL, LS_DAILY_PROGRESS, LS_DONT_SHOW, LS_GAME_MODE, LS_HISTORY, LS_PG_SETTINGS, LS_PREMISES_DOWN_THRESHOLD, LS_PREMISES_UP_THRESHOLD, LS_SCORE, LS_TIMER, LS_TRAINING_UNIT, LS_TRAINING_UNIT_LENGTH, LS_WEEKLY_GOAL } from 'src/app/syllogimous/constants/local-storage.constants';
 import { EnumQuestionType } from 'src/app/syllogimous/constants/question.constants';
 import { EnumScreens } from 'src/app/syllogimous/constants/syllogimous.constants';
 import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.service';
@@ -27,7 +27,6 @@ export class CardDropdownComponent {
     async resetGame(content: any) {
         await this.modalService.open(content, { centered: true }).result;
         
-        localStorage.removeItem(LS_TIER_IDX);
         localStorage.removeItem(LS_HISTORY);
         localStorage.removeItem(LS_TIMER);
         localStorage.removeItem(LS_GAME_MODE);
@@ -35,6 +34,10 @@ export class CardDropdownComponent {
         localStorage.removeItem(LS_PG_SETTINGS);
         localStorage.removeItem(LS_DAILY_GOAL);
         localStorage.removeItem(LS_WEEKLY_GOAL);
+        localStorage.removeItem(LS_TRAINING_UNIT_LENGTH);
+        localStorage.removeItem(LS_PREMISES_UP_THRESHOLD);
+        localStorage.removeItem(LS_PREMISES_DOWN_THRESHOLD);
+        localStorage.removeItem(LS_SCORE);
 
         for (const screen of Object.values(EnumScreens)) {
             localStorage.removeItem(LS_DONT_SHOW + screen);

@@ -1,11 +1,11 @@
 <app-card>
-    <div body style="min-width: 320px; padding-top: 68px;">
+    <div body style="min-width: 320px; padding-top: 3rem;">
         <app-progress-and-performance></app-progress-and-performance>
         
         <ul class="list-group mb-4">
             <li class="list-group-item flex-between">
                 <b>Tier</b>
-                <div>{{ sylSrv.tier }}</div>
+                <div>{{ sylSrv.tier }} {{ sylSrv.score }} pts <small class="text-muted">(next {{nextTier}}<i [ngbTooltip]="pointsRemaining + ' pts left to this next level'" class="bi bi-info-circle ms-1"></i>)</small></div>
             </li>
     
             <li class="list-group-item flex-between">
@@ -53,7 +53,7 @@
 
     <div footer class="text-center">
         <button class="btn btn-lg btn-primary" (click)="sylSrv.playArcadeMode()">
-            <i class="bi bi-play-fill"></i> Play
+            Play <i class="bi bi-play-fill"></i>
         </button>
     </div>
 </app-card>

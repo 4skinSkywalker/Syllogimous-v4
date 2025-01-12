@@ -27,7 +27,5 @@ export class TiersMatrixComponent {
         this.cellSelJ = j;
         this.tier = ORDERED_TIERS.find((_, _i) => _i === i) || "";
         this.questionType = ORDERED_QUESTION_TYPES.find((_, _j) => _j === j) || "";
-        const ps = TIERS_MATRIX[i][j];
-        this.numOfPremises = (ps === -1) ? 'Disabled': String(ps);
     }
 }

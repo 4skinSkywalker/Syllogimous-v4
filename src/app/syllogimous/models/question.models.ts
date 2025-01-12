@@ -42,6 +42,7 @@ export class Question {
     negations = 0;
     metaRelations = 0;
     timerTypeOnAnswer = "0";
+    userScore = 0;
     playgroundMode = false;
     // Technical fields
     rule = "";

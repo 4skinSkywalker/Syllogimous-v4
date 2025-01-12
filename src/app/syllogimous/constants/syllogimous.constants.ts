@@ -1,6 +1,8 @@
 import { Settings } from "../models/settings.models";
 import { EnumQuestionType } from "./question.constants";
 
+export const INF = Infinity;
+
 export enum EnumScreens {
     Intro = "Intro",
     Start = "Start",
@@ -52,7 +54,43 @@ export const TIER_COLORS: Record<EnumTiers, { bgColor: string, textColor: string
     [EnumTiers.Transcendent]:   { bgColor: "#4B0082", textColor: "#F0F8FF" },  // Indigo with Alice Blue
 };
 
-export const ORDERED_TIERS = Object.keys(TIER_COLORS) as EnumTiers[];
+export const TIER_SCORE_RANGES: Record<EnumTiers, { minScore: number, maxScore: number }> = {
+    [EnumTiers.Adept]:          { minScore: -INF, maxScore:  249 },
+    [EnumTiers.Scholar]:        { minScore:  250, maxScore:  499 },
+    [EnumTiers.Savant]:         { minScore:  500, maxScore:  749 },
+    [EnumTiers.Expert]:         { minScore:  750, maxScore:  999 },
+    [EnumTiers.Mastermind]:     { minScore: 1000, maxScore: 1249 },
+    [EnumTiers.Visionary]:      { minScore: 1250, maxScore: 1499 },
+    [EnumTiers.Genius]:         { minScore: 1500, maxScore: 1749 },
+    [EnumTiers.Virtuoso]:       { minScore: 1750, maxScore: 1999 },
+    [EnumTiers.Luminary]:       { minScore: 2000, maxScore: 2249 },
+    [EnumTiers.Prodigy]:        { minScore: 2250, maxScore: 2499 },
+    [EnumTiers.Oracle]:         { minScore: 2500, maxScore: 2749 },
+    [EnumTiers.Sage]:           { minScore: 2750, maxScore: 2999 },
+    [EnumTiers.Philosopher]:    { minScore: 3000, maxScore: 3249 },
+    [EnumTiers.Mystic]:         { minScore: 3250, maxScore: 3499 },
+    [EnumTiers.Transcendent]:   { minScore: 3500, maxScore:  INF },
+};
+
+export const TIER_SCORE_ADJUSTMENTS: Record<EnumTiers, { increment: number, decrement: number }> = {
+    [EnumTiers.Adept]:          { increment: 10, decrement: 10 },
+    [EnumTiers.Scholar]:        { increment: 10, decrement: 10 },
+    [EnumTiers.Savant]:         { increment: 10, decrement: 10 },
+    [EnumTiers.Expert]:         { increment: 10, decrement: 10 },
+    [EnumTiers.Mastermind]:     { increment: 10, decrement: 10 },
+    [EnumTiers.Visionary]:      { increment: 10, decrement: 10 },
+    [EnumTiers.Genius]:         { increment: 10, decrement: 10 },
+    [EnumTiers.Virtuoso]:       { increment: 10, decrement: 10 },
+    [EnumTiers.Luminary]:       { increment: 10, decrement: 10 },
+    [EnumTiers.Prodigy]:        { increment: 10, decrement: 10 },
+    [EnumTiers.Oracle]:         { increment: 10, decrement: 10 },
+    [EnumTiers.Sage]:           { increment: 10, decrement: 10 },
+    [EnumTiers.Philosopher]:    { increment: 10, decrement: 10 },
+    [EnumTiers.Mystic]:         { increment: 10, decrement: 10 },
+    [EnumTiers.Transcendent]:   { increment: 10, decrement: 10 },
+};
+
+export const ORDERED_TIERS = Object.keys(TIER_SCORE_RANGES) as EnumTiers[];
 
 export const ORDERED_QUESTION_TYPES = [ 
     EnumQuestionType.Distinction,
@@ -68,23 +106,23 @@ export const ORDERED_QUESTION_TYPES = [
     EnumQuestionType.Binary,
 ];
 
-/** The following is a matrix that represents configurations of question types over tiers */
-export const TIERS_MATRIX: Record<number, [ number, number, number, number, number, number, number, number, number, number, number ]> = {
-     0: [  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1 ],
-     1: [  3,  3,  3,  2, -1, -1, -1, -1, -1, -1, -1 ],
-     2: [  4,  4,  4,  3,  2, -1, -1, -1, -1, -1, -1 ],
-     3: [  5,  5,  5,  4,  3,  2, -1, -1, -1, -1, -1 ],
-     4: [  6,  6,  6,  5,  4,  3,  2, -1, -1, -1, -1 ],
-     5: [  7,  7,  7,  6,  5,  4,  3,  2,  2,  3, -1 ],
-     6: [  8,  8,  8,  7,  6,  5,  4,  3,  3,  4,  4 ],
-     7: [  9,  9,  9,  8,  7,  6,  5,  4,  4,  5,  5 ],
-     8: [ 10, 10, 10,  9,  8,  7,  6,  5,  5,  6,  6 ],
-     9: [ 11, 11, 11, 10,  9,  8,  7,  6,  6,  7,  7 ],
-    10: [ 12, 12, 12, 11, 10,  9,  8,  7,  7,  8,  8 ],
-    11: [ 13, 13, 13, 12, 11, 10,  9,  8,  8,  9,  9 ],
-    12: [ 14, 14, 14, 13, 12, 11, 10,  9,  9, 10, 10 ],
-    13: [ 15, 15, 15, 14, 13, 12, 11, 10, 10, 11, 11 ],
-    14: [ 16, 16, 16, 15, 14, 13, 12, 11, 11, 12, 12 ],
+export type boolish = 0 | 1;
+export const TIERS_MATRIX: Record<number, [ boolish, boolish, boolish, boolish, boolish, boolish, boolish, boolish, boolish, boolish, boolish ]> = {
+     0: [  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0 ],
+     1: [  1,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0 ],
+     2: [  1,  1,  1,  1,  1,  0,  0,  0,  0,  0,  0 ],
+     3: [  1,  1,  1,  1,  1,  1,  0,  0,  0,  0,  0 ],
+     4: [  1,  1,  1,  1,  1,  1,  1,  0,  0,  0,  0 ],
+     5: [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0 ],
+     6: [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+     7: [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+     8: [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+     9: [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+    10: [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+    11: [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+    12: [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+    13: [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+    14: [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
 };
 
 /** Given an EnumTiers value construct a Settings instance */
@@ -95,9 +133,8 @@ export function getSettingsFromTier(tier: EnumTiers) {
     settings.setEnable("meta", false);
     for (let i = 0; i < TIERS_MATRIX[tierIdx].length; i++) {
         const questionType = ORDERED_QUESTION_TYPES[i];
-        const numOfPremises = TIERS_MATRIX[tierIdx][i];
-        const activeQuestion = numOfPremises > -1 ? true : false;
-        settings.setQuestionSettings(questionType, activeQuestion, numOfPremises);
+        const isActive = !!TIERS_MATRIX[tierIdx][i];
+        settings.setQuestionSettings(questionType, isActive, -1);
     }
     if (tierIdx > 5) {
         settings.setEnable("negation", true);
@@ -105,7 +142,5 @@ export function getSettingsFromTier(tier: EnumTiers) {
     if (tierIdx > 6) {
         settings.setEnable("meta", true);
     }
-    // console.log(tier, "matrix row", TIERS_MATRIX[tierIdx]);
-    // console.log(tier, "settings", settings);
     return settings;
 }
