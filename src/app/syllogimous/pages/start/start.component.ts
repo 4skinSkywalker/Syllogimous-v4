@@ -43,7 +43,7 @@ export class StartComponent {
         this.nextTier = this.tiers[currTierIdx + 1] || "--";
         this.pointsRemaining = this.nextTier ? (TIER_SCORE_RANGES[this.nextTier as EnumTiers].minScore - this.sylSrv.score) : 0;
 
-        this.questions = this.sylSrv.questionsFromLS;
+        this.questions = this.sylSrv.questions;
 
         this.correctQs = this.questions.filter(q => q.userAnswer !== undefined && q.isValid === q.userAnswer);
         this.incorrectQs = this.questions.filter(q => q.userAnswer !== undefined && q.isValid !== q.userAnswer);

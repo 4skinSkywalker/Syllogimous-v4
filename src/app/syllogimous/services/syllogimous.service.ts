@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { IArrangementPremise, IDirection3DProposition, IDirectionProposition, Question } from "../models/question.models";
 import { coinFlip, getCircularWays, getLinearWays, getRandomRuleInvalid, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogism, getSymbols, isPremiseLikeConclusion, createMetaRelationships, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions } from "../utils/question.utils";
 import { NUMBER_WORDS } from "../constants/question.constants";
-import { EnumScreens, EnumTiers, getSettingsFromTier, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES } from "../constants/syllogimous.constants";
+import { EnumScreens, EnumTiers, ORDERED_QUESTION_TYPES, ORDERED_TIERS, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES, TIERS_MATRIX } from "../constants/syllogimous.constants";
 import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local-storage.constants";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ModalLevelChangeComponent } from "../components/modal-level-change/modal-level-change.component";
@@ -43,11 +43,10 @@ export class SyllogimousService {
     }
 
     get settings() {
-        // Playground settings override arcade settings
-        return this.playgroundSettings || getSettingsFromTier(this.tier);
+        return this.playgroundSettings || this.getSettingsFromTier(this.tier);
     }
 
-    get questionsFromLS() {
+    get questions() {
         let questions: Question[] = [];
         const history = localStorage.getItem(LS_HISTORY);
         if (history) {
@@ -63,7 +62,6 @@ export class SyllogimousService {
         private toaster: ToastService
     ) {
         this.loadScore();
-        this.loadHistory();
         (window as any).syllogimous = this;
     }
 
@@ -74,16 +72,34 @@ export class SyllogimousService {
         }
     }
 
-    loadHistory() {
-        const lsHistory = localStorage.getItem(LS_HISTORY);
-        if (lsHistory) {
-            this.history = JSON.parse(lsHistory);
-        }
+    pushIntoHistory(question: Question) {
+        localStorage.setItem(LS_HISTORY, JSON.stringify([ question, ...this.questions ]));
     }
 
-    pushIntoHistory(question: Question) {
-        this.history = [ question, ...this.history ];
-        localStorage.setItem(LS_HISTORY, JSON.stringify(this.history));
+    /** Given an EnumTiers value construct a Settings instance */
+    getSettingsFromTier(tier: EnumTiers) {
+        const tierIdx = ORDERED_TIERS.findIndex(_tier => _tier === tier);
+        const settings = new Settings();
+
+        settings.setEnable("negation", false);
+        settings.setEnable("meta", false);
+
+        for (let i = 0; i < TIERS_MATRIX[tierIdx].length; i++) {
+            const questionType = ORDERED_QUESTION_TYPES[i];
+            const isActive = !!TIERS_MATRIX[tierIdx][i];
+            const numOfPremises = this.progressAndPerformanceService.getTrainingUnit(questionType).premises;
+            settings.setQuestionSettings(questionType, isActive, numOfPremises);
+        }
+
+        if (tierIdx > 5) {
+            settings.setEnable("negation", true);
+        }
+
+        if (tierIdx > 6) {
+            settings.setEnable("meta", true);
+        }
+
+        return settings;
     }
 
     /** Given question type and number of premises, returns a question creator function */
@@ -107,6 +123,8 @@ export class SyllogimousService {
     createRandomQuestion(numOfPremises?: number, basic?: boolean) {
         const settings = this.settings;
         console.log("Settings", settings);
+
+        console.log("Training units", this.progressAndPerformanceService.getAllTrainingUnits());
 
         const typeSettingTuples =  Object.entries(settings.question) as [EnumQuestionType, QuestionSettings][];
         const getQuestionGroup = (qg?: EnumQuestionGroup) => typeSettingTuples.filter(([qt, qs]) => qs.group == qg);
@@ -140,7 +158,7 @@ export class SyllogimousService {
         }
     
         const randomQuestion = pickUniqueItems(choices, 1).picked[0]();
-        console.log("Random question", randomQuestion);
+        // console.log("Random question", randomQuestion);
         return randomQuestion;
     }
 
@@ -195,8 +213,6 @@ export class SyllogimousService {
             } else {
                 this.progressAndPerformanceService.updateTrainingUnit(type, { wrong: 1 });
             }
-
-            console.log("Training units", this.progressAndPerformanceService.getAllTrainingUnits());
             
             const { right, timeout, wrong } = this.progressAndPerformanceService.calcTrainingUnitPercentages(type);
             const { trainingUnitLength, premisesUpThreshold, premisesDownThreshold } = this.progressAndPerformanceService.getTrainingUnitSettings();
@@ -236,7 +252,7 @@ export class SyllogimousService {
 
                 if (ds > 0) {
                     modalRef.componentInstance.title = "Congratulations<br>You've Leveled Up!";
-                    modalRef.componentInstance.content = "Your hard work is paying off.<br>Keep going to unlock more features and rewards!";
+                    modalRef.componentInstance.content = "Your hard work is paying off.<br>Keep going to unlock more question types and points!";
                 } else if (ds < 0) {
                     modalRef.componentInstance.title = "Level Down<br>Let's Regroup!";
                     modalRef.componentInstance.content = "Take this as a learning step.<br>Refocus your efforts and you’ll be back on top in no time!";
@@ -255,7 +271,7 @@ export class SyllogimousService {
     }
 
     createSyllogism(numOfPremises: number) {
-        console.log("createSyllogism");
+        // console.log("createSyllogism");
 
         const type = EnumQuestionType.Syllogism;
         const settings = this.settings;
@@ -299,7 +315,7 @@ export class SyllogimousService {
     }
 
     createDistinction(numOfPremises: number) {
-        console.log("createDistinction");
+        // console.log("createDistinction");
 
         const type = EnumQuestionType.Distinction;
         const settings = this.settings;
@@ -358,7 +374,7 @@ export class SyllogimousService {
     }
 
     createComparison(numOfPremises: number, type: EnumQuestionType.ComparisonNumerical | EnumQuestionType.ComparisonChronological) {
-        console.log("createComparison:", type);
+        // console.log("createComparison:", type);
         
         const settings = this.settings;
 
@@ -410,7 +426,7 @@ export class SyllogimousService {
     }
 
     createDirection(numOfPremises: number): Question {
-        console.log("createDirection");
+        // console.log("createDirection");
 
         const type = EnumQuestionType.Direction;
         const settings = this.settings;
@@ -448,7 +464,7 @@ export class SyllogimousService {
             pool = remaining;
         }
         question.coords = coords;
-        console.log("Coords", coords);
+        // console.log("Coords", coords);
 
         // Create pairs of subjects
         let copyOfCoords = [...coords];
@@ -492,7 +508,7 @@ export class SyllogimousService {
         }
 
         pairs.push([coorda, coordb]);
-        console.log("Pairs", pairs);
+        // console.log("Pairs", pairs);
 
         // Calculate cardinals and relationship of each pair
         const premises: IDirectionProposition[] = [];
@@ -549,32 +565,32 @@ export class SyllogimousService {
                 uid: guid()
             })
         }
-        console.log("Premises", premises);
+        // console.log("Premises", premises);
 
         // Extract the last premise and say it's the conclusion
         // Flip a coin and either keep or tweak the conclusion
         let conclusion = premises.pop()!;
         const isValid = coinFlip();
         if (isValid) {
-            console.log("Keep conclusion");
+            // console.log("Keep conclusion");
             if (coinFlip() && conclusion.cardinals.length === 2) {
-                console.log("One cardinal got plucked");
+                // console.log("One cardinal got plucked");
                 conclusion.cardinals = [ pickUniqueItems(conclusion.cardinals, 1).picked[0] ];
             }
         } else {
-            console.log("Tweak conclusion");
+            // console.log("Tweak conclusion");
             const rndIdx = Math.floor(Math.random()*conclusion.cardinals.length);
             if (coinFlip()) {
-                console.log("Add one to one cardinal");
+                // console.log("Add one to one cardinal");
                 conclusion.cardinals[rndIdx][1]++;
             } else {
-                console.log("One cardinal flipped");
+                // console.log("One cardinal flipped");
                 conclusion.cardinals[rndIdx][0] = cardinalOppositeMap[conclusion.cardinals[rndIdx][0]];
             }
         }
         // Regenerate conclusion relationship
         conclusion.relationship = getRelationship(conclusion.cardinals);
-        console.log("Conclusion", conclusion);
+        // console.log("Conclusion", conclusion);
 
         const negateRelationship = (relationship: string) => {
             return relationship.replaceAll(/(north|south|east|west)/gi, substr => {
@@ -602,7 +618,7 @@ export class SyllogimousService {
     }
 
     createDirection3D(numOfPremises: number, type: EnumQuestionType.Direction3DSpatial | EnumQuestionType.Direction3DTemporal): Question {
-        console.log("createDirection3D");
+        // console.log("createDirection3D");
         const settings = this.settings;
 
         if (!canGenerateQuestion(type, numOfPremises, settings)) {
@@ -652,7 +668,7 @@ export class SyllogimousService {
             pool = remaining;
         }
         question.coords3D = coords;
-        console.log("Coords", coords);
+        // console.log("Coords", coords);
 
         // Create pairs of subjects
         let copyOfCoords = [...coords];
@@ -696,7 +712,7 @@ export class SyllogimousService {
         }
 
         pairs.push([coorda, coordb]);
-        console.log("Pairs", pairs);
+        // console.log("Pairs", pairs);
 
         // Calculate relationship of each pair
         const premises: IDirection3DProposition[] = [];
@@ -790,23 +806,23 @@ export class SyllogimousService {
                 uid: guid()
             })
         }
-        console.log("Premises", premises);
+        // console.log("Premises", premises);
 
         // Extract the last premise and say it's the conclusion
         // Flip a coin and either keep or tweak the conclusion
         let conclusion = premises.pop()!;
         const isValid = coinFlip();
         if (isValid) {
-            console.log("Keep conclusion");
+            // console.log("Keep conclusion");
             if (coinFlip() && conclusion.cardinals.length === 2) {
-                console.log("One cardinal got plucked");
+                // console.log("One cardinal got plucked");
                 conclusion.cardinals = [ pickUniqueItems(conclusion.cardinals, 1).picked[0] ];
             }
         } else {
-            console.log("Tweak conclusion");
+            // console.log("Tweak conclusion");
 
             if (coinFlip()) {
-                console.log("Invert trasversal difference");
+                // console.log("Invert trasversal difference");
                 conclusion.trasversalDifference = conclusion.trasversalDifference * -1;
             }
             
@@ -816,10 +832,10 @@ export class SyllogimousService {
                 conclusion.cardinals[rndIdx][0] = pickUniqueItems(rndDir, 1).picked[0];
             }
             if (coinFlip()) {
-                console.log("Add one to one cardinal");
+                // console.log("Add one to one cardinal");
                 conclusion.cardinals[rndIdx][1]++;
             } else {
-                console.log("One cardinal flipped");
+                // console.log("One cardinal flipped");
                 conclusion.cardinals[rndIdx][0] = cardinalOppositeMap[conclusion.cardinals[rndIdx][0]];
             }
         }
@@ -829,7 +845,7 @@ export class SyllogimousService {
         const cardinalRelationship = getCardinalRelationship(conclusion.cardinals);
         const connector = (cardinalRelationship === SAME_CARDINAL_POSITION) ? " and " : (cardinalRelationship.indexOf(" and ") > -1) ? ", " : " and ";
         conclusion.relationship = trasversalRelationship + connector + cardinalRelationship;
-        console.log("Conclusion", conclusion);
+        // console.log("Conclusion", conclusion);
 
         const negateRelationship = (relationship: string) => {
             return relationship
@@ -865,7 +881,7 @@ export class SyllogimousService {
     }
 
     createArrangement(numOfPremises: number, type: EnumQuestionType.LinearArrangement | EnumQuestionType.CircularArrangement) {
-        console.log("createArrangement:", type);
+        // console.log("createArrangement:", type);
 
         const settings = this.settings;
 
@@ -974,7 +990,7 @@ export class SyllogimousService {
     }
 
     createAnalogy(length: number) {
-        console.log("createAnalogy");
+        // console.log("createAnalogy");
 
         const topType = EnumQuestionType.Analogy;
         const settings = this.settings;
@@ -1185,7 +1201,7 @@ export class SyllogimousService {
     }
 
     createBinary(numOfPremises: number) {
-        console.log("createBinary");
+        // console.log("createBinary");
 
         const topType = EnumQuestionType.Binary;
         const settings = this.settings;

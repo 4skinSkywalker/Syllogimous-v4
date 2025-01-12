@@ -17,7 +17,7 @@ export class ErrorAnalysisComponent {
     ) {}
 
     ngOnInit() {
-        this.questions = this.sylSrv.questionsFromLS;
+        this.questions = this.sylSrv.questions;
 
         const typeMistakesCount: Record<string, number> = {};
         this.questions

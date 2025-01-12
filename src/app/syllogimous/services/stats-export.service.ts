@@ -23,7 +23,7 @@ export class StatsExportService {
     }
 
     exportStats() {
-        const questions = [...this.sylSrv.questionsFromLS]
+        const questions = [...this.sylSrv.questions]
             .sort((a, b) => a.createdAt - b.createdAt);
             
         // Create CSV header

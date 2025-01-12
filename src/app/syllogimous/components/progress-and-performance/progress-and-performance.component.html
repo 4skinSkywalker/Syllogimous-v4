@@ -14,7 +14,7 @@
                 [class.progress-10]="dailyProgressPercentage > 90"
                 [style.width]="dailyProgressPercentage + '%'"
             >
-                <span *ngIf="dailyProgressPercentage > 5" class="me-2">{{dailyProgressPercentage}} %</span>
+                <span class="me-2">{{dailyProgressPercentage}} %</span>
                 <span class="progress-label">Daily time goal</span>
             </div>
         </div>
@@ -33,12 +33,12 @@
                 [class.progress-10]="weeklyProgressPercentage > 90"
                 [style.width]="weeklyProgressPercentage + '%'"
             >
-                <span *ngIf="weeklyProgressPercentage > 5" class="me-2">{{weeklyProgressPercentage}} %</span>
+                <span class="me-2">{{weeklyProgressPercentage}} %</span>
                 <span class="progress-label">Weekly time goal</span>
             </div>
         </div>
 
-        <div *ngIf="!playgroundMode && feedbackPage" class="progress progressbar partials">
+        <div *ngIf="!playgroundMode && feedbackPage && debug" class="progress progressbar partials">
             <div
                 class="progress-bar text-center"
                 [style.width]="trainingUnitPercentage.percentageRight + '%'"

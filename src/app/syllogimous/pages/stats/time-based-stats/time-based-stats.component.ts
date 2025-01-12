@@ -21,7 +21,7 @@ export class TimeBasedStatsComponent {
     constructor(
         private sylSrv: SyllogimousService
     ) {
-        this.questions = this.sylSrv.questionsFromLS;
+        this.questions = this.sylSrv.questions;
         this.timeBasedStats = {};
 
         for (const q of this.questions) {

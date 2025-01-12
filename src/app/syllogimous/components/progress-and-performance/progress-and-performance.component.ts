@@ -10,6 +10,7 @@ import { SyllogimousService } from '../../services/syllogimous.service';
 export class DailyProgressComponent {
     @Input("feedbackPage") feedbackPage = false;
     @Input("playgroundMode") playgroundMode = false;
+    @Input("debug") debug = false;
 
     dailyProgressPercentage = 0;
     weeklyProgressPercentage = 0;

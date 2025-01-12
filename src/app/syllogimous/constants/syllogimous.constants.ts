@@ -1,4 +1,3 @@
-import { Settings } from "../models/settings.models";
 import { EnumQuestionType } from "./question.constants";
 
 export const INF = Infinity;
@@ -106,8 +105,7 @@ export const ORDERED_QUESTION_TYPES = [
     EnumQuestionType.Binary,
 ];
 
-export type boolish = 0 | 1;
-export const TIERS_MATRIX: Record<number, [ boolish, boolish, boolish, boolish, boolish, boolish, boolish, boolish, boolish, boolish, boolish ]> = {
+export const TIERS_MATRIX: Record<number, [ 0|1, 0|1, 0|1, 0|1, 0|1, 0|1, 0|1, 0|1, 0|1, 0|1, 0|1 ]> = {
      0: [  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0 ],
      1: [  1,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0 ],
      2: [  1,  1,  1,  1,  1,  0,  0,  0,  0,  0,  0 ],
@@ -124,23 +122,3 @@ export const TIERS_MATRIX: Record<number, [ boolish, boolish, boolish, boolish, 
     13: [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
     14: [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
 };
-
-/** Given an EnumTiers value construct a Settings instance */
-export function getSettingsFromTier(tier: EnumTiers) {
-    const tierIdx = ORDERED_TIERS.findIndex(_tier => _tier === tier);
-    const settings = new Settings();
-    settings.setEnable("negation", false);
-    settings.setEnable("meta", false);
-    for (let i = 0; i < TIERS_MATRIX[tierIdx].length; i++) {
-        const questionType = ORDERED_QUESTION_TYPES[i];
-        const isActive = !!TIERS_MATRIX[tierIdx][i];
-        settings.setQuestionSettings(questionType, isActive, -1);
-    }
-    if (tierIdx > 5) {
-        settings.setEnable("negation", true);
-    }
-    if (tierIdx > 6) {
-        settings.setEnable("meta", true);
-    }
-    return settings;
-}

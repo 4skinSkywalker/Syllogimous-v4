@@ -20,7 +20,7 @@ export class AccuracyStatsComponent {
     ) {}
 
     ngOnInit() {
-        this.questions = this.sylSrv.questionsFromLS;
+        this.questions = this.sylSrv.questions;
 
         this.correctQs = this.questions.filter(q => q.userAnswer !== undefined && q.isValid === q.userAnswer);
         this.incorrectQs = this.questions.filter(q => q.userAnswer !== undefined && q.isValid !== q.userAnswer);

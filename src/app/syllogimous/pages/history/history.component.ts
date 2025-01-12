@@ -23,7 +23,7 @@ export class HistoryComponent {
     ) { }
 
     ngOnInit() {
-        this.allQuestions = this.sylSrv.questionsFromLS;
+        this.allQuestions = this.sylSrv.questions;
         this.loadMoreQuestions();
     }
 
