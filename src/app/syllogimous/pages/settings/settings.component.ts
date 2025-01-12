@@ -4,6 +4,7 @@ import { EnumScreens } from '../../constants/syllogimous.constants';
 import { FormControl } from '@angular/forms';
 import { DEFAULT_DAILY_GOAL, DEFAULT_PREMISES_DOWN_THRESHOLD, DEFAULT_PREMISES_UP_THRESHOLD, DEFAULT_TRAINING_UNIT_LENGTH, DEFAULT_WEEKLY_GOAL, ProgressAndPerformanceService } from '../../services/progress-and-performance.service';
 import { LS_DAILY_GOAL, LS_PREMISES_DOWN_THRESHOLD, LS_PREMISES_UP_THRESHOLD, LS_TRAINING_UNIT_LENGTH, LS_WEEKLY_GOAL } from '../../constants/local-storage.constants';
+import { SyllogimousService } from '../../services/syllogimous.service';
 
 @Component({
     selector: 'app-settings',
@@ -23,6 +24,7 @@ export class SettingsComponent {
 
     constructor(
         public router: Router,
+        public sylSrv: SyllogimousService,
         private progressAndPerformanceService: ProgressAndPerformanceService
     ) {
         // Playtime stuff     
