@@ -49,3 +49,11 @@ html[darkmode] {
 .opacity-80 { opacity: 0.8; }
 .opacity-90 { opacity: 0.9; }
 .opacity-100 { opacity: 1; }
+
+.form-label:has(+ input[type="range"]) {
+    margin-bottom: 0.25rem;
+}
+
+div:has(> input[type="range"]) ~ .form-text.input-helper {
+    margin-top: -0.5rem;
+}

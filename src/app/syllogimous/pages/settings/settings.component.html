@@ -1,6 +1,6 @@
 <app-card>
     <div body class="d-grid" style="gap: 3rem;">
-        <div class="d-grid" style="gap: 1.5rem;">
+        <div class="d-grid" style="gap: 1rem;">
             <div>
                 <div class="small text-muted mb-2">Game mode</div>
                 <app-game-mode-choose></app-game-mode-choose>
@@ -52,15 +52,16 @@
                     [ngControl]="trainingUnitLength"
                     [noParenthesisValue]="true"
                 ></app-input>
-    
+
                 <app-input
                     type="range"
                     min="0"
                     max="1"
                     step="0.05"
-                    name="levelUpThreshold"
-                    [label]="'Level up threshold ' + ((levelUpThreshold.value || 0)*100) + '%'"
-                    [ngControl]="levelUpThreshold"
+                    helper="Percentage of incorrect answers at which premises will decrease"
+                    name="premisesDownThreshold"
+                    [label]="'Premises decrease threshold: ' + Math.round((premisesDownThreshold.value || 0)*100) + '%'"
+                    [ngControl]="premisesDownThreshold"
                     [noParenthesisValue]="true"
                 ></app-input>
     
@@ -69,9 +70,10 @@
                     min="0"
                     max="1"
                     step="0.05"
-                    name="levelDownThreshold"
-                    [label]="'Level down threshold ' + ((levelDownThreshold.value || 0)*100) + '%'"
-                    [ngControl]="levelDownThreshold"
+                    helper="Percentage of correct answers required for premises to increase"
+                    name="premisesUpThreshold"
+                    [label]="'Premises increase threshold: ' + Math.round((premisesUpThreshold.value || 0)*100) + '%'"
+                    [ngControl]="premisesUpThreshold"
                     [noParenthesisValue]="true"
                 ></app-input>
             </div>
@@ -84,7 +86,7 @@
                 class="btn btn-outline-primary"
                 (click)="router.navigate([EnumScreens.Start])"
             >
-                <i class="bi bi-arrow-left"></i> Go to Start
+                <i class="bi bi-arrow-left"></i> Start
             </button>
         </div>
     </div>

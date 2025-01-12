@@ -1,0 +1,71 @@
+<div class="progressbars-wrap">
+    <div class="progressbars">
+        <div class="progress progressbar">
+            <div
+                class="progress-bar progress-1 position-relative overflow-visible"
+                [class.progress-2]="dailyProgressPercentage > 10"
+                [class.progress-3]="dailyProgressPercentage > 20"
+                [class.progress-4]="dailyProgressPercentage > 30"
+                [class.progress-5]="dailyProgressPercentage > 40"
+                [class.progress-6]="dailyProgressPercentage > 50"
+                [class.progress-7]="dailyProgressPercentage > 60"
+                [class.progress-8]="dailyProgressPercentage > 70"
+                [class.progress-9]="dailyProgressPercentage > 80"
+                [class.progress-10]="dailyProgressPercentage > 90"
+                [style.width]="dailyProgressPercentage + '%'"
+            >
+                <span *ngIf="dailyProgressPercentage > 5" class="me-2">{{dailyProgressPercentage}} %</span>
+                <span class="progress-label">Daily time goal</span>
+            </div>
+        </div>
+    
+        <div *ngIf="!feedbackPage" class="progress progressbar">
+            <div
+                class="progress-bar progress-1 position-relative overflow-visible"
+                [class.progress-2]="weeklyProgressPercentage > 10"
+                [class.progress-3]="weeklyProgressPercentage > 20"
+                [class.progress-4]="weeklyProgressPercentage > 30"
+                [class.progress-5]="weeklyProgressPercentage > 40"
+                [class.progress-6]="weeklyProgressPercentage > 50"
+                [class.progress-7]="weeklyProgressPercentage > 60"
+                [class.progress-8]="weeklyProgressPercentage > 70"
+                [class.progress-9]="weeklyProgressPercentage > 80"
+                [class.progress-10]="weeklyProgressPercentage > 90"
+                [style.width]="weeklyProgressPercentage + '%'"
+            >
+                <span *ngIf="weeklyProgressPercentage > 5" class="me-2">{{weeklyProgressPercentage}} %</span>
+                <span class="progress-label">Weekly time goal</span>
+            </div>
+        </div>
+
+        <div *ngIf="!playgroundMode && feedbackPage" class="progress progressbar partials">
+            <div
+                class="progress-bar text-center"
+                [style.width]="trainingUnitPercentage.percentageRight + '%'"
+            >
+                <span class="px-2">
+                    {{trainingUnitPercentage.right}}
+                </span>
+            </div>
+
+            <div
+                class="progress-bar text-center"
+                [style.width]="trainingUnitPercentage.percentageTimeout + '%'"
+            >
+                <span class="px-2">
+                    {{trainingUnitPercentage.timeout}}
+                </span>
+            </div>
+
+            <div
+                class="progress-bar text-center position-relative overflow-visible"
+                [style.width]="trainingUnitPercentage.percentageWrong + '%'"
+            >
+                <span class="px-2">
+                    {{trainingUnitPercentage.wrong}}
+                </span>
+                <span class="progress-label">{{ sylSrv.question.type }}</span>
+            </div>
+        </div>
+    </div>
+</div>

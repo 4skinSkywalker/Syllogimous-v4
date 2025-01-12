@@ -1,9 +1,9 @@
 <app-card>
     <div body>
-        <app-daily-progress
-            [hideWeekly]="true"
-            [hideTrainingUnit]="sylSrv.settings === sylSrv.playgroundSettings"
-        ></app-daily-progress>
+        <app-progress-and-performance
+            [feedbackPage]="true"
+            [playgroundMode]="sylSrv.settings === sylSrv.playgroundSettings"
+        ></app-progress-and-performance>
 
         <div
             *ngIf="{
@@ -27,7 +27,7 @@
                 class="btn btn-outline-primary"
                 (click)="router.navigate([EnumScreens.Start]);"
             >
-                <i class="bi bi-arrow-left"></i> Go to Start
+                <i class="bi bi-arrow-left"></i> Start
             </button>
         </div>
         <div>

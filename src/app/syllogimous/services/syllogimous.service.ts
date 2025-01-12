@@ -8,7 +8,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ModalLevelChangeComponent } from "../components/modal-level-change/modal-level-change.component";
 import { Router } from "@angular/router";
 import { canGenerateQuestion, QuestionSettings, Settings } from "../models/settings.models";
-import { DailyProgressService, DEFAULT_TRAINING_UNIT_LENGTH, DEFAULT_LEVEL_DOWN_THRESHOLD, DEFAULT_LEVEL_UP_THRESHOLD } from "./daily-progress.service";
+import { ProgressAndPerformanceService, DEFAULT_TRAINING_UNIT_LENGTH, DEFAULT_PREMISES_DOWN_THRESHOLD, DEFAULT_PREMISES_UP_THRESHOLD } from "./progress-and-performance.service";
 import { guid } from "src/app/utils/uuid";
 import { EnumArrangements, EnumQuestionType } from "../constants/question.constants";
 import { EnumQuestionGroup } from "../constants/settings.constants";
@@ -52,7 +52,7 @@ export class SyllogimousService {
     constructor(
         private modalService: NgbModal,
         private router: Router,
-        private dailyProgressService: DailyProgressService
+        private progressAndPerformanceService: ProgressAndPerformanceService
     ) {
         this.loadTierIdx();
         this.loadHistory();
@@ -169,6 +169,7 @@ export class SyllogimousService {
     }
 
     checkQuestion(value?: boolean) {
+        const type = this.question.type;
         this.question.userAnswer = value;
         this.question.answeredAt = Date.now();
         this.question.timerTypeOnAnswer = localStorage.getItem(LS_TIMER) || "0";
@@ -177,37 +178,45 @@ export class SyllogimousService {
         // Playground doesn't progress tiers
         if (!this.question.playgroundMode) {
             if (value == null) {
-                this.dailyProgressService.updateTrainingUnitLS(0, 1, 0);
+                this.progressAndPerformanceService.updateTrainingUnit(type, { timeout: 1 });
             } else if (this.question.userAnswer === this.question.isValid) {
-                this.dailyProgressService.updateTrainingUnitLS(1, 0, 0);
+                this.progressAndPerformanceService.updateTrainingUnit(type, { right: 1 });
             } else {
-                this.dailyProgressService.updateTrainingUnitLS(0, 0, 1);
+                this.progressAndPerformanceService.updateTrainingUnit(type, { wrong: 1 });
             }
 
-            const { right, timeout, wrong } = this.dailyProgressService.calcTrainingUnitsPercentage();
+            const allTrainingUnits = this.progressAndPerformanceService.getAllTrainingUnits();
+            console.warn(allTrainingUnits);
+            
+            const { right, timeout, wrong } = this.progressAndPerformanceService.calcTrainingUnitPercentages(type);
             if (right + timeout + wrong >= DEFAULT_TRAINING_UNIT_LENGTH) {
                 const modalRef = this.modalService.open(ModalLevelChangeComponent, { centered: true });
-                this.dailyProgressService.resetTrainingUnitLS();
+                this.progressAndPerformanceService.restartTrainingUnit(this.question.type);
 
-                if (right / DEFAULT_TRAINING_UNIT_LENGTH >= DEFAULT_LEVEL_UP_THRESHOLD) {
-                    modalRef.componentInstance.title = "Congratulations<br>You've Leveled Up!";
-                    modalRef.componentInstance.content = "Your hard work is paying off.<br>Keep going to unlock more features and rewards!";
-                    this.tierIdx = this.tierIdx + 1;
-                } else if ((timeout + wrong) / DEFAULT_TRAINING_UNIT_LENGTH >= DEFAULT_LEVEL_DOWN_THRESHOLD) {
-                    modalRef.componentInstance.title = "Level Down<br>Let's Regroup!";
-                    modalRef.componentInstance.content = "Take this as a learning step.<br>Refocus your efforts and you’ll be back on top in no time!";
-                    this.tierIdx = this.tierIdx - 1;
+                if ((timeout + wrong) / DEFAULT_TRAINING_UNIT_LENGTH >= DEFAULT_PREMISES_DOWN_THRESHOLD) {
+                    //modalRef.componentInstance.title = "Level Down<br>Let's Regroup!";
+                    //modalRef.componentInstance.content = "Take this as a learning step.<br>Refocus your efforts and you’ll be back on top in no time!";
+                    //this.tierIdx = this.tierIdx - 1;
+                    console.warn("Num of premises of", type, "goes down");
+                    this.progressAndPerformanceService.updateTrainingUnit(type, { premises: -1 });
+                } else if (right / DEFAULT_TRAINING_UNIT_LENGTH >= DEFAULT_PREMISES_UP_THRESHOLD) {
+                    //modalRef.componentInstance.title = "Congratulations<br>You've Leveled Up!";
+                    //modalRef.componentInstance.content = "Your hard work is paying off.<br>Keep going to unlock more features and rewards!";
+                    //this.tierIdx = this.tierIdx + 1;
+                    console.warn("Num of premises of", type, "goes up");
+                    this.progressAndPerformanceService.updateTrainingUnit(type, { premises: 1 });
                 } else {
-                    modalRef.componentInstance.title = "You're Holding Steady<br>Keep Pushing!";
-                    modalRef.componentInstance.content = "Your hard work will pay off.<br>Keep going to improve and unlock more questions!";
+                    //modalRef.componentInstance.title = "You're Holding Steady<br>Keep Pushing!";
+                    //modalRef.componentInstance.content = "Your hard work will pay off.<br>Keep going to improve and unlock more questions!";
+                    console.warn("Num of premises of", type, "stays the same");
                 }
             }
         }
 
         this.pushIntoHistory(this.question);
 
-        this.dailyProgressService.setDailyProgressLS(
-            this.dailyProgressService.getToday(),
+        this.progressAndPerformanceService.setDailyProgress(
+            this.progressAndPerformanceService.getToday(),
             this.question.answeredAt - this.question.createdAt
         );
 

@@ -35,7 +35,6 @@ export class CardDropdownComponent {
         localStorage.removeItem(LS_PG_SETTINGS);
         localStorage.removeItem(LS_DAILY_GOAL);
         localStorage.removeItem(LS_WEEKLY_GOAL);
-        localStorage.removeItem(LS_TRAINING_UNIT);
 
         for (const screen of Object.values(EnumScreens)) {
             localStorage.removeItem(LS_DONT_SHOW + screen);
@@ -43,6 +42,7 @@ export class CardDropdownComponent {
 
         for (const type of Object.values(EnumQuestionType)) {
             localStorage.removeItem(LS_DONT_SHOW + type);
+            localStorage.removeItem(LS_TRAINING_UNIT + type);
         }
 
         location.reload();

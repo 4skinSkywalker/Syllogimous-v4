@@ -4,7 +4,7 @@ import { Question } from '../../models/question.models';
 import { SyllogimousService } from '../../services/syllogimous.service';
 import { Router } from '@angular/router';
 import { formatTime } from 'src/app/utils/date';
-import { DailyProgressService } from '../../services/daily-progress.service';
+import { ProgressAndPerformanceService } from '../../services/progress-and-performance.service';
 
 @Component({
     selector: 'app-start',
@@ -30,10 +30,10 @@ export class StartComponent {
     constructor(
         public sylSrv: SyllogimousService,
         public router: Router,
-        private dailyProgressService: DailyProgressService
+        private progressAndPerformanceService: ProgressAndPerformanceService
     ) {
-        this.timePlayedToday = dailyProgressService.getTimePlayed(dailyProgressService.getToday());
-        this.timePlayedThisWeek = dailyProgressService.getTimePlayedThisWeek(dailyProgressService.getToday());
+        this.timePlayedToday = progressAndPerformanceService.getTimePlayed(progressAndPerformanceService.getToday());
+        this.timePlayedThisWeek = progressAndPerformanceService.getTimePlayedThisWeek(progressAndPerformanceService.getToday());
 
     }
 

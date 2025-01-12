@@ -13,7 +13,7 @@ function capitalize(val: string) {
 }
 
 function decomposeCamelCase(val: string) {
-    const splitted = val.split(/(?=[A-Z0-9])/);
+    const splitted = val.split(/(?=[A-Z][a-z])/);
     return splitted.map(x => capitalize(x)).join(" ");
 }
 
@@ -63,7 +63,7 @@ export class PlaygroundModeComponent {
                 },
                 {
                     field: qt,
-                    label: `${decomposeCamelCase(qt)} ${qs.basic ? "(Basic)" : ""}`,
+                    label: `Enable ${decomposeCamelCase(qt)}`, // ${qs.basic ? "(Basic)" : ""}
                     type: "checkbox",
                     value: qs.enabled,
                 },

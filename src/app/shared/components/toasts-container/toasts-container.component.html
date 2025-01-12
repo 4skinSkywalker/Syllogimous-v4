@@ -27,28 +27,28 @@
 
 <div class="toast-container position-fixed top-0 start-0 p-3">
     <ng-container *ngTemplateOutlet="toastTemplate; context: {
-        toasts: this.toastService.toasts,
+        toasts: toastService.toasts,
         position: 'top-left'
     }"></ng-container>
 </div>
 
 <div class="toast-container position-fixed top-0 end-0 p-3">
     <ng-container *ngTemplateOutlet="toastTemplate; context: {
-        toasts: this.toastService.toasts,
+        toasts: toastService.toasts,
         position: 'top-right'
     }"></ng-container>
 </div>
 
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
     <ng-container *ngTemplateOutlet="toastTemplate; context: {
-        toasts: this.toastService.toasts,
+        toasts: toastService.toasts,
         position: 'bottom-right'
     }"></ng-container>
 </div>
 
 <div class="toast-container position-fixed bottom-0 start-0 p-3">
     <ng-container *ngTemplateOutlet="toastTemplate; context: {
-        toasts: this.toastService.toasts,
+        toasts: toastService.toasts,
         position: 'bottom-left'
     }"></ng-container>
 </div>
