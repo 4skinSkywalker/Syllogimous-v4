@@ -20,7 +20,7 @@
                 <button class="copy-paste" (click)="copyQuestion(q)" ngbTooltip="Click here to copy the question raw JSON data">C</button>
 
                 <div class="question-text">
-                    <div *ngIf="q.instructions.length">
+                    <div *ngIf="q.instructions?.length">
                         <div class="small text-muted mb-1">Instructions</div>
                         <div class="instructions" [innerHTML]="q.instructions"></div>
                     </div>

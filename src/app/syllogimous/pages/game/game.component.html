@@ -1,8 +1,8 @@
 <ng-template #questionInstructionsAndNotes>
     <ng-container *ngIf="{ instructions: sylSrv.question.instructions, notes: sylSrv.question.notes } as info">
-        <div *ngIf="info.instructions.length || info.notes.length">
+        <div *ngIf="info.instructions?.length || info.notes?.length">
 
-            <div *ngIf="info.instructions.length">
+            <div *ngIf="info.instructions?.length">
                 <div class="small text-muted">Instructions</div>
                 <div class="d-grid gap-2">
                     <div *ngFor="let instruction of info.instructions" [innerHTML]="instruction"></div>
@@ -10,7 +10,7 @@
             </div>
     
             <div
-                *ngIf="info.notes.length"
+                *ngIf="info.notes?.length"
                 class="d-grid gap-1 small pt-1 px-2"
                 style="line-height: 1.3;"
             >
@@ -36,7 +36,7 @@
                 [showNavigationIndicators]="false"
                 style="border: 0; box-shadow: none;"
             >
-                <ng-template ngbSlide *ngIf="sylSrv.question.instructions.length || sylSrv.question.notes.length">
+                <ng-template ngbSlide *ngIf="sylSrv.question.instructions?.length || sylSrv.question.notes?.length">
                     <div style="display: grid; place-items: center;">
                         <ng-container *ngTemplateOutlet="questionInstructionsAndNotes"></ng-container>
                     </div>

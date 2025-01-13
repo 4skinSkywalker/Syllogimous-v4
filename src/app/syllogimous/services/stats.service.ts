@@ -25,7 +25,7 @@ export class StatsService {
             
             tbs.type = type;
             tbs.completed = questionsByType.length;
-            tbs.accuracy = questionsByType.filter(q => q.userAnswer === q.isValid).length / (questions.length || 1);
+            tbs.accuracy = questionsByType.filter(q => q.userAnswer === q.isValid).length / (questionsByType.length || 1);
 
             for (const q of questionsByType) {
                 const ps = ((q.premises.length < 6) ? String(q.premises.length) : "6+") as "2" | "3" | "4" | "5" | "6+";

@@ -29,6 +29,22 @@ html[darkmode] {
     padding: 0.5rem 1.25rem;
 }
 
+.nav-tabs {
+    background: rgba(var(--app-gray_50), 1);
+    border: 1px solid;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    box-shadow: 4px 4px;
+}
+
+.nav-tabs .nav-link.active {
+    border-width: 3px;
+}
+
+.nav-link {
+    padding: 0.25rem 0.5rem;
+}
+
 .tab-content {
     background-color: rgba(var(--app-gray_0), 1);
     border-bottom-left-radius: 1rem;

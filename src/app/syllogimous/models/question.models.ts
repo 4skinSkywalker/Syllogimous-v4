@@ -30,8 +30,8 @@ export interface IDirection3DProposition {
 }
 
 export class Question {
-    instructions: string[] = [];
-    notes: string[] = [];
+    instructions?: string[];
+    notes?: string[];
     type: EnumQuestionType;
     isValid = false;
     premises: string[] = [];

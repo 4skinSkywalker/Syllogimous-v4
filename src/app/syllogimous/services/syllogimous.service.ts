@@ -895,6 +895,7 @@ export class SyllogimousService {
         const symbols = getSymbols(settings);
         const words = pickUniqueItems(symbols, numOfEls).picked;
         const question = new Question(type);
+        question.instructions = [];
         question.instructions.push(`There are <b>${NUMBER_WORDS[numOfEls] || numOfEls} subjects</b> along a <b>${isLinear ? "linear" : "circular"}</b> path.`);
 
         const relationshipAlreadyExistent = (a: string, b: string) =>
@@ -1144,6 +1145,7 @@ export class SyllogimousService {
                 question = this.createArrangement(length, type);
                 question.type = topType;
                 question.conclusion = "";
+                question.notes = [];
                 if (isLinear) {
                     question.notes.push("Proximity makes the relationship alike.");
                 } else {
