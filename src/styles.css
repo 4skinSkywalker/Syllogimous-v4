@@ -81,4 +81,5 @@ div:has(> input[type="range"]) ~ .form-text.input-helper {
     border-left: 0.25rem solid;
     padding-left: 0.5rem;
     margin-bottom: 0.5rem;
+    margin-top: 0.75rem;
 }
