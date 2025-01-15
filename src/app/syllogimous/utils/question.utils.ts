@@ -95,14 +95,11 @@ export function areDisjoint<T>(set1: Set<T>, set2: Set<T>) {
     return [...set1].every(x => !set2.has(x));
 }
 
-export function getSyllogismRelation(settings: Settings, w1: string, w2: string, rule: string, without_negation: boolean = true) {
-
+export function getSyllogismRelation(settings: Settings, w1: string, w2: string, rule: string, without_negation = true) {
     const _forms = (!settings.enabled.negation || without_negation)
         ? FORMS[0]
         : pickUniqueItems(FORMS, 1).picked[0];
-
     return _forms[+rule[0]].replace('$', w1).replace('$', w2);
-
 }
 
 export function getMetaReplacer(settings: Settings, choosenPair: Picked<string>, relations: string[], negations: boolean[]) {
@@ -190,15 +187,15 @@ export function createMetaRelationships(settings: Settings, question: Question, 
 
             if (isSame) { // Same
                 if (settings.enabled.negation && coinFlip()) {
-                    newPremises.push(`<span class="subject">${a.subject}</span> to <span class="subject">${b.subject}</span> has the <span class="is-negated">same</span> relation as <span class="subject">${c.subject}</span> to <span class="subject">${d.subject}</span>`);
+                    newPremises.push(`<span class="subject">${a.subject}</span> relates to <span class="subject">${b.subject}</span> in the <span class="is-negated">opposite</span> way that <span class="subject">${c.subject}</span> relates to <span class="subject">${d.subject}</span>`);
                 } else {
-                    newPremises.push(`<span class="subject">${a.subject}</span> to <span class="subject">${b.subject}</span> has the same relation as <span class="subject">${c.subject}</span> to <span class="subject">${d.subject}</span>`);
+                    newPremises.push(`<span class="subject">${a.subject}</span> relates to <span class="subject">${b.subject}</span> in the same way that <span class="subject">${c.subject}</span> relates to <span class="subject">${d.subject}</span>`);
                 }
             } else { // Different
                 if (settings.enabled.negation && coinFlip()) {
-                    newPremises.push(`<span class="subject">${a.subject}</span> to <span class="subject">${b.subject}</span> has a <span class="is-negated">different</span> relation as <span class="subject">${c.subject}</span> to <span class="subject">${d.subject}</span>`);
+                    newPremises.push(`<span class="subject">${a.subject}</span> relates to <span class="subject">${b.subject}</span> in the <span class="is-negated">same</span> way that <span class="subject">${c.subject}</span> relates to <span class="subject">${d.subject}</span>`);
                 } else {
-                    newPremises.push(`<span class="subject">${a.subject}</span> to <span class="subject">${b.subject}</span> has a different relation as <span class="subject">${c.subject}</span> to <span class="subject">${d.subject}</span>`);
+                    newPremises.push(`<span class="subject">${a.subject}</span> relates to <span class="subject">${b.subject}</span> in the opposite way that <span class="subject">${c.subject}</span> relates to <span class="subject">${d.subject}</span>`);
                 }
             }
         }
