@@ -1,0 +1,19 @@
+diff a/src/app/syllogimous/utils/question.utils.ts b/src/app/syllogimous/utils/question.utils.ts	(rejected hunks)
+@@ -83,6 +83,17 @@ export function getRandomSymbols(settings: Settings, length: number) {
+             });
+ }
+ 
++export function getSyllogismRelation(settings: Settings, w1: string, w2: string, rule: string, without_negation: boolean = true) {
++
++    const _forms = (!settings.enabled.negation || without_negation)
++        ? FORMS[0]
++        : pickUniqueItems(FORMS, 1).picked[0];
++
++    return _forms[+rule[0]].replace('$', w1).replace('$', w2);
++
++}
++
++// TODO: unused
+ export function getSyllogism(settings: Settings, s: string, p: string, m: string, rule: string) {
+     
+     const _forms = (!settings.enabled.negation)

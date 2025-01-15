@@ -83,48 +83,26 @@ export function getRandomSymbols(settings: Settings, length: number) {
             });
 }
 
-export function getSyllogism(settings: Settings, s: string, p: string, m: string, rule: string) {
-    
-    const _forms = (!settings.enabled.negation)
+export function setsAreEqual<T>(set1: Set<T>, set2: Set<T>) {
+    return set1.size === set2.size && [...set1].every(x => set2.has(x));
+}
+
+export function isSubset<T>(set1: Set<T>, set2: Set<T>) {
+    return [...set1].every(x => set2.has(x));
+}
+
+export function areDisjoint<T>(set1: Set<T>, set2: Set<T>) {
+    return [...set1].every(x => !set2.has(x));
+}
+
+export function getSyllogismRelation(settings: Settings, w1: string, w2: string, rule: string, without_negation: boolean = true) {
+
+    const _forms = (!settings.enabled.negation || without_negation)
         ? FORMS[0]
         : pickUniqueItems(FORMS, 1).picked[0];
 
-    let major = _forms[+rule[0]];
-    let minor = _forms[+rule[1]];
-    let conclusion = _forms[+rule[2]];
+    return _forms[+rule[0]].replace('$', w1).replace('$', w2);
 
-    const figure = +rule[3];
-    switch (figure) {
-        case 1:
-            major = major.replace("$", m);
-            major = major.replace("$", p);
-            minor = minor.replace("$", s);
-            minor = minor.replace("$", m);
-            break;
-        case 2:
-            major = major.replace("$", p);
-            major = major.replace("$", m);
-            minor = minor.replace("$", s);
-            minor = minor.replace("$", m);
-            break;
-        case 3:
-            major = major.replace("$", m);
-            major = major.replace("$", p);
-            minor = minor.replace("$", m);
-            minor = minor.replace("$", s);
-            break;
-        case 4:
-            major = major.replace("$", p);
-            major = major.replace("$", m);
-            minor = minor.replace("$", m);
-            minor = minor.replace("$", s);
-            break;
-    }
-
-    conclusion = conclusion.replace("$", s);
-    conclusion = conclusion.replace("$", p);
-
-    return [major, minor, conclusion];
 }
 
 export function getMetaReplacer(settings: Settings, choosenPair: Picked<string>, relations: string[], negations: boolean[]) {
