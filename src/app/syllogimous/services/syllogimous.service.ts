@@ -897,7 +897,7 @@ export class SyllogimousService {
         return question;
     }
 
-    createDistinction(numOfPremises: number) {
+    createDistinction(numOfPremises: number): Question {
         // console.log("createDistinction");
 
         const type = EnumQuestionType.Distinction;
@@ -938,6 +938,11 @@ export class SyllogimousService {
                 question.buckets[prevBucket].push(curr);
     
                 prev = curr;
+            }
+
+            // All same is useless, in that case repeat
+            if (!question.buckets[0].length || !question.buckets[1].length) {
+                return this.createDistinction(numOfPremises);
             }
 
             createMetaRelationships(settings, question, length);
@@ -1096,10 +1101,10 @@ export class SyllogimousService {
         // Calculate cardinals and relationship of each pair
         const premises: IDirectionProposition[] = [];
 
-        const getRelationship = (cardinals: [string, number][]) => {
+        const getRelationship = (cardinals: [string, number][], tweaked = false) => {
             let relationship = "";
 
-            if (cardinals.every(c => c[1] === 1)) {
+            if (!tweaked && cardinals.every(c => c[1] === 1)) {
                 relationship = "adjacent and " + cardinals[0][0];
 
                 if (cardinals.length === 2) {
@@ -1153,12 +1158,14 @@ export class SyllogimousService {
         // Extract the last premise and say it's the conclusion
         // Flip a coin and either keep or tweak the conclusion
         let conclusion = premises.pop()!;
+        let tweaked = false;
         const isValid = coinFlip();
         if (isValid) {
             // console.log("Keep conclusion");
             if (coinFlip() && conclusion.cardinals.length === 2) {
                 // console.log("One cardinal got plucked");
                 conclusion.cardinals = [ pickUniqueItems(conclusion.cardinals, 1).picked[0] ];
+                tweaked = true;
             }
         } else {
             // console.log("Tweak conclusion");
@@ -1170,9 +1177,10 @@ export class SyllogimousService {
                 // console.log("One cardinal flipped");
                 conclusion.cardinals[rndIdx][0] = cardinalOppositeMap[conclusion.cardinals[rndIdx][0]];
             }
+            tweaked = true;
         }
         // Regenerate conclusion relationship
-        conclusion.relationship = getRelationship(conclusion.cardinals);
+        conclusion.relationship = getRelationship(conclusion.cardinals, tweaked);
         // console.log("Conclusion", conclusion);
 
         const negateRelationship = (relationship: string) => {
@@ -1463,7 +1471,7 @@ export class SyllogimousService {
         return question;
     }
 
-    createArrangement(numOfPremises: number, type: EnumQuestionType.LinearArrangement | EnumQuestionType.CircularArrangement) {
+    createArrangement(numOfPremises: number, type: EnumQuestionType.LinearArrangement | EnumQuestionType.CircularArrangement): Question {
         // console.log("createArrangement:", type);
 
         const settings = this.settings;
@@ -1555,6 +1563,11 @@ export class SyllogimousService {
         const steps = picked[1].steps;
         const interpolated = interpolateArrangementRelationship({ description, steps }, settings);
         question.conclusion = `<span class="subject">${a}</span> ${interpolated} <span class="subject">${b}</span>`;
+
+        // Next to relationship with 3 elements are useless, in that case regenerate
+        if (!isLinear && numOfEls === 3 && interpolated === EnumArrangements.Next) {
+            return this.createArrangement(numOfPremises, type);
+        }
 
         question.rule = words.join(", ");
         const metaRelationshipLookupMap: Record<string, boolean> = {};
