@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { IArrangementPremise, IDirection3DProposition, IDirectionProposition, Question } from "../models/question.models";
-import { coinFlip, getCircularWays, getLinearWays, getRandomRuleValid, getRandomSymbols, getRelation, getSyllogismRelation, getSymbols, isPremiseLikeConclusion, createMetaRelationships, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions, setsAreEqual, isSubset, areDisjoint } from "../utils/question.utils";
-import { NUMBER_WORDS, VALID_RULES } from "../constants/question.constants";
+import { coinFlip, getCircularWays, getLinearWays, getRandomRuleValid, getRandomSymbols, getRelation, getSymbols, isPremiseLikeConclusion, createMetaRelationships, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions, getSyllogism, getRandomRuleInvalid } from "../utils/question.utils";
+import { NUMBER_WORDS } from "../constants/question.constants";
 import { EnumScreens, EnumTiers, ORDERED_QUESTION_TYPES, ORDERED_TIERS, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES, TIERS_MATRIX } from "../constants/syllogimous.constants";
 import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local-storage.constants";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -280,619 +280,36 @@ export class SyllogimousService {
             throw new Error("Cannot generate.");
         }
     
-        const numOfWords = numOfPremises + 1;
+        const length = numOfPremises + 1;
         const question = new Question(type);
         question.isValid = coinFlip();
 
-        const nMaxConclusions = 1;
-        const minDepth = 1;
-        const maxDepth = numOfPremises - 1;
-        const actualDepth = Math.floor(Math.random() * (maxDepth - minDepth + 1)) + minDepth;
-        const wordsList = getRandomSymbols(settings, numOfWords);
+        do {
+            question.rule = question.isValid ? getRandomRuleValid() : getRandomRuleInvalid();
+            question.bucket = getRandomSymbols(settings, length);
+            question.premises = [];
 
-        function fillConnectionsMap(
-            connectionsMap: Map<string, Map<string, string>>,
-            figure: string,
-            word1: string, word2: string, word3: string,
-            alpha1: string, alpha2: string, alpha3: string,
-            addAlpha1: boolean
-        ) {
-            switch(figure) {
-                case "1": { // figure 1: M-P, S-M, S-P: word1-word2, word3-word1, word3-word2
-                    if (addAlpha1) {
-                        if (!connectionsMap.get(word1)) connectionsMap.set(word1, new Map());
-                        connectionsMap.get(word1)!.set(word2, alpha1);
-                    }
-                    if (!connectionsMap.get(word3)) connectionsMap.set(word3, new Map());
-                    connectionsMap.get(word3)!.set(word1, alpha2);
-                    return [word3, word2, alpha3];
-                }
-                case "2": { // figure 2: P-M, S-M, S-P: word1-word2, word3-word2, word3-word1
-                    if (addAlpha1) {
-                        if (!connectionsMap.get(word1)) connectionsMap.set(word1, new Map());
-                        connectionsMap.get(word1)!.set(word2, alpha1);
-                    }
-                    if (!connectionsMap.get(word3)) connectionsMap.set(word3, new Map());
-                    connectionsMap.get(word3)!.set(word2, alpha2);
-                    return [word3, word1, alpha3];
-                }
-                case "3": { // figure 3: M-P, M-S, S-P: word1-word2, word1-word3, word3-word2
-                    if (addAlpha1) {
-                        if (!connectionsMap.get(word1)) connectionsMap.set(word1, new Map());
-                        connectionsMap.get(word1)!.set(word2, alpha1);
-                    }
-                    if (!connectionsMap.get(word1)) connectionsMap.set(word1, new Map());
-                    connectionsMap.get(word1)!.set(word3, alpha2);
-                    return [word3, word2, alpha3];
-                }
-                case "4": { // figure 4: P-M, M-S, S-P: word1-word2, word2-word3, word3-word1
-                    if (addAlpha1) {
-                        if (!connectionsMap.get(word1)) connectionsMap.set(word1, new Map());
-                        connectionsMap.get(word1)!.set(word2, alpha1);
-                    }
-                    if (!connectionsMap.get(word2)) connectionsMap.set(word2, new Map());
-                    connectionsMap.get(word2)!.set(word3, alpha2);
-                    return [word3, word1, alpha3];
-                }
-                default: {
-                    throw new Error("Invalid figure");
-                }
-            }
-        };
+            [
+                question.premises[0],
+                question.premises[1],
+                question.conclusion
+            ] = getSyllogism(
+                settings,
+                question.bucket[0],
+                question.bucket[1],
+                question.bucket[2],
+                question.isValid ? getRandomRuleValid() : getRandomRuleInvalid()
+            );
+        } while(isPremiseLikeConclusion(question.premises, question.conclusion));
 
-        let validConvert = new Map([
-            ['1', ['1', '3']], // No are
-            ['2', ['2']],      // Some are
-            ['3', ['3']],      // Some are not
-            ['0', ['0', '2']]  // All are
-        ]);
-
-        let invalidConvert = new Map([
-            ['1', ['0', '2']], // No are
-            ['2', ['1']],      // Some are
-            ['3', ['0']],      // Some are not
-            ['0', ['1', '3']]  // All are
-        ]);
-
-        let connections = new Set();
-        let premises = new Set();
-        let listOfTrueConclusions: any[] = [];
-        let goalReached = false;
-        while (!goalReached) {
-            listOfTrueConclusions = [];
-
-            // Step 1. Generation for depth
-            let connectionsMap = new Map();
-            for (let word of wordsList) {
-                connectionsMap.set(word, new Map());
-            }
-            let [word1, word2, word3, ...otherWords] = wordsList;
-
-            let validRule = getRandomRuleValid();
-            let alpha1 = validRule[0], alpha2 = validRule[1], alpha3 = validRule[2], figure = validRule[3];
-            let [w1, w2, conclusion] = fillConnectionsMap(connectionsMap, figure, word1, word2, word3, alpha1, alpha2, alpha3, true);
-            let completed = new Set<string>([word1, word2, word3]);
-            let fail = false;
-            for (let i = 0; i < actualDepth - 1; i++) {
-                let word3 = otherWords.pop()!;
-                let alpha1 = conclusion;
-                let variants = [];
-                for (let rule of VALID_RULES) {
-                    let pAlpha1 = rule[0], alpha2 = rule[1], conclusion = rule[2], fig = rule[3];
-                    if (alpha1 === pAlpha1) {
-                        variants.push([alpha2, fig, conclusion]);
-                    }
-                }
-                if (variants.length === 0) {
-                    fail = true;
-                    break;
-                }
-                let [alpha2, figure, alpha3] = variants[Math.floor(Math.random() * variants.length)];
-                completed.add(word3);
-                [w1, w2, conclusion] = fillConnectionsMap(connectionsMap, figure, w1, w2, word3, alpha1, alpha2, alpha3, false);
-            }
-            if (fail) {
-                continue;
-            }
-
-            // Step 2. Generation of the rest
-            let sets = new Map();
-            for (let i = 0; i < wordsList.length; i++) {
-                let word = wordsList[i];
-                sets.set(word, new Set(Array.from({ length: numOfWords }, (_, j) => i * numOfWords + j)));
-            }
-            let changed = true;
-            while (changed) {
-                changed = false;
-                for (let [w1, vDict] of connectionsMap.entries()) {
-                    for (let [w2, alpha] of vDict.entries()) {
-                        let sourceSet = new Set(sets.get(w1));
-
-                        switch(alpha) {
-                            case "0": {
-                                sets.set(w2, new Set([...sets.get(w2), ...sets.get(w1)]));
-                                break;
-                            }
-                            case "1": {
-                                sets.set(w1, new Set([...sets.get(w1)].filter(x => !sets.get(w2).has(x))));
-                                break;
-                            }
-                            case "2": {
-                                sets.set(w1, new Set([...sets.get(w1), ...sets.get(w2)]));
-                                let k = Math.floor(Math.random() * sets.get(w2).size);
-                                if (k > 0) {
-                                    let sample = Array.from(sets.get(w2)).sort(() => Math.random() - 0.5).slice(0, k);
-                                    sets.set(w1, new Set([...sets.get(w1)].filter(x => !sample.includes(x))));
-                                }
-                                break;
-                            }
-                            case "3": {
-                                sets.set(w1, new Set([...sets.get(w1), ...sets.get(w2)]));
-                                let k = Math.floor(Math.random() * sets.get(w2).size) + 1;
-                                if (k > 0) {
-                                    let sample = Array.from(sets.get(w2)).sort(() => Math.random() - 0.5).slice(0, k);
-                                    sets.set(w1, new Set([...sets.get(w1)].filter(x => !sample.includes(x))));
-                                }
-                                break;
-                            }
-                            default: {
-                                throw new Error('Invalid alpha value');
-                            }
-                        }
-                        
-                        changed = changed || !setsAreEqual(sets.get(w1), sourceSet);
-                    }
-                }
-            }
-
-            // Step 3. Premises
-            let newConnectionsMap = new Map();
-            let inverseConnectionsMap = new Map();
-            premises = new Set();
-            let connections = new Set();
-
-            for (let [w1, vDict] of connectionsMap.entries()) {
-                for (let [w2, alpha] of vDict.entries()) {
-                    if (!newConnectionsMap.get(w1)) newConnectionsMap.set(w1, new Map());
-                    if (!newConnectionsMap.get(w1).get(alpha)) {
-                        newConnectionsMap.set(w1, new Map());
-                        newConnectionsMap.get(w1).set(alpha, new Set());
-                    }
-                    newConnectionsMap.get(w1).get(alpha).add(w2);
-                    if (!newConnectionsMap.get(w2)) newConnectionsMap.set(w2, new Map());
-
-                    if (!inverseConnectionsMap.get(w2)) inverseConnectionsMap.set(w2, new Map());
-                    if (!inverseConnectionsMap.get(w2).get(alpha)) {
-                        inverseConnectionsMap.set(w2, new Map());
-                        inverseConnectionsMap.get(w2).set(alpha, new Set());
-                    }
-                    inverseConnectionsMap.get(w2).get(alpha).add(w1);
-                    if (!inverseConnectionsMap.get(w1)) inverseConnectionsMap.set(w1, new Map());
-
-                    premises.add(getSyllogismRelation(settings, w1, w2, alpha, false));
-                    connections.add(`${w1},${w2}`);
-                    connections.add(`${w2},${w1}`);
-                }
-            }
-            connectionsMap = newConnectionsMap;
-
-            let q = [...wordsList.filter(x => !completed.has(x))];
-            while (premises.size < numOfPremises) {
-                let w2 = q.shift()!;
-                let w1 = null;
-                while (w1 === null || w1 === w2 || connections.has(`${w1},${w2}`)) {
-                    w1 = wordsList[Math.floor(Math.random() * wordsList.length)];
-                }
-                connections.add(`${w1},${w2}`);
-                connections.add(`${w2},${w1}`);
-                let d1 = sets.get(w1);
-                let d2 = sets.get(w2);
-
-                let p;
-                if (isSubset(d1, d2)) {
-                    p = '0';
-                } else if (areDisjoint(d1, d2)) {
-                    p = ['1', '3'][Math.floor(Math.random() * 2)];
-                } else {
-                    p = ['2', '3'][Math.floor(Math.random() * 2)];
-                }
-
-                if (!connectionsMap.get(w1)) connectionsMap.set(w1, new Map());
-                if (!connectionsMap.get(w1).get(p)) {
-                    newConnectionsMap.set(w1, new Map());
-                    newConnectionsMap.get(w1).set(p, new Set());
-                }
-                connectionsMap.get(w1).get(p).add(w2);
-                if (!connectionsMap.get(w2)) connectionsMap.set(w2, new Map());
-
-                if (!inverseConnectionsMap.get(w2)) inverseConnectionsMap.set(w2, new Map());
-                if (!inverseConnectionsMap.get(w2).get(p)) {
-                    inverseConnectionsMap.set(w2, new Map());
-                    inverseConnectionsMap.get(w2).set(p, new Set());
-                }
-                inverseConnectionsMap.get(w2).get(p).add(w1);
-                if (!inverseConnectionsMap.get(w1)) inverseConnectionsMap.set(w1, new Map());
-
-                premises.add(getSyllogismRelation(settings, w1, w2, p, false));
-            }
-
-            // Step 4. Set of Complex Conclusions generation with detailed answers
-            for (let [word1, words1] of connectionsMap.entries()) {
-                for (let [alpha1, words2] of words1.entries()) {
-
-                    // Figure 1: M-P, S-M, S-P: word1-word2, word3-word1, word3-word2
-                    let figure = '1';
-                    for (let word2 of words2) {
-                        for (let [alpha2, words3] of inverseConnectionsMap.get(word1).entries()) {
-                            let trueConc = `${alpha1},${alpha2},${figure}`;
-                            const haveTrueConc = (rule: any) => `${rule[0]},${rule[1]},${rule[3]}` == trueConc;
-                            if (VALID_RULES.some(rule => haveTrueConc(rule))) {
-                                for (let word3 of words3) {
-                                    if (word2 !== word3) {
-                                        for (let rule of VALID_RULES) {
-                                            if (!haveTrueConc(rule)) {
-                                                continue;
-                                            }
-                                            for (let conclusionConverted of validConvert.get(rule[2])!) {
-                                                let detailedAnswer = [];
-                                                detailedAnswer.push(getSyllogismRelation(settings, word1, word2, alpha1));
-                                                detailedAnswer.push(getSyllogismRelation(settings, word3, word1, alpha2));
-                                                detailedAnswer.push('=> ' + getSyllogismRelation(settings, word3, word2, conclusionConverted));
-                                                let previousWords = new Set([word1, word2, word3]);
-                                                listOfTrueConclusions.push([conclusionConverted, word3, word2, detailedAnswer, previousWords]);
-                                                if (conclusionConverted !== '0') {
-                                                    listOfTrueConclusions.push([conclusionConverted, word2, word3, detailedAnswer, previousWords]);
-                                                }
-                                                if (actualDepth === 1) {
-                                                    goalReached = true;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    // Figure 2: P-M, S-M, S-P: word1-word2, word3-word2, word3-word1
-                    figure = '2';
-                    for (let word2 of words2) {
-                        for (let [alpha2, words3] of inverseConnectionsMap.get(word2).entries()) {
-                            let trueConc = `${alpha1},${alpha2},${figure}`;
-                            const haveTrueConc = (rule: any) => `${rule[0]},${rule[1]},${rule[3]}` == trueConc;
-                            if (VALID_RULES.some(rule => haveTrueConc(rule))) {
-                                for (let word3 of words3) {
-                                    if (word1 !== word3) {
-                                        for (let rule of VALID_RULES) {
-                                            if (!haveTrueConc(rule)) {
-                                                continue;
-                                            }
-                                            for (let conclusionConverted of validConvert.get(rule[2])!) {
-                                                let detailedAnswer = [];
-                                                detailedAnswer.push(getSyllogismRelation(settings, word1, word2, alpha1));
-                                                detailedAnswer.push(getSyllogismRelation(settings, word3, word2, alpha2));
-                                                detailedAnswer.push('=> ' + getSyllogismRelation(settings, word3, word1, conclusionConverted));
-                                                let previousWords = new Set([word1, word2, word3]);
-                                                listOfTrueConclusions.push([conclusionConverted, word3, word1, detailedAnswer, previousWords]);
-                                                if (conclusionConverted !== '0') {
-                                                    listOfTrueConclusions.push([conclusionConverted, word1, word3, detailedAnswer, previousWords]);
-                                                }
-                                                if (actualDepth === 1) {
-                                                    goalReached = true;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    // Figure 3: M-P, M-S, S-P: word1-word2, word1-word3, word3-word2
-                    figure = '3';
-                    for (let word2 of words2) {
-                        for (let [alpha2, words3] of connectionsMap.get(word1).entries()) {
-                            let trueConc = `${alpha1},${alpha2},${figure}`;
-                            const haveTrueConc = (rule: any) => `${rule[0]},${rule[1]},${rule[3]}` == trueConc;
-                            if (VALID_RULES.some(rule => haveTrueConc(rule))) {
-                                for (let word3 of words3) {
-                                    if (word2 !== word3) {
-                                        for (let rule of VALID_RULES) {
-                                            if (!haveTrueConc(rule)) {
-                                                continue;
-                                            }
-                                            for (let conclusionConverted of validConvert.get(rule[2])!) {
-                                                let detailedAnswer = [];
-                                                detailedAnswer.push(getSyllogismRelation(settings, word1, word2, alpha1));
-                                                detailedAnswer.push(getSyllogismRelation(settings, word1, word3, alpha2));
-                                                detailedAnswer.push('=> ' + getSyllogismRelation(settings, word3, word2, conclusionConverted));
-                                                let previousWords = new Set([word1, word2, word3]);
-                                                listOfTrueConclusions.push([conclusionConverted, word3, word2, detailedAnswer, previousWords]);
-                                                if (conclusionConverted !== '0') {
-                                                    listOfTrueConclusions.push([conclusionConverted, word2, word3, detailedAnswer, previousWords]);
-                                                }
-                                                if (actualDepth === 1) {
-                                                    goalReached = true;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    // Figure 4: P-M, M-S, S-P: word1-word2, word2-word3, word3-word1
-                    figure = '4';
-                    for (let word2 of words2) {
-                        for (let [alpha2, words3] of connectionsMap.get(word2).entries()) {
-                            let trueConc = `${alpha1},${alpha2},${figure}`;
-                            const haveTrueConc = (rule: any) => `${rule[0]},${rule[1]},${rule[3]}` == trueConc;
-                            if (VALID_RULES.some(rule => haveTrueConc(rule))) {
-                                for (let word3 of words3) {
-                                    if (word1 !== word3) {
-                                        for (let rule of VALID_RULES) {
-                                            if (!haveTrueConc(rule)) {
-                                                continue;
-                                            }
-                                            for (let conclusionConverted of validConvert.get(rule[2])!) {
-                                                let detailedAnswer = [];
-                                                detailedAnswer.push(getSyllogismRelation(settings, word1, word2, alpha1));
-                                                detailedAnswer.push(getSyllogismRelation(settings, word2, word3, alpha2));
-                                                detailedAnswer.push('=> ' + getSyllogismRelation(settings, word3, word1, conclusionConverted));
-                                                let previousWords = new Set([word1, word2, word3]);
-                                                listOfTrueConclusions.push([conclusionConverted, word3, word1, detailedAnswer, previousWords]);
-                                                if (conclusionConverted !== '0') {
-                                                    listOfTrueConclusions.push([conclusionConverted, word1, word3, detailedAnswer, previousWords]);
-                                                }
-                                                if (actualDepth === 1) {
-                                                    goalReached = true;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Step 4-X. Complex mode
-            if (actualDepth > 1) {
-                let q = Array.from(listOfTrueConclusions);
-                listOfTrueConclusions = [];
-                let done = new Set();
-
-                while (q.length > 0) {
-                    let item = q.shift();
-                    if (done.has(item)) continue;
-
-                    // For optimization
-                    if (q.length > 10000) {
-                        q.splice(2500, q.length - 5000);
-                    }
-
-                    done.add(item);
-                    let [alpha1, word1, word2, detailedAnswer, previousWords] = item;
-
-                    // Figure 1: M-P, S-M, S-P: word1-word2, word3-word1, word3-word2
-                    let figure = '1';
-                    for (let [alpha2, words3] of inverseConnectionsMap.get(word1).entries()) {
-                        let trueConc = `${alpha1},${alpha2},${figure}`;
-                        const haveTrueConc = (rule: any) => `${rule[0]},${rule[1]},${rule[3]}` == trueConc;
-                        if (VALID_RULES.some(rule => haveTrueConc(rule))) {
-                            for (let word3 of words3) {
-                                if (previousWords.has(word3) || connections.has(`${word3},${word2}`)) continue;
-
-                                for (let rule of VALID_RULES) {
-                                    if (!haveTrueConc(rule)) {
-                                        continue;
-                                    }
-                                    for (let conclusionConverted of validConvert.get(rule[2])!) {
-                                        let newDetailedAnswer = [];
-                                        newDetailedAnswer.push(...detailedAnswer);
-                                        newDetailedAnswer.push(getSyllogismRelation(settings, word3, word1, alpha2));
-                                        newDetailedAnswer.push('=> ' + getSyllogismRelation(settings, word3, word2, conclusionConverted));
-                                        let newPreviousWords = new Set([...previousWords, word3]);
-                                        let newItem = [conclusionConverted, word3, word2, newDetailedAnswer, newPreviousWords];
-                                        listOfTrueConclusions.push(newItem);
-
-                                        let depth = newDetailedAnswer.filter(x => x.startsWith('=>')).length;
-                                        let nextIteration = depth + 1 <= actualDepth;
-                                        if (nextIteration) {
-                                            q.push(newItem);
-                                        }
-
-                                        if (conclusionConverted !== '0') {
-                                            let rItem = [conclusionConverted, word2, word3, newDetailedAnswer, newPreviousWords];
-                                            listOfTrueConclusions.push(rItem);
-                                            if (nextIteration) {
-                                                q.push(rItem);
-                                            }
-                                        }
-
-                                        if (depth === actualDepth) {
-                                            goalReached = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    // Figure 2: P-M, S-M, S-P: word1-word2, word3-word2, word3-word1
-                    figure = '2';
-                    for (let [alpha2, words3] of inverseConnectionsMap.get(word2).entries()) {
-                        let trueConc = `${alpha1},${alpha2},${figure}`;
-                        const haveTrueConc = (rule: any) => `${rule[0]},${rule[1]},${rule[3]}` == trueConc;
-                        if (VALID_RULES.some(rule => haveTrueConc(rule))) {
-                            for (let word3 of words3) {
-                                if (previousWords.has(word3) || connections.has(`${word3},${word1}`)) continue;
-
-                                for (let rule of VALID_RULES) {
-                                    if (!haveTrueConc(rule)) {
-                                        continue;
-                                    }
-                                    for (let conclusionConverted of validConvert.get(rule[2])!) {
-                                        let newDetailedAnswer = [];
-                                        newDetailedAnswer.push(...detailedAnswer);
-                                        newDetailedAnswer.push(getSyllogismRelation(settings, word3, word2, alpha2));
-                                        newDetailedAnswer.push('=> ' + getSyllogismRelation(settings, word3, word1, conclusionConverted));
-                                        let newPreviousWords = new Set([...previousWords, word3]);
-                                        let newItem = [conclusionConverted, word3, word1, newDetailedAnswer, newPreviousWords];
-                                        listOfTrueConclusions.push(newItem);
-
-                                        let depth = newDetailedAnswer.filter(x => x.startsWith('=>')).length;
-                                        let nextIteration = depth + 1 <= actualDepth;
-                                        if (nextIteration) {
-                                            q.push(newItem);
-                                        }
-
-                                        if (conclusionConverted !== '0') {
-                                            let rItem = [conclusionConverted, word1, word3, newDetailedAnswer, newPreviousWords];
-                                            listOfTrueConclusions.push(rItem);
-                                            if (nextIteration) {
-                                                q.push(rItem);
-                                            }
-                                        }
-
-                                        if (depth === actualDepth) {
-                                            goalReached = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    // Figure 3: M-P, M-S, S-P: word1-word2, word1-word3, word3-word2
-                    figure = '3';
-                    for (let [alpha2, words3] of connectionsMap.get(word1).entries()) {
-                        let trueConc = `${alpha1},${alpha2},${figure}`;
-                        const haveTrueConc = (rule: any) => `${rule[0]},${rule[1]},${rule[3]}` == trueConc;
-                        if (VALID_RULES.some(rule => haveTrueConc(rule))) {
-                            for (let word3 of words3) {
-                                if (previousWords.has(word3) || connections.has(`${word3},${word2}`)) continue;
-
-                                for (let rule of VALID_RULES) {
-                                    if (!haveTrueConc(rule)) {
-                                        continue;
-                                    }
-                                    for (let conclusionConverted of validConvert.get(rule[2])!) {
-                                        let newDetailedAnswer = [];
-                                        newDetailedAnswer.push(...detailedAnswer);
-                                        newDetailedAnswer.push(getSyllogismRelation(settings, word1, word3, alpha2));
-                                        newDetailedAnswer.push('=> ' + getSyllogismRelation(settings, word3, word2, conclusionConverted));
-                                        let newPreviousWords = new Set([...previousWords, word3]);
-                                        let newItem = [conclusionConverted, word3, word2, newDetailedAnswer, newPreviousWords];
-                                        listOfTrueConclusions.push(newItem);
-
-                                        let depth = newDetailedAnswer.filter(x => x.startsWith('=>')).length;
-                                        let nextIteration = depth + 1 <= actualDepth;
-                                        if (nextIteration) {
-                                            q.push(newItem);
-                                        }
-
-                                        if (conclusionConverted !== '0') {
-                                            let rItem = [conclusionConverted, word2, word3, newDetailedAnswer, newPreviousWords];
-                                            listOfTrueConclusions.push(rItem);
-                                            if (nextIteration) {
-                                                q.push(rItem);
-                                            }
-                                        }
-
-                                        if (depth === actualDepth) {
-                                            goalReached = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    // Figure 4: P-M, M-S, S-P: word1-word2, word2-word3, word3-word1
-                    figure = '4';
-                    for (let [alpha2, words3] of connectionsMap.get(word2).entries()) {
-                        let trueConc = `${alpha1},${alpha2},${figure}`;
-                        const haveTrueConc = (rule: any) => `${rule[0]},${rule[1]},${rule[3]}` == trueConc;
-                        if (VALID_RULES.some(rule => haveTrueConc(rule))) {
-                            for (let word3 of words3) {
-                                if (previousWords.has(word3) || connections.has(`${word3},${word1}`)) continue;
-
-                                for (let rule of VALID_RULES) {
-                                    if (!haveTrueConc(rule)) {
-                                        continue;
-                                    }
-                                    for (let conclusionConverted of validConvert.get(rule[2])!) {
-                                        let newDetailedAnswer = [];
-                                        newDetailedAnswer.push(...detailedAnswer);
-                                        newDetailedAnswer.push(getSyllogismRelation(settings, word2, word3, alpha2));
-                                        newDetailedAnswer.push('=> ' + getSyllogismRelation(settings, word3, word1, conclusionConverted));
-                                        let newPreviousWords = new Set([...previousWords, word3]);
-                                        let newItem = [conclusionConverted, word3, word1, newDetailedAnswer, newPreviousWords];
-                                        listOfTrueConclusions.push(newItem);
-
-                                        let depth = newDetailedAnswer.filter(x => x.startsWith('=>')).length;
-                                        let nextIteration = depth + 1 <= actualDepth;
-                                        if (nextIteration) {
-                                            q.push(newItem);
-                                        }
-
-                                        if (conclusionConverted !== '0') {
-                                            let rItem = [conclusionConverted, word1, word3, newDetailedAnswer, newPreviousWords];
-                                            listOfTrueConclusions.push(rItem);
-                                            if (nextIteration) {
-                                                q.push(rItem);
-                                            }
-                                        }
-
-                                        if (depth === actualDepth) {
-                                            goalReached = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        for (let i = 3; i < length; i++) {
+            const rnd = Math.floor(Math.random() * (i - 1));
+            const flip = coinFlip();
+            const [ p, m ] = flip ? [question.bucket[i], question.bucket[rnd]] : [question.bucket[rnd], question.bucket[i]];
+            question.premises.push(getSyllogism(settings, "#####", p, m, getRandomRuleInvalid())[0]);
         }
     
-        // Step 5. Converting to output format and choosing random conclusions
-        let listOfPremises: any[] = [...premises];
-        shuffle(listOfPremises);
-
-        // Sort by max depth (number of strings started with '=>')
-        shuffle(listOfTrueConclusions);
-        listOfTrueConclusions.sort((a: any, b: any) => b[3].length - a[3].length); // Sort by detailedAnswer length
-
-        let rs = [];
-        for (let [conclusion, word1, word3, detailedAnswer] of listOfTrueConclusions) {
-            let status = question.isValid;
-            let conclusion_string;
-            if (status) {
-                conclusion_string = getSyllogismRelation(settings, word1, word3, conclusion, false);
-            } else {
-                const invalid_conclusion_variants = invalidConvert.get(conclusion)!;
-                const invalid_conclusion_variant = invalid_conclusion_variants[Math.floor(Math.random() * invalid_conclusion_variants.length)];
-                conclusion_string = getSyllogismRelation(settings, word1, word3, invalid_conclusion_variant, false);
-            }
-            if (!connections.has(`${word1},${word3}`)) {
-                connections.add(`${word1},${word3}`);
-                connections.add(`${word3},${word1}`);
-                rs.push([status, conclusion_string, detailedAnswer]);
-                if (rs.length === nMaxConclusions) {
-                    break;
-                }
-            }
-        }
-        let r = rs[Math.floor(Math.random() * rs.length)];
-        question.bucket = wordsList;
-        question.premises = listOfPremises;
-        question.conclusion = r[1];
-
-        // console.log(question.isValid, r[2]);
+        shuffle(question.premises);
     
         return question;
     }
@@ -1010,6 +427,121 @@ export class SyllogimousService {
     
         shuffle(question.premises);
     
+        return question;
+    }
+
+    createArrangement(numOfPremises: number, type: EnumQuestionType.LinearArrangement | EnumQuestionType.CircularArrangement): Question {
+        // console.log("createArrangement:", type);
+
+        const settings = this.settings;
+
+        if (!canGenerateQuestion(type, numOfPremises, settings)) {
+            throw new Error("Cannot generate.");
+        }
+
+        const numOfEls = numOfPremises + 1;
+        const isLinear = type === EnumQuestionType.LinearArrangement;
+        const getWays = isLinear ? getLinearWays : getCircularWays;
+        const symbols = getSymbols(settings);
+        const words = pickUniqueItems(symbols, numOfEls).picked;
+        const question = new Question(type);
+        question.instructions = [];
+        question.instructions.push(`There are <b>${NUMBER_WORDS[numOfEls] || numOfEls} subjects</b> along a <b>${isLinear ? "linear" : "circular"}</b> path.`);
+
+        const relationshipAlreadyExistent = (a: string, b: string) =>
+            premises.find(({ a: pA, b: pB }) => (pA === a && pB === b) || (pA === b && pB === a));
+        
+        let premises: IArrangementPremise[] = [];
+        let subjects = [...words];
+        let a: string | undefined = undefined;
+        let safe = 1e2;
+        while (safe-- && premises.length < numOfEls-1) {
+            let premise: IArrangementPremise | undefined = undefined;
+            let safe = 1e2;
+            while (safe-- && premise == undefined) {
+                // Pick A
+                a = a || pickUniqueItems(subjects, 1).picked[0];
+                // console.log("a", a);
+                const aid = words.indexOf(a);
+
+                // Pick B
+                const b = pickUniqueItems(subjects.filter(sub => sub !== a), 1).picked[0];
+                // console.log("b", b);
+                const bid = words.indexOf(b);
+
+                // Pick a way between A and B and check there are no connections already established between A and B
+                const [ wayDescription, wayData ] = pickUniqueItems(Object.entries(getWays(aid, bid, numOfEls)), 1).picked[0];
+                if (wayData.possible && !relationshipAlreadyExistent(a, b)) {
+                    premise = {
+                        a,
+                        b,
+                        relationship: {
+                            description: wayDescription as EnumArrangements,
+                            steps: wayData.steps
+                        },
+                        metaRelationships: [],
+                        uid: guid()
+                    };
+                    subjects = subjects.filter(s => s !== a && s !== b)
+                    a = b;
+                }
+            }
+            if (safe <= 0) {
+                throw new Error("MAXIMUM ITERATION COUNT REACHED!");
+            }
+            premises.push(premise!);
+        }
+        if (safe <= 0) {
+            throw new Error("MAXIMUM ITERATION COUNT REACHED!");
+        }
+
+        horizontalShuffleArrangement(premises);
+        shuffle(premises);
+        metarelateArrangement(premises);
+
+        let b: string | undefined = undefined;
+        safe = 1e2;
+        while (safe-- && b == undefined) {
+            const subject = pickUniqueItems(words, 1).picked[0];
+            if (subject !== a && !relationshipAlreadyExistent(a!, subject)) {
+                b = subject;
+            }
+        }
+        if (safe <= 0) {
+            throw new Error("MAXIMUM ITERATION COUNT REACHED!");
+        }
+
+        const [aid, bid] = [words.indexOf(a!), words.indexOf(b!)];
+        const ways = getWays(aid, bid, numOfEls, true);
+        // console.log(a, b, ways);
+
+        question.isValid = coinFlip();
+        const conclusions = Object.entries(ways).filter(([ description, data ]) => data.possible === question.isValid);
+        const picked = pickUniqueItems(conclusions, 1).picked[0];
+        const description = picked[0] as EnumArrangements;
+        const steps = picked[1].steps;
+        const interpolated = interpolateArrangementRelationship({ description, steps }, settings);
+        question.conclusion = `<span class="subject">${a}</span> ${interpolated} <span class="subject">${b}</span>`;
+
+        // Next to relationship with 3 elements are useless, in that case regenerate
+        if (!isLinear && numOfEls === 3 && interpolated === EnumArrangements.Next) {
+            return this.createArrangement(numOfPremises, type);
+        }
+
+        question.rule = words.join(", ");
+        const metaRelationshipLookupMap: Record<string, boolean> = {};
+        question.premises = premises.map(({ a, b, relationship, metaRelationships, uid }) => {
+            if (settings.enabled.meta && coinFlip() && metaRelationships.length && !metaRelationshipLookupMap[uid]) {
+                const premise = pickUniqueItems(metaRelationships, 1).picked[0];
+                metaRelationshipLookupMap[premise.uid] = true;
+                return `<span class="subject">${a}</span> to <span class="subject">${b}</span> has the same relation as <span class="subject">${premise.a}</span> to <span class="subject">${premise.b}</span>`;
+            }
+
+            const { description, steps } = relationship;
+            const interpolated = interpolateArrangementRelationship({ description, steps }, settings);
+            return `<span class="subject">${a}</span> ${interpolated} <span class="subject">${b}</span>`;
+        });
+
         return question;
     }
 
@@ -1467,121 +999,6 @@ export class SyllogimousService {
         question.conclusion = stringifyProposition(conclusion);
 
         // TODO: Create meta relationship
-
-        return question;
-    }
-
-    createArrangement(numOfPremises: number, type: EnumQuestionType.LinearArrangement | EnumQuestionType.CircularArrangement): Question {
-        // console.log("createArrangement:", type);
-
-        const settings = this.settings;
-
-        if (!canGenerateQuestion(type, numOfPremises, settings)) {
-            throw new Error("Cannot generate.");
-        }
-
-        const numOfEls = numOfPremises + 1;
-        const isLinear = type === EnumQuestionType.LinearArrangement;
-        const getWays = isLinear ? getLinearWays : getCircularWays;
-        const symbols = getSymbols(settings);
-        const words = pickUniqueItems(symbols, numOfEls).picked;
-        const question = new Question(type);
-        question.instructions = [];
-        question.instructions.push(`There are <b>${NUMBER_WORDS[numOfEls] || numOfEls} subjects</b> along a <b>${isLinear ? "linear" : "circular"}</b> path.`);
-
-        const relationshipAlreadyExistent = (a: string, b: string) =>
-            premises.find(({ a: pA, b: pB }) => (pA === a && pB === b) || (pA === b && pB === a));
-        
-        let premises: IArrangementPremise[] = [];
-        let subjects = [...words];
-        let a: string | undefined = undefined;
-        let safe = 1e2;
-        while (safe-- && premises.length < numOfEls-1) {
-            let premise: IArrangementPremise | undefined = undefined;
-            let safe = 1e2;
-            while (safe-- && premise == undefined) {
-                // Pick A
-                a = a || pickUniqueItems(subjects, 1).picked[0];
-                // console.log("a", a);
-                const aid = words.indexOf(a);
-
-                // Pick B
-                const b = pickUniqueItems(subjects.filter(sub => sub !== a), 1).picked[0];
-                // console.log("b", b);
-                const bid = words.indexOf(b);
-
-                // Pick a way between A and B and check there are no connections already established between A and B
-                const [ wayDescription, wayData ] = pickUniqueItems(Object.entries(getWays(aid, bid, numOfEls)), 1).picked[0];
-                if (wayData.possible && !relationshipAlreadyExistent(a, b)) {
-                    premise = {
-                        a,
-                        b,
-                        relationship: {
-                            description: wayDescription as EnumArrangements,
-                            steps: wayData.steps
-                        },
-                        metaRelationships: [],
-                        uid: guid()
-                    };
-                    subjects = subjects.filter(s => s !== a && s !== b)
-                    a = b;
-                }
-            }
-            if (safe <= 0) {
-                throw new Error("MAXIMUM ITERATION COUNT REACHED!");
-            }
-            premises.push(premise!);
-        }
-        if (safe <= 0) {
-            throw new Error("MAXIMUM ITERATION COUNT REACHED!");
-        }
-
-        horizontalShuffleArrangement(premises);
-        shuffle(premises);
-        metarelateArrangement(premises);
-
-        let b: string | undefined = undefined;
-        safe = 1e2;
-        while (safe-- && b == undefined) {
-            const subject = pickUniqueItems(words, 1).picked[0];
-            if (subject !== a && !relationshipAlreadyExistent(a!, subject)) {
-                b = subject;
-            }
-        }
-        if (safe <= 0) {
-            throw new Error("MAXIMUM ITERATION COUNT REACHED!");
-        }
-
-        const [aid, bid] = [words.indexOf(a!), words.indexOf(b!)];
-        const ways = getWays(aid, bid, numOfEls, true);
-        // console.log(a, b, ways);
-
-        question.isValid = coinFlip();
-        const conclusions = Object.entries(ways).filter(([ description, data ]) => data.possible === question.isValid);
-        const picked = pickUniqueItems(conclusions, 1).picked[0];
-        const description = picked[0] as EnumArrangements;
-        const steps = picked[1].steps;
-        const interpolated = interpolateArrangementRelationship({ description, steps }, settings);
-        question.conclusion = `<span class="subject">${a}</span> ${interpolated} <span class="subject">${b}</span>`;
-
-        // Next to relationship with 3 elements are useless, in that case regenerate
-        if (!isLinear && numOfEls === 3 && interpolated === EnumArrangements.Next) {
-            return this.createArrangement(numOfPremises, type);
-        }
-
-        question.rule = words.join(", ");
-        const metaRelationshipLookupMap: Record<string, boolean> = {};
-        question.premises = premises.map(({ a, b, relationship, metaRelationships, uid }) => {
-            if (settings.enabled.meta && coinFlip() && metaRelationships.length && !metaRelationshipLookupMap[uid]) {
-                const premise = pickUniqueItems(metaRelationships, 1).picked[0];
-                metaRelationshipLookupMap[premise.uid] = true;
-                return `<span class="subject">${a}</span> to <span class="subject">${b}</span> has the same relation as <span class="subject">${premise.a}</span> to <span class="subject">${premise.b}</span>`;
-            }
-
-            const { description, steps } = relationship;
-            const interpolated = interpolateArrangementRelationship({ description, steps }, settings);
-            return `<span class="subject">${a}</span> ${interpolated} <span class="subject">${b}</span>`;
-        });
 
         return question;
     }
