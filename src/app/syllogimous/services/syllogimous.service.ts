@@ -1118,14 +1118,16 @@ export class SyllogimousService {
             let isMetaRelated = false;
             if (meta) {
                 const getEdgeKey = (edge: typeof edgeList[0]) => [...edge].join(";");
+                const edgeKey = getEdgeKey(edge);
                 const pickedEdge = pickUniqueItems(edges, 1).picked[0];
-                const edgeKey = getEdgeKey(pickedEdge);
+                const pickedEdgeKey = getEdgeKey(pickedEdge);
                 if (
-                    !usedEdges.has(edgeKey) &&
-                    getEdgeKey(edge) !== getEdgeKey(pickedEdge) &&
+                    !usedEdges.has(pickedEdgeKey) &&
+                    edgeKey !== pickedEdgeKey &&
                     edge[1] === pickedEdge[1]
                 ) {
                     usedEdges.add(edgeKey);
+                    usedEdges.add(pickedEdgeKey);
                     if (coinFlip() && edge[1] !== "↔") {
                         relationship = `the inverse of ${getSubject(pickedEdge[2])} to ${getSubject(pickedEdge[0])}`;
                     } else {
