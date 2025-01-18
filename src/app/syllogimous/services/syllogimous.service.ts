@@ -1003,6 +1003,170 @@ export class SyllogimousService {
         return question;
     }
 
+    createGraphMatching(numOfPremises: number): Question {
+        // console.log("createGraphMatching");
+
+        const type = EnumQuestionType.Direction; // GraphMatching;
+        const settings = this.settings;
+
+        if (!canGenerateQuestion(type, numOfPremises, settings)) {
+            throw new Error("Cannot generate.");
+        }
+
+        const numOfEls = numOfPremises + 1;
+        const symbols = getSymbols(settings);
+        const words = pickUniqueItems(symbols, numOfEls).picked;
+        const question = new Question(type);
+
+        let edgeList: [string, "↔"|"→"|"←", string][] = [];
+        const inverseMap = { "→": "←", "←": "→", "↔": "↔" } as Record<"↔"|"→"|"←", "↔"|"→"|"←">;
+        const _words = [...words];
+        const isWordUsed = (w: string) => edgeList.reduce((a, c) => (a.add(c[0]), a.add(c[2]), a), new Set() as Set<string>).has(w);
+        const notAllUsed = () => _words.some(w => !isWordUsed(w));
+        const edgeAlreadyExists = (a: string, b: string) => edgeList.some(([_a, _, _b]) => (_a === a && _b === b) || (_a === b && _b === a));
+        let safe = 1e3;
+        while (safe-- && notAllUsed()) {
+            const [a, b] = pickUniqueItems(_words, 2).picked;
+            if (edgeAlreadyExists(a, b)) {
+                continue;
+            }
+            edgeList.push(Math.random() < 0.25 ? [a, "↔", b] : coinFlip() ? [a, "→", b] : [a, "←", b]);
+            if (_words.length > 2 && coinFlip()) {
+                const subject = coinFlip() ? a : b;
+                const foundIdx = _words.indexOf(subject);
+                _words.splice(foundIdx, 1);
+            }
+        }
+        if (safe <= 0) {
+            throw new Error("MAXIMUM NUMBER OF ITERATIONS REACHED!");
+        }
+
+        // All 2-way relationships are useless for 3 elements
+        if (numOfEls === 3 && edgeList.every(([a, rel, b]) => rel === "↔")) {
+            return this.createGraphMatching(numOfPremises);
+        }
+
+        const newWords = pickUniqueItems(symbols, numOfEls).picked;
+        let edgeList2: typeof edgeList = edgeList.map(([a, rel, b]) => ([
+            newWords[words.indexOf(a)],
+            rel,
+            newWords[words.indexOf(b)]
+        ]));
+        const isValid = coinFlip();
+        if (!isValid) {
+            console.log("Invalid");
+            let modifications = 0;
+            while (modifications === 0) {
+                const { picked } = pickUniqueItems(edgeList2, 1);
+                const [a, rel, b] = picked[0];
+                if (rel === "→" || rel === "←") {
+                    if (Math.random() < 0.15) {
+                        console.log("Swap 1-way for 2-way");
+                        picked[0][1] = "↔";
+                        modifications++;
+                    } else if (coinFlip()) {
+                        console.log("Rotate 1-way direction");
+                        picked[0][1] = inverseMap[picked[0][1] as "→"|"←"] as "→"|"←";
+                        modifications++;
+                    }
+                } else if (Math.random() < 0.15) {
+                    console.log("Swap 2-way for 1-way");
+                    picked[0][1] = { "true": "→", "false": "←" }[String(coinFlip())] as "→"|"←";
+                    modifications++;
+                }
+
+                if (coinFlip() && numOfEls > 3) {
+                    const { picked: picked2 } = pickUniqueItems(edgeList2, 1);
+                    console.log("Change an edge by connecting a/b to a different subject");
+                    const subjectIdx = { "true": 0, "false": 2 }[String(coinFlip())]!;
+                    let picked;
+                    while (!picked || picked === picked2[0][subjectIdx]) {
+                        picked = pickUniqueItems(newWords, 1).picked[0];
+                    }
+                    picked2[0][subjectIdx] = picked;
+                    modifications++;
+                }
+            }
+            console.log("Modifications", modifications);
+        }
+
+        const horizontalShuffle = (_edgeList: typeof edgeList) =>
+            _edgeList.map(([a, rel, b]) => (
+                coinFlip()
+                    ? [a, rel, b]
+                    : [b, inverseMap[rel], a]
+            )) as typeof edgeList;
+        
+        shuffle(edgeList);
+        edgeList = horizontalShuffle(edgeList);
+        shuffle(edgeList2);
+        edgeList2 = horizontalShuffle(edgeList2);
+
+        console.log("EdgeList", edgeList);
+        console.log("EdgeList2", edgeList2);
+
+        const usedEdges = new Set<string>();
+        const readable = (edges: typeof edgeList, edge: typeof edgeList[0], negated = false, meta = false) => {
+            const getSubject = (subject: string) => `<span class="subject">${subject}</span>`;
+            const readMap = {
+                "→": "goes to",
+                "←": "comes from",
+                "↔": "is connected to"
+            };
+            let relationship = readMap[edge[1]];
+            let isMetaRelated = false;
+            if (meta) {
+                const getEdgeKey = (edge: typeof edgeList[0]) => [...edge].join(";");
+                const pickedEdge = pickUniqueItems(edges, 1).picked[0];
+                const edgeKey = getEdgeKey(pickedEdge);
+                if (
+                    !usedEdges.has(edgeKey) &&
+                    getEdgeKey(edge) !== getEdgeKey(pickedEdge) &&
+                    edge[1] === pickedEdge[1]
+                ) {
+                    usedEdges.add(edgeKey);
+                    if (coinFlip() && edge[1] !== "↔") {
+                        relationship = `the inverse of ${getSubject(pickedEdge[2])} to ${getSubject(pickedEdge[0])}`;
+                    } else {
+                        relationship = `${getSubject(pickedEdge[0])} is to ${getSubject(pickedEdge[2])}`;
+                    }
+                    isMetaRelated = true;
+                    console.log("Metarelated");
+                    question.metaRelations++;
+                }
+            } else if (negated) {
+                console.log("Negated");
+                question.negations++;
+                relationship = `<span class=is-negated">${readMap[inverseMap[edge[1]]]}</span>`;
+            }
+            return isMetaRelated
+                ? `${getSubject(edge[0])} is to ${getSubject(edge[2])} as ${relationship}`
+                : `${getSubject(edge[0])} ${relationship} ${getSubject(edge[2])}`;
+        };
+
+        question.premises = edgeList.map((edge, _, edges) =>
+            readable(
+                edges,
+                edge,
+                settings.enabled.negation && coinFlip(),
+                settings.enabled.meta && coinFlip()
+            )
+        );
+        question.conclusion = edgeList2.map((edge, _, edges) =>
+            readable(
+                edges,
+                edge,
+                settings.enabled.negation && coinFlip(),
+                settings.enabled.meta && coinFlip()
+            )).join("<br>");
+
+        question.instructions = [
+            "Check whether the graph described by the premises and the graph described by the conclusion are isomorphic."
+        ];
+
+        return question;
+    }
+
     createAnalogy(length: number) {
         // console.log("createAnalogy");
 
