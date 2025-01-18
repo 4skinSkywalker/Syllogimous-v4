@@ -76,6 +76,12 @@ export const questionTypeSettingParams: Record<EnumQuestionType, ISettingParams>
         basic: true,
         group: EnumQuestionGroup.Direction
     },
+    [EnumQuestionType.GraphMatching]: {
+        enabled: true,
+        minNumOfPremises: 2,
+        maxNumOfPremises: 20,
+        basic: false
+    },
     [EnumQuestionType.Analogy]: {
         enabled: true,
         minNumOfPremises: 3,

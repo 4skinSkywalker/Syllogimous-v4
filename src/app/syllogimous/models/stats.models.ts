@@ -5,13 +5,14 @@ export class TypeBasedStats {
     [EnumQuestionType.Distinction] = new TypeBasedStatsInner(EnumQuestionType.Distinction);
     [EnumQuestionType.ComparisonNumerical] = new TypeBasedStatsInner(EnumQuestionType.ComparisonNumerical);
     [EnumQuestionType.ComparisonChronological] = new TypeBasedStatsInner(EnumQuestionType.ComparisonChronological);
-    [EnumQuestionType.Binary] = new TypeBasedStatsInner(EnumQuestionType.Binary);
+    [EnumQuestionType.LinearArrangement] = new TypeBasedStatsInner(EnumQuestionType.LinearArrangement);
+    [EnumQuestionType.CircularArrangement] = new TypeBasedStatsInner(EnumQuestionType.CircularArrangement);
     [EnumQuestionType.Direction] = new TypeBasedStatsInner(EnumQuestionType.Direction);
     [EnumQuestionType.Direction3DSpatial] = new TypeBasedStatsInner(EnumQuestionType.Direction3DSpatial);
     [EnumQuestionType.Direction3DTemporal] = new TypeBasedStatsInner(EnumQuestionType.Direction3DTemporal);
+    [EnumQuestionType.GraphMatching] = new TypeBasedStatsInner(EnumQuestionType.GraphMatching);
     [EnumQuestionType.Analogy] = new TypeBasedStatsInner(EnumQuestionType.Analogy);
-    [EnumQuestionType.LinearArrangement] = new TypeBasedStatsInner(EnumQuestionType.LinearArrangement);
-    [EnumQuestionType.CircularArrangement] = new TypeBasedStatsInner(EnumQuestionType.CircularArrangement);
+    [EnumQuestionType.Binary] = new TypeBasedStatsInner(EnumQuestionType.Binary);
 }
 
 export class TypeBasedStatsInner {

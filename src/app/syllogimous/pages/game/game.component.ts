@@ -10,6 +10,8 @@ import { LS_CUSTOM_TIMERS_KEY } from '../settings/modal-timer-settings/modal-tim
     styleUrls: ['./game.component.css']
 })
 export class GameComponent {
+    Array = Array;
+    
     timerType;
     gameMode;
     timerFull = 0;

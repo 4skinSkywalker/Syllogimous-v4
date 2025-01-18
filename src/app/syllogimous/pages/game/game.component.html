@@ -42,22 +42,34 @@
                     </div>
                 </ng-template>
 
-                <ng-template ngbSlide *ngFor="let p of sylSrv.question.premises; let i = index">
+                <ng-template ngbSlide *ngFor="let p of sylSrv.question.premises; let i = index; let last = last;">
                     <div style="display: grid; place-items: center;">
                         <div>
-                            <small class="text-muted">Premise {{i + 1}}</small>
-                            <div class="premise" [innerHTML]="p"></div>
+                            <small class="text-muted">{{last ? "Last premise" : "Premise " + (i + 1)}}</small>
+                            <div [innerHTML]="p"></div>
                         </div>
                     </div>
                 </ng-template>
-    
-                <ng-template ngbSlide id="conclusion">
-                    <div style="display: grid; place-items: center;">
-                        <div>
-                            <small class="text-muted">Conclusion</small>
-                            <div class="conclusion" [innerHTML]="sylSrv.question.conclusion"></div>
+
+                <ng-container *ngIf="Array.isArray(sylSrv.question.conclusion); else conclusionIsString">
+                    <ng-template ngbSlide *ngFor="let c of sylSrv.question.conclusion; let i = index; let last = last;">
+                        <div style="display: grid; place-items: center;">
+                            <div>
+                                <small class="text-muted">{{last ? "Last conclusion" : "Conclusion " + (i + 1)}}</small>
+                                <div [innerHTML]="c"></div>
+                            </div>
                         </div>
-                    </div>
+                    </ng-template>
+                </ng-container>
+                <ng-template #conclusionIsString>
+                    <ng-template ngbSlide>
+                        <div style="display: grid; place-items: center;">
+                            <div>
+                                <small class="text-muted">Conclusion</small>
+                                <div [innerHTML]="sylSrv.question.conclusion"></div>
+                            </div>
+                        </div>
+                    </ng-template>
                 </ng-template>
             </ngb-carousel>
     
@@ -77,10 +89,18 @@
                 </div>
             </div>
 
-            <div>
+            <div *ngIf="Array.isArray(sylSrv.question.conclusion); else conclusionIsString">
                 <div class="small text-muted">Conclusion</div>
-                <div [innerHTML]="sylSrv.question.conclusion"></div>
+                <div class="conclusions" *ngIf="sylSrv.question.conclusion as conclusions">
+                    <div *ngFor="let c of conclusions" [innerHTML]="c"></div>
+                </div>
             </div>
+            <ng-template #conclusionIsString>
+                <div>
+                    <div class="small text-muted">Conclusion</div>
+                    <div [innerHTML]="sylSrv.question.conclusion"></div>
+                </div>
+            </ng-template>
         </div>
     </div>
 

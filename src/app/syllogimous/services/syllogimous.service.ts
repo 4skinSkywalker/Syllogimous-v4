@@ -106,16 +106,17 @@ export class SyllogimousService {
     getCreateFn(questionType: EnumQuestionType, numOfPremises: number) {
         return {
             [EnumQuestionType.Distinction]:             () => this.createDistinction(numOfPremises),
-            [EnumQuestionType.Syllogism]:               () => this.createSyllogism(numOfPremises),
-            [EnumQuestionType.Analogy]:                 () => this.createAnalogy(numOfPremises),
-            [EnumQuestionType.Binary]:                  () => this.createBinary(numOfPremises),
             [EnumQuestionType.ComparisonNumerical]:     () => this.createComparison(numOfPremises, EnumQuestionType.ComparisonNumerical),
             [EnumQuestionType.ComparisonChronological]: () => this.createComparison(numOfPremises, EnumQuestionType.ComparisonChronological),
+            [EnumQuestionType.Syllogism]:               () => this.createSyllogism(numOfPremises),
             [EnumQuestionType.LinearArrangement]:       () => this.createArrangement(numOfPremises, EnumQuestionType.LinearArrangement),
             [EnumQuestionType.CircularArrangement]:     () => this.createArrangement(numOfPremises, EnumQuestionType.CircularArrangement),
             [EnumQuestionType.Direction]:               () => this.createDirection(numOfPremises),
             [EnumQuestionType.Direction3DSpatial]:      () => this.createDirection3D(numOfPremises, EnumQuestionType.Direction3DSpatial),
             [EnumQuestionType.Direction3DTemporal]:     () => this.createDirection3D(numOfPremises, EnumQuestionType.Direction3DTemporal),
+            [EnumQuestionType.GraphMatching]:           () => this.createGraphMatching(numOfPremises),
+            [EnumQuestionType.Analogy]:                 () => this.createAnalogy(numOfPremises),
+            [EnumQuestionType.Binary]:                  () => this.createBinary(numOfPremises),
         }[questionType];
     }
 
@@ -1006,7 +1007,7 @@ export class SyllogimousService {
     createGraphMatching(numOfPremises: number): Question {
         // console.log("createGraphMatching");
 
-        const type = EnumQuestionType.Direction; // GraphMatching;
+        const type = EnumQuestionType.GraphMatching;
         const settings = this.settings;
 
         if (!canGenerateQuestion(type, numOfPremises, settings)) {
@@ -1054,30 +1055,30 @@ export class SyllogimousService {
         ]));
         const isValid = coinFlip();
         if (!isValid) {
-            console.log("Invalid");
+            // console.log("Invalid");
             let modifications = 0;
             while (modifications === 0) {
                 const { picked } = pickUniqueItems(edgeList2, 1);
                 const [a, rel, b] = picked[0];
                 if (rel === "→" || rel === "←") {
                     if (Math.random() < 0.15) {
-                        console.log("Swap 1-way for 2-way");
+                        // console.log("Swap 1-way for 2-way");
                         picked[0][1] = "↔";
                         modifications++;
                     } else if (coinFlip()) {
-                        console.log("Rotate 1-way direction");
+                        // console.log("Rotate 1-way direction");
                         picked[0][1] = inverseMap[picked[0][1] as "→"|"←"] as "→"|"←";
                         modifications++;
                     }
                 } else if (Math.random() < 0.15) {
-                    console.log("Swap 2-way for 1-way");
+                    // console.log("Swap 2-way for 1-way");
                     picked[0][1] = { "true": "→", "false": "←" }[String(coinFlip())] as "→"|"←";
                     modifications++;
                 }
 
                 if (coinFlip() && numOfEls > 3) {
                     const { picked: picked2 } = pickUniqueItems(edgeList2, 1);
-                    console.log("Change an edge by connecting a/b to a different subject");
+                    // console.log("Change an edge by connecting a/b to a different subject");
                     const subjectIdx = { "true": 0, "false": 2 }[String(coinFlip())]!;
                     let picked;
                     while (!picked || picked === picked2[0][subjectIdx]) {
@@ -1087,7 +1088,7 @@ export class SyllogimousService {
                     modifications++;
                 }
             }
-            console.log("Modifications", modifications);
+            // console.log("Modifications", modifications);
         }
 
         const horizontalShuffle = (_edgeList: typeof edgeList) =>
@@ -1102,8 +1103,8 @@ export class SyllogimousService {
         shuffle(edgeList2);
         edgeList2 = horizontalShuffle(edgeList2);
 
-        console.log("EdgeList", edgeList);
-        console.log("EdgeList2", edgeList2);
+        // console.log("EdgeList", edgeList);
+        // console.log("EdgeList2", edgeList2);
 
         const usedEdges = new Set<string>();
         const readable = (edges: typeof edgeList, edge: typeof edgeList[0], negated = false, meta = false) => {
@@ -1137,7 +1138,7 @@ export class SyllogimousService {
             } else if (negated) {
                 console.log("Negated");
                 question.negations++;
-                relationship = `<span class=is-negated">${readMap[inverseMap[edge[1]]]}</span>`;
+                relationship = `<span class="is-negated">${readMap[inverseMap[edge[1]]]}</span>`;
             }
             return isMetaRelated
                 ? `${getSubject(edge[0])} is to ${getSubject(edge[2])} as ${relationship}`
@@ -1158,10 +1159,10 @@ export class SyllogimousService {
                 edge,
                 settings.enabled.negation && coinFlip(),
                 settings.enabled.meta && coinFlip()
-            )).join("<br>");
+            ));
 
         question.instructions = [
-            "Check whether the graph described by the premises and the graph described by the conclusion are isomorphic."
+            "Check isomorphism between premise and conclusion graphs."
         ];
 
         return question;
@@ -1442,8 +1443,8 @@ export class SyllogimousService {
             shuffle(question.premises);
         
             question.conclusion = operandTemplates[operandIndex]
-                .replace("$a", choices[0].conclusion)
-                .replace("$b", choices[1].conclusion);
+                .replace("$a", Array.isArray(choices[0].conclusion) ? choices[0].conclusion[0] : choices[0].conclusion)
+                .replace("$b", Array.isArray(choices[1].conclusion) ? choices[1].conclusion[0] : choices[1].conclusion);
 
             question.isValid = eval(
                 operand

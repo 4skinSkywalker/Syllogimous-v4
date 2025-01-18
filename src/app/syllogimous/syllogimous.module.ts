@@ -41,6 +41,7 @@ import { TiersMatrixComponent } from './pages/tiers-matrix/tiers-matrix.componen
 import { OtherGamesComponent } from './pages/other-games/other-games.component';
 import { TutorialNegationCueComponent } from './pages/tutorial/negation-cue/negation-cue.component';
 import { SettingsComponent } from './pages/settings/settings.component';
+import { TutorialGraphMatchingComponent } from './pages/tutorial/graph-matching/graph-matching.component';
 
 const routes: Routes = [
     {
@@ -61,16 +62,17 @@ const routes: Routes = [
                 component: TutorialComponent,
                 children: [
                     { path: EnumQuestionType.Distinction, component: TutorialDistinctionComponent },
-                    { path: EnumQuestionType.Syllogism, component: TutorialSyllogismComponent },
                     { path: EnumQuestionType.ComparisonNumerical, component: TutorialComparisonNumericalComponent },
                     { path: EnumQuestionType.ComparisonChronological, component: TutorialComparisonChronologicalComponent },
+                    { path: EnumQuestionType.Syllogism, component: TutorialSyllogismComponent },
+                    { path: EnumQuestionType.LinearArrangement, component: TutorialLinearArrangementComponent },
+                    { path: EnumQuestionType.CircularArrangement, component: TutorialCircularArrangementComponent },
                     { path: EnumQuestionType.Direction, component: TutorialDirectionComponent },
                     { path: EnumQuestionType.Direction3DSpatial, component: TutorialDirection3DSpatialComponent },
                     { path: EnumQuestionType.Direction3DTemporal, component: TutorialDirection3DTemporalComponent },
+                    { path: EnumQuestionType.GraphMatching, component: TutorialGraphMatchingComponent },
                     { path: EnumQuestionType.Analogy, component: TutorialAnalogyComponent },
                     { path: EnumQuestionType.Binary, component: TutorialBinaryComponent },
-                    { path: EnumQuestionType.LinearArrangement, component: TutorialLinearArrangementComponent },
-                    { path: EnumQuestionType.CircularArrangement, component: TutorialCircularArrangementComponent },
                 ]
             },
             { path: EnumScreens.TiersMatrix, component: TiersMatrixComponent },
@@ -94,16 +96,17 @@ const routes: Routes = [
         TutorialComponent,
         TutorialNegationCueComponent,
         TutorialDistinctionComponent,
-        TutorialSyllogismComponent,
         TutorialComparisonNumericalComponent,
         TutorialComparisonChronologicalComponent,
+        TutorialSyllogismComponent,
+        TutorialLinearArrangementComponent,
+        TutorialCircularArrangementComponent,
         TutorialDirectionComponent,
         TutorialDirection3DSpatialComponent,
         TutorialDirection3DTemporalComponent,
+        TutorialGraphMatchingComponent,
         TutorialAnalogyComponent,
         TutorialBinaryComponent,
-        TutorialLinearArrangementComponent,
-        TutorialCircularArrangementComponent,
         StatsComponent,
         AccuracyStatsComponent,
         ErrorAnalysisComponent,

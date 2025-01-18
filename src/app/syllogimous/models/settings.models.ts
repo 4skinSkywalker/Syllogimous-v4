@@ -24,12 +24,11 @@ export function canGenerateQuestion(
     numOfPremises: number,
     settings: Settings
 ) {
-    if (settings.question[questionType].basic) {
-        return numOfPremises >= settings.question[questionType].minNumOfPremises;
+    const enoughPremises = numOfPremises >= settings.question[questionType].minNumOfPremises;
+    if (settings.question[questionType].basic || questionType === EnumQuestionType.GraphMatching) {
+        return enoughPremises;
     }
-
-    return numOfPremises >= settings.question[questionType].minNumOfPremises 
-        && getNumOfEnabledQuestions(settings, true) >= 2;
+    return enoughPremises && getNumOfEnabledQuestions(settings, true) >= 2;
 }
 
 export function areSettingsInvalid(settings: Settings) {
@@ -120,6 +119,7 @@ export class Settings {
         this.initQuestionSettings(EnumQuestionType.Direction);
         this.initQuestionSettings(EnumQuestionType.Direction3DSpatial);
         this.initQuestionSettings(EnumQuestionType.Direction3DTemporal);
+        this.initQuestionSettings(EnumQuestionType.GraphMatching);
         this.initQuestionSettings(EnumQuestionType.Analogy);
         this.initQuestionSettings(EnumQuestionType.Binary);
     }

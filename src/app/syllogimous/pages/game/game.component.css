@@ -20,7 +20,8 @@
     height: 1.25rem;
 }
 
-.premises {
+.premises,
+.conclusions {
     display: grid;
     gap: 0.75rem;
 }

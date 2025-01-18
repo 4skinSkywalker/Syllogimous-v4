@@ -8,7 +8,7 @@ export enum EnumQuestionType {
     Direction3DTemporal = "Direction3D Temporal",
     LinearArrangement = "Linear Arrangement",
     CircularArrangement = "Circular Arrangement",
-    // GraphMatching = "Graph Matching",
+    GraphMatching = "Graph Matching",
     Analogy = "Analogy",
     Binary = "Binary",
 }

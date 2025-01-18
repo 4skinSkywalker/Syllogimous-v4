@@ -35,7 +35,7 @@ export class Question {
     type: EnumQuestionType;
     isValid = false;
     premises: string[] = [];
-    conclusion = "";
+    conclusion: string | string[] = "";
     createdAt = new Date().getTime();
     answeredAt = new Date().getTime();
     userAnswer?: boolean;
