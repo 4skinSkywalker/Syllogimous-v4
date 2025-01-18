@@ -2,6 +2,17 @@
 
 Syllogimous v4 is now available! Try it now at: [Syllogimous v4](https://4skinskywalker.github.io/Syllogimous-v4/)
 
+## TODO
+- Implement an adaptive timer that is less harsh.
+- Adjust difficulty levels for premises to increase challenge.
+- Create a new timer that adjusts based on the number of premises.
+- Allow customization of the start of the week.
+- Introduce a setting to adjust the density of directions.
+- Enable non-stepped, generic directions in direction questions.
+- Redesign the custom timer modal to enhance usability.
+- Define meta relationships for directional and arrangement settings.
+- Introduce a new question type focused on hierarchy.
+
 ## Attribution-NonCommercial 3.0 Unported (CC BY-NC 3.0)
 
 ### You are free to:
