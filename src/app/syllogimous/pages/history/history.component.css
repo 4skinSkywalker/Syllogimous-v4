@@ -14,7 +14,8 @@
     line-height: 1.3;
 }
 
-.premises {
+.premises,
+.conclusions {
     display: grid;
     gap: 0.5rem;
 }

@@ -28,14 +28,22 @@
                     <div>
                         <div class="small text-muted mb-1">Premises</div>
                         <div class="premises">
-                            <div class="premise" *ngFor="let p of q.premises" [innerHTML]="p"></div>
+                            <div *ngFor="let p of q.premises" [innerHTML]="p"></div>
                         </div>
                     </div>
 
-                    <div>
+                    <div *ngIf="Array.isArray(q.conclusion); else conclusionIsStringTemplate">
                         <div class="small text-muted mb-1">Conclusion</div>
-                        <div class="conclusion" [innerHTML]="q.conclusion"></div>
+                        <div class="conclusions">
+                            <div *ngFor="let c of q.conclusion" [innerHTML]="c"></div>
+                        </div>
                     </div>
+                    <ng-template #conclusionIsStringTemplate>
+                        <div>
+                            <div class="small text-muted mb-1">Conclusion</div>
+                            <div [innerHTML]="q.conclusion"></div>
+                        </div>
+                    </ng-template>
                 </div>
     
                 <small class="d-grid" style="grid-template-columns: repeat(4, 1fr);">

@@ -11,7 +11,9 @@ import { ToastService } from 'src/app/services/toast.service';
     styleUrls: ['./history.component.css']
 })
 export class HistoryComponent {
+    Array = Array;
     EnumScreens = EnumScreens;
+
     allQuestions: Question[] = [];
     questions: Question[] = [];
     sliceIdx = -25;

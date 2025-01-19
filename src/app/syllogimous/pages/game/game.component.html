@@ -51,7 +51,7 @@
                     </div>
                 </ng-template>
 
-                <ng-container *ngIf="Array.isArray(sylSrv.question.conclusion); else conclusionIsString">
+                <ng-container *ngIf="Array.isArray(sylSrv.question.conclusion); else conclusionsIsStringCarouselTemplate">
                     <ng-template ngbSlide *ngFor="let c of sylSrv.question.conclusion; let i = index; let last = last;">
                         <div style="display: grid; place-items: center;">
                             <div>
@@ -61,7 +61,7 @@
                         </div>
                     </ng-template>
                 </ng-container>
-                <ng-template #conclusionIsString>
+                <ng-template #conclusionsIsStringCarouselTemplate>
                     <ng-template ngbSlide>
                         <div style="display: grid; place-items: center;">
                             <div>
@@ -89,13 +89,13 @@
                 </div>
             </div>
 
-            <div *ngIf="Array.isArray(sylSrv.question.conclusion); else conclusionIsString">
+            <div *ngIf="Array.isArray(sylSrv.question.conclusion); else conclusionIsStringTemplate">
                 <div class="small text-muted">Conclusion</div>
                 <div class="conclusions" *ngIf="sylSrv.question.conclusion as conclusions">
                     <div *ngFor="let c of conclusions" [innerHTML]="c"></div>
                 </div>
             </div>
-            <ng-template #conclusionIsString>
+            <ng-template #conclusionIsStringTemplate>
                 <div>
                     <div class="small text-muted">Conclusion</div>
                     <div [innerHTML]="sylSrv.question.conclusion"></div>
