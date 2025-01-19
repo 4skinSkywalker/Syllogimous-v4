@@ -50,6 +50,8 @@ export class Question {
     buckets: string[][][] = [];
     coords: [string, number, number][] = [];
     coords3D: [string, number, number, number][] = [];
+    graphPremises: [string, string, string][] = [];
+    graphConclusion: [string, string, string][] = [];
 
     constructor(type: EnumQuestionType) {
         this.type = type;
