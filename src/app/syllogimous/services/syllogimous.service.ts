@@ -1053,8 +1053,8 @@ export class SyllogimousService {
             rel,
             newWords[words.indexOf(b)]
         ]));
-        const isValid = coinFlip();
-        if (!isValid) {
+        question.isValid = coinFlip();
+        if (!question.isValid) {
             // console.log("Invalid");
             let modifications = 0;
             while (modifications === 0) {
@@ -1091,12 +1091,13 @@ export class SyllogimousService {
             // console.log("Modifications", modifications);
         }
 
-        const horizontalShuffle = (_edgeList: typeof edgeList) =>
-            _edgeList.map(([a, rel, b]) => (
-                coinFlip()
-                    ? [a, rel, b]
-                    : [b, inverseMap[rel], a]
-            )) as typeof edgeList;
+        const horizontalShuffle = (_edgeList: typeof edgeList) => 
+            _edgeList.map(([a, rel, b]) => {
+                // console.log("Before", [a, rel, b]);
+                const result = coinFlip() ? [a, rel, b] : [b, inverseMap[rel], a];
+                // console.log("After", result);
+                return result;
+            }) as typeof edgeList;
         
         shuffle(edgeList);
         edgeList = horizontalShuffle(edgeList);
@@ -1134,11 +1135,11 @@ export class SyllogimousService {
                         relationship = `${getSubject(pickedEdge[0])} is to ${getSubject(pickedEdge[2])}`;
                     }
                     isMetaRelated = true;
-                    console.log("Metarelated");
+                    // console.log("Metarelated");
                     question.metaRelations++;
                 }
             } else if (negated) {
-                console.log("Negated");
+                // console.log("Negated");
                 question.negations++;
                 relationship = `<span class="is-negated">${readMap[inverseMap[edge[1]]]}</span>`;
             }
