@@ -867,10 +867,10 @@ export class SyllogimousService {
             }
         };
 
-        const SAME_CARDINAL_POSITION = "in the same cardinal position";
+        const SAME_CARDINAL_DIRECTION = "in the same cardinal direction";
         const getCardinalRelationship = (_cardinals: [string, number][]) => {
             if (_cardinals.every(c => c[1] === 0)) {
-                return SAME_CARDINAL_POSITION;
+                return SAME_CARDINAL_DIRECTION;
             }
 
             const cardinals = _cardinals.filter(c => c[1] !== 0);
@@ -922,7 +922,7 @@ export class SyllogimousService {
 
             const trasversalRelationship = getTrasversalRelationship(trasversalDifference);
             const cardinalRelationship = getCardinalRelationship(cardinals);
-            const connector = (cardinalRelationship === SAME_CARDINAL_POSITION) ? " and " : (cardinalRelationship.indexOf(" and ") > -1) ? ", " : " and ";
+            const connector = (cardinalRelationship === SAME_CARDINAL_DIRECTION) ? " and " : (cardinalRelationship.indexOf(" and ") > -1) ? ", " : " and ";
             const relationship = trasversalRelationship + connector + cardinalRelationship;
 
             premises.push({
@@ -970,7 +970,7 @@ export class SyllogimousService {
         conclusion.trasversalDifference = conclusion.pair[0][3] - conclusion.pair[1][3];
         const trasversalRelationship = getTrasversalRelationship(conclusion.trasversalDifference);
         const cardinalRelationship = getCardinalRelationship(conclusion.cardinals);
-        const connector = (cardinalRelationship === SAME_CARDINAL_POSITION) ? " and " : (cardinalRelationship.indexOf(" and ") > -1) ? ", " : " and ";
+        const connector = (cardinalRelationship === SAME_CARDINAL_DIRECTION) ? " and " : (cardinalRelationship.indexOf(" and ") > -1) ? ", " : " and ";
         conclusion.relationship = trasversalRelationship + connector + cardinalRelationship;
         console.log("Conclusion", conclusion);
 
