@@ -3,6 +3,8 @@ import { SyllogimousService } from '../../services/syllogimous.service';
 import { StatsService } from '../../services/stats.service';
 import { LS_GAME_MODE, LS_TIMER } from '../../constants/local-storage.constants';
 import { LS_CUSTOM_TIMERS_KEY } from '../settings/modal-timer-settings/modal-timer-settings.component';
+import { Router } from '@angular/router';
+import { EnumScreens } from '../../constants/syllogimous.constants';
 
 @Component({
     selector: 'app-game',
@@ -21,11 +23,16 @@ export class GameComponent {
 
     constructor(
         public sylSrv: SyllogimousService,
-        private statsService: StatsService
+        private statsService: StatsService,
+        private router: Router
     ) {
         this.timerType = localStorage.getItem(LS_TIMER) || '0';
         this.gameMode = localStorage.getItem(LS_GAME_MODE) || '0';
         this.trueButtonToTheRight = Math.random() > 0.5;
+
+        if (this.sylSrv.question.conclusion === "!") {
+            this.router.navigate([EnumScreens.Start]);
+        }
     }
 
     ngOnInit() {

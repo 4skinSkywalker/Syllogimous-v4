@@ -156,10 +156,12 @@ export class ProgressAndPerformanceService {
     }
 
     calcTrainingUnitPercentages(type: EnumQuestionType) {
+        const trainingUnitLengthLS = localStorage.getItem(LS_TRAINING_UNIT_LENGTH);
+        const trainingUnitLength = Number(trainingUnitLengthLS) || DEFAULT_TRAINING_UNIT_LENGTH;
         const { right, timeout, wrong } = this.getTrainingUnit(type);
-        const percentageRight = Math.max(0, Math.min(1, right / DEFAULT_TRAINING_UNIT_LENGTH)) * 100;
-        const percentageTimeout = Math.max(0, Math.min(1, timeout / DEFAULT_TRAINING_UNIT_LENGTH)) * 100;
-        const percentageWrong = Math.max(0, Math.min(1, wrong / DEFAULT_TRAINING_UNIT_LENGTH)) * 100;
+        const percentageRight = Math.max(0, Math.min(1, right / trainingUnitLength)) * 100;
+        const percentageTimeout = Math.max(0, Math.min(1, timeout / trainingUnitLength)) * 100;
+        const percentageWrong = Math.max(0, Math.min(1, wrong / trainingUnitLength)) * 100;
         return {
             right,
             timeout,

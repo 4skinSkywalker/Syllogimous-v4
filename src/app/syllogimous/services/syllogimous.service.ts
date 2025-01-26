@@ -20,7 +20,7 @@ import { ToastService } from "src/app/services/toast.service";
 export class SyllogimousService {
     _score = 0;
     history: Question[] = [];
-    question = this.createSyllogism(2);
+    question;
     playgroundSettings?: Settings;
 
     get score() {
@@ -63,6 +63,11 @@ export class SyllogimousService {
     ) {
         this.loadScore();
         (window as any).syllogimous = this;
+
+        // Create a first dummy question to avoid null pointer etc...
+        const firstDummyQuestion = this.createSyllogism(2);
+        firstDummyQuestion.conclusion = "!";
+        this.question = firstDummyQuestion;
     }
 
     loadScore() {
