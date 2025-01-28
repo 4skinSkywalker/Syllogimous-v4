@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
 import { LS_DAILY_GOAL, LS_DAILY_PROGRESS, LS_PREMISES_DOWN_THRESHOLD, LS_PREMISES_UP_THRESHOLD, LS_TRAINING_UNIT, LS_TRAINING_UNIT_LENGTH, LS_WEEKLY_GOAL } from "../constants/local-storage.constants";
 import { EnumQuestionType } from "../constants/question.constants";
-import { questionTypeSettingParams } from "../constants/settings.constants";
+import { QUESTION_TYPE_SETTING_PARAMS } from "../constants/settings.constants";
 
 export const DEFAULT_DAILY_GOAL = 30;
 export const DEFAULT_WEEKLY_GOAL = 120;
 export const DEFAULT_TRAINING_UNIT_LENGTH = 10;
-export const DEFAULT_PREMISES_UP_THRESHOLD = 0.8;
-export const DEFAULT_PREMISES_DOWN_THRESHOLD = 0.6;
+export const DEFAULT_PREMISES_UP_THRESHOLD = 0.9;
+export const DEFAULT_PREMISES_DOWN_THRESHOLD = 0.5;
 
 export interface ITrainingUnit {
     premises: number;
@@ -112,7 +112,7 @@ export class ProgressAndPerformanceService {
         const ls = localStorage.getItem(LS_TRAINING_UNIT + type);
         if (!ls) {
             return {
-                premises: questionTypeSettingParams[type].minNumOfPremises,
+                premises: QUESTION_TYPE_SETTING_PARAMS[type].minNumOfPremises,
                 right: 0,
                 timeout: 0,
                 wrong: 0
@@ -139,8 +139,9 @@ export class ProgressAndPerformanceService {
         }
     ) {
         const trainingUnit = this.getTrainingUnit(type);
+        const { minNumOfPremises, maxNumOfPremises } = QUESTION_TYPE_SETTING_PARAMS[type];
         trainingUnit.premises += opts.premises || 0;
-        trainingUnit.premises = Math.max(questionTypeSettingParams[type].minNumOfPremises, trainingUnit.premises);
+        trainingUnit.premises = Math.max(minNumOfPremises, Math.min(maxNumOfPremises, trainingUnit.premises));
         trainingUnit.right += opts.right || 0;
         trainingUnit.timeout += opts.timeout || 0;
         trainingUnit.wrong += opts.wrong || 0;

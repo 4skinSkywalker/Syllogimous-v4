@@ -14,7 +14,7 @@ export interface ISettingParams {
     group?: EnumQuestionGroup;
 }
 
-export const questionTypeSettingParams: Record<EnumQuestionType, ISettingParams> = {
+export const QUESTION_TYPE_SETTING_PARAMS: Record<EnumQuestionType, ISettingParams> = {
     [EnumQuestionType.Distinction]: {
         enabled: true,
         minNumOfPremises: 2,

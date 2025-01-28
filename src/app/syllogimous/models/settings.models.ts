@@ -1,6 +1,6 @@
 import { jsonCopy } from "src/app/utils/json";
 import { EnumQuestionType } from "../constants/question.constants";
-import { EnumQuestionGroup, DEFAULT_ENABLED_FLAGS, questionTypeSettingParams } from "../constants/settings.constants";
+import { EnumQuestionGroup, DEFAULT_ENABLED_FLAGS, QUESTION_TYPE_SETTING_PARAMS } from "../constants/settings.constants";
 import { b2n } from "../utils/question.utils";
 
 const getNumOfEnabledQuestions = (settings: Settings, basicQuestionFilter: boolean) => {
@@ -130,7 +130,7 @@ export class Settings {
         }
         this.question[type] = new QuestionSettings(
             // @ts-ignore
-            this.configSettings?.question[type] || questionTypeSettingParams[type]
+            this.configSettings?.question[type] || QUESTION_TYPE_SETTING_PARAMS[type]
         );
     }
 

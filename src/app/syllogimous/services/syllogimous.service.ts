@@ -11,7 +11,7 @@ import { canGenerateQuestion, QuestionSettings, Settings } from "../models/setti
 import { ProgressAndPerformanceService } from "./progress-and-performance.service";
 import { guid } from "src/app/utils/uuid";
 import { EnumArrangements, EnumQuestionType } from "../constants/question.constants";
-import { EnumQuestionGroup } from "../constants/settings.constants";
+import { EnumQuestionGroup, QUESTION_TYPE_SETTING_PARAMS } from "../constants/settings.constants";
 import { ToastService } from "src/app/services/toast.service";
 
 @Injectable({
@@ -211,7 +211,6 @@ export class SyllogimousService {
 
         // Playground doesn't progress tiers
         if (!this.question.playgroundMode) {
-            // Adjust num of premises for this question type
             if (value == null) {
                 this.progressAndPerformanceService.updateTrainingUnit(type, { timeout: 1 });
             } else if (isQuestionValid) {
@@ -224,12 +223,18 @@ export class SyllogimousService {
             const { trainingUnitLength, premisesUpThreshold, premisesDownThreshold } = this.progressAndPerformanceService.getTrainingUnitSettings();
             if (right + timeout + wrong >= trainingUnitLength) {
                 this.progressAndPerformanceService.restartTrainingUnit(this.question.type);
-
-                if ((timeout + wrong) / trainingUnitLength >= premisesUpThreshold) {
-                    this.toaster.show("Number of premises decreased for " + type, { classname: "bg-danger text-light" });
+                const { premises } = this.progressAndPerformanceService.getTrainingUnit(type);
+                const { minNumOfPremises, maxNumOfPremises } = QUESTION_TYPE_SETTING_PARAMS[type];
+                
+                if ((timeout + wrong) / trainingUnitLength >= premisesDownThreshold) {
+                    if (premises > minNumOfPremises) {
+                        this.toaster.show("Number of premises decreased for " + type, { classname: "bg-danger text-light" });
+                    }
                     this.progressAndPerformanceService.updateTrainingUnit(type, { premises: -1 });
-                } else if (right / trainingUnitLength >= premisesDownThreshold) {
-                    this.toaster.show("Number of premises increased for " + type, { classname: "bg-success text-light" });
+                } else if (right / trainingUnitLength >= premisesUpThreshold) {
+                    if (premises < maxNumOfPremises) {
+                        this.toaster.show("Number of premises increased for " + type, { classname: "bg-success text-light" });
+                    }
                     this.progressAndPerformanceService.updateTrainingUnit(type, { premises: 1 });
                 }
             }
