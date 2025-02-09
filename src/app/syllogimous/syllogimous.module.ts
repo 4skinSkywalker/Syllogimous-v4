@@ -39,7 +39,6 @@ import { EnumQuestionType } from './constants/question.constants';
 import { EnumScreens } from './constants/syllogimous.constants';
 import { TiersMatrixComponent } from './pages/tiers-matrix/tiers-matrix.component';
 import { OtherGamesComponent } from './pages/other-games/other-games.component';
-import { TutorialNegationCueComponent } from './pages/tutorial/negation-cue/negation-cue.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { TutorialGraphMatchingComponent } from './pages/tutorial/graph-matching/graph-matching.component';
 
@@ -94,7 +93,6 @@ const routes: Routes = [
         FeedbackComponent,
         TutorialsComponent,
         TutorialComponent,
-        TutorialNegationCueComponent,
         TutorialDistinctionComponent,
         TutorialComparisonNumericalComponent,
         TutorialComparisonChronologicalComponent,

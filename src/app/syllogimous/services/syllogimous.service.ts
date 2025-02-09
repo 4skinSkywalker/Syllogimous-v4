@@ -200,7 +200,7 @@ export class SyllogimousService {
         this.router.navigate([EnumScreens.Game]);
     }
 
-    checkQuestion(value?: boolean) {
+    async checkQuestion(value?: boolean) {
         this.question.userAnswer = value;
         this.question.answeredAt = Date.now();
         this.question.timerTypeOnAnswer = localStorage.getItem(LS_TIMER) || "0";
@@ -228,12 +228,18 @@ export class SyllogimousService {
                 
                 if ((timeout + wrong) / trainingUnitLength >= premisesDownThreshold) {
                     if (premises > minNumOfPremises) {
-                        this.toaster.show("Number of premises decreased for " + type, { classname: "bg-danger text-light" });
+                        const modalRef = this.modalService.open(ModalLevelChangeComponent, { centered: true });
+                        modalRef.componentInstance.title = "Number of Premises Decreased";
+                        modalRef.componentInstance.content = `Your performance on the last <b>${trainingUnitLength}</b> questions of the <b>${type}</b> type is:<div class="d-flex flex-row justify-content-center my-3"><span class="p-2"><b>${right}</b> right</span><span class="p-2 border-start border-end"><b>${timeout}</b> timeout</span><span class="p-2"><b>${wrong}</b> wrong</span></div>The number of premises for <b>${type}</b> has <b>decreased</b> to ${premises - 1}.`;
+                        await modalRef.result;
                     }
                     this.progressAndPerformanceService.updateTrainingUnit(type, { premises: -1 });
                 } else if (right / trainingUnitLength >= premisesUpThreshold) {
                     if (premises < maxNumOfPremises) {
-                        this.toaster.show("Number of premises increased for " + type, { classname: "bg-success text-light" });
+                        const modalRef = this.modalService.open(ModalLevelChangeComponent, { centered: true });
+                        modalRef.componentInstance.title = "Number of Premises Increased";
+                        modalRef.componentInstance.content = `Your performance on the last <b>${trainingUnitLength}</b> questions of the <b>${type}</b> type is:<div class="d-flex flex-row justify-content-center my-3"><span class="p-2"><b>${right}</b> right</span><span class="p-2 border-start border-end"><b>${timeout}</b> timeout</span><span class="p-2"><b>${wrong}</b> wrong</span></div>The number of premises for <b>${type}</b> has <b>increased</b> to ${premises + 1}.`;
+                        await modalRef.result;
                     }
                     this.progressAndPerformanceService.updateTrainingUnit(type, { premises: 1 });
                 }
@@ -262,10 +268,10 @@ export class SyllogimousService {
                 const modalRef = this.modalService.open(ModalLevelChangeComponent, { centered: true });
 
                 if (ds > 0) {
-                    modalRef.componentInstance.title = "Congratulations<br>You've Leveled Up!";
+                    modalRef.componentInstance.title = "Level Up";
                     modalRef.componentInstance.content = "Your hard work is paying off.<br>Keep going to unlock more question types and points!";
                 } else if (ds < 0) {
-                    modalRef.componentInstance.title = "Level Down<br>Let's Regroup!";
+                    modalRef.componentInstance.title = "Level Down";
                     modalRef.componentInstance.content = "Take this as a learning step.<br>Refocus your efforts and you’ll be back on top in no time!";
                 }
             }
