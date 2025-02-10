@@ -230,7 +230,7 @@ export class SyllogimousService {
                     if (premises > minNumOfPremises) {
                         const modalRef = this.modalService.open(ModalLevelChangeComponent, { centered: true });
                         modalRef.componentInstance.title = "Number of Premises Decreased";
-                        modalRef.componentInstance.content = `Your performance on the last <b>${trainingUnitLength}</b> questions of the <b>${type}</b> type is:<div class="d-flex flex-row justify-content-center my-3"><span class="p-2"><b>${right}</b> right</span><span class="p-2 border-start border-end"><b>${timeout}</b> timeout</span><span class="p-2"><b>${wrong}</b> wrong</span></div>The number of premises for <b>${type}</b> has <b>decreased</b> to ${premises - 1}.`;
+                        modalRef.componentInstance.content = `Your last <b>${trainingUnitLength}</b> answers for<br><b class="modal-level-type">${type}</b><br>have yielded this results:<div class="d-flex flex-row justify-content-center my-3"><span class="p-2"><b>${right}</b> right</span><span class="p-2 border-start border-end"><b>${timeout}</b> timeout</span><span class="p-2"><b>${wrong}</b> wrong</span></div>The number of premises for<br><b class="modal-level-type">${type}</b><br>has <b>decreased</b> to ${premises - 1}.`;
                         await modalRef.result;
                     }
                     this.progressAndPerformanceService.updateTrainingUnit(type, { premises: -1 });
@@ -238,7 +238,7 @@ export class SyllogimousService {
                     if (premises < maxNumOfPremises) {
                         const modalRef = this.modalService.open(ModalLevelChangeComponent, { centered: true });
                         modalRef.componentInstance.title = "Number of Premises Increased";
-                        modalRef.componentInstance.content = `Your performance on the last <b>${trainingUnitLength}</b> questions of the <b>${type}</b> type is:<div class="d-flex flex-row justify-content-center my-3"><span class="p-2"><b>${right}</b> right</span><span class="p-2 border-start border-end"><b>${timeout}</b> timeout</span><span class="p-2"><b>${wrong}</b> wrong</span></div>The number of premises for <b>${type}</b> has <b>increased</b> to ${premises + 1}.`;
+                        modalRef.componentInstance.content = `Your last <b>${trainingUnitLength}</b> answers for<br><b class="modal-level-type">${type}</b><br>have yielded this results:<div class="d-flex flex-row justify-content-center my-3"><span class="p-2"><b>${right}</b> right</span><span class="p-2 border-start border-end"><b>${timeout}</b> timeout</span><span class="p-2"><b>${wrong}</b> wrong</span></div>The number of premises for<br><b class="modal-level-type">${type}</b><br>has <b>increased</b> to ${premises + 1}.`;
                         await modalRef.result;
                     }
                     this.progressAndPerformanceService.updateTrainingUnit(type, { premises: 1 });
