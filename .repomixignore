@@ -1,0 +1,96 @@
+docs
+src/assets/css/thickstrap.css
+src/assets/css/bootstrap-with-vars.css
+src/app/syllogimous/constants/question.constants.ts
+
+<!-- In the file src/app/syllogimous/constants/question.constants.ts there is the following content
+
+```
+export enum EnumQuestionType {
+    Distinction = "Distinction",
+    ComparisonNumerical = "Comparison Numerical",
+    ComparisonChronological = "Comparison Chronological",
+    Syllogism = "Syllogism",
+    Direction = "Direction",
+    Direction3DSpatial = "Direction3D Spatial",
+    Direction3DTemporal = "Direction3D Temporal",
+    LinearArrangement = "Linear Arrangement",
+    CircularArrangement = "Circular Arrangement",
+    GraphMatching = "Graph Matching",
+    Analogy = "Analogy",
+    Binary = "Binary",
+}
+
+export enum EnumArrangements {
+    AdjacentLeft = "is adjacent and left of",
+    AdjacentRight = "is adjacent and right of",
+    Next = "is next to",
+    NStepsLeft = "is # steps left of",
+    NStepsRight = "is # steps right of",
+    Left = "is at the left of",
+    Right = "is at the right of",
+    InFront = "is diametrically opposite to", // not used by linear
+};
+
+export const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+
+export const STRINGS = [
+    "QAW",
+    "QAR",
+    /* I removed many of the meaningless 'words' to reduce repetitiveness. as it is not important to know the actual 'words' */
+    "MUB",
+    "MUN"
+];
+
+export const VALID_RULES = [
+    "0001",
+    "1011",
+    "0221",
+    "1231",
+    "0021",
+    "1031",
+    "0112",
+    "1012",
+    "1232",
+    "0332",
+    "0132",
+    "1032",
+    "0223",
+    "2023",
+    "3033",
+    "1233",
+    "0023",
+    "1033",
+    "0114",
+    "2024",
+    "1234",
+    "0134",
+    "1034",
+    "0024"
+];
+
+export const FORMS = [
+    [
+        'All <span class="subject">$</span> is <span class="subject">$</span>',
+        'No <span class="subject">$</span> is <span class="subject">$</span>',
+        'Some <span class="subject">$</span> is <span class="subject">$</span>',
+        'Some <span class="subject">$</span> is not <span class="subject">$</span>'
+    ],
+    [
+        '<span class="is-negated">No</span> <span class="subject">$</span> is <span class="subject">$</span>',
+        '<span class="is-negated">All</span> <span class="subject">$</span> is <span class="subject">$</span>',
+        'Some <span class="subject">$</span> <span class="is-negated">is not</span> <span class="subject">$</span>',
+        'Some <span class="subject">$</span> <span class="is-negated">is</span> <span class="subject">$</span>'
+    ],
+];
+
+export const NOUNS = [
+    "Acrobat",
+    "Afro",
+    "Albatross",
+    /* I removed many of these to reduce repetitiveness. as it is not important to know the actual nouns */
+    "Zip",
+    "Zipper",
+    "Zoo"
+];
+ -->
