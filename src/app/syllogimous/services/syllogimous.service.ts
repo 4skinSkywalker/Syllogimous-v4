@@ -866,7 +866,7 @@ export class SyllogimousService {
             const n = NUMBER_WORDS[absdiff] || absdiff;
             if (isSpatial) {
                 if (tdiff === 0) {
-                    return ["at eye level", "on the same level", "vertically aligned"][Math.floor(Math.random() * 3)];
+                    return "on the same level";
                 } else if (tdiff < 0) {
                     return `${n} level${s} below`;
                 } else {
@@ -874,7 +874,7 @@ export class SyllogimousService {
                 }
             } else {
                 if (tdiff === 0) {
-                    return ["simultaneous", "concurrent", "at the same time"][Math.floor(Math.random() * 3)];
+                    return "at the same time";
                 } else if (tdiff < 0) {
                     return `${n} hour${s} before`;
                 } else {
@@ -883,7 +883,7 @@ export class SyllogimousService {
             }
         };
 
-        const SAME_CARDINAL_DIRECTION = "in the same cardinal direction";
+        const SAME_CARDINAL_DIRECTION = "in the same cardinal position";
         const getCardinalRelationship = (_cardinals: [string, number][]) => {
             if (_cardinals.every(c => c[1] === 0)) {
                 return SAME_CARDINAL_DIRECTION;
@@ -969,23 +969,24 @@ export class SyllogimousService {
                 conclusion.trasversalDifference = conclusion.trasversalDifference * -1;
             }
 
-            const rndIdx = Math.floor(Math.random() * conclusion.cardinals.length);
-            if (conclusion.cardinals[rndIdx][0] === "!") {
-                const rndDir = (rndIdx === 0) ? ["North", "South"] : ["East", "West"];
-                conclusion.cardinals[rndIdx][0] = pickUniqueItems(rndDir, 1).picked[0];
+            // Filter out collinear cardinals and zero cardinals
+            conclusion.cardinals = conclusion.cardinals.filter(c => c[0] !== "!" && c[1] !== 0);
+
+            if (!conclusion.cardinals.length) {
+                return this.createDirection3D(numOfPremises, type);
             }
 
-            // TODO: THERE'S A BIG PROBLEM HERE
-            // Adding one doesn't make the relationship incorrect
-            // Flipping a zero value cardinal doesn't either
+            const rndIdx = Math.floor(Math.random() * conclusion.cardinals.length);
+
             if (coinFlip()) {
-                console.log("Add one to one cardinal");
-                conclusion.cardinals[rndIdx][1]++;
-            } else {
                 console.log("One cardinal flipped");
                 conclusion.cardinals[rndIdx][0] = cardinalOppositeMap[conclusion.cardinals[rndIdx][0]];
+            } else {
+                console.log("Add one to one cardinal");
+                conclusion.cardinals[rndIdx][1]++;
             }
         }
+
         // Regenerate conclusion relationship
         conclusion.trasversalDifference = conclusion.pair[0][3] - conclusion.pair[1][3];
         const trasversalRelationship = getTrasversalRelationship(conclusion.trasversalDifference);
