@@ -974,6 +974,10 @@ export class SyllogimousService {
                 const rndDir = (rndIdx === 0) ? ["North", "South"] : ["East", "West"];
                 conclusion.cardinals[rndIdx][0] = pickUniqueItems(rndDir, 1).picked[0];
             }
+
+            // TODO: THERE'S A BIG PROBLEM HERE
+            // Adding one doesn't make the relationship incorrect
+            // Flipping a zero value cardinal doesn't either
             if (coinFlip()) {
                 console.log("Add one to one cardinal");
                 conclusion.cardinals[rndIdx][1]++;
