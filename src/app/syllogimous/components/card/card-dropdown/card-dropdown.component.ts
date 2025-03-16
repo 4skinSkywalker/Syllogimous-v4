@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LS_DAILY_GOAL, LS_DAILY_PROGRESS, LS_DONT_SHOW, LS_GAME_MODE, LS_HISTORY, LS_PG_SETTINGS, LS_PREMISES_DOWN_THRESHOLD, LS_PREMISES_UP_THRESHOLD, LS_SCORE, LS_TIMER, LS_TRAINING_UNIT, LS_TRAINING_UNIT_LENGTH, LS_WEEKLY_GOAL } from 'src/app/syllogimous/constants/local-storage.constants';
+import { LS_DAILY_GOAL, LS_DAILY_PROGRESS, LS_DONT_SHOW, LS_GAME_MODE, LS_HISTORY, LS_PG_SETTINGS, LS_PREMISES_DOWN_THRESHOLD, LS_PREMISES_UP_THRESHOLD, LS_PROPS, LS_SCORE, LS_TIMER, LS_TRAINING_UNIT, LS_TRAINING_UNIT_LENGTH, LS_WEEKLY_GOAL } from 'src/app/syllogimous/constants/local-storage.constants';
 import { EnumQuestionType } from 'src/app/syllogimous/constants/question.constants';
 import { EnumScreens } from 'src/app/syllogimous/constants/syllogimous.constants';
 import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.service';
+import { downloadFile } from 'src/app/utils/file';
 
 @Component({
     selector: 'app-card-dropdown',
@@ -18,7 +19,7 @@ export class CardDropdownComponent {
         public sylSrv: SyllogimousService,
         public router: Router,
         private modalService: NgbModal,
-    ) {}
+    ) { }
 
     ngAfterViewInit() {
         this.toggleDarkmode(true);
@@ -26,26 +27,9 @@ export class CardDropdownComponent {
 
     async resetGame(content: any) {
         await this.modalService.open(content, { centered: true }).result;
-        
-        localStorage.removeItem(LS_HISTORY);
-        localStorage.removeItem(LS_TIMER);
-        localStorage.removeItem(LS_GAME_MODE);
-        localStorage.removeItem(LS_DAILY_PROGRESS);
-        localStorage.removeItem(LS_PG_SETTINGS);
-        localStorage.removeItem(LS_DAILY_GOAL);
-        localStorage.removeItem(LS_WEEKLY_GOAL);
-        localStorage.removeItem(LS_TRAINING_UNIT_LENGTH);
-        localStorage.removeItem(LS_PREMISES_UP_THRESHOLD);
-        localStorage.removeItem(LS_PREMISES_DOWN_THRESHOLD);
-        localStorage.removeItem(LS_SCORE);
 
-        for (const screen of Object.values(EnumScreens)) {
-            localStorage.removeItem(LS_DONT_SHOW + screen);
-        }
-
-        for (const type of Object.values(EnumQuestionType)) {
-            localStorage.removeItem(LS_DONT_SHOW + type);
-            localStorage.removeItem(LS_TRAINING_UNIT + type);
+        for (const lsProp of LS_PROPS) {
+            localStorage.removeItem(lsProp);
         }
 
         location.reload();
@@ -64,5 +48,50 @@ export class CardDropdownComponent {
 
     getDarkmode() {
         return JSON.parse(localStorage.getItem("darkmode") || "false");
+    }
+
+    import(evt: any) {
+        const file = evt.target.files[0];
+        if (!file) {
+            alert("No JSON file selected");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const importJson = e.target?.result;
+            if (!importJson || typeof importJson !== "string") {
+                alert("Invalid JSON file");
+                return;
+            }
+
+            const data = JSON.parse(importJson);
+            for (const [key, value] of Object.entries(data)) {
+                localStorage.setItem(key, value as string);
+            }
+
+            setTimeout(() => {
+                alert("Import completed successfully!");
+                window.location.href = "/";
+            }, 400);
+        };
+        reader.readAsText(file);
+    }
+
+    export() {
+        const exportJson: Record<string, string> = {};
+        for (const lsProp of LS_PROPS) {
+            const propVal = localStorage.getItem(lsProp)
+            if (propVal) {
+                exportJson[lsProp] = propVal;
+            }
+        }
+
+        downloadFile(
+            new Blob([JSON.stringify(exportJson)], { type: "text/plain" }),
+            `syllogimous-export_${new Date().toLocaleDateString("sv")}.json`
+        );
+
+        setTimeout(() => alert("Export completed successfully!"), 400);
     }
 }
