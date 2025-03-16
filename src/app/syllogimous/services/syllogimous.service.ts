@@ -957,9 +957,14 @@ export class SyllogimousService {
         const isValid = coinFlip();
         if (isValid) {
             console.log("Keep conclusion");
+
+            // Filter out collinear cardinals
+            conclusion.cardinals = conclusion.cardinals.filter(c => c[0] !== "!");
+
             if (coinFlip() && conclusion.cardinals.length === 2) {
-                console.log("One cardinal got plucked");
+                console.log("Cardinal pluck before", JSON.stringify(conclusion.cardinals, null, 2));
                 conclusion.cardinals = [pickUniqueItems(conclusion.cardinals, 1).picked[0]];
+                console.log("Cardinal pluck after", JSON.stringify(conclusion.cardinals, null, 2));
             }
         } else {
             console.log("Tweak conclusion");
