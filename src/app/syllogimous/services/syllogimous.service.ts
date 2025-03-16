@@ -13,6 +13,7 @@ import { guid } from "src/app/utils/uuid";
 import { EnumArrangements, EnumQuestionType } from "../constants/question.constants";
 import { EnumQuestionGroup, QUESTION_TYPE_SETTING_PARAMS } from "../constants/settings.constants";
 import { ToastService } from "src/app/services/toast.service";
+import { Logger } from "../utils/logger";
 
 @Injectable({
     providedIn: "root"
@@ -22,6 +23,7 @@ export class SyllogimousService {
     history: Question[] = [];
     question;
     playgroundSettings?: Settings;
+    logger = new Logger("warn", true);
 
     get score() {
         return this._score;
@@ -128,9 +130,9 @@ export class SyllogimousService {
     /** Return a random question based on the current settings */
     createRandomQuestion(numOfPremises?: number, basic?: boolean) {
         const settings = this.settings;
-        console.log("Settings", settings);
+        this.logger.info("Settings", settings);
 
-        console.log("Training units", this.progressAndPerformanceService.getAllTrainingUnits());
+        this.logger.info("Training units", this.progressAndPerformanceService.getAllTrainingUnits());
 
         const typeSettingTuples = Object.entries(settings.question) as [EnumQuestionType, QuestionSettings][];
         const getQuestionGroup = (qg?: EnumQuestionGroup) => typeSettingTuples.filter(([qt, qs]) => qs.group == qg);
@@ -160,11 +162,11 @@ export class SyllogimousService {
         }
 
         if (!choices.length) {
-            console.warn("NO CHOICES AVAILABLE!");
+            this.logger.warn("NO CHOICES AVAILABLE!");
         }
 
         const randomQuestion = pickUniqueItems(choices, 1).picked[0]();
-        console.log("Random question", randomQuestion);
+        this.logger.info("Random question", randomQuestion);
         return randomQuestion;
     }
 
@@ -288,7 +290,7 @@ export class SyllogimousService {
     }
 
     createSyllogism(numOfPremises: number) {
-        console.log("createSyllogism");
+        this.logger.info("createSyllogism");
 
         const type = EnumQuestionType.Syllogism;
         const settings = this.settings;
@@ -332,7 +334,7 @@ export class SyllogimousService {
     }
 
     createDistinction(numOfPremises: number): Question {
-        console.log("createDistinction");
+        this.logger.info("createDistinction");
 
         const type = EnumQuestionType.Distinction;
         const settings = this.settings;
@@ -396,7 +398,7 @@ export class SyllogimousService {
     }
 
     createComparison(numOfPremises: number, type: EnumQuestionType.ComparisonNumerical | EnumQuestionType.ComparisonChronological) {
-        console.log("createComparison:", type);
+        this.logger.info("createComparison:", type);
 
         const settings = this.settings;
 
@@ -448,7 +450,7 @@ export class SyllogimousService {
     }
 
     createArrangement(numOfPremises: number, type: EnumQuestionType.LinearArrangement | EnumQuestionType.CircularArrangement): Question {
-        console.log("createArrangement:", type);
+        this.logger.info("createArrangement:", type);
 
         const settings = this.settings;
 
@@ -478,12 +480,12 @@ export class SyllogimousService {
             while (safe-- && premise == undefined) {
                 // Pick A
                 a = a || pickUniqueItems(subjects, 1).picked[0];
-                console.log("a", a);
+                this.logger.info("a", a);
                 const aid = words.indexOf(a);
 
                 // Pick B
                 const b = pickUniqueItems(subjects.filter(sub => sub !== a), 1).picked[0];
-                console.log("b", b);
+                this.logger.info("b", b);
                 const bid = words.indexOf(b);
 
                 // Pick a way between A and B and check there are no connections already established between A and B
@@ -530,9 +532,9 @@ export class SyllogimousService {
 
         const [aid, bid] = [words.indexOf(a!), words.indexOf(b!)];
         const ways = getWays(aid, bid, numOfEls, true);
-        console.log("a", a);
-        console.log("a", b);
-        console.log("ways", ways);
+        this.logger.info("a", a);
+        this.logger.info("a", b);
+        this.logger.info("ways", ways);
 
         question.isValid = coinFlip();
         const conclusions = Object.entries(ways).filter(([description, data]) => data.possible === question.isValid);
@@ -565,7 +567,7 @@ export class SyllogimousService {
     }
 
     createDirection(numOfPremises: number): Question {
-        console.log("createDirection");
+        this.logger.info("createDirection");
 
         const type = EnumQuestionType.Direction;
         const settings = this.settings;
@@ -603,7 +605,7 @@ export class SyllogimousService {
             pool = remaining;
         }
         question.coords = coords;
-        console.log("Coords", coords);
+        this.logger.info("Coords", coords);
 
         // Create pairs of subjects
         let copyOfCoords = [...coords];
@@ -642,12 +644,12 @@ export class SyllogimousService {
         }
 
         if (safe < 1) {
-            console.error("MAXIMUM ITERATION COUNT REACHED!");
+            this.logger.error("MAXIMUM ITERATION COUNT REACHED!");
             return this.createDirection(numOfPremises);
         }
 
         pairs.push([coorda, coordb]);
-        console.log("Pairs", pairs);
+        this.logger.info("Pairs", pairs);
 
         // Calculate cardinals and relationship of each pair
         const premises: IDirectionProposition[] = [];
@@ -704,7 +706,7 @@ export class SyllogimousService {
                 uid: guid()
             })
         }
-        console.log("Premises", premises);
+        this.logger.info("Premises", premises);
 
         // Extract the last premise and say it's the conclusion
         // Flip a coin and either keep or tweak the conclusion
@@ -712,27 +714,27 @@ export class SyllogimousService {
         let tweaked = false;
         const isValid = coinFlip();
         if (isValid) {
-            console.log("Keep conclusion");
+            this.logger.info("Keep conclusion");
             if (coinFlip() && conclusion.cardinals.length === 2) {
-                console.log("One cardinal got plucked");
+                this.logger.info("One cardinal got plucked");
                 conclusion.cardinals = [pickUniqueItems(conclusion.cardinals, 1).picked[0]];
                 tweaked = true;
             }
         } else {
-            console.log("Tweak conclusion");
+            this.logger.info("Tweak conclusion");
             const rndIdx = Math.floor(Math.random() * conclusion.cardinals.length);
             if (coinFlip()) {
-                console.log("Add one to one cardinal");
+                this.logger.info("Add one to one cardinal");
                 conclusion.cardinals[rndIdx][1]++;
             } else {
-                console.log("One cardinal flipped");
+                this.logger.info("One cardinal flipped");
                 conclusion.cardinals[rndIdx][0] = cardinalOppositeMap[conclusion.cardinals[rndIdx][0]];
             }
             tweaked = true;
         }
         // Regenerate conclusion relationship
         conclusion.relationship = getRelationship(conclusion.cardinals, tweaked);
-        console.log("Conclusion", conclusion);
+        this.logger.info("Conclusion", conclusion);
 
         const negateRelationship = (relationship: string) => {
             return relationship.replaceAll(/(north|south|east|west)/gi, substr => {
@@ -760,7 +762,7 @@ export class SyllogimousService {
     }
 
     createDirection3D(numOfPremises: number, type: EnumQuestionType.Direction3DSpatial | EnumQuestionType.Direction3DTemporal): Question {
-        console.log("createDirection3D");
+        this.logger.info("createDirection3D");
 
         const settings = this.settings;
 
@@ -810,8 +812,7 @@ export class SyllogimousService {
             coords.push([picked[0], ri, rj, rt]);
             pool = remaining;
         }
-        question.coords3D = coords;
-        console.log("Coords", coords);
+        this.logger.info("All coords", coords);
 
         // Create pairs of subjects
         let copyOfCoords = [...coords];
@@ -840,6 +841,8 @@ export class SyllogimousService {
                 return a;
             }, {} as Record<string, typeof coords[0]>)
         );
+        question.coords3D = usedCoords;
+        this.logger.info("Used coords", usedCoords);
 
         // Add one more pair that will represent the conclusion
         let coorda!: typeof coords[0];
@@ -850,12 +853,12 @@ export class SyllogimousService {
         }
 
         if (safe < 1) {
-            console.error("MAXIMUM ITERATION COUNT REACHED!");
+            this.logger.error("MAXIMUM ITERATION COUNT REACHED!");
             return this.createDirection3D(numOfPremises, type);
         }
 
         pairs.push([coorda, coordb]);
-        console.log("Pairs", pairs);
+        this.logger.info("Pairs", pairs);
 
         // Calculate relationship of each pair
         const premises: IDirection3DProposition[] = [];
@@ -949,28 +952,28 @@ export class SyllogimousService {
                 uid: guid()
             })
         }
-        console.log("Premises", premises);
+        this.logger.info("Premises", premises);
 
         // Extract the last premise and say it's the conclusion
         // Flip a coin and either keep or tweak the conclusion
         let conclusion = premises.pop()!;
         const isValid = coinFlip();
         if (isValid) {
-            console.log("Keep conclusion");
+            this.logger.info("Keep conclusion");
 
             // Filter out collinear cardinals
             conclusion.cardinals = conclusion.cardinals.filter(c => c[0] !== "!");
 
             if (coinFlip() && conclusion.cardinals.length === 2) {
-                console.log("Cardinal pluck before", JSON.stringify(conclusion.cardinals, null, 2));
+                this.logger.info("Cardinal pluck before", JSON.stringify(conclusion.cardinals, null, 2));
                 conclusion.cardinals = [pickUniqueItems(conclusion.cardinals, 1).picked[0]];
-                console.log("Cardinal pluck after", JSON.stringify(conclusion.cardinals, null, 2));
+                this.logger.info("Cardinal pluck after", JSON.stringify(conclusion.cardinals, null, 2));
             }
         } else {
-            console.log("Tweak conclusion");
+            this.logger.info("Tweak conclusion");
 
             if (coinFlip()) {
-                console.log("Invert trasversal difference");
+                this.logger.info("Invert trasversal difference");
                 conclusion.trasversalDifference = conclusion.trasversalDifference * -1;
             }
 
@@ -984,10 +987,10 @@ export class SyllogimousService {
             const rndIdx = Math.floor(Math.random() * conclusion.cardinals.length);
 
             if (coinFlip()) {
-                console.log("One cardinal flipped");
+                this.logger.info("One cardinal flipped");
                 conclusion.cardinals[rndIdx][0] = cardinalOppositeMap[conclusion.cardinals[rndIdx][0]];
             } else {
-                console.log("Add one to one cardinal");
+                this.logger.info("Add one to one cardinal");
                 conclusion.cardinals[rndIdx][1]++;
             }
         }
@@ -998,7 +1001,7 @@ export class SyllogimousService {
         const cardinalRelationship = getCardinalRelationship(conclusion.cardinals);
         const connector = (cardinalRelationship === SAME_CARDINAL_DIRECTION) ? " and " : (cardinalRelationship.indexOf(" and ") > -1) ? ", " : " and ";
         conclusion.relationship = trasversalRelationship + connector + cardinalRelationship;
-        console.log("Conclusion", conclusion);
+        this.logger.info("Conclusion", conclusion);
 
         const negateRelationship = (relationship: string) => {
             return relationship
@@ -1034,7 +1037,7 @@ export class SyllogimousService {
     }
 
     createGraphMatching(numOfPremises: number): Question {
-        console.log("createGraphMatching");
+        this.logger.info("createGraphMatching");
 
         const type = EnumQuestionType.GraphMatching;
         const settings = this.settings;
@@ -1084,23 +1087,23 @@ export class SyllogimousService {
         ]));
         question.isValid = coinFlip();
         if (!question.isValid) {
-            console.log("Invalid");
+            this.logger.info("Invalid");
             let modifications = 0;
             while (modifications === 0) {
                 const { picked } = pickUniqueItems(edgeList2, 1);
                 const [a, rel, b] = picked[0];
                 if (rel === "→" || rel === "←") {
                     if (Math.random() < 0.15) {
-                        console.log("Swap 1-way for 2-way");
+                        this.logger.info("Swap 1-way for 2-way");
                         picked[0][1] = "↔";
                         modifications++;
                     } else if (coinFlip()) {
-                        console.log("Rotate 1-way direction");
+                        this.logger.info("Rotate 1-way direction");
                         picked[0][1] = inverseMap[picked[0][1] as "→" | "←"] as "→" | "←";
                         modifications++;
                     }
                 } else if (Math.random() < 0.15) {
-                    console.log("Swap 2-way for 1-way");
+                    this.logger.info("Swap 2-way for 1-way");
                     picked[0][1] = { "true": "→", "false": "←" }[String(coinFlip())] as "→" | "←";
                     modifications++;
                 }
@@ -1115,31 +1118,31 @@ export class SyllogimousService {
                     while (!picked || picked === picked2[0][subjectPosIdx] || picked === picked2[0][subjectNegIdx]) {
                         picked = pickUniqueItems(newWords, 1).picked[0];
                     }
-                    console.log("Change an edge by connecting a/b to a different subject", [picked2[0][subjectPosIdx], picked]);
+                    this.logger.info("Change an edge by connecting a/b to a different subject", [picked2[0][subjectPosIdx], picked]);
                     picked2[0][subjectPosIdx] = picked;
                     modifications++;
                 }
             }
-            console.log("Modifications " + modifications);
+            this.logger.info("Modifications " + modifications);
         }
 
         const horizontalShuffle = (_edgeList: typeof edgeList) =>
             _edgeList.map(([a, rel, b]) => {
-                console.log("Before", [a, rel, b]);
+                this.logger.info("Before", [a, rel, b]);
                 const result = coinFlip() ? [a, rel, b] : [b, inverseMap[rel], a];
-                console.log("After", result);
+                this.logger.info("After", result);
                 return result;
             }) as typeof edgeList;
 
         shuffle(edgeList);
         edgeList = horizontalShuffle(edgeList);
         question.graphPremises = edgeList;
-        console.log("EdgeList", edgeList);
+        this.logger.info("EdgeList", edgeList);
 
         shuffle(edgeList2);
         edgeList2 = horizontalShuffle(edgeList2);
         question.graphConclusion = edgeList2;
-        console.log("EdgeList2", edgeList2);
+        this.logger.info("EdgeList2", edgeList2);
 
         const usedEdges = new Set<string>();
         const readable = (edges: typeof edgeList, edge: typeof edgeList[0], negated = false, meta = false) => {
@@ -1169,11 +1172,11 @@ export class SyllogimousService {
                         relationship = `${getSubject(pickedEdge[0])} is to ${getSubject(pickedEdge[2])}`;
                     }
                     isMetaRelated = true;
-                    console.log("Metarelated");
+                    this.logger.info("Metarelated");
                     question.metaRelations++;
                 }
             } else if (negated) {
-                console.log("Negated");
+                this.logger.info("Negated");
                 question.negations++;
                 relationship = `<span class="is-negated">${readMap[inverseMap[edge[1]]]}</span>`;
             }
@@ -1206,7 +1209,7 @@ export class SyllogimousService {
     }
 
     createAnalogy(length: number) {
-        console.log("createAnalogy");
+        this.logger.info("createAnalogy");
 
         const topType = EnumQuestionType.Analogy;
         const settings = this.settings;
@@ -1382,9 +1385,6 @@ export class SyllogimousService {
 
                 const waysA2B = getWays(idxA, idxB, length + 1, true);
                 const waysC2D = getWays(idxC, idxD, length + 1, true);
-                //console.log(subjects);
-                //console.log(idxA, idxB, idxC, idxD);
-                //console.log(waysA2B, waysC2D);
 
                 isValidSame = false;
                 for (const key in waysA2B) {
@@ -1392,7 +1392,7 @@ export class SyllogimousService {
                         isValidSame = true;
                     }
                 }
-                //console.log('Is a valid "same" relationship?', isValidSame);
+                this.logger.info('Is a valid "same" relationship?', isValidSame);
 
                 break;
             }
@@ -1418,7 +1418,7 @@ export class SyllogimousService {
     }
 
     createBinary(numOfPremises: number) {
-        console.log("createBinary");
+        this.logger.info("createBinary");
 
         const topType = EnumQuestionType.Binary;
         const settings = this.settings;

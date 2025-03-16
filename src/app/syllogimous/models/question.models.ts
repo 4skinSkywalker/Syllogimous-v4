@@ -14,7 +14,7 @@ export interface IArrangementPremise {
 }
 
 export interface IDirectionProposition {
-    pair: [ [ string, number, number ], [ string, number, number ] ];
+    pair: [[string, number, number], [string, number, number]];
     trasversalDifference?: number;
     cardinals: [string, number][];
     relationship: string;
@@ -22,7 +22,7 @@ export interface IDirectionProposition {
 }
 
 export interface IDirection3DProposition {
-    pair: [ [ string, number, number, number ], [ string, number, number, number ] ];
+    pair: [[string, number, number, number], [string, number, number, number]];
     trasversalDifference: number;
     cardinals: [string, number][];
     relationship: string;
