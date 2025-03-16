@@ -65,6 +65,11 @@ export class CardDropdownComponent {
                 return;
             }
 
+            const confirmation = confirm("Importing will overwrite all existing settings. Are you sure?");
+            if (!confirmation) {
+                return;
+            }
+
             const data = JSON.parse(importJson);
             for (const [key, value] of Object.entries(data)) {
                 localStorage.setItem(key, value as string);
