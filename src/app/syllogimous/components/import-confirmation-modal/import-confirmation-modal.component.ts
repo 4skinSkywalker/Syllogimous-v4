@@ -20,14 +20,14 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
           <li class="list-group-item d-flex justify-content-between" *ngIf="points !== null">
             <span>Points:</span> <strong>{{points}}</strong>
           </li>
-          <li class="list-group-item d-flex justify-content-between" *ngIf="fileInfo?.lastModified">
-            <span>Last Modified:</span> <strong>{{formatDate(fileInfo?.lastModified || 0)}}</strong>
+          <li class="list-group-item d-flex justify-content-between" *ngIf="fileInfo.lastModified">
+            <span>Last Modified:</span> <strong>{{formatDate(fileInfo.lastModified)}}</strong>
           </li>
           <li class="list-group-item d-flex justify-content-between">
-            <span>Size:</span> <strong>{{formatSize(fileInfo?.size || 0)}}</strong>
+            <span>Size:</span> <strong>{{formatSize(fileInfo.size)}}</strong>
           </li>
           <li class="list-group-item d-flex justify-content-between">
-            <span>Filename:&nbsp;&nbsp;</span> <strong>{{fileInfo?.name}}</strong>
+            <span>Filename:&nbsp;&nbsp;</span> <strong>{{fileInfo.name}}</strong>
           </li>
         </ul>
       </div>
