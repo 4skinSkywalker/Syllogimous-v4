@@ -47,7 +47,7 @@ export class PlaygroundModeComponent {
         for (const [field, value] of this.genericEnables) {
             this.fields.push({
                 type: "checkbox",
-                label: "Enable " + decomposeCamelCase(field),
+                label: decomposeCamelCase(field),
                 field,
                 value,
             });
@@ -59,14 +59,14 @@ export class PlaygroundModeComponent {
             const filler = isFirst ? '<div class="pt-3"></div>' : "<div></div>";
             isFirst = false;
             this.fields.push(
-                { 
+                {
                     filler,
                     field: "",
                     label: ""
                 },
                 {
                     field: qt,
-                    label: `Enable ${decomposeCamelCase(qt)}`, // ${qs.basic ? "(Basic)" : ""}
+                    label: decomposeCamelCase(qt), // ${qs.basic ? "(Basic)" : ""}
                     type: "checkbox",
                     value: qs.enabled,
                 },
@@ -112,14 +112,14 @@ export class PlaygroundModeComponent {
             settings.question[_qt].enabled = this.formData[_qt];
             settings.question[_qt].setNumOfPremises(this.formData[_qt + "premises"]);
         }
-        
+
         // Check configuration
         this.validationError = areSettingsInvalid(settings);
         if (this.validationError) {
             await this.modalService.open(content, { centered: true }).result;
             return;
         }
-        
+
         this.sylSrv.playgroundSettings = settings;
         console.log("Playground settings", settings);
         this.savePlaygroundSettings(settings);

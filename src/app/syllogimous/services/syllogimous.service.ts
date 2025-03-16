@@ -78,7 +78,7 @@ export class SyllogimousService {
     }
 
     pushIntoHistory(question: Question) {
-        localStorage.setItem(LS_HISTORY, JSON.stringify([ question, ...this.questions ]));
+        localStorage.setItem(LS_HISTORY, JSON.stringify([question, ...this.questions]));
     }
 
     /** Given an EnumTiers value construct a Settings instance */
@@ -110,18 +110,18 @@ export class SyllogimousService {
     /** Given question type and number of premises, returns a question creator function */
     getCreateFn(questionType: EnumQuestionType, numOfPremises: number) {
         return {
-            [EnumQuestionType.Distinction]:             () => this.createDistinction(numOfPremises),
-            [EnumQuestionType.ComparisonNumerical]:     () => this.createComparison(numOfPremises, EnumQuestionType.ComparisonNumerical),
+            [EnumQuestionType.Distinction]: () => this.createDistinction(numOfPremises),
+            [EnumQuestionType.ComparisonNumerical]: () => this.createComparison(numOfPremises, EnumQuestionType.ComparisonNumerical),
             [EnumQuestionType.ComparisonChronological]: () => this.createComparison(numOfPremises, EnumQuestionType.ComparisonChronological),
-            [EnumQuestionType.Syllogism]:               () => this.createSyllogism(numOfPremises),
-            [EnumQuestionType.LinearArrangement]:       () => this.createArrangement(numOfPremises, EnumQuestionType.LinearArrangement),
-            [EnumQuestionType.CircularArrangement]:     () => this.createArrangement(numOfPremises, EnumQuestionType.CircularArrangement),
-            [EnumQuestionType.Direction]:               () => this.createDirection(numOfPremises),
-            [EnumQuestionType.Direction3DSpatial]:      () => this.createDirection3D(numOfPremises, EnumQuestionType.Direction3DSpatial),
-            [EnumQuestionType.Direction3DTemporal]:     () => this.createDirection3D(numOfPremises, EnumQuestionType.Direction3DTemporal),
-            [EnumQuestionType.GraphMatching]:           () => this.createGraphMatching(numOfPremises),
-            [EnumQuestionType.Analogy]:                 () => this.createAnalogy(numOfPremises),
-            [EnumQuestionType.Binary]:                  () => this.createBinary(numOfPremises),
+            [EnumQuestionType.Syllogism]: () => this.createSyllogism(numOfPremises),
+            [EnumQuestionType.LinearArrangement]: () => this.createArrangement(numOfPremises, EnumQuestionType.LinearArrangement),
+            [EnumQuestionType.CircularArrangement]: () => this.createArrangement(numOfPremises, EnumQuestionType.CircularArrangement),
+            [EnumQuestionType.Direction]: () => this.createDirection(numOfPremises),
+            [EnumQuestionType.Direction3DSpatial]: () => this.createDirection3D(numOfPremises, EnumQuestionType.Direction3DSpatial),
+            [EnumQuestionType.Direction3DTemporal]: () => this.createDirection3D(numOfPremises, EnumQuestionType.Direction3DTemporal),
+            [EnumQuestionType.GraphMatching]: () => this.createGraphMatching(numOfPremises),
+            [EnumQuestionType.Analogy]: () => this.createAnalogy(numOfPremises),
+            [EnumQuestionType.Binary]: () => this.createBinary(numOfPremises),
         }[questionType];
     }
 
@@ -132,7 +132,7 @@ export class SyllogimousService {
 
         console.log("Training units", this.progressAndPerformanceService.getAllTrainingUnits());
 
-        const typeSettingTuples =  Object.entries(settings.question) as [EnumQuestionType, QuestionSettings][];
+        const typeSettingTuples = Object.entries(settings.question) as [EnumQuestionType, QuestionSettings][];
         const getQuestionGroup = (qg?: EnumQuestionGroup) => typeSettingTuples.filter(([qt, qs]) => qs.group == qg);
         const groupsOfQuestions = [
             getQuestionGroup(undefined),
@@ -162,7 +162,7 @@ export class SyllogimousService {
         if (!choices.length) {
             console.warn("NO CHOICES AVAILABLE!");
         }
-    
+
         const randomQuestion = pickUniqueItems(choices, 1).picked[0]();
         console.log("Random question", randomQuestion);
         return randomQuestion;
@@ -218,14 +218,14 @@ export class SyllogimousService {
             } else {
                 this.progressAndPerformanceService.updateTrainingUnit(type, { wrong: 1 });
             }
-            
+
             const { right, timeout, wrong } = this.progressAndPerformanceService.calcTrainingUnitPercentages(type);
             const { trainingUnitLength, premisesUpThreshold, premisesDownThreshold } = this.progressAndPerformanceService.getTrainingUnitSettings();
             if (right + timeout + wrong >= trainingUnitLength) {
                 this.progressAndPerformanceService.restartTrainingUnit(this.question.type);
                 const { premises } = this.progressAndPerformanceService.getTrainingUnit(type);
                 const { minNumOfPremises, maxNumOfPremises } = QUESTION_TYPE_SETTING_PARAMS[type];
-                
+
                 if ((timeout + wrong) / trainingUnitLength >= premisesDownThreshold) {
                     if (premises > minNumOfPremises) {
                         const modalRef = this.modalService.open(ModalLevelChangeComponent, { centered: true });
@@ -247,7 +247,7 @@ export class SyllogimousService {
 
             // Adjust tier based on score
             const currTier = this.tier;
-    
+
             let ds = 0;
             if (isQuestionValid) {
                 this.score += TIER_SCORE_ADJUSTMENTS[this.tier].increment;
@@ -260,7 +260,7 @@ export class SyllogimousService {
             }
 
             this.question.userScore = this.score;
-    
+
             const nextTier = this.tier;
 
             // Level up/down
@@ -296,7 +296,7 @@ export class SyllogimousService {
         if (!canGenerateQuestion(type, numOfPremises, settings)) {
             throw new Error("Cannot generate.");
         }
-    
+
         const length = numOfPremises + 1;
         const question = new Question(type);
         question.isValid = coinFlip();
@@ -317,17 +317,17 @@ export class SyllogimousService {
                 question.bucket[2],
                 question.isValid ? getRandomRuleValid() : getRandomRuleInvalid()
             );
-        } while(isPremiseLikeConclusion(question.premises, question.conclusion));
+        } while (isPremiseLikeConclusion(question.premises, question.conclusion));
 
         for (let i = 3; i < length; i++) {
             const rnd = Math.floor(Math.random() * (i - 1));
             const flip = coinFlip();
-            const [ p, m ] = flip ? [question.bucket[i], question.bucket[rnd]] : [question.bucket[rnd], question.bucket[i]];
+            const [p, m] = flip ? [question.bucket[i], question.bucket[rnd]] : [question.bucket[rnd], question.bucket[i]];
             question.premises.push(getSyllogism(settings, "#####", p, m, getRandomRuleInvalid())[0]);
         }
-    
+
         shuffle(question.premises);
-    
+
         return question;
     }
 
@@ -350,10 +350,10 @@ export class SyllogimousService {
             const first = symbols.splice(rnd, 1)
             let prev = first;
             let curr: string[] = [];
-    
+
             question.buckets = [[prev], []];
             let prevBucket = 0;
-    
+
             question.premises = [];
 
             for (let i = 0; i < length - 1; i++) {
@@ -370,7 +370,7 @@ export class SyllogimousService {
                 }
 
                 question.buckets[prevBucket].push(curr);
-    
+
                 prev = curr;
             }
 
@@ -380,7 +380,7 @@ export class SyllogimousService {
             }
 
             createMetaRelationships(settings, question, length);
-            
+
             const isSameAs = coinFlip();
             const relation = getRelation(settings, type, isSameAs);
 
@@ -388,16 +388,16 @@ export class SyllogimousService {
             question.isValid = isSameAs
                 ? question.buckets[0].includes(curr)
                 : question.buckets[1].includes(curr);
-        } while(isPremiseLikeConclusion(question.premises, question.conclusion));
-    
+        } while (isPremiseLikeConclusion(question.premises, question.conclusion));
+
         shuffle(question.premises);
-    
+
         return question;
     }
 
     createComparison(numOfPremises: number, type: EnumQuestionType.ComparisonNumerical | EnumQuestionType.ComparisonChronological) {
         console.log("createComparison:", type);
-        
+
         const settings = this.settings;
 
         if (!canGenerateQuestion(type, numOfPremises, settings)) {
@@ -413,7 +413,7 @@ export class SyllogimousService {
             const sign = [-1, 1][Math.floor(Math.random() * 2)];
 
             let next = "";
-    
+
             for (let i = 0; i < length - 1; i++) {
                 const curr = question.bucket[i];
                 next = question.bucket[i + 1];
@@ -440,10 +440,10 @@ export class SyllogimousService {
             question.isValid = isMoreOrAfter
                 ? sign === 1 && a > b || sign === -1 && a < b
                 : sign === 1 && a < b || sign === -1 && a > b;
-        } while(isPremiseLikeConclusion(question.premises, question.conclusion));
-    
+        } while (isPremiseLikeConclusion(question.premises, question.conclusion));
+
         shuffle(question.premises);
-    
+
         return question;
     }
 
@@ -467,12 +467,12 @@ export class SyllogimousService {
 
         const relationshipAlreadyExistent = (a: string, b: string) =>
             premises.find(({ a: pA, b: pB }) => (pA === a && pB === b) || (pA === b && pB === a));
-        
+
         let premises: IArrangementPremise[] = [];
         let subjects = [...words];
         let a: string | undefined = undefined;
         let safe = 1e2;
-        while (safe-- && premises.length < numOfEls-1) {
+        while (safe-- && premises.length < numOfEls - 1) {
             let premise: IArrangementPremise | undefined = undefined;
             let safe = 1e2;
             while (safe-- && premise == undefined) {
@@ -487,7 +487,7 @@ export class SyllogimousService {
                 const bid = words.indexOf(b);
 
                 // Pick a way between A and B and check there are no connections already established between A and B
-                const [ wayDescription, wayData ] = pickUniqueItems(Object.entries(getWays(aid, bid, numOfEls)), 1).picked[0];
+                const [wayDescription, wayData] = pickUniqueItems(Object.entries(getWays(aid, bid, numOfEls)), 1).picked[0];
                 if (wayData.possible && !relationshipAlreadyExistent(a, b)) {
                     premise = {
                         a,
@@ -535,7 +535,7 @@ export class SyllogimousService {
         console.log("ways", ways);
 
         question.isValid = coinFlip();
-        const conclusions = Object.entries(ways).filter(([ description, data ]) => data.possible === question.isValid);
+        const conclusions = Object.entries(ways).filter(([description, data]) => data.possible === question.isValid);
         const picked = pickUniqueItems(conclusions, 1).picked[0];
         const description = picked[0] as EnumArrangements;
         const steps = picked[1].steps;
@@ -584,8 +584,8 @@ export class SyllogimousService {
         const cardinalOppositeMap: Record<string, string> = {
             "North": "South",
             "South": "North",
-             "East": "West",
-             "West": "East"
+            "East": "West",
+            "West": "East"
         };
 
         // Give random coords to each subject
@@ -595,8 +595,8 @@ export class SyllogimousService {
             let ri: number | undefined;
             let rj: number | undefined;
             while (ri == null || rj == null || coords.find(([_, x, y]) => ri === x && rj === y)) {
-                ri = Math.floor(Math.random()*sideSize);
-                rj = Math.floor(Math.random()*sideSize);
+                ri = Math.floor(Math.random() * sideSize);
+                rj = Math.floor(Math.random() * sideSize);
             }
             const { picked, remaining } = pickUniqueItems(pool, 1);
             coords.push([picked[0], ri, rj]);
@@ -614,7 +614,7 @@ export class SyllogimousService {
             const { picked, remaining } = pickUniqueItems(copyOfCoords, 1);
             const subject = i === 0
                 ? pickUniqueItems(remaining, 1).picked[0]
-                : pickUniqueItems(pairs, 1).picked[0][Math.floor(Math.random()*2)];
+                : pickUniqueItems(pairs, 1).picked[0][Math.floor(Math.random() * 2)];
             const a = picked[0][0];
             const b = subject[0];
             if (a === b || subjectsAlreadyIncluded(a, b)) {
@@ -638,7 +638,7 @@ export class SyllogimousService {
         let coordb!: typeof coords[0];
         let safe = 1e2;
         while (safe-- && (!coorda || !coordb || subjectsAlreadyIncluded(coorda[0], coordb[0]))) {
-            [ coorda, coordb ] = pickUniqueItems(usedCoords, 2).picked;
+            [coorda, coordb] = pickUniqueItems(usedCoords, 2).picked;
         }
 
         if (safe < 1) {
@@ -659,7 +659,7 @@ export class SyllogimousService {
                 relationship = "adjacent and " + cardinals[0][0];
 
                 if (cardinals.length === 2) {
-                    relationship +=  "-" + cardinals[1][0];
+                    relationship += "-" + cardinals[1][0];
                 }
             } else {
                 const numStepsVertical = NUMBER_WORDS[cardinals[0][1]] || cardinals[0][1];
@@ -668,7 +668,7 @@ export class SyllogimousService {
                 if (cardinals.length === 2) {
                     const numStepsHorizontal = NUMBER_WORDS[cardinals[1][1]] || cardinals[1][1];
                     relationship += " and " + numStepsHorizontal + " step" + (cardinals[1][1] > 1 ? "s" : "") + " " + cardinals[1][0];
-                } 
+                }
             }
 
             return relationship;
@@ -715,12 +715,12 @@ export class SyllogimousService {
             console.log("Keep conclusion");
             if (coinFlip() && conclusion.cardinals.length === 2) {
                 console.log("One cardinal got plucked");
-                conclusion.cardinals = [ pickUniqueItems(conclusion.cardinals, 1).picked[0] ];
+                conclusion.cardinals = [pickUniqueItems(conclusion.cardinals, 1).picked[0]];
                 tweaked = true;
             }
         } else {
             console.log("Tweak conclusion");
-            const rndIdx = Math.floor(Math.random()*conclusion.cardinals.length);
+            const rndIdx = Math.floor(Math.random() * conclusion.cardinals.length);
             if (coinFlip()) {
                 console.log("Add one to one cardinal");
                 conclusion.cardinals[rndIdx][1]++;
@@ -778,15 +778,15 @@ export class SyllogimousService {
 
         const trasversalOpposite: Record<string, string> = {
             "before": "after",
-             "after": "before",
-             "below": "above",
-             "above": "below"
+            "after": "before",
+            "below": "above",
+            "above": "below"
         };
         const cardinalOppositeMap: Record<string, string> = {
             "North": "South",
             "South": "North",
-             "East": "West",
-             "West": "East"
+            "East": "West",
+            "West": "East"
         };
 
         // Give random coords to each subject
@@ -802,9 +802,9 @@ export class SyllogimousService {
             let rj: number | undefined;
             let rt: number | undefined;
             while (ri == null || rj == null || rt == null || alreadyHasCoords(ri, rj, rt)) {
-                ri = Math.floor(Math.random()*sideSize);
-                rj = Math.floor(Math.random()*sideSize);
-                rt = Math.floor(Math.random()*sideSize);
+                ri = Math.floor(Math.random() * sideSize);
+                rj = Math.floor(Math.random() * sideSize);
+                rt = Math.floor(Math.random() * sideSize);
             }
             const { picked, remaining } = pickUniqueItems(pool, 1);
             coords.push([picked[0], ri, rj, rt]);
@@ -822,7 +822,7 @@ export class SyllogimousService {
             const { picked, remaining } = pickUniqueItems(copyOfCoords, 1);
             const subject = i === 0
                 ? pickUniqueItems(remaining, 1).picked[0]
-                : pickUniqueItems(pairs, 1).picked[0][Math.floor(Math.random()*2)];
+                : pickUniqueItems(pairs, 1).picked[0][Math.floor(Math.random() * 2)];
             const a = picked[0][0];
             const b = subject[0];
             if (a === b || subjectsAlreadyIncluded(a, b)) {
@@ -846,7 +846,7 @@ export class SyllogimousService {
         let coordb!: typeof coords[0];
         let safe = 1e2;
         while (safe-- && (!coorda || !coordb || subjectsAlreadyIncluded(coorda[0], coordb[0]))) {
-            [ coorda, coordb ] = pickUniqueItems(usedCoords, 2).picked;
+            [coorda, coordb] = pickUniqueItems(usedCoords, 2).picked;
         }
 
         if (safe < 1) {
@@ -866,24 +866,24 @@ export class SyllogimousService {
             const n = NUMBER_WORDS[absdiff] || absdiff;
             if (isSpatial) {
                 if (tdiff === 0) {
-                    return ["simultaneous", "concurrent", "at the same time"][Math.floor(Math.random()*3)];
+                    return "on the same level";
+                } else if (tdiff < 0) {
+                    return `${n} level${s} below`;
+                } else {
+                    return `${n} level${s} above`;
+                }
+            } else {
+                if (tdiff === 0) {
+                    return "at the same time";
                 } else if (tdiff < 0) {
                     return `${n} hour${s} before`;
                 } else {
                     return `${n} hour${s} after`;
                 }
-            } else {
-                if (tdiff === 0) {
-                    return ["at eye level", "on the same level", "vertically aligned"][Math.floor(Math.random()*3)];
-                } else if (tdiff < 0) {
-                    return `${n} level${s} below`;
-                } else {
-                    return `${n} level${s} above`;
-                } 
             }
         };
 
-        const SAME_CARDINAL_DIRECTION = "in the same cardinal direction";
+        const SAME_CARDINAL_DIRECTION = "in the same cardinal position";
         const getCardinalRelationship = (_cardinals: [string, number][]) => {
             if (_cardinals.every(c => c[1] === 0)) {
                 return SAME_CARDINAL_DIRECTION;
@@ -957,9 +957,14 @@ export class SyllogimousService {
         const isValid = coinFlip();
         if (isValid) {
             console.log("Keep conclusion");
+
+            // Filter out collinear cardinals
+            conclusion.cardinals = conclusion.cardinals.filter(c => c[0] !== "!");
+
             if (coinFlip() && conclusion.cardinals.length === 2) {
-                console.log("One cardinal got plucked");
-                conclusion.cardinals = [ pickUniqueItems(conclusion.cardinals, 1).picked[0] ];
+                console.log("Cardinal pluck before", JSON.stringify(conclusion.cardinals, null, 2));
+                conclusion.cardinals = [pickUniqueItems(conclusion.cardinals, 1).picked[0]];
+                console.log("Cardinal pluck after", JSON.stringify(conclusion.cardinals, null, 2));
             }
         } else {
             console.log("Tweak conclusion");
@@ -968,20 +973,25 @@ export class SyllogimousService {
                 console.log("Invert trasversal difference");
                 conclusion.trasversalDifference = conclusion.trasversalDifference * -1;
             }
-            
-            const rndIdx = Math.floor(Math.random()*conclusion.cardinals.length);
-            if (conclusion.cardinals[rndIdx][0] === "!") {
-                const rndDir = (rndIdx === 0) ? ["North", "South"] : ["East", "West"];
-                conclusion.cardinals[rndIdx][0] = pickUniqueItems(rndDir, 1).picked[0];
+
+            // Filter out collinear cardinals and zero cardinals
+            conclusion.cardinals = conclusion.cardinals.filter(c => c[0] !== "!" && c[1] !== 0);
+
+            if (!conclusion.cardinals.length) {
+                return this.createDirection3D(numOfPremises, type);
             }
+
+            const rndIdx = Math.floor(Math.random() * conclusion.cardinals.length);
+
             if (coinFlip()) {
-                console.log("Add one to one cardinal");
-                conclusion.cardinals[rndIdx][1]++;
-            } else {
                 console.log("One cardinal flipped");
                 conclusion.cardinals[rndIdx][0] = cardinalOppositeMap[conclusion.cardinals[rndIdx][0]];
+            } else {
+                console.log("Add one to one cardinal");
+                conclusion.cardinals[rndIdx][1]++;
             }
         }
+
         // Regenerate conclusion relationship
         conclusion.trasversalDifference = conclusion.pair[0][3] - conclusion.pair[1][3];
         const trasversalRelationship = getTrasversalRelationship(conclusion.trasversalDifference);
@@ -1038,8 +1048,8 @@ export class SyllogimousService {
         const words = pickUniqueItems(symbols, numOfEls).picked;
         const question = new Question(type);
 
-        let edgeList: [string, "↔"|"→"|"←", string][] = [];
-        const inverseMap = { "→": "←", "←": "→", "↔": "↔" } as Record<"↔"|"→"|"←", "↔"|"→"|"←">;
+        let edgeList: [string, "↔" | "→" | "←", string][] = [];
+        const inverseMap = { "→": "←", "←": "→", "↔": "↔" } as Record<"↔" | "→" | "←", "↔" | "→" | "←">;
         const _words = [...words];
         const isWordUsed = (w: string) => edgeList.reduce((a, c) => (a.add(c[0]), a.add(c[2]), a), new Set() as Set<string>).has(w);
         const notAllUsed = () => _words.some(w => !isWordUsed(w));
@@ -1086,12 +1096,12 @@ export class SyllogimousService {
                         modifications++;
                     } else if (coinFlip()) {
                         console.log("Rotate 1-way direction");
-                        picked[0][1] = inverseMap[picked[0][1] as "→"|"←"] as "→"|"←";
+                        picked[0][1] = inverseMap[picked[0][1] as "→" | "←"] as "→" | "←";
                         modifications++;
                     }
                 } else if (Math.random() < 0.15) {
                     console.log("Swap 2-way for 1-way");
-                    picked[0][1] = { "true": "→", "false": "←" }[String(coinFlip())] as "→"|"←";
+                    picked[0][1] = { "true": "→", "false": "←" }[String(coinFlip())] as "→" | "←";
                     modifications++;
                 }
 
@@ -1113,14 +1123,14 @@ export class SyllogimousService {
             console.log("Modifications " + modifications);
         }
 
-        const horizontalShuffle = (_edgeList: typeof edgeList) => 
+        const horizontalShuffle = (_edgeList: typeof edgeList) =>
             _edgeList.map(([a, rel, b]) => {
                 console.log("Before", [a, rel, b]);
                 const result = coinFlip() ? [a, rel, b] : [b, inverseMap[rel], a];
                 console.log("After", result);
                 return result;
             }) as typeof edgeList;
-        
+
         shuffle(edgeList);
         edgeList = horizontalShuffle(edgeList);
         question.graphPremises = edgeList;
@@ -1248,7 +1258,7 @@ export class SyllogimousService {
         if (arrangementChoices.length) {
             choiceIndices.push(pickUniqueItems(arrangementChoices, 1).picked[0]);
         }
-    
+
         const choiceIndex = pickUniqueItems(choiceIndices, 1).picked[0];
 
         let question = new Question(topType);
@@ -1263,7 +1273,7 @@ export class SyllogimousService {
                 question = this.createDistinction(length);
                 question.type = topType;
                 question.conclusion = "";
-        
+
                 [a, b, c, d] = pickUniqueItems([...question.buckets[0], ...question.buckets[1]], 4).picked;
                 question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
 
@@ -1273,16 +1283,16 @@ export class SyllogimousService {
                     indexOfC,
                     indexOfD
                 ] = [
-                    Number(question.buckets[0].indexOf(a) !== -1),
-                    Number(question.buckets[0].indexOf(b) !== -1),
-                    Number(question.buckets[0].indexOf(c) !== -1),
-                    Number(question.buckets[0].indexOf(d) !== -1)
-                ];
+                        Number(question.buckets[0].indexOf(a) !== -1),
+                        Number(question.buckets[0].indexOf(b) !== -1),
+                        Number(question.buckets[0].indexOf(c) !== -1),
+                        Number(question.buckets[0].indexOf(d) !== -1)
+                    ];
                 isValidSame = (indexOfA === indexOfB && indexOfC === indexOfD) || (indexOfA !== indexOfB && indexOfC !== indexOfD);
                 break;
             case 1:
             case 2:
-                const type = (choiceIndex === 1) 
+                const type = (choiceIndex === 1)
                     ? EnumQuestionType.ComparisonNumerical
                     : EnumQuestionType.ComparisonChronological;
                 question = this.createComparison(length, type);
@@ -1308,10 +1318,10 @@ export class SyllogimousService {
 
                     const dxatob = coordsa[1] - coordsb[1];
                     const dyatob = coordsa[2] - coordsb[2];
-                    
+
                     const dxctod = coordsc[1] - coordsd[1];
                     const dyctod = coordsc[2] - coordsd[2];
-        
+
                     isValidSame = (dxatob === dxctod) && (dyatob === dyctod);
                 }
                 break;
@@ -1336,7 +1346,7 @@ export class SyllogimousService {
                     const dxctod = coordsc[1] - coordsd[1];
                     const dyctod = coordsc[2] - coordsd[2];
                     const dtctod = coordsc[3] - coordsd[3];
-        
+
                     isValidSame = (dxatob === dxctod) && (dyatob === dyctod) && (dtatob === dtctod);
                 }
                 break;
@@ -1356,12 +1366,12 @@ export class SyllogimousService {
                 } else {
                     question.notes.push("Proximity and diametrical opposition makes the relationship alike.");
                 }
-                
+
                 const subjects = question.rule.split(", ");
                 [a, b, c, d] = pickUniqueItems(subjects, 4).picked;
                 question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
 
-                const [ idxA, idxB, idxC, idxD ] = [
+                const [idxA, idxB, idxC, idxD] = [
                     subjects.indexOf(a),
                     subjects.indexOf(b),
                     subjects.indexOf(c),
@@ -1370,8 +1380,8 @@ export class SyllogimousService {
 
                 const getWays = isLinear ? getLinearWays : getCircularWays;
 
-                const waysA2B = getWays(idxA, idxB, length+1, true);
-                const waysC2D = getWays(idxC, idxD, length+1, true);
+                const waysA2B = getWays(idxA, idxB, length + 1, true);
+                const waysC2D = getWays(idxC, idxD, length + 1, true);
                 //console.log(subjects);
                 //console.log(idxA, idxB, idxC, idxD);
                 //console.log(waysA2B, waysC2D);
@@ -1403,7 +1413,7 @@ export class SyllogimousService {
         }
 
         question.conclusion += `<span class="subject">${c}</span> to <span class="subject">${d}</span>`;
-    
+
         return question;
     }
 
@@ -1420,7 +1430,7 @@ export class SyllogimousService {
         const operands = [];
         const operandNames = [];
         const operandTemplates = [];
-    
+
         if (settings.enabled.binary.and) {
             operands.push("a&&b");
             operandNames.push("AND");
@@ -1454,7 +1464,7 @@ export class SyllogimousService {
 
         const question = new Question(topType);
         const flip = coinFlip();
-        const operandIndex = Math.floor(Math.random()*operands.length);
+        const operandIndex = Math.floor(Math.random() * operands.length);
         const operand = operands[operandIndex];
 
         let safe = 1e2;
@@ -1462,13 +1472,12 @@ export class SyllogimousService {
             const a = this.createRandomQuestion(Math.floor(numOfPremises / 2), true);
             const b = this.createRandomQuestion(Math.ceil(numOfPremises / 2), true);
             const choices = [a, b];
-            question.instructions = [];
 
-            question.instructions.push(fixBinaryInstructions(a), fixBinaryInstructions(b));
+            question.instructions = [fixBinaryInstructions(a), fixBinaryInstructions(b)].filter(instr => !!instr);
 
             question.premises = [...choices[0].premises, ...choices[1].premises];
             shuffle(question.premises);
-        
+
             question.conclusion = operandTemplates[operandIndex]
                 .replace("$a", Array.isArray(choices[0].conclusion) ? choices[0].conclusion[0] : choices[0].conclusion)
                 .replace("$b", Array.isArray(choices[1].conclusion) ? choices[1].conclusion[0] : choices[1].conclusion);
@@ -1483,7 +1492,7 @@ export class SyllogimousService {
         if (safe <= 0) {
             throw new Error("MAXIMUM NUMBER OF ITERATIONS REACHED!");
         }
-    
+
         return question;
     }
 }

@@ -58,8 +58,8 @@ export function isPremiseLikeConclusion(premises: string[], conclusion: string) 
     const subjectsOfPremises = premises.map(p => extractSubjects(p));
     const subjectsOfConclusion = extractSubjects(conclusion);
     for (const subjects of subjectsOfPremises) {
-        const toCompare = subjectsOfConclusion[0]+subjectsOfConclusion[1];
-        if (subjects[0]+subjects[1] === toCompare || subjects[1]+subjects[0] === toCompare)
+        const toCompare = subjectsOfConclusion[0] + subjectsOfConclusion[1];
+        if (subjects[0] + subjects[1] === toCompare || subjects[1] + subjects[0] === toCompare)
             return true;
     }
     return false;
@@ -73,18 +73,18 @@ export function getRandomSymbols(settings: Settings, length: number) {
     const symbols = getSymbols(settings);
     const seen = new Set();
     return Array(length).fill(0)
-            .map(() => {
-                let rnd = Math.floor(Math.random() * symbols.length);
-                while (seen.has(rnd)) {
-                    rnd = Math.floor(Math.random() * symbols.length);
-                }
-                seen.add(rnd);
-                return symbols[rnd];
-            });
+        .map(() => {
+            let rnd = Math.floor(Math.random() * symbols.length);
+            while (seen.has(rnd)) {
+                rnd = Math.floor(Math.random() * symbols.length);
+            }
+            seen.add(rnd);
+            return symbols[rnd];
+        });
 }
 
 export function getSyllogism(settings: Settings, s: string, p: string, m: string, rule: string) {
-    
+
     const _forms = (!settings.enabled.negation)
         ? FORMS[0]
         : pickUniqueItems(FORMS, 1).picked[0];
@@ -175,21 +175,21 @@ export function createMetaRelationships(settings: Settings, question: Question, 
     if (settings.enabled.meta && coinFlip()) {
         const numOfMetaRelationships = 1 + Math.floor(Math.random() * Math.floor((length - 1) / 2));
         question.metaRelations += numOfMetaRelationships;
-        
+
         let subjects: { value: number, subject: string }[] = [];
         if (question.type === EnumQuestionType.Distinction) {
-            subjects = question.buckets.reduce((a, c, i) => [ ...a, ...c.map(b => ({ value: i, subject: b[0] })) ], [] as typeof subjects);        
+            subjects = question.buckets.reduce((a, c, i) => [...a, ...c.map(b => ({ value: i, subject: b[0] }))], [] as typeof subjects);
         } else {
             subjects = question.bucket.map((c, i, a) => ({ value: (a.length - i), subject: c }), []);
         }
-        
+
         const { picked: pickedPremises, remaining: remainingPremises } = pickUniqueItems(question.premises, numOfMetaRelationships);
         const pickedPremisesSubjects = pickedPremises.map(extractSubjects);
         const remainingPremisesSubjects = remainingPremises.map(extractSubjects);
-        const bidirectionalRelationshipMap = remainingPremisesSubjects.reduce((acc, [a, b]) => (acc[a] = acc[a] || [], acc[a].push(b), acc[b] = acc[b] || [], acc[b].push(a), acc), {} as {[key: string]: string[]});
+        const bidirectionalRelationshipMap = remainingPremisesSubjects.reduce((acc, [a, b]) => (acc[a] = acc[a] || [], acc[a].push(b), acc[b] = acc[b] || [], acc[b].push(a), acc), {} as { [key: string]: string[] });
         const newPremises = [];
         for (const premiseSubjects of pickedPremisesSubjects) {
-            const [ a, b ] = premiseSubjects.map(ps => subjects.find(s => ps === s.subject)!);
+            const [a, b] = premiseSubjects.map(ps => subjects.find(s => ps === s.subject)!);
             const { picked } = pickUniqueItems(Object.entries(bidirectionalRelationshipMap), 1);
             let _c = "";
             let _d = "";
@@ -202,11 +202,11 @@ export function createMetaRelationships(settings: Settings, question: Question, 
             }
             const c = subjects.find(s => s.subject === _c)!;
             const d = subjects.find(s => s.subject === _d)!;
-            
+
             let isSame = false;
             if (question.type === EnumQuestionType.Distinction) {
                 isSame = (a.value === b.value) === (c.value === d.value);
-            } else { 
+            } else {
                 isSame = (a.value < b.value) === (c.value < d.value);
             }
 
@@ -240,7 +240,7 @@ export function metarelateArrangement(premises: IArrangementPremise[]) {
 }
 
 export function horizontalShuffleArrangement(premises: IArrangementPremise[]) {
-    const switchSubjects = (premise: IArrangementPremise) => 
+    const switchSubjects = (premise: IArrangementPremise) =>
         [premise.a, premise.b] = [premise.b, premise.a];
 
     premises.forEach(premise => {
@@ -290,8 +290,8 @@ export function horizontalShuffleArrangement(premises: IArrangementPremise[]) {
 }
 
 export function getLinearWays(i: number, j: number, numOfEls: number, forConclusion = false) {
-    const isAdjLeft = i+1 === j;
-    const isAdjRight = i-1 === j;
+    const isAdjLeft = i + 1 === j;
+    const isAdjRight = i - 1 === j;
     const isNext = isAdjLeft || isAdjRight;
     const isLeft = i < j;
     const isRight = i > j;
@@ -335,14 +335,14 @@ export function getLinearWays(i: number, j: number, numOfEls: number, forConclus
 };
 
 export function getCircularWays(i: number, j: number, numOfEls: number, forConclusion = false) {
-    const getAdjLeft = (i: number) => (numOfEls+(i+1))%numOfEls;
-    const getAdjRight = (i: number) => (numOfEls+(i-1))%numOfEls;
-    const getInFront = (i: number) => (i+(numOfEls/2))%numOfEls;
-    const getCWDist = (i: number, j: number) => (j-i+numOfEls)%numOfEls;
-    const getCCWDist = (i: number, j: number) => numOfEls-getCWDist(i, j);
+    const getAdjLeft = (i: number) => (numOfEls + (i + 1)) % numOfEls;
+    const getAdjRight = (i: number) => (numOfEls + (i - 1)) % numOfEls;
+    const getInFront = (i: number) => (i + (numOfEls / 2)) % numOfEls;
+    const getCWDist = (i: number, j: number) => (j - i + numOfEls) % numOfEls;
+    const getCCWDist = (i: number, j: number) => numOfEls - getCWDist(i, j);
 
     // Set i to 0 and calc j relative to that
-    j = (numOfEls+(j-i))%numOfEls;
+    j = (numOfEls + (j - i)) % numOfEls;
     i = 0;
 
     const isAdjLeft = getAdjLeft(i) === j;
@@ -352,7 +352,7 @@ export function getCircularWays(i: number, j: number, numOfEls: number, forConcl
     const isRight = j > getInFront(i);
     const steps = Math.min(getCWDist(i, j), getCCWDist(i, j));
 
-    const ways: Record<string, { possible: boolean, steps: number }>  = {
+    const ways: Record<string, { possible: boolean, steps: number }> = {
         [EnumArrangements.AdjacentLeft]: {
             possible: isAdjLeft,
             steps
@@ -362,17 +362,17 @@ export function getCircularWays(i: number, j: number, numOfEls: number, forConcl
             steps
         },
         [EnumArrangements.NStepsLeft]: {
-            possible: isLeft,
+            possible: isLeft || steps === (numOfEls / 2),
             steps
         },
         [EnumArrangements.NStepsRight]: {
-            possible: isRight,
+            possible: isRight || steps === (numOfEls / 2),
             steps
         },
     };
 
-    // Odd num of els do not make for diametrically opposite els
-    if (numOfEls%2 === 0) {
+    // Even num of els do have diametrically opposite els
+    if (numOfEls % 2 === 0) {
         ways[EnumArrangements.InFront] = {
             possible: getInFront(i) === j,
             steps
@@ -408,7 +408,7 @@ export function interpolateArrangementRelationship(relationship: IArrangementRel
 
     if (settings.enabled.negation && coinFlip()) {
         // TODO: This method should return the number of negations applied
-        return interpolatedWithSteps.replaceAll(/(left|right)/gi, substr => 
+        return interpolatedWithSteps.replaceAll(/(left|right)/gi, substr =>
             `<span class="is-negated">${(substr === "left") ? "right" : "left"}</span>`
         );
     }
