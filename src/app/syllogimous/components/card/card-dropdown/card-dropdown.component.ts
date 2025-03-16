@@ -5,6 +5,8 @@ import { LS_DAILY_GOAL, LS_DAILY_PROGRESS, LS_DONT_SHOW, LS_GAME_MODE, LS_HISTOR
 import { EnumQuestionType } from 'src/app/syllogimous/constants/question.constants';
 import { EnumScreens } from 'src/app/syllogimous/constants/syllogimous.constants';
 import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.service';
+import { DataTransferService } from 'src/app/syllogimous/services/data-transfer.service';
+import { ImportConfirmationModalComponent } from '../../import-confirmation-modal/import-confirmation-modal.component';
 
 @Component({
     selector: 'app-card-dropdown',
@@ -18,6 +20,7 @@ export class CardDropdownComponent {
         public sylSrv: SyllogimousService,
         public router: Router,
         private modalService: NgbModal,
+        private dataTransferService: DataTransferService
     ) {}
 
     ngAfterViewInit() {
@@ -64,5 +67,43 @@ export class CardDropdownComponent {
 
     getDarkmode() {
         return JSON.parse(localStorage.getItem("darkmode") || "false");
+    }
+
+    exportGameData() {
+        this.dataTransferService.exportData();
+    }
+
+    importGameData() {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.json';
+        fileInput.style.display = 'none';
+        document.body.appendChild(fileInput);
+        
+        fileInput.onchange = (event: any) => {
+            const file = event.target.files[0];
+            if (file) {
+                this.confirmImport(file);
+            }
+            document.body.removeChild(fileInput);
+        };
+        
+        fileInput.click();
+    }
+
+    async confirmImport(file: File) {
+        const modalRef = this.modalService.open(ImportConfirmationModalComponent, { 
+            centered: true,
+            backdrop: 'static'
+        });
+        
+        modalRef.componentInstance.fileInfo = file;
+        
+        try {
+            await modalRef.result;
+            this.dataTransferService.importData(file);
+        } catch (error) {
+            // User canceled import
+        }
     }
 }

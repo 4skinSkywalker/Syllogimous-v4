@@ -36,6 +36,14 @@
             </button>
             <button ngbDropdownItem (click)="resetGame(content)"><i class="bi bi-trash3"></i> Reset Game</button>
             <div class="dropdown-divider"></div>
+            <small class="text-muted ms-3">Data Management</small>
+            <button ngbDropdownItem (click)="exportGameData()">
+              <i class="bi bi-download"></i> Export Game Data
+            </button>
+            <button ngbDropdownItem (click)="importGameData()">
+              <i class="bi bi-upload"></i> Import Game Data
+            </button>
+            <div class="dropdown-divider"></div>
             <small class="text-muted ms-3">Links</small>
             <button ngbDropdownItem (click)="router.navigate([EnumScreens.OtherGames])">Other Games</button>
             <a ngbDropdownItem href="https://www.linkedin.com/in/f3d3r1c07r0774/" target="_blank">About the Author</a>

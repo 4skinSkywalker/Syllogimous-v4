@@ -41,6 +41,8 @@ import { TiersMatrixComponent } from './pages/tiers-matrix/tiers-matrix.componen
 import { OtherGamesComponent } from './pages/other-games/other-games.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { TutorialGraphMatchingComponent } from './pages/tutorial/graph-matching/graph-matching.component';
+import { DataTransferService } from './services/data-transfer.service';
+import { ImportConfirmationModalComponent } from './components/import-confirmation-modal/import-confirmation-modal.component';
 
 const routes: Routes = [
     {
@@ -119,6 +121,7 @@ const routes: Routes = [
         TiersMatrixComponent,
         OtherGamesComponent,
         SettingsComponent,
+        ImportConfirmationModalComponent
     ],
     imports: [
         CommonModule,
@@ -126,7 +129,8 @@ const routes: Routes = [
         RouterModule.forChild(routes),
     ],
     providers: [
-        StatsExportService
+        StatsExportService,
+        DataTransferService
     ]
 })
 export class SyllogimousModule { }
