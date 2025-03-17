@@ -77,7 +77,7 @@ export class CardDropdownComponent {
 
             setTimeout(() => {
                 alert("Import completed successfully!");
-                window.location.href = "/";
+                window.location.reload();
             }, 400);
         };
         reader.readAsText(file);
