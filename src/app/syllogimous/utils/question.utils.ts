@@ -430,3 +430,96 @@ export function fixBinaryInstructions(q: Question) {
         }
     }
 }
+
+function buildGraph(edgeList: [string, "↔" | "→" | "←", string][]) {
+    const graph = {} as Record<string, { out: Set<string>, in: Set<string> }>;
+    edgeList.forEach(edge => {
+        const [u, symbol, v] = edge;
+        if (!graph[u]) graph[u] = { out: new Set(), in: new Set() };
+        if (!graph[v]) graph[v] = { out: new Set(), in: new Set() };
+        if (symbol === "→") {
+            graph[u].out.add(v);
+            graph[v].in.add(u);
+        } else if (symbol === "←") {
+            graph[v].out.add(u);
+            graph[u].in.add(v);
+        } else if (symbol === "↔") {
+            // Bidirectional: add edges in both directions
+            graph[u].out.add(v);
+            graph[u].in.add(v);
+            graph[v].out.add(u);
+            graph[v].in.add(u);
+        }
+    });
+    return graph;
+}
+
+// Checks if two directed graphs (given as edge lists) are isomorphic
+export function areGraphsIsomorphic(edgeList1: [string, "↔" | "→" | "←", string][], edgeList2: [string, "↔" | "→" | "←", string][]) {
+    const graph1 = buildGraph(edgeList1);
+    const graph2 = buildGraph(edgeList2);
+    const vertices1 = Object.keys(graph1);
+    const vertices2 = Object.keys(graph2);
+
+    // Quick check: graphs must have the same number of vertices
+    if (vertices1.length !== vertices2.length) return false;
+
+    // Quick check: compare sorted degree pairs [in-degree, out-degree]
+    const degrees1 = vertices1
+        .map(v => `${graph1[v].in.size},${graph1[v].out.size}`)
+        .sort()
+        .join(',');
+    const degrees2 = vertices2
+        .map(v => `${graph2[v].in.size},${graph2[v].out.size}`)
+        .sort()
+        .join(',');
+    if (degrees1 !== degrees2) return false;
+
+    const mapping = {} as Record<string, string>; // Mapping from graph1 vertices to graph2 vertices
+    const used = new Set(); // Set of graph2 vertices that have been mapped
+
+    // Checks the current partial mapping for consistency
+    function isValidMapping() {
+        for (const u of vertices1) {
+            if (mapping[u]) {
+                for (const v of graph1[u].out) {
+                    if (mapping[v]) {
+                        // Check that the mapped edge exists in graph2
+                        if (!graph2[mapping[u]].out.has(mapping[v])) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    // Recursively tries to assign each vertex in graph1 to a vertex in graph2
+    function backtrack(index: number) {
+        if (index === vertices1.length) {
+            // All vertices have been successfully mapped
+            return true;
+        }
+        const u = vertices1[index];
+        for (const v of vertices2) {
+            if (!used.has(v)) {
+                // Check if in-degree and out-degree match
+                if (graph1[u].in.size === graph2[v].in.size &&
+                    graph1[u].out.size === graph2[v].out.size) {
+                    mapping[u] = v;
+                    used.add(v);
+                    if (isValidMapping() && backtrack(index + 1)) {
+                        return true;
+                    }
+                    // Backtrack
+                    delete mapping[u];
+                    used.delete(v);
+                }
+            }
+        }
+        return false;
+    }
+
+    return backtrack(0);
+}

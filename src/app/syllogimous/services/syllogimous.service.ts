@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { IArrangementPremise, IDirection3DProposition, IDirectionProposition, Question } from "../models/question.models";
-import { coinFlip, getCircularWays, getLinearWays, getRandomRuleValid, getRandomSymbols, getRelation, getSymbols, isPremiseLikeConclusion, createMetaRelationships, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions, getSyllogism, getRandomRuleInvalid } from "../utils/question.utils";
+import { coinFlip, getCircularWays, getLinearWays, getRandomRuleValid, getRandomSymbols, getRelation, getSymbols, isPremiseLikeConclusion, createMetaRelationships, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions, getSyllogism, getRandomRuleInvalid, areGraphsIsomorphic } from "../utils/question.utils";
 import { NUMBER_WORDS } from "../constants/question.constants";
 import { EnumScreens, EnumTiers, ORDERED_QUESTION_TYPES, ORDERED_TIERS, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES, TIERS_MATRIX } from "../constants/syllogimous.constants";
 import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local-storage.constants";
@@ -1085,27 +1085,26 @@ export class SyllogimousService {
             rel,
             newWords[words.indexOf(b)]
         ]));
+
         question.isValid = coinFlip();
         if (!question.isValid) {
-            this.logger.info("Invalid");
-            let modifications = 0;
-            while (modifications === 0) {
+            this.logger.info("Modifying graph in an invalid way");
+
+            while (areGraphsIsomorphic(edgeList, edgeList2)) {
                 const { picked } = pickUniqueItems(edgeList2, 1);
                 const [a, rel, b] = picked[0];
+
                 if (rel === "→" || rel === "←") {
                     if (Math.random() < 0.15) {
                         this.logger.info("Swap 1-way for 2-way");
                         picked[0][1] = "↔";
-                        modifications++;
                     } else if (coinFlip()) {
                         this.logger.info("Rotate 1-way direction");
                         picked[0][1] = inverseMap[picked[0][1] as "→" | "←"] as "→" | "←";
-                        modifications++;
                     }
                 } else if (Math.random() < 0.15) {
                     this.logger.info("Swap 2-way for 1-way");
                     picked[0][1] = { "true": "→", "false": "←" }[String(coinFlip())] as "→" | "←";
-                    modifications++;
                 }
 
                 if (coinFlip() && numOfEls > 3) {
@@ -1120,10 +1119,8 @@ export class SyllogimousService {
                     }
                     this.logger.info("Change an edge by connecting a/b to a different subject", [picked2[0][subjectPosIdx], picked]);
                     picked2[0][subjectPosIdx] = picked;
-                    modifications++;
                 }
             }
-            this.logger.info("Modifications " + modifications);
         }
 
         const horizontalShuffle = (_edgeList: typeof edgeList) =>
