@@ -12,8 +12,8 @@ import { ProgressAndPerformanceService } from "./progress-and-performance.servic
 import { guid } from "src/app/utils/uuid";
 import { EnumArrangements, EnumQuestionType } from "../constants/question.constants";
 import { EnumQuestionGroup, QUESTION_TYPE_SETTING_PARAMS } from "../constants/settings.constants";
-import { ToastService } from "src/app/services/toast.service";
 import { Logger } from "../utils/logger";
+import { GameTimerService } from "./game-timer.service";
 
 @Injectable({
     providedIn: "root"
@@ -61,7 +61,7 @@ export class SyllogimousService {
         private modalService: NgbModal,
         private router: Router,
         private progressAndPerformanceService: ProgressAndPerformanceService,
-        private toaster: ToastService
+        private gameTimerService: GameTimerService,
     ) {
         this.loadScore();
         (window as any).syllogimous = this;
@@ -230,6 +230,7 @@ export class SyllogimousService {
 
                 if ((timeout + wrong) / trainingUnitLength >= premisesDownThreshold) {
                     if (premises > minNumOfPremises) {
+                        this.gameTimerService.stop();
                         const modalRef = this.modalService.open(ModalLevelChangeComponent, { centered: true });
                         modalRef.componentInstance.title = "Number of Premises Decreased";
                         modalRef.componentInstance.content = `Your last <b>${trainingUnitLength}</b> answers for<br><b class="modal-level-type">${type}</b><br>have yielded this results:<div class="d-flex flex-row justify-content-center my-3"><span class="p-2"><b>${right}</b> right</span><span class="p-2 border-start border-end"><b>${timeout}</b> timeout</span><span class="p-2"><b>${wrong}</b> wrong</span></div>The number of premises for<br><b class="modal-level-type">${type}</b><br>has <b>decreased</b> to ${premises - 1}.`;
@@ -238,6 +239,7 @@ export class SyllogimousService {
                     this.progressAndPerformanceService.updateTrainingUnit(type, { premises: -1 });
                 } else if (right / trainingUnitLength >= premisesUpThreshold) {
                     if (premises < maxNumOfPremises) {
+                        this.gameTimerService.stop();
                         const modalRef = this.modalService.open(ModalLevelChangeComponent, { centered: true });
                         modalRef.componentInstance.title = "Number of Premises Increased";
                         modalRef.componentInstance.content = `Your last <b>${trainingUnitLength}</b> answers for<br><b class="modal-level-type">${type}</b><br>have yielded this results:<div class="d-flex flex-row justify-content-center my-3"><span class="p-2"><b>${right}</b> right</span><span class="p-2 border-start border-end"><b>${timeout}</b> timeout</span><span class="p-2"><b>${wrong}</b> wrong</span></div>The number of premises for<br><b class="modal-level-type">${type}</b><br>has <b>increased</b> to ${premises + 1}.`;
@@ -267,6 +269,7 @@ export class SyllogimousService {
 
             // Level up/down
             if (currTier !== nextTier) {
+                this.gameTimerService.stop();
                 const modalRef = this.modalService.open(ModalLevelChangeComponent, { centered: true });
 
                 if (ds > 0) {

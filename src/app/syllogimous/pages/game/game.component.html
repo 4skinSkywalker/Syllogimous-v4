@@ -23,8 +23,8 @@
 <app-card>
     <div body class="battlefield" [ngStyle]="{ width: (gameMode === '1') ? '100%' : 'auto' }">
         <div class="timerbar-wrap">
-            <ngb-progressbar *ngIf="timerType !== '0'" class="timerbar" type="success" [value]="100 * timerLeft / timerFull">
-                <span class="me-2">{{timerLeft}} s</span>
+            <ngb-progressbar *ngIf="timerType !== '0'" class="timerbar" type="success" [value]="100 * gameTimerService.remainingSeconds / timerTimeSeconds">
+                <span class="me-2">{{gameTimerService.remainingSeconds}} s</span>
             </ngb-progressbar>
         </div>
 
