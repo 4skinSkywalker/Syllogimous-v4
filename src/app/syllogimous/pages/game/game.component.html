@@ -1,20 +1,15 @@
 <ng-template #questionInstructionsAndNotes>
     <ng-container *ngIf="{ instructions: sylSrv.question.instructions, notes: sylSrv.question.notes } as info">
         <div *ngIf="info.instructions?.length || info.notes?.length">
-
             <div *ngIf="info.instructions?.length">
                 <div class="small text-muted">Instructions</div>
-                <div class="d-grid gap-2">
+                <div class="instructions">
                     <div *ngFor="let instruction of info.instructions" [innerHTML]="instruction"></div>
                 </div>
             </div>
     
-            <div
-                *ngIf="info.notes?.length"
-                class="d-grid gap-1 small pt-1 px-2"
-                style="line-height: 1.3;"
-            >
-                <div *ngFor="let note of info.notes" [innerHTML]>{{note}}</div>
+            <div *ngIf="info.notes?.length" class="notes">
+                <div *ngFor="let note of info.notes" [innerHTML]="note"></div>
             </div>
         </div>
     </ng-container>
