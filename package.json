@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "start": "ng serve",
-    "prep-deploy:prod": "ng build --configuration=production --output-path docs --base-href /Syllogimous-v4/ && node -e \"require('fs').copyFileSync('docs/index.html', 'docs/404.html')\"",
-    "prep-deploy:dev": "ng build --configuration=development --output-path docs --base-href /Syllogimous-v4/ && node -e \"require('fs').copyFileSync('docs/index.html', 'docs/404.html')\""
+    "prep-deploy:dev": "ng build --configuration=development --output-path docs --base-href /Syllogimous-v4/ && node -e \"require('fs').copyFileSync('docs/index.html', 'docs/404.html')\"",
+    "prep-deploy:prod": "ng build --configuration=production --output-path docs --base-href /Syllogimous-v4/ && node -e \"require('fs').copyFileSync('docs/index.html', 'docs/404.html')\""
   },
   "private": true,
   "dependencies": {
