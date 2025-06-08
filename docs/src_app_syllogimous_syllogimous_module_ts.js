@@ -5819,7 +5819,7 @@ class StatsService {
   constructor(sylSrv) {
     this.sylSrv = sylSrv;
     this.calcStats = timerType => {
-      const questions = this.sylSrv.questions.filter(q => !q.playgroundMode);
+      const questions = this.sylSrv.questions.filter(q => q.playgroundMode === !!this.sylSrv.playgroundSettings);
       const types = Object.values(_constants_question_constants__WEBPACK_IMPORTED_MODULE_2__.EnumQuestionType).filter(qt => Object.values(_constants_question_constants__WEBPACK_IMPORTED_MODULE_2__.EnumQuestionType).includes(qt));
       const typeBasedStats = new _models_stats_models__WEBPACK_IMPORTED_MODULE_1__.TypeBasedStats();
       for (let type of types) {
