@@ -1055,7 +1055,7 @@ export class SyllogimousService {
         const question = new Question(type);
 
         let edgeList: [string, "↔" | "→" | "←", string][] = [];
-        const inverseMap = { "→": "←", "←": "→", "↔": "↔" } as Record<"↔" | "→" | "←", "↔" | "→" | "←">;
+        const inverseMap = { "→": "←", "←": "→" } as Record<"→" | "←", | "→" | "←">;
         const _words = [...words];
         const isWordUsed = (w: string) => edgeList.reduce((a, c) => (a.add(c[0]), a.add(c[2]), a), new Set() as Set<string>).has(w);
         const notAllUsed = () => _words.some(w => !isWordUsed(w));
@@ -1129,7 +1129,12 @@ export class SyllogimousService {
         const horizontalShuffle = (_edgeList: typeof edgeList) =>
             _edgeList.map(([a, rel, b]) => {
                 this.logger.info("Before", [a, rel, b]);
-                const result = coinFlip() ? [a, rel, b] : [b, inverseMap[rel], a];
+                let result;
+                if (coinFlip() && (rel === "→" || rel === "←")) {
+                    result = [b, inverseMap[rel], a];
+                } else {
+                    result = [a, rel, b];
+                }
                 this.logger.info("After", result);
                 return result;
             }) as typeof edgeList;
@@ -1175,7 +1180,7 @@ export class SyllogimousService {
                     this.logger.info("Metarelated");
                     question.metaRelations++;
                 }
-            } else if (negated) {
+            } else if (negated && (edge[1] === "→" || edge[1] === "←")) {
                 this.logger.info("Negated");
                 question.negations++;
                 relationship = `<span class="is-negated">${readMap[inverseMap[edge[1]]]}</span>`;
