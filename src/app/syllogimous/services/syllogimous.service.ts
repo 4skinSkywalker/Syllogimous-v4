@@ -1066,7 +1066,12 @@ export class SyllogimousService {
             if (edgeAlreadyExists(a, b)) {
                 continue;
             }
-            edgeList.push(Math.random() < 0.25 ? [a, "↔", b] : coinFlip() ? [a, "→", b] : [a, "←", b]);
+            const newEdge = (Math.random() < 0.25)
+                ? [a, "↔", b]
+                : coinFlip()
+                    ? [a, "→", b]
+                    : [a, "←", b];
+            edgeList.push(newEdge as [string, "↔" | "→" | "←", string]);
             if (_words.length > 2 && coinFlip()) {
                 const subject = coinFlip() ? a : b;
                 const foundIdx = _words.indexOf(subject);
@@ -1077,8 +1082,9 @@ export class SyllogimousService {
             throw new Error("MAXIMUM NUMBER OF ITERATIONS REACHED!");
         }
 
-        // All 2-way relationships are useless for 3 elements
-        if (numOfEls === 3 && edgeList.every(([a, rel, b]) => rel === "↔")) {
+        const edgeDiscrepancyCount = edgeList.length !== numOfPremises;
+        const all3ElementsAre2Way = numOfEls === 3 && edgeList.every(([a, rel, b]) => rel === "↔");
+        if (edgeDiscrepancyCount || all3ElementsAre2Way) {
             return this.createGraphMatching(numOfPremises);
         }
 

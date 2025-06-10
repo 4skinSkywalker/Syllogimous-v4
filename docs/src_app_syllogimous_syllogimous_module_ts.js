@@ -6826,8 +6826,7 @@ class SyllogimousService {
     let edgeList = [];
     const inverseMap = {
       "→": "←",
-      "←": "→",
-      "↔": "↔"
+      "←": "→"
     };
     const _words = [...words];
     const isWordUsed = w => edgeList.reduce((a, c) => (a.add(c[0]), a.add(c[2]), a), new Set()).has(w);
@@ -6839,7 +6838,8 @@ class SyllogimousService {
       if (edgeAlreadyExists(a, b)) {
         continue;
       }
-      edgeList.push(Math.random() < 0.25 ? [a, "↔", b] : (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() ? [a, "→", b] : [a, "←", b]);
+      const newEdge = Math.random() < 0.25 ? [a, "↔", b] : (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() ? [a, "→", b] : [a, "←", b];
+      edgeList.push(newEdge);
       if (_words.length > 2 && (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
         const subject = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() ? a : b;
         const foundIdx = _words.indexOf(subject);
@@ -6849,8 +6849,9 @@ class SyllogimousService {
     if (safe <= 0) {
       throw new Error("MAXIMUM NUMBER OF ITERATIONS REACHED!");
     }
-    // All 2-way relationships are useless for 3 elements
-    if (numOfEls === 3 && edgeList.every(([a, rel, b]) => rel === "↔")) {
+    const edgeDiscrepancyCount = edgeList.length !== numOfPremises;
+    const all3ElementsAre2Way = numOfEls === 3 && edgeList.every(([a, rel, b]) => rel === "↔");
+    if (edgeDiscrepancyCount || all3ElementsAre2Way) {
       return this.createGraphMatching(numOfPremises);
     }
     const newWords = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(symbols, numOfEls).picked;
@@ -6900,7 +6901,12 @@ class SyllogimousService {
     }
     const horizontalShuffle = _edgeList => _edgeList.map(([a, rel, b]) => {
       this.logger.info("Before", [a, rel, b]);
-      const result = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() ? [a, rel, b] : [b, inverseMap[rel], a];
+      let result;
+      if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() && (rel === "→" || rel === "←")) {
+        result = [b, inverseMap[rel], a];
+      } else {
+        result = [a, rel, b];
+      }
       this.logger.info("After", result);
       return result;
     });
@@ -6939,7 +6945,7 @@ class SyllogimousService {
           this.logger.info("Metarelated");
           question.metaRelations++;
         }
-      } else if (negated) {
+      } else if (negated && (edge[1] === "→" || edge[1] === "←")) {
         this.logger.info("Negated");
         question.negations++;
         relationship = `<span class="is-negated">${readMap[inverseMap[edge[1]]]}</span>`;
