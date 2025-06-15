@@ -6460,7 +6460,7 @@ class SyllogimousService {
     // Create pairs of subjects
     let copyOfCoords = [...coords];
     const pairs = [];
-    const subjectsAlreadyIncluded = (a, b) => pairs.find(([x, y]) => x[0] === a && y[0] === b || x[0] === b && y[0] === a);
+    const pairAlreadyEstablished = (a, b) => pairs.find(([x, y]) => x[0] === a && y[0] === b || x[0] === b && y[0] === a);
     for (let i = 0; i < numOfEls - 1; i++) {
       const {
         picked,
@@ -6469,7 +6469,7 @@ class SyllogimousService {
       const subject = i === 0 ? (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(remaining, 1).picked[0] : (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(pairs, 1).picked[0][Math.floor(Math.random() * 2)];
       const a = picked[0][0];
       const b = subject[0];
-      if (a === b || subjectsAlreadyIncluded(a, b)) {
+      if (a === b || pairAlreadyEstablished(a, b)) {
         i--;
         continue;
       }
@@ -6485,7 +6485,7 @@ class SyllogimousService {
     let coorda;
     let coordb;
     let safe = 1e2;
-    while (safe-- && (!coorda || !coordb || subjectsAlreadyIncluded(coorda[0], coordb[0]))) {
+    while (safe-- && (!coorda || !coordb || pairAlreadyEstablished(coorda[0], coordb[0]))) {
       [coorda, coordb] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(usedCoords, 2).picked;
     }
     if (safe < 1) {
@@ -6540,6 +6540,11 @@ class SyllogimousService {
       });
     }
     this.logger.info("Premises", premises);
+    // Sanity check, this fixes a bug with analogy questions
+    if (new Set(premises.map(x => x.pair[0][0])).size !== coords.length) {
+      this.logger.error("Missing subject in premises");
+      return this.createDirection(numOfPremises);
+    }
     // Extract the last premise and say it's the conclusion
     // Flip a coin and either keep or tweak the conclusion
     let conclusion = premises.pop();

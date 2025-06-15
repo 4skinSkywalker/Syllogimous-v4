@@ -613,7 +613,7 @@ export class SyllogimousService {
         // Create pairs of subjects
         let copyOfCoords = [...coords];
         const pairs: [typeof coords[0], typeof coords[0]][] = [];
-        const subjectsAlreadyIncluded = (a: string, b: string) =>
+        const pairAlreadyEstablished = (a: string, b: string) =>
             pairs.find(([x, y]) => (x[0] === a && y[0] === b) || (x[0] === b && y[0] === a));
         for (let i = 0; i < numOfEls - 1; i++) {
             const { picked, remaining } = pickUniqueItems(copyOfCoords, 1);
@@ -622,7 +622,7 @@ export class SyllogimousService {
                 : pickUniqueItems(pairs, 1).picked[0][Math.floor(Math.random() * 2)];
             const a = picked[0][0];
             const b = subject[0];
-            if (a === b || subjectsAlreadyIncluded(a, b)) {
+            if (a === b || pairAlreadyEstablished(a, b)) {
                 i--;
                 continue;
             }
@@ -642,7 +642,7 @@ export class SyllogimousService {
         let coorda!: typeof coords[0];
         let coordb!: typeof coords[0];
         let safe = 1e2;
-        while (safe-- && (!coorda || !coordb || subjectsAlreadyIncluded(coorda[0], coordb[0]))) {
+        while (safe-- && (!coorda || !coordb || pairAlreadyEstablished(coorda[0], coordb[0]))) {
             [coorda, coordb] = pickUniqueItems(usedCoords, 2).picked;
         }
 
@@ -710,6 +710,12 @@ export class SyllogimousService {
             })
         }
         this.logger.info("Premises", premises);
+
+        // Sanity check, this fixes a bug with analogy questions
+        if (new Set(premises.map(x => x.pair[0][0])).size !== coords.length) {
+            this.logger.error("Missing subject in premises");
+            return this.createDirection(numOfPremises);
+        }
 
         // Extract the last premise and say it's the conclusion
         // Flip a coin and either keep or tweak the conclusion
