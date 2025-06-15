@@ -289,7 +289,13 @@ export function horizontalShuffleArrangement(premises: IArrangementPremise[]) {
     });
 }
 
-export function getLinearWays(i: number, j: number, numOfEls: number, forConclusion = false) {
+export function getLinearWays(
+    i: number,
+    j: number,
+    _: number,
+    forConclusion = false,
+    precise = false
+) {
     const isAdjLeft = i + 1 === j;
     const isAdjRight = i - 1 === j;
     const isNext = isAdjLeft || isAdjRight;
@@ -321,20 +327,28 @@ export function getLinearWays(i: number, j: number, numOfEls: number, forConclus
             possible: isNext,
             steps
         };
-        ways[EnumArrangements.Left] = {
-            possible: isLeft,
-            steps: -Infinity
-        };
-        ways[EnumArrangements.Right] = {
-            possible: isRight,
-            steps: -Infinity
-        };
+        if (!precise) {
+            ways[EnumArrangements.Left] = {
+                possible: isLeft,
+                steps: -Infinity
+            };
+            ways[EnumArrangements.Right] = {
+                possible: isRight,
+                steps: -Infinity
+            };
+        }
     }
 
     return ways;
 };
 
-export function getCircularWays(i: number, j: number, numOfEls: number, forConclusion = false) {
+export function getCircularWays(
+    i: number,
+    j: number,
+    numOfEls: number,
+    forConclusion = false,
+    precise = false
+) {
     const getAdjLeft = (i: number) => (numOfEls + (i + 1)) % numOfEls;
     const getAdjRight = (i: number) => (numOfEls + (i - 1)) % numOfEls;
     const getInFront = (i: number) => (i + (numOfEls / 2)) % numOfEls;
@@ -384,14 +398,16 @@ export function getCircularWays(i: number, j: number, numOfEls: number, forConcl
             possible: isNext,
             steps
         };
-        ways[EnumArrangements.Left] = {
-            possible: isLeft,
-            steps: -Infinity
-        };
-        ways[EnumArrangements.Right] = {
-            possible: isRight,
-            steps: -Infinity
-        };
+        if (!precise) {
+            ways[EnumArrangements.Left] = {
+                possible: isLeft,
+                steps: -Infinity
+            };
+            ways[EnumArrangements.Right] = {
+                possible: isRight,
+                steps: -Infinity
+            };
+        }
     }
 
     return ways;

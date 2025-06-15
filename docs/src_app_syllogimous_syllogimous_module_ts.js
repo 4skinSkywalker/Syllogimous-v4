@@ -5981,7 +5981,7 @@ class SyllogimousService {
     this.gameTimerService = gameTimerService;
     this._score = 0;
     this.history = [];
-    this.logger = new _utils_logger__WEBPACK_IMPORTED_MODULE_10__.Logger("warn", true);
+    this.logger = new _utils_logger__WEBPACK_IMPORTED_MODULE_10__.Logger("info", true);
     this.loadScore();
     window.syllogimous = this;
     // Create a first dummy question to avoid null pointer etc...
@@ -7097,11 +7097,13 @@ class SyllogimousService {
           question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
           const [idxA, idxB, idxC, idxD] = [subjects.indexOf(a), subjects.indexOf(b), subjects.indexOf(c), subjects.indexOf(d)];
           const getWays = isLinear ? _utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getLinearWays : _utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getCircularWays;
-          const waysA2B = getWays(idxA, idxB, length + 1, true);
-          const waysC2D = getWays(idxC, idxD, length + 1, true);
+          const waysA2B = getWays(idxA, idxB, length + 1, true, true);
+          const waysC2D = getWays(idxC, idxD, length + 1, true, true);
+          this.logger.info("Ways A2B", waysA2B);
+          this.logger.info("Ways C2D", waysC2D);
           isValidSame = false;
           for (const key in waysA2B) {
-            if (waysA2B[key].possible && waysC2D[key].possible) {
+            if (waysA2B[key].possible && waysC2D[key].possible && waysA2B[key].steps === waysC2D[key].steps) {
               isValidSame = true;
             }
           }
@@ -7821,7 +7823,7 @@ function horizontalShuffleArrangement(premises) {
     }
   });
 }
-function getLinearWays(i, j, numOfEls, forConclusion = false) {
+function getLinearWays(i, j, _, forConclusion = false, precise = false) {
   const isAdjLeft = i + 1 === j;
   const isAdjRight = i - 1 === j;
   const isNext = isAdjLeft || isAdjRight;
@@ -7851,19 +7853,21 @@ function getLinearWays(i, j, numOfEls, forConclusion = false) {
       possible: isNext,
       steps
     };
-    ways[_constants_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumArrangements.Left] = {
-      possible: isLeft,
-      steps: -Infinity
-    };
-    ways[_constants_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumArrangements.Right] = {
-      possible: isRight,
-      steps: -Infinity
-    };
+    if (!precise) {
+      ways[_constants_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumArrangements.Left] = {
+        possible: isLeft,
+        steps: -Infinity
+      };
+      ways[_constants_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumArrangements.Right] = {
+        possible: isRight,
+        steps: -Infinity
+      };
+    }
   }
   return ways;
 }
 ;
-function getCircularWays(i, j, numOfEls, forConclusion = false) {
+function getCircularWays(i, j, numOfEls, forConclusion = false, precise = false) {
   const getAdjLeft = i => (numOfEls + (i + 1)) % numOfEls;
   const getAdjRight = i => (numOfEls + (i - 1)) % numOfEls;
   const getInFront = i => (i + numOfEls / 2) % numOfEls;
@@ -7908,14 +7912,16 @@ function getCircularWays(i, j, numOfEls, forConclusion = false) {
       possible: isNext,
       steps
     };
-    ways[_constants_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumArrangements.Left] = {
-      possible: isLeft,
-      steps: -Infinity
-    };
-    ways[_constants_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumArrangements.Right] = {
-      possible: isRight,
-      steps: -Infinity
-    };
+    if (!precise) {
+      ways[_constants_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumArrangements.Left] = {
+        possible: isLeft,
+        steps: -Infinity
+      };
+      ways[_constants_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumArrangements.Right] = {
+        possible: isRight,
+        steps: -Infinity
+      };
+    }
   }
   return ways;
 }

@@ -23,7 +23,7 @@ export class SyllogimousService {
     history: Question[] = [];
     question;
     playgroundSettings?: Settings;
-    logger = new Logger("warn", true);
+    logger = new Logger("info", true);
 
     get score() {
         return this._score;
@@ -1400,12 +1400,15 @@ export class SyllogimousService {
 
                 const getWays = isLinear ? getLinearWays : getCircularWays;
 
-                const waysA2B = getWays(idxA, idxB, length + 1, true);
-                const waysC2D = getWays(idxC, idxD, length + 1, true);
+                const waysA2B = getWays(idxA, idxB, length + 1, true, true);
+                const waysC2D = getWays(idxC, idxD, length + 1, true, true);
+
+                this.logger.info("Ways A2B", waysA2B);
+                this.logger.info("Ways C2D", waysC2D);
 
                 isValidSame = false;
                 for (const key in waysA2B) {
-                    if (waysA2B[key].possible && waysC2D[key].possible) {
+                    if (waysA2B[key].possible && waysC2D[key].possible && waysA2B[key].steps === waysC2D[key].steps) {
                         isValidSame = true;
                     }
                 }
