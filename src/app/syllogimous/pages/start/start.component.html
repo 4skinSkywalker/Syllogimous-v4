@@ -51,9 +51,16 @@
         </div>
     </div>
 
-    <div footer class="text-center">
-        <button class="btn btn-lg btn-primary" (click)="sylSrv.playArcadeMode()">
-            Play <i class="bi bi-play-fill"></i>
-        </button>
+    <div footer class="text-center d-flex justify-content-center gap-3">
+        <button
+            style="width: 150px;"
+            class="btn btn-primary"
+            (click)="sylSrv.playArcadeMode()"
+        >Arcade</button>
+        <button
+            style="width: 150px;"
+            class="btn btn-outline-primary"
+            (click)="router.navigate([EnumScreens.PlaygroundMode])"
+        >Playground</button>
     </div>
 </app-card>

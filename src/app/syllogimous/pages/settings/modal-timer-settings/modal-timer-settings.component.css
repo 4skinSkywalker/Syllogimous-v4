@@ -1,5 +1,5 @@
 .timers-overflow {
-    max-height: 300px;
+    max-height: 450px;
     overflow-y: auto;
-    padding: 8px 16px;
+    padding: 2.5% 20% 2.5% 2.5%;
 }
