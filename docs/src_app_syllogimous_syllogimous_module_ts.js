@@ -31,51 +31,51 @@ __webpack_require__.r(__webpack_exports__);
 
 function CardDropdownComponent_ng_template_0_Template(rf, ctx) {
   if (rf & 1) {
-    const _r8 = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](0, "div", 15)(1, "h4", 16);
+    const _r7 = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](0, "div", 13)(1, "h4", 14);
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](2, "Are you sure?");
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](3, "button", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](3, "button", 15);
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("click", function CardDropdownComponent_ng_template_0_Template_button_click_3_listener() {
-      const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵrestoreView"](_r8);
-      const modal_r6 = restoredCtx.$implicit;
-      return _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵresetView"](modal_r6.dismiss());
+      const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵrestoreView"](_r7);
+      const modal_r5 = restoredCtx.$implicit;
+      return _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵresetView"](modal_r5.dismiss());
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]()();
-    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](4, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](4, "div", 16);
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](5, " All your progresses will be deleted.");
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](6, "br");
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](7, "Are you sure you want to proceed with the reset? ");
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](8, "div", 19)(9, "button", 20);
+    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](8, "div", 17)(9, "button", 18);
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("click", function CardDropdownComponent_ng_template_0_Template_button_click_9_listener() {
-      const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵrestoreView"](_r8);
-      const modal_r6 = restoredCtx.$implicit;
-      return _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵresetView"](modal_r6.dismiss());
+      const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵrestoreView"](_r7);
+      const modal_r5 = restoredCtx.$implicit;
+      return _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵresetView"](modal_r5.dismiss());
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](10, "Cancel");
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](11, "button", 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](11, "button", 19);
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("click", function CardDropdownComponent_ng_template_0_Template_button_click_11_listener() {
-      const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵrestoreView"](_r8);
-      const modal_r6 = restoredCtx.$implicit;
-      return _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵresetView"](modal_r6.close());
+      const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵrestoreView"](_r7);
+      const modal_r5 = restoredCtx.$implicit;
+      return _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵresetView"](modal_r5.close());
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](12, "Continue");
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]()();
   }
 }
-function CardDropdownComponent_ng_container_35_Template(rf, ctx) {
+function CardDropdownComponent_ng_container_33_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](1, "i", 22);
+    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](1, "i", 20);
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](2, " Lightmode ");
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementContainerEnd"]();
   }
 }
-function CardDropdownComponent_ng_template_36_Template(rf, ctx) {
+function CardDropdownComponent_ng_template_34_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](0, "i", 23);
+    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](0, "i", 21);
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](1, " Darkmode ");
   }
 }
@@ -114,18 +114,55 @@ class CardDropdownComponent {
   getDarkmode() {
     return JSON.parse(localStorage.getItem("darkmode") || "false");
   }
-  import(evt) {
-    const file = evt.target.files[0];
-    if (!file) {
-      alert("No JSON file selected");
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = e => {
-      const importJson = e.target?.result;
+  isSafari() {
+    return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  }
+  createFileInput() {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = ".json";
+    fileInput.style.display = "none";
+    return fileInput;
+  }
+  import() {
+    var _this2 = this;
+    return (0,C_Users_federico_trotta_grup_Documents_GitHub_Syllogimous_v4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      let importJson = null;
+      if (_this2.isSafari()) {
+        importJson = prompt("Paste your JSON here");
+        if (!importJson || typeof importJson !== "string") {
+          return alert("Invalid/missing JSON file");
+        }
+      } else {
+        importJson = yield new Promise(resolve => {
+          const fileInput = _this2.createFileInput();
+          fileInput.onchange = /*#__PURE__*/function () {
+            var _ref = (0,C_Users_federico_trotta_grup_Documents_GitHub_Syllogimous_v4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (evt) {
+              const file = evt.target.files[0];
+              if (!file) {
+                return alert("No JSON file selected");
+              }
+              resolve(yield new Promise(resolve => {
+                const reader = new FileReader();
+                reader.onload = e => {
+                  const importJson = e.target?.result;
+                  if (!importJson || typeof importJson !== "string") {
+                    return alert("Invalid JSON file");
+                  }
+                  resolve(importJson);
+                };
+                reader.readAsText(file);
+              }));
+            });
+            return function (_x) {
+              return _ref.apply(this, arguments);
+            };
+          }();
+          fileInput.click();
+        });
+      }
       if (!importJson || typeof importJson !== "string") {
-        alert("Invalid JSON file");
-        return;
+        return alert("Invalid JSON file");
       }
       const confirmation = confirm("Importing will overwrite all existing settings. Are you sure?");
       if (!confirmation) {
@@ -139,8 +176,7 @@ class CardDropdownComponent {
         alert("Import completed successfully!");
         window.location.reload();
       }, 400);
-    };
-    reader.readAsText(file);
+    })();
   }
   export() {
     const exportJson = {};
@@ -164,12 +200,12 @@ class CardDropdownComponent {
     this.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdefineComponent"]({
       type: CardDropdownComponent,
       selectors: [["app-card-dropdown"]],
-      decls: 48,
+      decls: 46,
       vars: 2,
-      consts: [["content", ""], ["ngbDropdown", "", "container", "body"], ["ngbDropdownToggle", "", 1, "btn"], ["ngbDropdownMenu", ""], [1, "text-muted", "ms-3"], ["ngbDropdownItem", "", 3, "click"], [1, "dropdown-divider"], ["type", "file", "accept", ".json", "hidden", "", 3, "change"], ["importInput", ""], [1, "bi", "bi-upload"], [1, "bi", "bi-download"], [4, "ngIf", "ngIfElse"], ["darkmode", ""], [1, "bi", "bi-trash3"], ["ngbDropdownItem", "", "href", "https://www.linkedin.com/in/f3d3r1c07r0774/", "target", "_blank"], [1, "modal-header"], ["id", "modal-basic-title", 1, "modal-title"], ["aria-label", "Close", 1, "btn-close", 3, "click"], [1, "modal-body"], [1, "modal-footer"], [1, "btn", "btn-outline-secondary", 3, "click"], [1, "btn", "btn-danger", 3, "click"], [1, "bi", "bi-sun"], [1, "bi", "bi-moon"]],
+      consts: [["content", ""], ["ngbDropdown", "", "container", "body"], ["ngbDropdownToggle", "", 1, "btn"], ["ngbDropdownMenu", ""], [1, "text-muted", "ms-3"], ["ngbDropdownItem", "", 3, "click"], [1, "dropdown-divider"], [1, "bi", "bi-upload"], [1, "bi", "bi-download"], [4, "ngIf", "ngIfElse"], ["darkmode", ""], [1, "bi", "bi-trash3"], ["ngbDropdownItem", "", "href", "https://www.linkedin.com/in/f3d3r1c07r0774/", "target", "_blank"], [1, "modal-header"], ["id", "modal-basic-title", 1, "modal-title"], ["aria-label", "Close", 1, "btn-close", 3, "click"], [1, "modal-body"], [1, "modal-footer"], [1, "btn", "btn-outline-secondary", 3, "click"], [1, "btn", "btn-danger", 3, "click"], [1, "bi", "bi-sun"], [1, "bi", "bi-moon"]],
       template: function CardDropdownComponent_Template(rf, ctx) {
         if (rf & 1) {
-          const _r11 = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵgetCurrentView"]();
+          const _r10 = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵgetCurrentView"]();
           _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplate"](0, CardDropdownComponent_ng_template_0_Template, 13, 0, "ng-template", null, 0, _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplateRefExtractor"]);
           _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](2, "div")(3, "div", 1)(4, "button", 2);
           _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](5, "More");
@@ -225,59 +261,52 @@ class CardDropdownComponent {
           _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
           _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](26, "button", 5);
           _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("click", function CardDropdownComponent_Template_button_click_26_listener() {
-            _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵrestoreView"](_r11);
-            const _r2 = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵreference"](28);
-            return _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵresetView"](_r2.click());
+            return ctx.import();
           });
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](27, "input", 7, 8);
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("change", function CardDropdownComponent_Template_input_change_27_listener($event) {
-            return ctx.import($event);
-          });
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](27, "i", 7);
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](28, " Import ");
           _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](29, "i", 9);
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](30, " Import ");
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](31, "button", 5);
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("click", function CardDropdownComponent_Template_button_click_31_listener() {
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](29, "button", 5);
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("click", function CardDropdownComponent_Template_button_click_29_listener() {
             return ctx.export();
           });
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](32, "i", 10);
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](33, " Export");
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](30, "i", 8);
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](31, " Export");
           _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](34, "button", 5);
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("click", function CardDropdownComponent_Template_button_click_34_listener() {
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](32, "button", 5);
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("click", function CardDropdownComponent_Template_button_click_32_listener() {
             return ctx.toggleDarkmode();
           });
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplate"](35, CardDropdownComponent_ng_container_35_Template, 3, 0, "ng-container", 11);
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplate"](36, CardDropdownComponent_ng_template_36_Template, 2, 0, "ng-template", null, 12, _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplateRefExtractor"]);
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplate"](33, CardDropdownComponent_ng_container_33_Template, 3, 0, "ng-container", 9);
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplate"](34, CardDropdownComponent_ng_template_34_Template, 2, 0, "ng-template", null, 10, _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplateRefExtractor"]);
           _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](38, "button", 5);
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("click", function CardDropdownComponent_Template_button_click_38_listener() {
-            _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵrestoreView"](_r11);
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](36, "button", 5);
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("click", function CardDropdownComponent_Template_button_click_36_listener() {
+            _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵrestoreView"](_r10);
             const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵreference"](1);
             return _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵresetView"](ctx.resetGame(_r0));
           });
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](39, "i", 13);
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](40, " Reset Game");
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](37, "i", 11);
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](38, " Reset Game");
           _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](41, "div", 6);
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](42, "small", 4);
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](43, "Links");
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](39, "div", 6);
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](40, "small", 4);
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](41, "Links");
           _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](44, "button", 5);
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("click", function CardDropdownComponent_Template_button_click_44_listener() {
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](42, "button", 5);
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("click", function CardDropdownComponent_Template_button_click_42_listener() {
             return ctx.router.navigate([ctx.EnumScreens.OtherGames]);
           });
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](45, "Other Games");
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](43, "Other Games");
           _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](46, "a", 14);
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](47, "About the Author");
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](44, "a", 12);
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](45, "About the Author");
           _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]()()()();
         }
         if (rf & 2) {
-          const _r4 = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵreference"](37);
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵadvance"](35);
-          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("ngIf", ctx.getDarkmode())("ngIfElse", _r4);
+          const _r3 = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵreference"](35);
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵadvance"](33);
+          _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("ngIf", ctx.getDarkmode())("ngIfElse", _r3);
         }
       },
       dependencies: [_angular_common__WEBPACK_IMPORTED_MODULE_8__.NgIf, _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_7__.NgbDropdown, _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_7__.NgbDropdownToggle, _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_7__.NgbDropdownMenu, _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_7__.NgbDropdownItem],

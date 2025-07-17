@@ -50,37 +50,72 @@ export class CardDropdownComponent {
         return JSON.parse(localStorage.getItem("darkmode") || "false");
     }
 
-    import(evt: any) {
-        const file = evt.target.files[0];
-        if (!file) {
-            alert("No JSON file selected");
+    isSafari() {
+        return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    }
+
+    createFileInput() {
+        const fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.accept = ".json";
+        fileInput.style.display = "none";
+        return fileInput;
+    }
+
+    async import() {
+        let importJson: string | null = null;
+
+        if (this.isSafari()) {
+            importJson = prompt("Paste your JSON here");
+            if (!importJson || typeof importJson !== "string") {
+                return alert("Invalid/missing JSON file");
+            }
+        } else {
+            importJson = await new Promise(resolve => {
+                const fileInput = this.createFileInput();
+                fileInput.onchange = async (evt: any) => {
+                    const file = evt.target.files[0];
+                    if (!file) {
+                        return alert("No JSON file selected");
+                    }
+        
+                    resolve(await new Promise(resolve => {
+                        const reader = new FileReader();
+        
+                        reader.onload = (e) => {
+                            const importJson = e.target?.result;
+                            if (!importJson || typeof importJson !== "string") {
+                                return alert("Invalid JSON file");
+                            }
+        
+                            resolve(importJson);
+                        };
+        
+                        reader.readAsText(file);
+                    }));
+                };
+                fileInput.click();
+            });
+        }
+
+        if (!importJson || typeof importJson !== "string") {
+            return alert("Invalid JSON file");
+        }
+
+        const confirmation = confirm("Importing will overwrite all existing settings. Are you sure?");
+        if (!confirmation) {
             return;
         }
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const importJson = e.target?.result;
-            if (!importJson || typeof importJson !== "string") {
-                alert("Invalid JSON file");
-                return;
-            }
+        const data = JSON.parse(importJson);
+        for (const [key, value] of Object.entries(data)) {
+            localStorage.setItem(key, value as string);
+        }
 
-            const confirmation = confirm("Importing will overwrite all existing settings. Are you sure?");
-            if (!confirmation) {
-                return;
-            }
-
-            const data = JSON.parse(importJson);
-            for (const [key, value] of Object.entries(data)) {
-                localStorage.setItem(key, value as string);
-            }
-
-            setTimeout(() => {
-                alert("Import completed successfully!");
-                window.location.reload();
-            }, 400);
-        };
-        reader.readAsText(file);
+        setTimeout(() => {
+            alert("Import completed successfully!");
+            window.location.reload();
+        }, 400);
     }
 
     export() {

@@ -68,15 +68,8 @@
             <small class="text-muted ms-3">Functions</small>
             <button
                 ngbDropdownItem
-                (click)="importInput.click()"
+                (click)="import()"
             >
-                <input
-                    #importInput
-                    type="file"
-                    accept=".json"
-                    (change)="import($event)"
-                    hidden
-                />
                 <i class="bi bi-upload"></i> Import
             </button>
             <button
