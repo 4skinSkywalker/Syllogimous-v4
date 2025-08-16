@@ -891,6 +891,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "EnumScreens": () => (/* binding */ EnumScreens),
 /* harmony export */   "EnumTiers": () => (/* binding */ EnumTiers),
 /* harmony export */   "INF": () => (/* binding */ INF),
+/* harmony export */   "NO_DATA": () => (/* binding */ NO_DATA),
 /* harmony export */   "ORDERED_QUESTION_TYPES": () => (/* binding */ ORDERED_QUESTION_TYPES),
 /* harmony export */   "ORDERED_TIERS": () => (/* binding */ ORDERED_TIERS),
 /* harmony export */   "TIERS_MATRIX": () => (/* binding */ TIERS_MATRIX),
@@ -997,6 +998,7 @@ const TIER_COLORS = {
   } // Indigo with Alice Blue
 };
 
+const NO_DATA = "--";
 const TIER_SCORE_RANGES = {
   [EnumTiers.Adept]: {
     minScore: -INF,
@@ -3170,8 +3172,8 @@ class StartComponent {
   }
   ngOnInit() {
     const currTierIdx = this.tiers.findIndex(tier => tier === this.sylSrv.tier);
-    this.nextTier = this.tiers[currTierIdx + 1] || "--";
-    this.pointsRemaining = this.nextTier ? _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.TIER_SCORE_RANGES[this.nextTier].minScore - this.sylSrv.score : 0;
+    this.nextTier = this.tiers[currTierIdx + 1] || _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.NO_DATA;
+    this.pointsRemaining = this.nextTier !== _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.NO_DATA ? _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.TIER_SCORE_RANGES[this.nextTier].minScore - this.sylSrv.score : 0;
     this.questions = this.sylSrv.questions;
     this.correctQs = this.questions.filter(q => q.userAnswer !== undefined && q.isValid === q.userAnswer);
     this.incorrectQs = this.questions.filter(q => q.userAnswer !== undefined && q.isValid !== q.userAnswer);

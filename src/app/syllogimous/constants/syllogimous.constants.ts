@@ -53,6 +53,8 @@ export const TIER_COLORS: Record<EnumTiers, { bgColor: string, textColor: string
     [EnumTiers.Transcendent]:   { bgColor: "#4B0082", textColor: "#F0F8FF" },  // Indigo with Alice Blue
 };
 
+export const NO_DATA = "--";
+
 export const TIER_SCORE_RANGES: Record<EnumTiers, { minScore: number, maxScore: number }> = {
     [EnumTiers.Adept]:          { minScore: -INF, maxScore:  249 },
     [EnumTiers.Scholar]:        { minScore:  250, maxScore:  499 },
