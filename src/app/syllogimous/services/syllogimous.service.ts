@@ -724,11 +724,6 @@ export class SyllogimousService {
         const isValid = coinFlip();
         if (isValid) {
             this.logger.info("Keep conclusion");
-            if (coinFlip() && conclusion.cardinals.length === 2) {
-                this.logger.info("One cardinal got plucked");
-                conclusion.cardinals = [pickUniqueItems(conclusion.cardinals, 1).picked[0]];
-                tweaked = true;
-            }
         } else {
             this.logger.info("Tweak conclusion");
             const rndIdx = Math.floor(Math.random() * conclusion.cardinals.length);
@@ -972,12 +967,6 @@ export class SyllogimousService {
 
             // Filter out collinear cardinals
             conclusion.cardinals = conclusion.cardinals.filter(c => c[0] !== "!");
-
-            if (coinFlip() && conclusion.cardinals.length === 2) {
-                this.logger.info("Cardinal pluck before", JSON.stringify(conclusion.cardinals, null, 2));
-                conclusion.cardinals = [pickUniqueItems(conclusion.cardinals, 1).picked[0]];
-                this.logger.info("Cardinal pluck after", JSON.stringify(conclusion.cardinals, null, 2));
-            }
         } else {
             this.logger.info("Tweak conclusion");
 
