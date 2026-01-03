@@ -759,6 +759,9 @@ export class SyllogimousService {
         question.isValid = isValid;
         question.premises = premises.map(stringifyProposition);
         question.conclusion = stringifyProposition(conclusion);
+        question.notes = [
+            "Note that cardinal directions are exact and direct<br>(e.g., \"north\" is not \"north-east\" or \"north-west\")"
+        ];
 
         // TODO: Create meta relationship
 
@@ -1028,6 +1031,9 @@ export class SyllogimousService {
         question.isValid = isValid;
         question.premises = premises.map(stringifyProposition);
         question.conclusion = stringifyProposition(conclusion);
+        question.notes = [
+            "Note that cardinal directions are exact and direct<br>(e.g., \"north\" is not \"north-east\" or \"north-west\")"
+        ];
 
         // TODO: Create meta relationship
 
