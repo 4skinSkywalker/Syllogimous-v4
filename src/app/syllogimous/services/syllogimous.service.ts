@@ -52,7 +52,7 @@ export class SyllogimousService {
         let questions: Question[] = [];
         const history = localStorage.getItem(LS_HISTORY);
         if (history) {
-            questions = JSON.parse(history);
+            questions = JSON.parse(history).slice(0, 1000);
         }
         return questions;
     }

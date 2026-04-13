@@ -109,7 +109,12 @@ export class CardDropdownComponent {
 
         const data = JSON.parse(importJson);
         for (const [key, value] of Object.entries(data)) {
-            localStorage.setItem(key, value as string);
+            if (key === LS_HISTORY) {
+                const parsed = JSON.parse(value as string).slice(0, 1000);
+                localStorage.setItem(key, JSON.stringify(parsed));
+            } else {
+                localStorage.setItem(key, value as string);
+            }
         }
 
         setTimeout(() => {
