@@ -741,6 +741,23 @@ function sylHasShorterProof(
     return false;
 }
 
+function sylRelationDeterminableShort(
+    premises: SylPremise[],
+    w1: string,
+    w2: string,
+    chainDepth: number,
+): boolean {
+    for (const idxs of sylShortPremisePaths(premises, w1, w2, chainDepth - 1)) {
+        const subset = idxs.map(i => premises[i]);
+        for (const [a, b] of [[w1, w2], [w2, w1]]) {
+            for (const k of SYL_KINDS) {
+                if (sylEntails(subset, [a, k, b])) return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function generatePolysyllogism(opts: {
     nPremises: number;
     chainDepth: number;
@@ -830,7 +847,7 @@ export function generatePolysyllogism(opts: {
                 const current = [...chainPremises, ...distractorPremises];
                 if (sylEntails(current, trial)) continue;
                 if (!sylIsConsistent([...current, trial])) continue;
-                if (sylHasShorterProof([...current, trial], finalConclusion, chainDepth)) continue; // strict chainDepth
+                if (sylHasShorterProof([...current, trial], finalConclusion, chainDepth)) continue; // strict chainDepth [true conclusion]
 
                 distractorPremises.push(trial);
                 seenKeys.add(key);
@@ -859,7 +876,7 @@ export function generatePolysyllogism(opts: {
                     if (a === cl && b === cr && k === ck) continue;
                     const alt: SylPremise = [a, k, b];
                     if (sylEntails(premises, alt)) continue;
-                    if (sylHasShorterProof(premises, sylNegate(alt), chainDepth)) continue;
+                    if (sylRelationDeterminableShort(premises, a, b, chainDepth)) continue; // strict chainDepth [false conclusion]
                     alternatives.push(alt);
                 }
             }
@@ -886,7 +903,7 @@ export function generatePolysyllogism(opts: {
                 console.log("Internal: false conclusion is entailed");
                 continue;
             }
-            if (sylHasShorterProof(premises, sylNegate(finalConclusion), chainDepth)) {
+            if (sylRelationDeterminableShort(premises, w1, w2, chainDepth)) { // strict chainDepth [false conclusion]
                 continue;
             }
         }
