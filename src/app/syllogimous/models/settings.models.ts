@@ -109,7 +109,10 @@ export class Settings {
 
     constructor(settings?: Settings) {
         this.configSettings = settings;
-        this.enabled = settings?.enabled || jsonCopy(DEFAULT_ENABLED_FLAGS);
+
+        this.enabled = jsonCopy(DEFAULT_ENABLED_FLAGS);
+        this.enabled = { ...this.enabled, ...settings?.enabled };
+        
         this.initQuestionSettings(EnumQuestionType.Distinction);
         this.initQuestionSettings(EnumQuestionType.ComparisonNumerical);
         this.initQuestionSettings(EnumQuestionType.ComparisonChronological);
@@ -134,7 +137,7 @@ export class Settings {
         );
     }
 
-    setEnable(prop: "meaningfulWords"|"meta"|"negation", value: boolean) {
+    setEnable(prop: "useEmojis" | "meaningfulWords" | "meta" | "negation", value: boolean) {
         this.enabled[prop] = value;
         return this;
     }

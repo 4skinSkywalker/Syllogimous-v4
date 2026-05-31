@@ -131,6 +131,7 @@ export class PlaygroundModeComponent {
         const serialized = localStorage.getItem(LS_PG_SETTINGS);
         if (serialized) {
             const deserialized = JSON.parse(serialized) as Settings;
+            console.log("Loaded playground settings:", deserialized);
             return new Settings(deserialized);
         }
         return undefined;

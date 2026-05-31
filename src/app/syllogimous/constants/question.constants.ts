@@ -30,6 +30,7 @@ let strings: string[] = [];
 export const getStrings = () => {
     const consonants = "QRSTVWXZ";
     const vowels = "AEIOU";
+
     if (strings.length === 0) {
         for (const c1 of consonants) {
             for (const v1 of vowels) {
@@ -39,9 +40,33 @@ export const getStrings = () => {
             }
         }
     }
-    console.log("Generated strings", strings);
+
     return strings;
 };
+
+let emojis: string[] = [];
+export const getEmojis = () => {
+    if (emojis.length > 0) {
+        return emojis;
+    }
+
+    const emojiRanges = [
+        { start: 0x1F600, end: 0x1F64F }, // Emoticons
+        { start: 0x1F300, end: 0x1F5FF }, // Misc Symbols and Pictographs
+        // { start: 0x1F680, end: 0x1F6FF }, // Transport and Map Symbols
+        // { start: 0x1F700, end: 0x1F77F }, // Alchemical Symbols
+        // { start: 0x2600,  end: 0x26FF },  // Miscellaneous Symbols
+    ];
+
+    for (const range of emojiRanges) {
+        for (let codePoint = range.start; codePoint <= range.end; codePoint++) {
+            emojis.push(String.fromCodePoint(codePoint));
+        }
+    }
+
+    return emojis;
+};
+getEmojis();
 
 export const VALID_RULES = [
     "0001",

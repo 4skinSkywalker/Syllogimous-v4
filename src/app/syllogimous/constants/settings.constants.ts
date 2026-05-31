@@ -97,6 +97,7 @@ export const QUESTION_TYPE_SETTING_PARAMS: Record<EnumQuestionType, ISettingPara
 }
 
 export const DEFAULT_ENABLED_FLAGS = {
+    useEmojis: false,
     meaningfulWords: true,
     meta: true,
     negation: true,

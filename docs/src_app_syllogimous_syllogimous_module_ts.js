@@ -1503,6 +1503,7 @@ class PlaygroundModeComponent {
     const serialized = localStorage.getItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_3__.LS_PG_SETTINGS);
     if (serialized) {
       const deserialized = JSON.parse(serialized);
+      console.log("Loaded playground settings:", deserialized);
       return new src_app_syllogimous_models_settings_models__WEBPACK_IMPORTED_MODULE_1__.Settings(deserialized);
     }
     return undefined;

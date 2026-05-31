@@ -1,4 +1,4 @@
-import { FORMS, getStrings, NOUNS, NUMBER_WORDS, VALID_RULES } from "../constants/question.constants";
+import { FORMS, getEmojis, getStrings, NOUNS, NUMBER_WORDS, VALID_RULES } from "../constants/question.constants";
 import { EnumArrangements, EnumQuestionType } from "../constants/question.constants";
 import { IArrangementPremise, IArrangementRelationship, Question } from "../models/question.models";
 import { Settings, Picked } from "../models/settings.models";
@@ -66,7 +66,11 @@ export function isPremiseLikeConclusion(premises: string[], conclusion: string) 
 }
 
 export function getSymbols(settings: Settings) {
-    return settings.enabled.meaningfulWords ? [...NOUNS] : [...getStrings()];
+    return settings.enabled.useEmojis
+        ? [...getEmojis()]
+        : settings.enabled.meaningfulWords
+            ? [...NOUNS]
+            : [...getStrings()];
 }
 
 export function getRandomSymbols(settings: Settings, length: number) {
