@@ -352,7 +352,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function GameComponent_ng_template_0_ng_container_0_div_1_div_1_div_4_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](0, "div", 25);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](0, "div", 26);
   }
   if (rf & 2) {
     const instruction_r22 = ctx.$implicit;
@@ -361,11 +361,11 @@ function GameComponent_ng_template_0_ng_container_0_div_1_div_1_div_4_Template(r
 }
 function GameComponent_ng_template_0_ng_container_0_div_1_div_1_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div")(1, "div", 16);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div")(1, "div", 17);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](2, "Instructions");
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](3, "div", 23);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](4, GameComponent_ng_template_0_ng_container_0_div_1_div_1_div_4_Template, 1, 1, "div", 24);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](3, "div", 24);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](4, GameComponent_ng_template_0_ng_container_0_div_1_div_1_div_4_Template, 1, 1, "div", 25);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]()();
   }
   if (rf & 2) {
@@ -376,7 +376,7 @@ function GameComponent_ng_template_0_ng_container_0_div_1_div_1_Template(rf, ctx
 }
 function GameComponent_ng_template_0_ng_container_0_div_1_div_2_div_1_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](0, "div", 25);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](0, "div", 26);
   }
   if (rf & 2) {
     const note_r25 = ctx.$implicit;
@@ -385,8 +385,8 @@ function GameComponent_ng_template_0_ng_container_0_div_1_div_2_div_1_Template(r
 }
 function GameComponent_ng_template_0_ng_container_0_div_1_div_2_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div", 26);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](1, GameComponent_ng_template_0_ng_container_0_div_1_div_2_div_1_Template, 1, 1, "div", 24);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div", 27);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](1, GameComponent_ng_template_0_ng_container_0_div_1_div_2_div_1_Template, 1, 1, "div", 25);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
   }
   if (rf & 2) {
@@ -399,7 +399,7 @@ function GameComponent_ng_template_0_ng_container_0_div_1_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div");
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](1, GameComponent_ng_template_0_ng_container_0_div_1_div_1_Template, 5, 1, "div", 6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](2, GameComponent_ng_template_0_ng_container_0_div_1_div_2_Template, 2, 1, "div", 22);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](2, GameComponent_ng_template_0_ng_container_0_div_1_div_2_Template, 2, 1, "div", 23);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
   }
   if (rf & 2) {
@@ -439,7 +439,7 @@ function GameComponent_ng_template_0_Template(rf, ctx) {
 }
 function GameComponent_ngb_progressbar_5_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "ngb-progressbar", 27)(1, "span", 28);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "ngb-progressbar", 28)(1, "span", 29);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]()();
   }
@@ -457,8 +457,8 @@ function GameComponent_9_ng_template_0_ng_container_1_Template(rf, ctx) {
 }
 function GameComponent_9_ng_template_0_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div", 30);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](1, GameComponent_9_ng_template_0_ng_container_1_Template, 1, 0, "ng-container", 15);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](1, GameComponent_9_ng_template_0_ng_container_1_Template, 1, 0, "ng-container", 16);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
   }
   if (rf & 2) {
@@ -470,15 +470,15 @@ function GameComponent_9_ng_template_0_Template(rf, ctx) {
 }
 function GameComponent_9_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](0, GameComponent_9_ng_template_0_Template, 2, 1, "ng-template", 29);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](0, GameComponent_9_ng_template_0_Template, 2, 1, "ng-template", 30);
   }
 }
 function GameComponent_10_ng_template_0_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div", 30)(1, "div")(2, "small", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div", 31)(1, "div")(2, "small", 32);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](3);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](4, "div", 25);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](4, "div", 26);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]()();
   }
   if (rf & 2) {
@@ -494,15 +494,15 @@ function GameComponent_10_ng_template_0_Template(rf, ctx) {
 }
 function GameComponent_10_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](0, GameComponent_10_ng_template_0_Template, 5, 2, "ng-template", 29);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](0, GameComponent_10_ng_template_0_Template, 5, 2, "ng-template", 30);
   }
 }
 function GameComponent_ng_container_11_1_ng_template_0_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div", 30)(1, "div")(2, "small", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div", 31)(1, "div")(2, "small", 32);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](3);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](4, "div", 25);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](4, "div", 26);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]()();
   }
   if (rf & 2) {
@@ -518,7 +518,7 @@ function GameComponent_ng_container_11_1_ng_template_0_Template(rf, ctx) {
 }
 function GameComponent_ng_container_11_1_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](0, GameComponent_ng_container_11_1_ng_template_0_Template, 5, 2, "ng-template", 29);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](0, GameComponent_ng_container_11_1_ng_template_0_Template, 5, 2, "ng-template", 30);
   }
 }
 function GameComponent_ng_container_11_Template(rf, ctx) {
@@ -535,10 +535,10 @@ function GameComponent_ng_container_11_Template(rf, ctx) {
 }
 function GameComponent_ng_template_12_ng_template_0_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div", 30)(1, "div")(2, "small", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div", 31)(1, "div")(2, "small", 32);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](3, "Conclusion");
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](4, "div", 25);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](4, "div", 26);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]()();
   }
   if (rf & 2) {
@@ -549,7 +549,7 @@ function GameComponent_ng_template_12_ng_template_0_Template(rf, ctx) {
 }
 function GameComponent_ng_template_12_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](0, GameComponent_ng_template_12_ng_template_0_Template, 5, 1, "ng-template", 29);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](0, GameComponent_ng_template_12_ng_template_0_Template, 5, 1, "ng-template", 30);
   }
 }
 function GameComponent_ng_container_22_Template(rf, ctx) {
@@ -559,7 +559,7 @@ function GameComponent_ng_container_22_Template(rf, ctx) {
 }
 function GameComponent_div_26_div_1_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](0, "div", 25);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](0, "div", 26);
   }
   if (rf & 2) {
     const p_r44 = ctx.$implicit;
@@ -568,8 +568,8 @@ function GameComponent_div_26_div_1_Template(rf, ctx) {
 }
 function GameComponent_div_26_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div", 32);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](1, GameComponent_div_26_div_1_Template, 1, 1, "div", 24);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div", 33);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](1, GameComponent_div_26_div_1_Template, 1, 1, "div", 25);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
   }
   if (rf & 2) {
@@ -580,7 +580,7 @@ function GameComponent_div_26_Template(rf, ctx) {
 }
 function GameComponent_div_27_div_3_div_1_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](0, "div", 25);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](0, "div", 26);
   }
   if (rf & 2) {
     const c_r48 = ctx.$implicit;
@@ -589,8 +589,8 @@ function GameComponent_div_27_div_3_div_1_Template(rf, ctx) {
 }
 function GameComponent_div_27_div_3_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div", 34);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](1, GameComponent_div_27_div_3_div_1_Template, 1, 1, "div", 24);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div", 35);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](1, GameComponent_div_27_div_3_div_1_Template, 1, 1, "div", 25);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
   }
   if (rf & 2) {
@@ -601,10 +601,10 @@ function GameComponent_div_27_div_3_Template(rf, ctx) {
 }
 function GameComponent_div_27_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div")(1, "div", 16);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div")(1, "div", 17);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](2, "Conclusion");
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](3, GameComponent_div_27_div_3_Template, 2, 1, "div", 33);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](3, GameComponent_div_27_div_3_Template, 2, 1, "div", 34);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
   }
   if (rf & 2) {
@@ -615,10 +615,10 @@ function GameComponent_div_27_Template(rf, ctx) {
 }
 function GameComponent_ng_template_28_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div")(1, "div", 16);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div")(1, "div", 17);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](2, "Conclusion");
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](3, "div", 25);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](3, "div", 26);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
   }
   if (rf & 2) {
@@ -630,7 +630,7 @@ function GameComponent_ng_template_28_Template(rf, ctx) {
 function GameComponent_button_31_Template(rf, ctx) {
   if (rf & 1) {
     const _r50 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "button", 35);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "button", 36);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵlistener"]("click", function GameComponent_button_31_Template_button_click_0_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵrestoreView"](_r50);
       const ctx_r49 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵnextContext"]();
@@ -643,7 +643,7 @@ function GameComponent_button_31_Template(rf, ctx) {
 function GameComponent_button_34_Template(rf, ctx) {
   if (rf & 1) {
     const _r52 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "button", 35);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "button", 36);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵlistener"]("click", function GameComponent_button_34_Template_button_click_0_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵrestoreView"](_r52);
       const ctx_r51 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵnextContext"]();
@@ -748,8 +748,8 @@ class GameComponent {
       type: GameComponent,
       selectors: [["app-game"]],
       decls: 35,
-      vars: 21,
-      consts: [["questionInstructionsAndNotes", ""], ["body", "", 1, "battlefield", 3, "ngStyle"], [1, "timerbar-wrap"], ["class", "timerbar", "type", "success", 3, "value", 4, "ngIf"], [2, "border", "0", "box-shadow", "none", 3, "interval", "showNavigationArrows", "showNavigationIndicators"], ["carousel", ""], [4, "ngIf"], [4, "ngFor", "ngForOf"], [4, "ngIf", "ngIfElse"], ["conclusionsIsStringCarouselTemplate", ""], [1, "flex-between", "p-3", 2, "position", "absolute", "left", "0", "bottom", "0", "width", "100%"], [1, "btn", "border-0", 2, "box-shadow", "none", 3, "click"], [1, "bi", "bi-arrow-left"], [1, "bi", "bi-arrow-right"], [1, "d-grid", "gap-4"], [4, "ngTemplateOutlet"], [1, "small", "text-muted"], ["class", "premises", 4, "ngIf"], ["conclusionIsStringTemplate", ""], ["footer", "", 1, "d-flex", "gap-3", "justify-content-center"], ["class", "btn btn-lg btn-success col-md-3 col-4", 3, "click", 4, "ngIf"], [1, "btn", "btn-lg", "btn-danger", "col-md-3", "col-4", 3, "click"], ["class", "notes", 4, "ngIf"], [1, "instructions"], [3, "innerHTML", 4, "ngFor", "ngForOf"], [3, "innerHTML"], [1, "notes"], ["type", "success", 1, "timerbar", 3, "value"], [1, "me-2"], ["ngbSlide", ""], [2, "display", "grid", "place-items", "center"], [1, "text-muted"], [1, "premises"], ["class", "conclusions", 4, "ngIf"], [1, "conclusions"], [1, "btn", "btn-lg", "btn-success", "col-md-3", "col-4", 3, "click"]],
+      vars: 22,
+      consts: [["questionInstructionsAndNotes", ""], ["body", "", 1, "battlefield", 3, "ngStyle"], [1, "timerbar-wrap"], ["class", "timerbar", "type", "success", 3, "value", 4, "ngIf"], [2, "border", "0", "box-shadow", "none", 3, "interval", "showNavigationArrows", "showNavigationIndicators"], ["carousel", ""], [4, "ngIf"], [4, "ngFor", "ngForOf"], [4, "ngIf", "ngIfElse"], ["conclusionsIsStringCarouselTemplate", ""], [1, "flex-between", "p-3", 2, "position", "absolute", "left", "0", "bottom", "0", "width", "100%"], [1, "btn", "border-0", 2, "box-shadow", "none", 3, "disabled", "click"], [1, "bi", "bi-arrow-left"], [1, "btn", "border-0", 2, "box-shadow", "none", 3, "click"], [1, "bi", "bi-arrow-right"], [1, "d-grid", "gap-4"], [4, "ngTemplateOutlet"], [1, "small", "text-muted"], ["class", "premises", 4, "ngIf"], ["conclusionIsStringTemplate", ""], ["footer", "", 1, "d-flex", "gap-3", "justify-content-center"], ["class", "btn btn-lg btn-success col-md-3 col-4", 3, "click", 4, "ngIf"], [1, "btn", "btn-lg", "btn-danger", "col-md-3", "col-4", 3, "click"], ["class", "notes", 4, "ngIf"], [1, "instructions"], [3, "innerHTML", 4, "ngFor", "ngForOf"], [3, "innerHTML"], [1, "notes"], ["type", "success", 1, "timerbar", 3, "value"], [1, "me-2"], ["ngbSlide", ""], [2, "display", "grid", "place-items", "center"], [1, "text-muted"], [1, "premises"], ["class", "conclusions", 4, "ngIf"], [1, "conclusions"], [1, "btn", "btn-lg", "btn-success", "col-md-3", "col-4", 3, "click"]],
       template: function GameComponent_Template(rf, ctx) {
         if (rf & 1) {
           const _r53 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵgetCurrentView"]();
@@ -770,36 +770,36 @@ class GameComponent {
             return _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵresetView"](_r3.prev());
           });
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](16, "i", 12);
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](17, " Prev");
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](17, " Prev ");
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](18, "button", 11);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](18, "button", 13);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵlistener"]("click", function GameComponent_Template_button_click_18_listener() {
             _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵrestoreView"](_r53);
             const _r3 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵreference"](8);
             return _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵresetView"](_r3.next());
           });
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](19, "Next ");
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](20, "i", 13);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](19, " Next ");
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](20, "i", 14);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]()()();
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](21, "div", 14);
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](22, GameComponent_ng_container_22_Template, 1, 0, "ng-container", 15);
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](23, "div")(24, "div", 16);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](21, "div", 15);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](22, GameComponent_ng_container_22_Template, 1, 0, "ng-container", 16);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](23, "div")(24, "div", 17);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](25, "Premises");
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](26, GameComponent_div_26_Template, 2, 1, "div", 17);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](26, GameComponent_div_26_Template, 2, 1, "div", 18);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](27, GameComponent_div_27_Template, 4, 1, "div", 8);
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](28, GameComponent_ng_template_28_Template, 4, 1, "ng-template", null, 18, _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplateRefExtractor"]);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](28, GameComponent_ng_template_28_Template, 4, 1, "ng-template", null, 19, _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplateRefExtractor"]);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]()();
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](30, "div", 19);
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](31, GameComponent_button_31_Template, 2, 0, "button", 20);
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](32, "button", 21);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](30, "div", 20);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](31, GameComponent_button_31_Template, 2, 0, "button", 21);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](32, "button", 22);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵlistener"]("click", function GameComponent_Template_button_click_32_listener() {
             return ctx.sylSrv.checkQuestion(false);
           });
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](33, "False");
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](34, GameComponent_button_34_Template, 2, 0, "button", 20);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](34, GameComponent_button_34_Template, 2, 0, "button", 21);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]()();
         }
         if (rf & 2) {
@@ -807,11 +807,11 @@ class GameComponent {
           const _r7 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵreference"](13);
           const _r12 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵreference"](29);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](3);
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngStyle", _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵpureFunction1"](19, _c1, ctx.gameMode === "1" ? "100%" : "auto"));
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngStyle", _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵpureFunction1"](20, _c1, ctx.gameMode === "1" || ctx.gameMode === "2" ? "100%" : "auto"));
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](2);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx.timerType !== "0");
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](1);
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵclassProp"]("d-none", ctx.gameMode !== "1");
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵclassProp"]("d-none", ctx.gameMode === "0");
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](1);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("interval", 999999999)("showNavigationArrows", false)("showNavigationIndicators", false);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](2);
@@ -820,8 +820,10 @@ class GameComponent {
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngForOf", ctx.sylSrv.question.premises);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](1);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx.Array.isArray(ctx.sylSrv.question.conclusion))("ngIfElse", _r7);
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](10);
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵclassProp"]("d-none", ctx.gameMode === "1");
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](4);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("disabled", ctx.gameMode === "2");
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](6);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵclassProp"]("d-none", ctx.gameMode !== "0");
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](1);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngTemplateOutlet", _r0);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](4);

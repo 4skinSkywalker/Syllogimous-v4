@@ -16,14 +16,14 @@
 </ng-template>
 
 <app-card>
-    <div body class="battlefield" [ngStyle]="{ width: (gameMode === '1') ? '100%' : 'auto' }">
+    <div body class="battlefield" [ngStyle]="{ width: (gameMode === '1' || gameMode === '2') ? '100%' : 'auto' }">
         <div class="timerbar-wrap">
             <ngb-progressbar *ngIf="timerType !== '0'" class="timerbar" type="success" [value]="100 * gameTimerService.remainingSeconds / timerTimeSeconds">
                 <span class="me-2">{{gameTimerService.remainingSeconds}} s</span>
             </ngb-progressbar>
         </div>
 
-        <div [class.d-none]="gameMode !== '1'">
+        <div [class.d-none]="gameMode === '0'">
             <ngb-carousel
                 #carousel
                 [interval]="999999999"
@@ -69,12 +69,20 @@
             </ngb-carousel>
     
             <div class="flex-between p-3" style="position: absolute; left: 0; bottom: 0; width: 100%;">
-                <button class="btn border-0" style="box-shadow: none;" (click)="carousel.prev()"><i class="bi bi-arrow-left"></i> Prev</button>
-                <button class="btn border-0" style="box-shadow: none;" (click)="carousel.next()">Next <i class="bi bi-arrow-right"></i></button>
+                <button
+                    class="btn border-0" style="box-shadow: none;"
+                    (click)="carousel.prev()"
+                    [disabled]="gameMode === '2'"
+                >
+                    <i class="bi bi-arrow-left"></i> Prev
+                </button>
+                <button class="btn border-0" style="box-shadow: none;" (click)="carousel.next()">
+                    Next <i class="bi bi-arrow-right"></i>
+                </button>
             </div>
         </div>
         
-        <div class="d-grid gap-4" [class.d-none]="gameMode === '1'">
+        <div class="d-grid gap-4" [class.d-none]="gameMode !== '0'">
             <ng-container *ngTemplateOutlet="questionInstructionsAndNotes"></ng-container>
 
             <div>
