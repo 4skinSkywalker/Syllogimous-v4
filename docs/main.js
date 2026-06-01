@@ -4922,10 +4922,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var C_Users_stopc_Documenti_GitHub_Syllogimous_v4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 1670);
 /* harmony import */ var src_app_syllogimous_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/syllogimous/constants/local-storage.constants */ 6376);
-/* harmony import */ var src_app_syllogimous_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/syllogimous/constants/syllogimous.constants */ 9182);
+/* harmony import */ var src_app_syllogimous_constants_game_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/syllogimous/constants/game.constants */ 6904);
 /* harmony import */ var src_app_utils_file__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/utils/file */ 2875);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var src_app_syllogimous_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/syllogimous/services/syllogimous.service */ 3943);
+/* harmony import */ var src_app_syllogimous_services_game_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/syllogimous/services/game.service */ 6513);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ 124);
 /* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ 4534);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common */ 4666);
@@ -4989,11 +4989,11 @@ function CardDropdownComponent_ng_template_34_Template(rf, ctx) {
   }
 }
 class CardDropdownComponent {
-  constructor(sylSrv, router, modalService) {
-    this.sylSrv = sylSrv;
+  constructor(game, router, modalService) {
+    this.game = game;
     this.router = router;
     this.modalService = modalService;
-    this.EnumScreens = src_app_syllogimous_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_2__.EnumScreens;
+    this.EnumScreens = src_app_syllogimous_constants_game_constants__WEBPACK_IMPORTED_MODULE_2__.EnumScreens;
   }
   ngAfterViewInit() {
     this.toggleDarkmode(true);
@@ -5107,7 +5107,7 @@ class CardDropdownComponent {
   }
   static {
     this.ɵfac = function CardDropdownComponent_Factory(t) {
-      return new (t || CardDropdownComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](src_app_syllogimous_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_4__.SyllogimousService), _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_6__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_7__.NgbModal));
+      return new (t || CardDropdownComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](src_app_syllogimous_services_game_service__WEBPACK_IMPORTED_MODULE_4__.GameService), _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_6__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_7__.NgbModal));
     };
   }
   static {
@@ -5242,9 +5242,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "CardComponent": () => (/* binding */ CardComponent)
 /* harmony export */ });
-/* harmony import */ var _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/syllogimous.constants */ 9182);
+/* harmony import */ var _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/game.constants */ 6904);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _services_syllogimous_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/syllogimous.service */ 3943);
+/* harmony import */ var _services_game_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/game.service */ 6513);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ 4666);
 /* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ 4534);
 /* harmony import */ var _card_dropdown_card_dropdown_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./card-dropdown/card-dropdown.component */ 7591);
@@ -5288,16 +5288,16 @@ function CardComponent_ng_template_7_Template(rf, ctx) {
 const _c0 = [[["", "body", ""]], [["", "footer", ""]]];
 const _c1 = ["[body]", "[footer]"];
 class CardComponent {
-  constructor(sylSrv) {
-    this.sylSrv = sylSrv;
-    this.TIER_COLORS = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.TIER_COLORS;
-    this.TIER_SCORE_RANGES = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.TIER_SCORE_RANGES;
-    this.tiers = Object.values(_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.EnumTiers);
+  constructor(game) {
+    this.game = game;
+    this.TIER_COLORS = _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.TIER_COLORS;
+    this.TIER_SCORE_RANGES = _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.TIER_SCORE_RANGES;
+    this.tiers = Object.values(_constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.EnumTiers);
     this.Infinity = Infinity;
   }
   static {
     this.ɵfac = function CardComponent_Factory(t) {
-      return new (t || CardComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_1__.SyllogimousService));
+      return new (t || CardComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_services_game_service__WEBPACK_IMPORTED_MODULE_1__.GameService));
     };
   }
   static {
@@ -5331,12 +5331,12 @@ class CardComponent {
         if (rf & 2) {
           const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵreference"](8);
           _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](4);
-          _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵstyleProp"]("background-color", ctx.TIER_COLORS[ctx.sylSrv.tier].bgColor)("color", ctx.TIER_COLORS[ctx.sylSrv.tier].textColor);
+          _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵstyleProp"]("background-color", ctx.TIER_COLORS[ctx.game.tier].bgColor)("color", ctx.TIER_COLORS[ctx.game.tier].textColor);
           _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngbTooltip", _r0)("autoClose", "outside");
           _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-          _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate1"](" ", ctx.sylSrv.tier, " ");
+          _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate1"](" ", ctx.game.tier, " ");
           _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](5);
-          _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate1"]("", ctx.sylSrv.score, " pts");
+          _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate1"]("", ctx.game.score, " pts");
         }
       },
       dependencies: [_angular_common__WEBPACK_IMPORTED_MODULE_4__.NgForOf, _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_5__.NgbTooltip, _card_dropdown_card_dropdown_component__WEBPACK_IMPORTED_MODULE_2__.CardDropdownComponent],
@@ -5428,275 +5428,10 @@ class ModalLevelChangeComponent {
 
 /***/ }),
 
-/***/ 6376:
-/*!******************************************************************!*\
-  !*** ./src/app/syllogimous/constants/local-storage.constants.ts ***!
-  \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "LS_COLOR_BLINDNESS_MODE": () => (/* binding */ LS_COLOR_BLINDNESS_MODE),
-/* harmony export */   "LS_DAILY_GOAL": () => (/* binding */ LS_DAILY_GOAL),
-/* harmony export */   "LS_DAILY_PROGRESS": () => (/* binding */ LS_DAILY_PROGRESS),
-/* harmony export */   "LS_DONT_SHOW": () => (/* binding */ LS_DONT_SHOW),
-/* harmony export */   "LS_GAME_MODE": () => (/* binding */ LS_GAME_MODE),
-/* harmony export */   "LS_HISTORY": () => (/* binding */ LS_HISTORY),
-/* harmony export */   "LS_PG_SETTINGS": () => (/* binding */ LS_PG_SETTINGS),
-/* harmony export */   "LS_PREMISES_DOWN_THRESHOLD": () => (/* binding */ LS_PREMISES_DOWN_THRESHOLD),
-/* harmony export */   "LS_PREMISES_UP_THRESHOLD": () => (/* binding */ LS_PREMISES_UP_THRESHOLD),
-/* harmony export */   "LS_PROPS": () => (/* binding */ LS_PROPS),
-/* harmony export */   "LS_SCORE": () => (/* binding */ LS_SCORE),
-/* harmony export */   "LS_TIMER": () => (/* binding */ LS_TIMER),
-/* harmony export */   "LS_TRAINING_UNIT": () => (/* binding */ LS_TRAINING_UNIT),
-/* harmony export */   "LS_TRAINING_UNIT_LENGTH": () => (/* binding */ LS_TRAINING_UNIT_LENGTH),
-/* harmony export */   "LS_WEEKLY_GOAL": () => (/* binding */ LS_WEEKLY_GOAL)
-/* harmony export */ });
-/* harmony import */ var _question_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./question.constants */ 6189);
-/* harmony import */ var _syllogimous_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./syllogimous.constants */ 9182);
-
-
-const LS_DONT_SHOW = "SYL_DONT_SHOW:";
-const LS_HISTORY = "SYL_HISTORY";
-const LS_TIMER = "SYL_TIMER_TYPE";
-const LS_GAME_MODE = "SYL_GAME_MODE";
-const LS_DAILY_PROGRESS = "SYL_DAILY_PROGRESS";
-const LS_PG_SETTINGS = "SYL_PG_SETTINGSv1";
-const LS_DAILY_GOAL = "SYL_DAILY_GOAL";
-const LS_WEEKLY_GOAL = "SYL_WEEKLY_GOAL";
-const LS_TRAINING_UNIT = "SYL_TRAINING_UNIT:";
-const LS_TRAINING_UNIT_LENGTH = "SYL_TRAINING_UNIT_LENGTH";
-const LS_PREMISES_UP_THRESHOLD = "SYL_PREMISES_UP_THRESHOLD";
-const LS_PREMISES_DOWN_THRESHOLD = "SYL_PREMISES_DOWN_THRESHOLD";
-const LS_SCORE = "SYL_SCORE";
-const LS_COLOR_BLINDNESS_MODE = "SYL_COLOR_BLINDNESS_MODE";
-const LS_PROPS = [LS_HISTORY, LS_TIMER, LS_GAME_MODE, LS_DAILY_PROGRESS, LS_PG_SETTINGS, LS_DAILY_GOAL, LS_WEEKLY_GOAL, LS_TRAINING_UNIT_LENGTH, LS_PREMISES_UP_THRESHOLD, LS_PREMISES_DOWN_THRESHOLD, LS_SCORE];
-for (const screen of Object.values(_syllogimous_constants__WEBPACK_IMPORTED_MODULE_1__.EnumScreens)) {
-  LS_PROPS.push(LS_DONT_SHOW + screen);
-}
-for (const type of Object.values(_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType)) {
-  LS_PROPS.push(LS_DONT_SHOW + type);
-  LS_PROPS.push(LS_TRAINING_UNIT + type);
-}
-
-/***/ }),
-
-/***/ 6189:
-/*!*************************************************************!*\
-  !*** ./src/app/syllogimous/constants/question.constants.ts ***!
-  \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "EnumArrangements": () => (/* binding */ EnumArrangements),
-/* harmony export */   "EnumQuestionType": () => (/* binding */ EnumQuestionType),
-/* harmony export */   "FORMS": () => (/* binding */ FORMS),
-/* harmony export */   "NOUNS": () => (/* binding */ NOUNS),
-/* harmony export */   "NUMBER_WORDS": () => (/* binding */ NUMBER_WORDS),
-/* harmony export */   "VALID_RULES": () => (/* binding */ VALID_RULES),
-/* harmony export */   "getEmojis": () => (/* binding */ getEmojis),
-/* harmony export */   "getStrings": () => (/* binding */ getStrings)
-/* harmony export */ });
-var EnumQuestionType;
-(function (EnumQuestionType) {
-  EnumQuestionType["Distinction"] = "Distinction";
-  EnumQuestionType["ComparisonNumerical"] = "Comparison Numerical";
-  EnumQuestionType["ComparisonChronological"] = "Comparison Chronological";
-  EnumQuestionType["Syllogism"] = "Syllogism";
-  EnumQuestionType["Direction"] = "Direction";
-  EnumQuestionType["Direction3DSpatial"] = "Direction3D Spatial";
-  EnumQuestionType["Direction3DTemporal"] = "Direction3D Temporal";
-  EnumQuestionType["LinearArrangement"] = "Linear Arrangement";
-  EnumQuestionType["CircularArrangement"] = "Circular Arrangement";
-  EnumQuestionType["GraphMatching"] = "Graph Matching";
-  EnumQuestionType["Analogy"] = "Analogy";
-  EnumQuestionType["Binary"] = "Binary";
-})(EnumQuestionType || (EnumQuestionType = {}));
-var EnumArrangements;
-(function (EnumArrangements) {
-  EnumArrangements["AdjacentLeft"] = "is adjacent and left of";
-  EnumArrangements["AdjacentRight"] = "is adjacent and right of";
-  EnumArrangements["Next"] = "is next to";
-  EnumArrangements["NStepsLeft"] = "is # steps left of";
-  EnumArrangements["NStepsRight"] = "is # steps right of";
-  EnumArrangements["Left"] = "is at the left of";
-  EnumArrangements["Right"] = "is at the right of";
-  EnumArrangements["InFront"] = "is diametrically opposite to";
-})(EnumArrangements || (EnumArrangements = {}));
-;
-const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
-let strings = [];
-const getStrings = () => {
-  const consonants = "QRSTVWXZ";
-  const vowels = "AEIOU";
-  if (strings.length === 0) {
-    for (const c1 of consonants) {
-      for (const v1 of vowels) {
-        for (const c2 of consonants) {
-          strings.push(c1 + v1 + c2);
-        }
-      }
-    }
-  }
-  return strings;
-};
-let emojis = [];
-const getEmojis = () => {
-  if (emojis.length > 0) {
-    return emojis;
-  }
-  const emojiRanges = [{
-    start: 0x1F600,
-    end: 0x1F64F
-  }, {
-    start: 0x1F300,
-    end: 0x1F5FF
-  } // Misc Symbols and Pictographs
-  // { start: 0x1F680, end: 0x1F6FF }, // Transport and Map Symbols
-  // { start: 0x1F700, end: 0x1F77F }, // Alchemical Symbols
-  // { start: 0x2600,  end: 0x26FF },  // Miscellaneous Symbols
-  ];
-
-  for (const range of emojiRanges) {
-    for (let codePoint = range.start; codePoint <= range.end; codePoint++) {
-      emojis.push(String.fromCodePoint(codePoint));
-    }
-  }
-  return emojis;
-};
-getEmojis();
-const VALID_RULES = ["0001", "1011", "0221", "1231", "0021", "1031", "0112", "1012", "1232", "0332", "0132", "1032", "0223", "2023", "3033", "1233", "0023", "1033", "0114", "2024", "1234", "0134", "1034", "0024"];
-const FORMS = [['All <span class="subject">$</span> is <span class="subject">$</span>', 'No <span class="subject">$</span> is <span class="subject">$</span>', 'Some <span class="subject">$</span> is <span class="subject">$</span>', 'Some <span class="subject">$</span> is not <span class="subject">$</span>'], ['<span class="is-negated">No</span> <span class="subject">$</span> is <span class="subject">$</span>', '<span class="is-negated">All</span> <span class="subject">$</span> is <span class="subject">$</span>', 'Some <span class="subject">$</span> <span class="is-negated">is not</span> <span class="subject">$</span>', 'Some <span class="subject">$</span> <span class="is-negated">is</span> <span class="subject">$</span>']];
-const NOUNS = ["Acrobat", "Afro", "Albatross", "Algae", "Alligator", "Almond", "Alpaca", "Amber", "Ambulance", "Amethyst", "Amulet", "Andes", "Ankle", "Anklet", "Ant", "Antlers", "Anvil", "Apartment", "Apple", "Apricot", "Aquarium", "Arch", "Architect", "Arena", "Armadillo", "Armchair", "Armor", "Arrow", "Artichoke", "Artist", "Asteroid", "Astronaut", "Athlete", "Atom", "Attic", "Aubergine", "Aunt", "Avocado", "Baboon", "Baby", "Back", "Backpack", "Badge", "Badger", "Bag", "Bagel", "Bakery", "Baklava", "Balcony", "Bald", "Ball", "Ballerina", "Balloon", "Bamboo", "Banana", "Bandage", "Bandana", "Banjo", "Bank", "Banner", "Bar", "Barbecue", "Barbell", "Barbie", "Barge", "Barley", "Barn", "Barracuda", "Barrel", "Baseball", "Basement", "Basin", "Basket", "Basketball", "Bass", "Bassoon", "Bat", "Bathrobe", "Bathroom", "Bathtub", "Bayonet", "Beach", "Bead", "Beanbag", "Beanie", "Beans", "Beanstalk", "Bear", "Beard", "Beast", "Beaver", "Bed", "Bedbug", "Bedroom", "Beehive", "Beer", "Beet", "Beetle", "Bell", "Belt", "Bench", "Beret", "Bermudas", "Berry", "Bicycle", "Bigfoot", "Bike", "Bikini", "Bill", "Binoculars", "Birch", "Bird", "Birdcage", "Biscotti", "Biscuit", "Bison", "Black", "Blackberry", "Blackboard", "Blade", "Blazer", "Blender", "Blimp", "Blind", "Block", "Blouse", "Blowfish", "Blueberry", "Blush", "Boa", "Board", "Boardwalk", "Boat", "Bobcat", "Bobsled", "Body", "Bog", "Boiler", "Bolt", "Bomb", "Bonbon", "Bones", "Bonsai", "Book", "Bookcase", "Bookend", "Booklet", "Bookstore", "Boombox", "Booster", "Booth", "Boots", "Booty", "Boulevard", "Bow", "Bowling", "Box", "Boxer", "Boy", "Brace", "Bracelet", "Brain", "Brake", "Branch", "Brandy", "Brass", "Brassiere", "Brave", "Brazier", "Bread", "Breakfast", "Brick", "Bridal", "Bridge", "Briefcase", "Broadway", "Broccoli", "Broker", "Broom", "Broth", "Brother", "Brunette", "Brush", "Bubble", "Bucket", "Buckles", "Bud", "Buffalo", "Buffet", "Builder", "Bulb", "Bulldozer", "Bullet", "Bumper", "Bun", "Buoy", "Burger", "Burrito", "Bus", "Bush", "Butcher", "Butler", "Butter", "Buttercup", "Button", "Buttons", "Cab", "Cabbage", "Cabin", "Cabinet", "Cable", "Cacao", "Cactus", "Cadet", "Cafe", "Cage", "Cake", "Calculator", "Calendar", "Calf", "Caliber", "Call", "Camcorder", "Camel", "Camera", "Camp", "Campfire", "Can", "Canal", "Candle", "Candy", "Cane", "Cannoli", "Canoe", "Canon", "Canopy", "Canvas", "Canyon", "Cap", "Cape", "Cappuccino", "Captain", "Car", "Carbon", "Card", "Cardboard", "Cardigan", "Cargo", "Carp", "Carpenter", "Carpet", "Carriage", "Carrot", "Cart", "Cartoon", "Cartridge", "Cascade", "Case", "Cash", "Cashier", "Casino", "Casket", "Cast", "Castle", "Cat", "Catalog", "Catcher", "Caterpillar", "Cauldron", "Cave", "Caviar", "Ceiling", "Cell", "Cellar", "Cello", "Cement", "Cemetery", "Center", "Ceramic", "Cereal", "Certificate", "Chain", "Chair", "Chalk", "Chamber", "Chameleon", "Champagne", "Championship", "Chandelier", "Changer", "Channel", "Chapel", "Charger", "Chariot", "Chateau", "Check", "Checkbook", "Cheek", "Cheeks", "Cheer", "Cheese", "Cheetah", "Chef", "Cherry", "Chest", "Chestnut", "Chick", "Chicken", "Child", "Children", "Chili", "Chimney", "Chin", "China", "Chip", "Chips", "Chisel", "Chocolate", "Choir", "Choker", "Chop", "Chopper", "Chord", "Christmas", "Chrome", "Chuckle", "Church", "Cider", "Cigar", "Cinema", "Circle", "Circus", "Citadel", "Citizen", "City", "Clam", "Clamp", "Clap", "Clarinet", "Class", "Classroom", "Claw", "Clay", "Cleaner", "Clearing", "Clerk", "Click", "Client", "Cliff", "Climber", "Clip", "Clock", "Closet", "Cloth", "Clothes", "Cloud", "Club", "Coach", "Coal", "Coast", "Coat", "Cobalt", "Cobra", "Cockpit", "Cocktail", "Coconut", "Coffee", "Coil", "Coin", "Collar", "Collection", "College", "Colonel", "Colony", "Column", "Comb", "Comedy", "Commander", "Commission", "Computer", "Concert", "Condor", "Cone", "Confetti", "Container", "Contest", "Continent", "Cook", "Cooker", "Cookie", "Cookware", "Cooler", "Copper", "Copy", "Coral", "Cord", "Cork", "Corn", "Corner", "Corral", "Costume", "Cottage", "Cotton", "Couch", "Cougar", "Cousin", "Cow", "Cowboy", "Crab", "Crack", "Cracker", "Crane", "Crate", "Crater", "Cravat", "Crayon", "Creature", "Creme", "Crest", "Crib", "Cricket", "Crisp", "Critter", "Crocodile", "Croissant", "Cross", "Crossbow", "Crow", "Crown", "Crucible", "Crumb", "Crust", "Crystal", "Cucumber", "Cuff", "Cup", "Cupcake", "Currency", "Curtain", "Cushion", "Cymbal", "Daffodil", "Dagger", "Dahlia", "Daisy", "Dam", "Dancer", "Dandelion", "Dart", "Date", "Dates", "Daughter", "Dealer", "Deck", "Decoder", "Decoy", "Deer", "Demon", "Den", "Denim", "Dentist", "Deodorant", "Deputy", "Desert", "Designer", "Desk", "Dessert", "Detective", "Devil", "Diamond", "Diaper", "Diary", "Dice", "Dictator", "Digger", "Dime", "Diner", "Dinghy", "Dinosaur", "Diploma", "Diplomat", "Director", "Dirt", "Disco", "Dish", "Disk", "Diver", "Diving", "Djinn", "Dock", "Doctor", "Doe", "Dog", "Doll", "Dollar", "Dolphin", "Donkey", "Donor", "Door", "Doorknob", "Doorstep", "Dorm", "Dot", "Dough", "Dove", "Dragon", "Dragonfly", "Drain", "Drape", "Drawer", "Dress", "Dresser", "Drill", "Drink", "Driver", "Driveway", "Drone", "Drop", "Drug", "Drum", "Drummer", "Duck", "Duct", "Duel", "Dumbbell", "Dump", "Dune", "Dynamite", "Eagle", "Ear", "Earlobe", "Earn", "Earrings", "Ears", "Eclipse", "Eel", "Egg", "Eggplant", "Elbow", "Elder", "Elephant", "Elevator", "Elf", "Elk", "Ellipse", "Escort", "Eye", "Eyebrow", "Eyelid", "Factory", "Fairy", "Fan", "Fang", "Farm", "Farmer", "Fat", "Father", "Faucet", "Fax", "Feast", "Feed", "Fence", "Ferry", "Field", "Fig", "Fight", "Figure", "Film", "Finger", "Fire", "Firearm", "Fireplace", "Firework", "Firm", "Fish", "Fisherman", "Fist", "Flag", "Flame", "Flamingo", "Flannel", "Flash", "Flat", "Flea", "Fleet", "Flock", "Floor", "Florist", "Flour", "Flower", "Flute", "Fly", "Foam", "Fog", "Foil", "Fondue", "Food", "Foot", "Football", "Footprint", "Ford", "Forest", "Fork", "Fortress", "Fossil", "Fountain", "Fox", "Fracture", "France", "Freeze", "Fridge", "Frog", "Front", "Frost", "Fruit", "Fry", "Fuel", "Fur", "Furniture", "Galaxy", "Gander", "Gang", "Garage", "Garb", "Garden", "Garland", "Garlic", "Garment", "Gas", "Gasket", "Gate", "Gateway", "Gauge", "Gear", "Gecko", "Gel", "Gem", "Geranium", "Gesture", "Ghost", "Giant", "Gift", "Ginger", "Giraffe", "Girl", "Glass", "Glasses", "Glen", "Gloves", "Glue", "Gnat", "Goat", "Gold", "Goldfish", "Golf", "Gondola", "Gong", "Goose", "Gopher", "Gorilla", "Gothic", "Governor", "Graffiti", "Grains", "Granite", "Grape", "Grapes", "Graph", "Grass", "Grasshopper", "Gravy", "Grease", "Great", "Green", "Greenhouse", "Grid", "Grin", "Grocery", "Guitar", "Gull", "Gum", "Gun", "Gym", "Gymnast", "Hair", "Haircut", "Ham", "Hamburger", "Hammer", "Hand", "Handbag", "Handle", "Hangar", "Hanger", "Harbor", "Harpoon", "Hat", "Hatch", "Hatchet", "Hawk", "Hay", "Haze", "Head", "Headband", "Headlight", "Headline", "Headphone", "Headquarters", "Hearse", "Heart", "Heater", "Heels", "Helicopter", "Helmet", "Hen", "Herb", "Herbs", "Herring", "Hide", "Highway", "Hike", "Hill", "Hinge", "Hippopotamus", "Hit", "Hive", "Hockey", "Hog", "Hole", "Home", "Honey", "Hood", "Hoof", "Hook", "Horn", "Horse", "Hose", "Hospital", "Hostel", "Hostess", "Hot", "Hotel", "Hour", "Housing", "Howl", "Hub", "Huddle", "Hull", "Human", "Hummingbird", "Hump", "Hurricane", "Hut", "Hydrant", "Ice", "Iceberg", "Icecream", "Iguana", "Impala", "Inbox", "India", "Indigo", "Infant", "Injection", "Ink", "Insect", "Inspector", "Interpreter", "Invoice", "Iris", "Iron", "Island", "Jacket", "Jackpot", "Jade", "Jaguar", "Jail", "Jam", "Jar", "Jasmine", "Jaw", "Jazz", "Jeans", "Jeep", "Jelly", "Jellyfish", "Jet", "Jewel", "Jewelry", "Jockey", "Jog", "Journal", "Jug", "Juggler", "Juice", "Juicer", "Jump", "Jumper", "Jungle", "Kale", "Kangaroo", "Kayak", "Keel", "Kelp", "Kettle", "Key", "Keyboard", "Kick", "Kid", "Kidney", "King", "Kiss", "Kitchen", "Kite", "Kitten", "Kiwi", "Knee", "Knife", "Knight", "Knob", "Knot", "Koala", "Ladder", "Lady", "Ladybug", "Lake", "Lamb", "Lamp", "Lantern", "Laptop", "Laser", "Laundry", "Lava", "Lavender", "Lawn", "Lawyer", "Lead", "Leaf", "League", "Leash", "Leather", "Leave", "Leaves", "Ledge", "Leech", "Leg", "Legging", "Leggings", "Lemon", "Lemonade", "Lens", "Leopard", "Letter", "Lever", "Library", "Lid", "Light", "Lighthouse", "Lightning", "Lilac", "Lily", "Lime", "Liner", "Lion", "Lip", "Lips", "Litter", "Lizard", "Llama", "Loaf", "Lobster", "Lock", "Locomotive", "Lodge", "Lollipop", "Luggage", "Lunchbox", "Lung", "Lynx", "Lyre", "Lyric", "Machine", "Magician", "Magnet", "Magnolia", "Mail", "Mailbox", "Makeup", "Man", "Mango", "Manhole", "Mansion", "Map", "Maple", "Marble", "Mars", "Martian", "Mask", "Matrix", "Mattress", "Mature", "Meadow", "Meal", "Measure", "Meat", "Mechanic", "Medal", "Medicine", "Melon", "Menu", "Mercury", "Meteor", "Meter", "Microphone", "Microscope", "Microwave", "Mile", "Milk", "Mill", "Miller", "Miss", "Mist", "Mister", "Mistress", "Mitt", "Mitten", "Mixer", "Mobile", "Mock", "Mole", "Molecule", "Money", "Monopoly", "Monument", "Moon", "Moose", "Mop", "Mosaic", "Mosque", "Mosquito", "Moss", "Mother", "Motor", "Motorcycle", "Mountain", "Mouse", "Moustache", "Mouth", "Movie", "Mud", "Mug", "Mulch", "Muscle", "Museum", "Mushroom", "Musician", "Nail", "Napkin", "Nautilus", "Navy", "Neck", "Necklace", "Needle", "Nest", "Newspaper", "Night", "Ninja", "Noodles", "North", "Nose", "Notebook", "Nun", "Nurse", "Nut", "Nylon", "Oar", "Oat", "Oboe", "Ocean", "Octopus", "Oil", "Olive", "Omelet", "Onion", "Orange", "Orchid", "Organ", "Ornament", "Ostrich", "Otter", "Oval", "Oven", "Owl", "Ox", "Oyster", "Pad", "Pail", "Paint", "Painter", "Palace", "Palette", "Palm", "Pan", "Pancake", "Panda", "Panel", "Pansy", "Panther", "Pants", "Parachute", "Parfume", "Park", "Parrot", "Passport", "Pasta", "Paste", "Pastor", "Pastry", "Paw", "Pawn", "Peacock", "Peanut", "Pear", "Peasant", "Pedal", "Pedestrian", "Pediatrician", "Peel", "Pen", "Pencil", "Pendant", "Penguin", "Penny", "Pepper", "Pest", "Pet", "Pharmacist", "Pharmacy", "Phone", "Photo", "Piano", "Pickle", "Pie", "Pier", "Pig", "Pigeon", "Pigment", "Pike", "Pilgrim", "Pill", "Pillar", "Pillow", "Pin", "Pineapple", "Pink", "Pipe", "Pirate", "Pitcher", "Pizza", "Plan", "Plane", "Plant", "Plasma", "Plastic", "Plate", "Plates", "Plow", "Plumber", "Plume", "Pocket", "Poker", "Police", "Policeman", "Polish", "Politician", "Polo", "Pond", "Pony", "Pool", "Pop", "Popcorn", "Pope", "Poppy", "Porch", "Pork", "Post", "Postman", "Pot", "Potato", "Pottery", "Pouch", "Pound", "Powder", "Prairie", "Pregnancy", "Pretzel", "Prey", "Price", "Priest", "Print", "Printer", "Prism", "Prison", "Produce", "Projection", "Promenade", "Propeller", "Protein", "Pub", "Puddle", "Puff", "Pulley", "Pump", "Pumpkin", "Punch", "Pupil", "Puppet", "Puppy", "Purple", "Purse", "Push", "Puzzle", "Pyramid", "Python", "Quartz", "Quiz", "Rabbit", "Raccoon", "Radar", "Radiator", "Radio", "Rag", "Rail", "Railroad", "Rain", "Rainbow", "Ram", "Ranch", "Receiver", "Recipe", "Red", "Reed", "Referee", "Refrigerator", "Relic", "Resort", "Restaurant", "Ribbon", "Ribs", "Rice", "Rider", "Rifle", "Ring", "Rink", "Road", "Robot", "Rock", "Rocket", "Rod", "Roller", "Roof", "Room", "Root", "Rope", "Rose", "Rot", "Rowboat", "Rubber", "Rug", "Rugby", "Ruins", "Ruler", "Rust", "Sack", "Sacred", "Saddle", "Saffron", "Sailboat", "Sailor", "Salad", "Salmon", "Salon", "Salt", "Sandal", "Sandals", "Sandcastle", "Sandwich", "Sapphire", "Satellite", "Satin", "Sauce", "Saucer", "Savage", "Saw", "Saxophone", "Scale", "Scanner", "Scarecrow", "Scarf", "School", "Scissors", "Scooter", "Screen", "Screw", "Sculptor", "Sculpture", "Seal", "Seat", "Seed", "Shack", "Shampoo", "Shark", "Shed", "Sheep", "Sheet", "Shelf", "Shell", "Shelter", "Shield", "Ship", "Shirt", "Shoe", "Shoes", "Shop", "Shorts", "Shower", "Shrimp", "Sick", "Sidewalk", "Silk", "Silver", "Singer", "Sink", "Skate", "Skater", "Skeleton", "Ski", "Skin", "Skirt", "Skull", "Skunk", "Sky", "Skyscraper", "Sleep", "Slice", "Slide", "Slipper", "Slippers", "Slug", "Smoke", "Snack", "Snake", "Sneaker", "Sneeze", "Sniff", "Snow", "Snowball", "Snowboard", "Snowflake", "Snowman", "Soap", "Soccer", "Sock", "Socks", "Soda", "Sofa", "Soil", "Soldier", "Son", "Sorbet", "Soup", "Spade", "Spaghetti", "Spare", "Sparrow", "Speaker", "Spear", "Spider", "Spiral", "Spirit", "Spit", "Splash", "Split", "Sponge", "Spoon", "Spray", "Spring", "Sprinkler", "Squad", "Square", "Squat", "Squirrel", "Stain", "Stair", "Stamp", "Star", "Station", "Stereo", "Stick", "Sticker", "Stitch", "Stomach", "Stove", "Strap", "Straw", "Strawberry", "Stream", "Street", "Strobe", "Submarine", "Subway", "Succulent", "Sugar", "Suit", "Suitcase", "Sulfur", "Sun", "Sundae", "Sunflower", "Sunglasses", "Supermarket", "Supernova", "Surfboard", "Surgeon", "Sushi", "Swamp", "Swan", "Swarm", "Sweater", "Sweet", "Swim", "Swimmer", "Sword", "Table", "Tablet", "Taco", "Tail", "Tailor", "Tangerine", "Tank", "Tanker", "Tap", "Tape", "Target", "Tattoo", "Tavern", "Taxi", "Tea", "Teacher", "Tear", "Teddy", "Teeth", "Telephone", "Telescope", "Television", "Temple", "Tennis", "Terrarium", "Textbook", "Theater", "Thermometer", "Thermos", "Thief", "Thigh", "Thorn", "Throne", "Throttle", "Thunder", "Tiger", "Tile", "Timer", "Tin", "Tire", "Toad", "Toast", "Toaster", "Tobacco", "Toe", "Toes", "Toilet", "Tomato", "Tomb", "Tongue", "Tool", "Tooth", "Tortilla", "Tortoise", "Towel", "Tower", "Town", "Toy", "Tractor", "Trader", "Tram", "Trampoline", "Trap", "Tray", "Treasure", "Tree", "Triangle", "Tribe", "Tricycle", "Trolley", "Troop", "Trophy", "Trousers", "Trout", "Truck", "Truffle", "Trumpet", "Trunk", "Tube", "Tulip", "Tuna", "Tunnel", "Turban", "Turbine", "Turkey", "Turtle", "Tusk", "Twine", "Umbrella", "Underwear", "Unicorn", "Uniform", "Vaccine", "Vacuum", "Valentine", "Van", "Vanilla", "Vase", "Vault", "Vegetable", "Vehicle", "Vessel", "Villa", "Vinegar", "Vinyl", "Violet", "Violin", "Violinist", "Viper", "Volcano", "Vortex", "Vulture", "Wafer", "Waffle", "Wagon", "Waiter", "Wallet", "Walnut", "Wardrobe", "Warrior", "Wasabi", "Waste", "Watch", "Water", "Waterfall", "Wax", "Weapon", "Weasel", "Wedding", "Whale", "Wheat", "Wheel", "Whip", "White", "Wick", "Widow", "Wife", "Willow", "Window", "Wing", "Winter", "Witch", "Wobble", "Wolf", "Woman", "Wood", "Woodpecker", "Wool", "Worm", "Wrench", "Wrestler", "Writer", "Xylophone", "Yacht", "Yam", "Yoga", "Yogurt", "Yolk", "Zebra", "Zen", "Zero", "Zip", "Zipper", "Zoo"];
-
-/***/ }),
-
-/***/ 8266:
-/*!*************************************************************!*\
-  !*** ./src/app/syllogimous/constants/settings.constants.ts ***!
-  \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "DEFAULT_ENABLED_FLAGS": () => (/* binding */ DEFAULT_ENABLED_FLAGS),
-/* harmony export */   "EnumQuestionGroup": () => (/* binding */ EnumQuestionGroup),
-/* harmony export */   "QUESTION_TYPE_SETTING_PARAMS": () => (/* binding */ QUESTION_TYPE_SETTING_PARAMS)
-/* harmony export */ });
-/* harmony import */ var _question_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./question.constants */ 6189);
-
-var EnumQuestionGroup;
-(function (EnumQuestionGroup) {
-  EnumQuestionGroup["Comparison"] = "Comparison";
-  EnumQuestionGroup["Direction"] = "Direction";
-  EnumQuestionGroup["Arrangement"] = "Arrangement";
-})(EnumQuestionGroup || (EnumQuestionGroup = {}));
-const QUESTION_TYPE_SETTING_PARAMS = {
-  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.Distinction]: {
-    enabled: true,
-    minNumOfPremises: 2,
-    maxNumOfPremises: 20,
-    basic: true
-  },
-  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.ComparisonNumerical]: {
-    enabled: true,
-    minNumOfPremises: 2,
-    maxNumOfPremises: 20,
-    basic: true,
-    group: EnumQuestionGroup.Comparison
-  },
-  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.ComparisonChronological]: {
-    enabled: true,
-    minNumOfPremises: 2,
-    maxNumOfPremises: 20,
-    basic: true,
-    group: EnumQuestionGroup.Comparison
-  },
-  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.Syllogism]: {
-    enabled: true,
-    minNumOfPremises: 2,
-    maxNumOfPremises: 20,
-    basic: true
-  },
-  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.LinearArrangement]: {
-    enabled: true,
-    minNumOfPremises: 2,
-    maxNumOfPremises: 20,
-    basic: true,
-    group: EnumQuestionGroup.Arrangement
-  },
-  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.CircularArrangement]: {
-    enabled: true,
-    minNumOfPremises: 2,
-    maxNumOfPremises: 20,
-    basic: true,
-    group: EnumQuestionGroup.Arrangement
-  },
-  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.Direction]: {
-    enabled: true,
-    minNumOfPremises: 2,
-    maxNumOfPremises: 20,
-    basic: true,
-    group: EnumQuestionGroup.Direction
-  },
-  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.Direction3DSpatial]: {
-    enabled: true,
-    minNumOfPremises: 2,
-    maxNumOfPremises: 20,
-    basic: true,
-    group: EnumQuestionGroup.Direction
-  },
-  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.Direction3DTemporal]: {
-    enabled: true,
-    minNumOfPremises: 2,
-    maxNumOfPremises: 20,
-    basic: true,
-    group: EnumQuestionGroup.Direction
-  },
-  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.GraphMatching]: {
-    enabled: true,
-    minNumOfPremises: 2,
-    maxNumOfPremises: 20,
-    basic: false
-  },
-  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.Analogy]: {
-    enabled: true,
-    minNumOfPremises: 3,
-    maxNumOfPremises: 20,
-    basic: false
-  },
-  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.Binary]: {
-    enabled: true,
-    minNumOfPremises: 4,
-    maxNumOfPremises: 20,
-    basic: false
-  }
-};
-const DEFAULT_ENABLED_FLAGS = {
-  useEmojis: false,
-  meaningfulWords: true,
-  meta: true,
-  negation: true,
-  binary: {
-    and: true,
-    nand: true,
-    or: true,
-    nor: true,
-    xor: true,
-    xnor: true
-  }
-};
-
-/***/ }),
-
-/***/ 9182:
-/*!****************************************************************!*\
-  !*** ./src/app/syllogimous/constants/syllogimous.constants.ts ***!
-  \****************************************************************/
+/***/ 6904:
+/*!*********************************************************!*\
+  !*** ./src/app/syllogimous/constants/game.constants.ts ***!
+  \*********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -5956,6 +5691,326 @@ const TIERS_MATRIX = {
   13: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   14: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 };
+
+/***/ }),
+
+/***/ 6376:
+/*!******************************************************************!*\
+  !*** ./src/app/syllogimous/constants/local-storage.constants.ts ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "LS_COLOR_BLINDNESS_MODE": () => (/* binding */ LS_COLOR_BLINDNESS_MODE),
+/* harmony export */   "LS_DAILY_GOAL": () => (/* binding */ LS_DAILY_GOAL),
+/* harmony export */   "LS_DAILY_PROGRESS": () => (/* binding */ LS_DAILY_PROGRESS),
+/* harmony export */   "LS_DONT_SHOW": () => (/* binding */ LS_DONT_SHOW),
+/* harmony export */   "LS_GAME_MODE": () => (/* binding */ LS_GAME_MODE),
+/* harmony export */   "LS_HISTORY": () => (/* binding */ LS_HISTORY),
+/* harmony export */   "LS_PG_SETTINGS": () => (/* binding */ LS_PG_SETTINGS),
+/* harmony export */   "LS_PREMISES_DOWN_THRESHOLD": () => (/* binding */ LS_PREMISES_DOWN_THRESHOLD),
+/* harmony export */   "LS_PREMISES_UP_THRESHOLD": () => (/* binding */ LS_PREMISES_UP_THRESHOLD),
+/* harmony export */   "LS_PROPS": () => (/* binding */ LS_PROPS),
+/* harmony export */   "LS_SCORE": () => (/* binding */ LS_SCORE),
+/* harmony export */   "LS_TIMER": () => (/* binding */ LS_TIMER),
+/* harmony export */   "LS_TRAINING_UNIT": () => (/* binding */ LS_TRAINING_UNIT),
+/* harmony export */   "LS_TRAINING_UNIT_LENGTH": () => (/* binding */ LS_TRAINING_UNIT_LENGTH),
+/* harmony export */   "LS_WEEKLY_GOAL": () => (/* binding */ LS_WEEKLY_GOAL)
+/* harmony export */ });
+/* harmony import */ var _question_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./question.constants */ 6189);
+/* harmony import */ var _game_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./game.constants */ 6904);
+
+
+const LS_DONT_SHOW = "SYL_DONT_SHOW:";
+const LS_HISTORY = "SYL_HISTORY";
+const LS_TIMER = "SYL_TIMER_TYPE";
+const LS_GAME_MODE = "SYL_GAME_MODE";
+const LS_DAILY_PROGRESS = "SYL_DAILY_PROGRESS";
+const LS_PG_SETTINGS = "SYL_PG_SETTINGSv1";
+const LS_DAILY_GOAL = "SYL_DAILY_GOAL";
+const LS_WEEKLY_GOAL = "SYL_WEEKLY_GOAL";
+const LS_TRAINING_UNIT = "SYL_TRAINING_UNIT:";
+const LS_TRAINING_UNIT_LENGTH = "SYL_TRAINING_UNIT_LENGTH";
+const LS_PREMISES_UP_THRESHOLD = "SYL_PREMISES_UP_THRESHOLD";
+const LS_PREMISES_DOWN_THRESHOLD = "SYL_PREMISES_DOWN_THRESHOLD";
+const LS_SCORE = "SYL_SCORE";
+const LS_COLOR_BLINDNESS_MODE = "SYL_COLOR_BLINDNESS_MODE";
+const LS_PROPS = [LS_HISTORY, LS_TIMER, LS_GAME_MODE, LS_DAILY_PROGRESS, LS_PG_SETTINGS, LS_DAILY_GOAL, LS_WEEKLY_GOAL, LS_TRAINING_UNIT_LENGTH, LS_PREMISES_UP_THRESHOLD, LS_PREMISES_DOWN_THRESHOLD, LS_SCORE];
+for (const screen of Object.values(_game_constants__WEBPACK_IMPORTED_MODULE_1__.EnumScreens)) {
+  LS_PROPS.push(LS_DONT_SHOW + screen);
+}
+for (const type of Object.values(_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType)) {
+  LS_PROPS.push(LS_DONT_SHOW + type);
+  LS_PROPS.push(LS_TRAINING_UNIT + type);
+}
+
+/***/ }),
+
+/***/ 6189:
+/*!*************************************************************!*\
+  !*** ./src/app/syllogimous/constants/question.constants.ts ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "EnumArrangements": () => (/* binding */ EnumArrangements),
+/* harmony export */   "EnumQuestionType": () => (/* binding */ EnumQuestionType),
+/* harmony export */   "NOUNS": () => (/* binding */ NOUNS),
+/* harmony export */   "NUMBER_WORDS": () => (/* binding */ NUMBER_WORDS),
+/* harmony export */   "getEmojis": () => (/* binding */ getEmojis),
+/* harmony export */   "getStrings": () => (/* binding */ getStrings)
+/* harmony export */ });
+var EnumQuestionType;
+(function (EnumQuestionType) {
+  EnumQuestionType["Distinction"] = "Distinction";
+  EnumQuestionType["ComparisonNumerical"] = "Comparison Numerical";
+  EnumQuestionType["ComparisonChronological"] = "Comparison Chronological";
+  EnumQuestionType["Syllogism"] = "Syllogism";
+  EnumQuestionType["Direction"] = "Direction";
+  EnumQuestionType["Direction3DSpatial"] = "Direction3D Spatial";
+  EnumQuestionType["Direction3DTemporal"] = "Direction3D Temporal";
+  EnumQuestionType["LinearArrangement"] = "Linear Arrangement";
+  EnumQuestionType["CircularArrangement"] = "Circular Arrangement";
+  EnumQuestionType["GraphMatching"] = "Graph Matching";
+  EnumQuestionType["Analogy"] = "Analogy";
+  EnumQuestionType["Binary"] = "Binary";
+})(EnumQuestionType || (EnumQuestionType = {}));
+var EnumArrangements;
+(function (EnumArrangements) {
+  EnumArrangements["AdjacentLeft"] = "is adjacent and left of";
+  EnumArrangements["AdjacentRight"] = "is adjacent and right of";
+  EnumArrangements["Next"] = "is next to";
+  EnumArrangements["NStepsLeft"] = "is # steps left of";
+  EnumArrangements["NStepsRight"] = "is # steps right of";
+  EnumArrangements["Left"] = "is at the left of";
+  EnumArrangements["Right"] = "is at the right of";
+  EnumArrangements["InFront"] = "is diametrically opposite to";
+})(EnumArrangements || (EnumArrangements = {}));
+;
+const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+let strings = [];
+const getStrings = () => {
+  const consonants = "QRSTVWXZ";
+  const vowels = "AEIOU";
+  if (strings.length === 0) {
+    for (const c1 of consonants) {
+      for (const v1 of vowels) {
+        for (const c2 of consonants) {
+          strings.push(c1 + v1 + c2);
+        }
+      }
+    }
+  }
+  return strings;
+};
+let emojis = [];
+const getEmojis = () => {
+  if (emojis.length > 0) {
+    return emojis;
+  }
+  const emojiRanges = [{
+    start: 0x1F600,
+    end: 0x1F64F
+  }, {
+    start: 0x1F300,
+    end: 0x1F5FF
+  } // Misc Symbols and Pictographs
+  // { start: 0x1F680, end: 0x1F6FF }, // Transport and Map Symbols
+  // { start: 0x1F700, end: 0x1F77F }, // Alchemical Symbols
+  // { start: 0x2600,  end: 0x26FF },  // Miscellaneous Symbols
+  ];
+
+  for (const range of emojiRanges) {
+    for (let codePoint = range.start; codePoint <= range.end; codePoint++) {
+      emojis.push(String.fromCodePoint(codePoint));
+    }
+  }
+  return emojis;
+};
+getEmojis();
+const NOUNS = ["Acrobat", "Afro", "Albatross", "Algae", "Alligator", "Almond", "Alpaca", "Amber", "Ambulance", "Amethyst", "Amulet", "Andes", "Ankle", "Anklet", "Ant", "Antlers", "Anvil", "Apartment", "Apple", "Apricot", "Aquarium", "Arch", "Architect", "Arena", "Armadillo", "Armchair", "Armor", "Arrow", "Artichoke", "Artist", "Asteroid", "Astronaut", "Athlete", "Atom", "Attic", "Aubergine", "Aunt", "Avocado", "Baboon", "Baby", "Back", "Backpack", "Badge", "Badger", "Bag", "Bagel", "Bakery", "Baklava", "Balcony", "Bald", "Ball", "Ballerina", "Balloon", "Bamboo", "Banana", "Bandage", "Bandana", "Banjo", "Bank", "Banner", "Bar", "Barbecue", "Barbell", "Barbie", "Barge", "Barley", "Barn", "Barracuda", "Barrel", "Baseball", "Basement", "Basin", "Basket", "Basketball", "Bass", "Bassoon", "Bat", "Bathrobe", "Bathroom", "Bathtub", "Bayonet", "Beach", "Bead", "Beanbag", "Beanie", "Beans", "Beanstalk", "Bear", "Beard", "Beast", "Beaver", "Bed", "Bedbug", "Bedroom", "Beehive", "Beer", "Beet", "Beetle", "Bell", "Belt", "Bench", "Beret", "Bermudas", "Berry", "Bicycle", "Bigfoot", "Bike", "Bikini", "Bill", "Binoculars", "Birch", "Bird", "Birdcage", "Biscotti", "Biscuit", "Bison", "Black", "Blackberry", "Blackboard", "Blade", "Blazer", "Blender", "Blimp", "Blind", "Block", "Blouse", "Blowfish", "Blueberry", "Blush", "Boa", "Board", "Boardwalk", "Boat", "Bobcat", "Bobsled", "Body", "Bog", "Boiler", "Bolt", "Bomb", "Bonbon", "Bones", "Bonsai", "Book", "Bookcase", "Bookend", "Booklet", "Bookstore", "Boombox", "Booster", "Booth", "Boots", "Booty", "Boulevard", "Bow", "Bowling", "Box", "Boxer", "Boy", "Brace", "Bracelet", "Brain", "Brake", "Branch", "Brandy", "Brass", "Brassiere", "Brave", "Brazier", "Bread", "Breakfast", "Brick", "Bridal", "Bridge", "Briefcase", "Broadway", "Broccoli", "Broker", "Broom", "Broth", "Brother", "Brunette", "Brush", "Bubble", "Bucket", "Buckles", "Bud", "Buffalo", "Buffet", "Builder", "Bulb", "Bulldozer", "Bullet", "Bumper", "Bun", "Buoy", "Burger", "Burrito", "Bus", "Bush", "Butcher", "Butler", "Butter", "Buttercup", "Button", "Buttons", "Cab", "Cabbage", "Cabin", "Cabinet", "Cable", "Cacao", "Cactus", "Cadet", "Cafe", "Cage", "Cake", "Calculator", "Calendar", "Calf", "Caliber", "Call", "Camcorder", "Camel", "Camera", "Camp", "Campfire", "Can", "Canal", "Candle", "Candy", "Cane", "Cannoli", "Canoe", "Canon", "Canopy", "Canvas", "Canyon", "Cap", "Cape", "Cappuccino", "Captain", "Car", "Carbon", "Card", "Cardboard", "Cardigan", "Cargo", "Carp", "Carpenter", "Carpet", "Carriage", "Carrot", "Cart", "Cartoon", "Cartridge", "Cascade", "Case", "Cash", "Cashier", "Casino", "Casket", "Cast", "Castle", "Cat", "Catalog", "Catcher", "Caterpillar", "Cauldron", "Cave", "Caviar", "Ceiling", "Cell", "Cellar", "Cello", "Cement", "Cemetery", "Center", "Ceramic", "Cereal", "Certificate", "Chain", "Chair", "Chalk", "Chamber", "Chameleon", "Champagne", "Championship", "Chandelier", "Changer", "Channel", "Chapel", "Charger", "Chariot", "Chateau", "Check", "Checkbook", "Cheek", "Cheeks", "Cheer", "Cheese", "Cheetah", "Chef", "Cherry", "Chest", "Chestnut", "Chick", "Chicken", "Child", "Children", "Chili", "Chimney", "Chin", "China", "Chip", "Chips", "Chisel", "Chocolate", "Choir", "Choker", "Chop", "Chopper", "Chord", "Christmas", "Chrome", "Chuckle", "Church", "Cider", "Cigar", "Cinema", "Circle", "Circus", "Citadel", "Citizen", "City", "Clam", "Clamp", "Clap", "Clarinet", "Class", "Classroom", "Claw", "Clay", "Cleaner", "Clearing", "Clerk", "Click", "Client", "Cliff", "Climber", "Clip", "Clock", "Closet", "Cloth", "Clothes", "Cloud", "Club", "Coach", "Coal", "Coast", "Coat", "Cobalt", "Cobra", "Cockpit", "Cocktail", "Coconut", "Coffee", "Coil", "Coin", "Collar", "Collection", "College", "Colonel", "Colony", "Column", "Comb", "Comedy", "Commander", "Commission", "Computer", "Concert", "Condor", "Cone", "Confetti", "Container", "Contest", "Continent", "Cook", "Cooker", "Cookie", "Cookware", "Cooler", "Copper", "Copy", "Coral", "Cord", "Cork", "Corn", "Corner", "Corral", "Costume", "Cottage", "Cotton", "Couch", "Cougar", "Cousin", "Cow", "Cowboy", "Crab", "Crack", "Cracker", "Crane", "Crate", "Crater", "Cravat", "Crayon", "Creature", "Creme", "Crest", "Crib", "Cricket", "Crisp", "Critter", "Crocodile", "Croissant", "Cross", "Crossbow", "Crow", "Crown", "Crucible", "Crumb", "Crust", "Crystal", "Cucumber", "Cuff", "Cup", "Cupcake", "Currency", "Curtain", "Cushion", "Cymbal", "Daffodil", "Dagger", "Dahlia", "Daisy", "Dam", "Dancer", "Dandelion", "Dart", "Date", "Dates", "Daughter", "Dealer", "Deck", "Decoder", "Decoy", "Deer", "Demon", "Den", "Denim", "Dentist", "Deodorant", "Deputy", "Desert", "Designer", "Desk", "Dessert", "Detective", "Devil", "Diamond", "Diaper", "Diary", "Dice", "Dictator", "Digger", "Dime", "Diner", "Dinghy", "Dinosaur", "Diploma", "Diplomat", "Director", "Dirt", "Disco", "Dish", "Disk", "Diver", "Diving", "Djinn", "Dock", "Doctor", "Doe", "Dog", "Doll", "Dollar", "Dolphin", "Donkey", "Donor", "Door", "Doorknob", "Doorstep", "Dorm", "Dot", "Dough", "Dove", "Dragon", "Dragonfly", "Drain", "Drape", "Drawer", "Dress", "Dresser", "Drill", "Drink", "Driver", "Driveway", "Drone", "Drop", "Drug", "Drum", "Drummer", "Duck", "Duct", "Duel", "Dumbbell", "Dump", "Dune", "Dynamite", "Eagle", "Ear", "Earlobe", "Earn", "Earrings", "Ears", "Eclipse", "Eel", "Egg", "Eggplant", "Elbow", "Elder", "Elephant", "Elevator", "Elf", "Elk", "Ellipse", "Escort", "Eye", "Eyebrow", "Eyelid", "Factory", "Fairy", "Fan", "Fang", "Farm", "Farmer", "Fat", "Father", "Faucet", "Fax", "Feast", "Feed", "Fence", "Ferry", "Field", "Fig", "Fight", "Figure", "Film", "Finger", "Fire", "Firearm", "Fireplace", "Firework", "Firm", "Fish", "Fisherman", "Fist", "Flag", "Flame", "Flamingo", "Flannel", "Flash", "Flat", "Flea", "Fleet", "Flock", "Floor", "Florist", "Flour", "Flower", "Flute", "Fly", "Foam", "Fog", "Foil", "Fondue", "Food", "Foot", "Football", "Footprint", "Ford", "Forest", "Fork", "Fortress", "Fossil", "Fountain", "Fox", "Fracture", "France", "Freeze", "Fridge", "Frog", "Front", "Frost", "Fruit", "Fry", "Fuel", "Fur", "Furniture", "Galaxy", "Gander", "Gang", "Garage", "Garb", "Garden", "Garland", "Garlic", "Garment", "Gas", "Gasket", "Gate", "Gateway", "Gauge", "Gear", "Gecko", "Gel", "Gem", "Geranium", "Gesture", "Ghost", "Giant", "Gift", "Ginger", "Giraffe", "Girl", "Glass", "Glasses", "Glen", "Gloves", "Glue", "Gnat", "Goat", "Gold", "Goldfish", "Golf", "Gondola", "Gong", "Goose", "Gopher", "Gorilla", "Gothic", "Governor", "Graffiti", "Grains", "Granite", "Grape", "Grapes", "Graph", "Grass", "Grasshopper", "Gravy", "Grease", "Great", "Green", "Greenhouse", "Grid", "Grin", "Grocery", "Guitar", "Gull", "Gum", "Gun", "Gym", "Gymnast", "Hair", "Haircut", "Ham", "Hamburger", "Hammer", "Hand", "Handbag", "Handle", "Hangar", "Hanger", "Harbor", "Harpoon", "Hat", "Hatch", "Hatchet", "Hawk", "Hay", "Haze", "Head", "Headband", "Headlight", "Headline", "Headphone", "Headquarters", "Hearse", "Heart", "Heater", "Heels", "Helicopter", "Helmet", "Hen", "Herb", "Herbs", "Herring", "Hide", "Highway", "Hike", "Hill", "Hinge", "Hippopotamus", "Hit", "Hive", "Hockey", "Hog", "Hole", "Home", "Honey", "Hood", "Hoof", "Hook", "Horn", "Horse", "Hose", "Hospital", "Hostel", "Hostess", "Hot", "Hotel", "Hour", "Housing", "Howl", "Hub", "Huddle", "Hull", "Human", "Hummingbird", "Hump", "Hurricane", "Hut", "Hydrant", "Ice", "Iceberg", "Icecream", "Iguana", "Impala", "Inbox", "India", "Indigo", "Infant", "Injection", "Ink", "Insect", "Inspector", "Interpreter", "Invoice", "Iris", "Iron", "Island", "Jacket", "Jackpot", "Jade", "Jaguar", "Jail", "Jam", "Jar", "Jasmine", "Jaw", "Jazz", "Jeans", "Jeep", "Jelly", "Jellyfish", "Jet", "Jewel", "Jewelry", "Jockey", "Jog", "Journal", "Jug", "Juggler", "Juice", "Juicer", "Jump", "Jumper", "Jungle", "Kale", "Kangaroo", "Kayak", "Keel", "Kelp", "Kettle", "Key", "Keyboard", "Kick", "Kid", "Kidney", "King", "Kiss", "Kitchen", "Kite", "Kitten", "Kiwi", "Knee", "Knife", "Knight", "Knob", "Knot", "Koala", "Ladder", "Lady", "Ladybug", "Lake", "Lamb", "Lamp", "Lantern", "Laptop", "Laser", "Laundry", "Lava", "Lavender", "Lawn", "Lawyer", "Lead", "Leaf", "League", "Leash", "Leather", "Leave", "Leaves", "Ledge", "Leech", "Leg", "Legging", "Leggings", "Lemon", "Lemonade", "Lens", "Leopard", "Letter", "Lever", "Library", "Lid", "Light", "Lighthouse", "Lightning", "Lilac", "Lily", "Lime", "Liner", "Lion", "Lip", "Lips", "Litter", "Lizard", "Llama", "Loaf", "Lobster", "Lock", "Locomotive", "Lodge", "Lollipop", "Luggage", "Lunchbox", "Lung", "Lynx", "Lyre", "Lyric", "Machine", "Magician", "Magnet", "Magnolia", "Mail", "Mailbox", "Makeup", "Man", "Mango", "Manhole", "Mansion", "Map", "Maple", "Marble", "Mars", "Martian", "Mask", "Matrix", "Mattress", "Mature", "Meadow", "Meal", "Measure", "Meat", "Mechanic", "Medal", "Medicine", "Melon", "Menu", "Mercury", "Meteor", "Meter", "Microphone", "Microscope", "Microwave", "Mile", "Milk", "Mill", "Miller", "Miss", "Mist", "Mister", "Mistress", "Mitt", "Mitten", "Mixer", "Mobile", "Mock", "Mole", "Molecule", "Money", "Monopoly", "Monument", "Moon", "Moose", "Mop", "Mosaic", "Mosque", "Mosquito", "Moss", "Mother", "Motor", "Motorcycle", "Mountain", "Mouse", "Moustache", "Mouth", "Movie", "Mud", "Mug", "Mulch", "Muscle", "Museum", "Mushroom", "Musician", "Nail", "Napkin", "Nautilus", "Navy", "Neck", "Necklace", "Needle", "Nest", "Newspaper", "Night", "Ninja", "Noodles", "North", "Nose", "Notebook", "Nun", "Nurse", "Nut", "Nylon", "Oar", "Oat", "Oboe", "Ocean", "Octopus", "Oil", "Olive", "Omelet", "Onion", "Orange", "Orchid", "Organ", "Ornament", "Ostrich", "Otter", "Oval", "Oven", "Owl", "Ox", "Oyster", "Pad", "Pail", "Paint", "Painter", "Palace", "Palette", "Palm", "Pan", "Pancake", "Panda", "Panel", "Pansy", "Panther", "Pants", "Parachute", "Parfume", "Park", "Parrot", "Passport", "Pasta", "Paste", "Pastor", "Pastry", "Paw", "Pawn", "Peacock", "Peanut", "Pear", "Peasant", "Pedal", "Pedestrian", "Pediatrician", "Peel", "Pen", "Pencil", "Pendant", "Penguin", "Penny", "Pepper", "Pest", "Pet", "Pharmacist", "Pharmacy", "Phone", "Photo", "Piano", "Pickle", "Pie", "Pier", "Pig", "Pigeon", "Pigment", "Pike", "Pilgrim", "Pill", "Pillar", "Pillow", "Pin", "Pineapple", "Pink", "Pipe", "Pirate", "Pitcher", "Pizza", "Plan", "Plane", "Plant", "Plasma", "Plastic", "Plate", "Plates", "Plow", "Plumber", "Plume", "Pocket", "Poker", "Police", "Policeman", "Polish", "Politician", "Polo", "Pond", "Pony", "Pool", "Pop", "Popcorn", "Pope", "Poppy", "Porch", "Pork", "Post", "Postman", "Pot", "Potato", "Pottery", "Pouch", "Pound", "Powder", "Prairie", "Pregnancy", "Pretzel", "Prey", "Price", "Priest", "Print", "Printer", "Prism", "Prison", "Produce", "Projection", "Promenade", "Propeller", "Protein", "Pub", "Puddle", "Puff", "Pulley", "Pump", "Pumpkin", "Punch", "Pupil", "Puppet", "Puppy", "Purple", "Purse", "Push", "Puzzle", "Pyramid", "Python", "Quartz", "Quiz", "Rabbit", "Raccoon", "Radar", "Radiator", "Radio", "Rag", "Rail", "Railroad", "Rain", "Rainbow", "Ram", "Ranch", "Receiver", "Recipe", "Red", "Reed", "Referee", "Refrigerator", "Relic", "Resort", "Restaurant", "Ribbon", "Ribs", "Rice", "Rider", "Rifle", "Ring", "Rink", "Road", "Robot", "Rock", "Rocket", "Rod", "Roller", "Roof", "Room", "Root", "Rope", "Rose", "Rot", "Rowboat", "Rubber", "Rug", "Rugby", "Ruins", "Ruler", "Rust", "Sack", "Sacred", "Saddle", "Saffron", "Sailboat", "Sailor", "Salad", "Salmon", "Salon", "Salt", "Sandal", "Sandals", "Sandcastle", "Sandwich", "Sapphire", "Satellite", "Satin", "Sauce", "Saucer", "Savage", "Saw", "Saxophone", "Scale", "Scanner", "Scarecrow", "Scarf", "School", "Scissors", "Scooter", "Screen", "Screw", "Sculptor", "Sculpture", "Seal", "Seat", "Seed", "Shack", "Shampoo", "Shark", "Shed", "Sheep", "Sheet", "Shelf", "Shell", "Shelter", "Shield", "Ship", "Shirt", "Shoe", "Shoes", "Shop", "Shorts", "Shower", "Shrimp", "Sick", "Sidewalk", "Silk", "Silver", "Singer", "Sink", "Skate", "Skater", "Skeleton", "Ski", "Skin", "Skirt", "Skull", "Skunk", "Sky", "Skyscraper", "Sleep", "Slice", "Slide", "Slipper", "Slippers", "Slug", "Smoke", "Snack", "Snake", "Sneaker", "Sneeze", "Sniff", "Snow", "Snowball", "Snowboard", "Snowflake", "Snowman", "Soap", "Soccer", "Sock", "Socks", "Soda", "Sofa", "Soil", "Soldier", "Son", "Sorbet", "Soup", "Spade", "Spaghetti", "Spare", "Sparrow", "Speaker", "Spear", "Spider", "Spiral", "Spirit", "Spit", "Splash", "Split", "Sponge", "Spoon", "Spray", "Spring", "Sprinkler", "Squad", "Square", "Squat", "Squirrel", "Stain", "Stair", "Stamp", "Star", "Station", "Stereo", "Stick", "Sticker", "Stitch", "Stomach", "Stove", "Strap", "Straw", "Strawberry", "Stream", "Street", "Strobe", "Submarine", "Subway", "Succulent", "Sugar", "Suit", "Suitcase", "Sulfur", "Sun", "Sundae", "Sunflower", "Sunglasses", "Supermarket", "Supernova", "Surfboard", "Surgeon", "Sushi", "Swamp", "Swan", "Swarm", "Sweater", "Sweet", "Swim", "Swimmer", "Sword", "Table", "Tablet", "Taco", "Tail", "Tailor", "Tangerine", "Tank", "Tanker", "Tap", "Tape", "Target", "Tattoo", "Tavern", "Taxi", "Tea", "Teacher", "Tear", "Teddy", "Teeth", "Telephone", "Telescope", "Television", "Temple", "Tennis", "Terrarium", "Textbook", "Theater", "Thermometer", "Thermos", "Thief", "Thigh", "Thorn", "Throne", "Throttle", "Thunder", "Tiger", "Tile", "Timer", "Tin", "Tire", "Toad", "Toast", "Toaster", "Tobacco", "Toe", "Toes", "Toilet", "Tomato", "Tomb", "Tongue", "Tool", "Tooth", "Tortilla", "Tortoise", "Towel", "Tower", "Town", "Toy", "Tractor", "Trader", "Tram", "Trampoline", "Trap", "Tray", "Treasure", "Tree", "Triangle", "Tribe", "Tricycle", "Trolley", "Troop", "Trophy", "Trousers", "Trout", "Truck", "Truffle", "Trumpet", "Trunk", "Tube", "Tulip", "Tuna", "Tunnel", "Turban", "Turbine", "Turkey", "Turtle", "Tusk", "Twine", "Umbrella", "Underwear", "Unicorn", "Uniform", "Vaccine", "Vacuum", "Valentine", "Van", "Vanilla", "Vase", "Vault", "Vegetable", "Vehicle", "Vessel", "Villa", "Vinegar", "Vinyl", "Violet", "Violin", "Violinist", "Viper", "Volcano", "Vortex", "Vulture", "Wafer", "Waffle", "Wagon", "Waiter", "Wallet", "Walnut", "Wardrobe", "Warrior", "Wasabi", "Waste", "Watch", "Water", "Waterfall", "Wax", "Weapon", "Weasel", "Wedding", "Whale", "Wheat", "Wheel", "Whip", "White", "Wick", "Widow", "Wife", "Willow", "Window", "Wing", "Winter", "Witch", "Wobble", "Wolf", "Woman", "Wood", "Woodpecker", "Wool", "Worm", "Wrench", "Wrestler", "Writer", "Xylophone", "Yacht", "Yam", "Yoga", "Yogurt", "Yolk", "Zebra", "Zen", "Zero", "Zip", "Zipper", "Zoo"];
+
+/***/ }),
+
+/***/ 8266:
+/*!*************************************************************!*\
+  !*** ./src/app/syllogimous/constants/settings.constants.ts ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "DEFAULT_ENABLED_FLAGS": () => (/* binding */ DEFAULT_ENABLED_FLAGS),
+/* harmony export */   "EnumQuestionGroup": () => (/* binding */ EnumQuestionGroup),
+/* harmony export */   "QUESTION_TYPE_SETTING_PARAMS": () => (/* binding */ QUESTION_TYPE_SETTING_PARAMS)
+/* harmony export */ });
+/* harmony import */ var _question_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./question.constants */ 6189);
+
+var EnumQuestionGroup;
+(function (EnumQuestionGroup) {
+  EnumQuestionGroup["Comparison"] = "Comparison";
+  EnumQuestionGroup["Direction"] = "Direction";
+  EnumQuestionGroup["Arrangement"] = "Arrangement";
+})(EnumQuestionGroup || (EnumQuestionGroup = {}));
+const QUESTION_TYPE_SETTING_PARAMS = {
+  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.Distinction]: {
+    enabled: true,
+    minNumOfPremises: 2,
+    maxNumOfPremises: 20,
+    basic: true
+  },
+  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.ComparisonNumerical]: {
+    enabled: true,
+    minNumOfPremises: 2,
+    maxNumOfPremises: 20,
+    basic: true,
+    group: EnumQuestionGroup.Comparison
+  },
+  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.ComparisonChronological]: {
+    enabled: true,
+    minNumOfPremises: 2,
+    maxNumOfPremises: 20,
+    basic: true,
+    group: EnumQuestionGroup.Comparison
+  },
+  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.Syllogism]: {
+    enabled: true,
+    minNumOfPremises: 2,
+    maxNumOfPremises: 20,
+    basic: true
+  },
+  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.LinearArrangement]: {
+    enabled: true,
+    minNumOfPremises: 2,
+    maxNumOfPremises: 20,
+    basic: true,
+    group: EnumQuestionGroup.Arrangement
+  },
+  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.CircularArrangement]: {
+    enabled: true,
+    minNumOfPremises: 2,
+    maxNumOfPremises: 20,
+    basic: true,
+    group: EnumQuestionGroup.Arrangement
+  },
+  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.Direction]: {
+    enabled: true,
+    minNumOfPremises: 2,
+    maxNumOfPremises: 20,
+    basic: true,
+    group: EnumQuestionGroup.Direction
+  },
+  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.Direction3DSpatial]: {
+    enabled: true,
+    minNumOfPremises: 2,
+    maxNumOfPremises: 20,
+    basic: true,
+    group: EnumQuestionGroup.Direction
+  },
+  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.Direction3DTemporal]: {
+    enabled: true,
+    minNumOfPremises: 2,
+    maxNumOfPremises: 20,
+    basic: true,
+    group: EnumQuestionGroup.Direction
+  },
+  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.GraphMatching]: {
+    enabled: true,
+    minNumOfPremises: 2,
+    maxNumOfPremises: 20,
+    basic: false
+  },
+  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.Analogy]: {
+    enabled: true,
+    minNumOfPremises: 3,
+    maxNumOfPremises: 20,
+    basic: false
+  },
+  [_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType.Binary]: {
+    enabled: true,
+    minNumOfPremises: 4,
+    maxNumOfPremises: 20,
+    basic: false
+  }
+};
+const DEFAULT_ENABLED_FLAGS = {
+  useEmojis: false,
+  meaningfulWords: true,
+  meta: true,
+  negation: true,
+  binary: {
+    and: true,
+    nand: true,
+    or: true,
+    nor: true,
+    xor: true,
+    xnor: true
+  }
+};
+
+/***/ }),
+
+/***/ 4338:
+/*!**************************************************************!*\
+  !*** ./src/app/syllogimous/constants/syllogism.constants.ts ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "FORMS": () => (/* binding */ FORMS),
+/* harmony export */   "SYL_IMMEDIATE_INFERENCES": () => (/* binding */ SYL_IMMEDIATE_INFERENCES),
+/* harmony export */   "SYL_KINDS": () => (/* binding */ SYL_KINDS),
+/* harmony export */   "SYL_TRUE_CONCLUSIONS": () => (/* binding */ SYL_TRUE_CONCLUSIONS),
+/* harmony export */   "SYL_TRUE_CONCLUSIONS_KEYS": () => (/* binding */ SYL_TRUE_CONCLUSIONS_KEYS),
+/* harmony export */   "VALID_RULES": () => (/* binding */ VALID_RULES)
+/* harmony export */ });
+const VALID_RULES = ["0001", "1011", "0221", "1231", "0021", "1031", "0112", "1012", "1232", "0332", "0132", "1032", "0223", "2023", "3033", "1233", "0023", "1033", "0114", "2024", "1234", "0134", "1034", "0024"];
+const FORMS = [['All <span class="subject">$</span> is <span class="subject">$</span>', 'No <span class="subject">$</span> is <span class="subject">$</span>', 'Some <span class="subject">$</span> is <span class="subject">$</span>', 'Some <span class="subject">$</span> is not <span class="subject">$</span>'], ['<span class="is-negated">No</span> <span class="subject">$</span> is <span class="subject">$</span>', '<span class="is-negated">All</span> <span class="subject">$</span> is <span class="subject">$</span>', 'Some <span class="subject">$</span> <span class="is-negated">is not</span> <span class="subject">$</span>', 'Some <span class="subject">$</span> <span class="is-negated">is</span> <span class="subject">$</span>']];
+const SYL_KINDS = ["all", "no", "some", "some_not"];
+/** Immediate inferences (1 premise) without existential import */
+const SYL_IMMEDIATE_INFERENCES = [{
+  kind: "no",
+  conclKind: "no",
+  swap: true
+}, {
+  kind: "some",
+  conclKind: "some",
+  swap: true
+}];
+/** Syllogistic table: "kind1,kind2,figure" -> valid kind3 list */
+const SYL_TRUE_CONCLUSIONS = {
+  // Figure 1: M-P, S-M => S-P
+  "all,all,1": ["all", "some"],
+  "no,all,1": ["no", "some_not"],
+  "all,some,1": ["some"],
+  "no,some,1": ["some_not"],
+  // Figure 2: P-M, S-M => S-P
+  "all,no,2": ["no", "some_not"],
+  "no,all,2": ["no", "some_not"],
+  "all,some_not,2": ["some_not"],
+  "no,some,2": ["some_not"],
+  // Figure 3: M-P, M-S => S-P
+  "all,all,3": ["some"],
+  "some,all,3": ["some"],
+  "all,some,3": ["some"],
+  "no,all,3": ["some_not"],
+  "some_not,all,3": ["some_not"],
+  "no,some,3": ["some_not"],
+  // Figure 4: P-M, M-S => S-P
+  "all,no,4": ["no", "some_not"],
+  "all,all,4": ["some"],
+  "some,all,4": ["some"],
+  "no,all,4": ["some_not"],
+  "no,some,4": ["some_not"]
+};
+const SYL_TRUE_CONCLUSIONS_KEYS = Object.keys(SYL_TRUE_CONCLUSIONS);
 
 /***/ }),
 
@@ -6308,13 +6363,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "SettingsComponent": () => (/* binding */ SettingsComponent),
 /* harmony export */   "loadColorBlindnessMode": () => (/* binding */ loadColorBlindnessMode)
 /* harmony export */ });
-/* harmony import */ var _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/syllogimous.constants */ 9182);
+/* harmony import */ var _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/game.constants */ 6904);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/forms */ 2508);
 /* harmony import */ var _services_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/progress-and-performance.service */ 2740);
 /* harmony import */ var _constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants/local-storage.constants */ 6376);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 2560);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/router */ 124);
-/* harmony import */ var _services_syllogimous_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/syllogimous.service */ 3943);
+/* harmony import */ var _services_game_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/game.service */ 6513);
 /* harmony import */ var _shared_components_input_input_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../shared/components/input/input.component */ 2371);
 /* harmony import */ var _components_card_card_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/card/card.component */ 8640);
 /* harmony import */ var _timer_choose_timer_choose_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./timer-choose/timer-choose.component */ 1532);
@@ -6343,12 +6398,12 @@ const loadColorBlindnessMode = () => {
   }
 };
 class SettingsComponent {
-  constructor(router, sylSrv, progressAndPerformanceService) {
+  constructor(router, game, progressAndPerformanceService) {
     this.router = router;
-    this.sylSrv = sylSrv;
+    this.game = game;
     this.progressAndPerformanceService = progressAndPerformanceService;
     this.Math = Math;
-    this.EnumScreens = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.EnumScreens;
+    this.EnumScreens = _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.EnumScreens;
     this.dailyProgressMinutes = new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl(_services_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_1__.DEFAULT_DAILY_GOAL);
     this.weeklyProgressMinutes = new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl(_services_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_1__.DEFAULT_WEEKLY_GOAL);
     this.trainingUnitLength = new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl(_services_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_1__.DEFAULT_TRAINING_UNIT_LENGTH);
@@ -6406,7 +6461,7 @@ class SettingsComponent {
   }
   static {
     this.ɵfac = function SettingsComponent_Factory(t) {
-      return new (t || SettingsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_10__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵdirectiveInject"](_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_3__.SyllogimousService), _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵdirectiveInject"](_services_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_1__.ProgressAndPerformanceService));
+      return new (t || SettingsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_10__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵdirectiveInject"](_services_game_service__WEBPACK_IMPORTED_MODULE_3__.GameService), _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵdirectiveInject"](_services_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_1__.ProgressAndPerformanceService));
     };
   }
   static {
@@ -6461,7 +6516,7 @@ class SettingsComponent {
           _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵelementEnd"]();
           _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵelementStart"](41, "div")(42, "button", 17);
           _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵlistener"]("click", function SettingsComponent_Template_button_click_42_listener() {
-            return ctx.sylSrv.playArcadeMode();
+            return ctx.game.playArcadeMode();
           });
           _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵtext"](43, " Play ");
           _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵelement"](44, "i", 18);
@@ -6648,6 +6703,1337 @@ class GameTimerService {
 
 /***/ }),
 
+/***/ 6513:
+/*!******************************************************!*\
+  !*** ./src/app/syllogimous/services/game.service.ts ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "GameService": () => (/* binding */ GameService)
+/* harmony export */ });
+/* harmony import */ var C_Users_stopc_Documenti_GitHub_Syllogimous_v4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 1670);
+/* harmony import */ var _models_question_models__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/question.models */ 2631);
+/* harmony import */ var _utils_question_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/question.utils */ 8251);
+/* harmony import */ var _utils_syllogism_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/syllogism.utils */ 9879);
+/* harmony import */ var _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../constants/question.constants */ 6189);
+/* harmony import */ var _constants_game_constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../constants/game.constants */ 6904);
+/* harmony import */ var _constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../constants/local-storage.constants */ 6376);
+/* harmony import */ var _components_modal_level_change_modal_level_change_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/modal-level-change/modal-level-change.component */ 8487);
+/* harmony import */ var _models_settings_models__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../models/settings.models */ 5003);
+/* harmony import */ var src_app_utils_uuid__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/utils/uuid */ 3488);
+/* harmony import */ var _constants_settings_constants__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../constants/settings.constants */ 8266);
+/* harmony import */ var _utils_logger__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../utils/logger */ 3476);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/core */ 2560);
+/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ 4534);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/router */ 124);
+/* harmony import */ var _progress_and_performance_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./progress-and-performance.service */ 2740);
+/* harmony import */ var _game_timer_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./game-timer.service */ 6002);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class GameService {
+  get score() {
+    return this._score;
+  }
+  set score(value) {
+    this._score = value;
+    localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_6__.LS_SCORE, JSON.stringify(value));
+  }
+  get tier() {
+    for (const tier of Object.values(_constants_game_constants__WEBPACK_IMPORTED_MODULE_5__.EnumTiers)) {
+      const range = _constants_game_constants__WEBPACK_IMPORTED_MODULE_5__.TIER_SCORE_RANGES[tier];
+      if (this.score >= range.minScore && this.score <= range.maxScore) {
+        return tier;
+      }
+    }
+    return _constants_game_constants__WEBPACK_IMPORTED_MODULE_5__.EnumTiers.Adept;
+  }
+  get settings() {
+    return this.playgroundSettings || this.getSettingsFromTier(this.tier);
+  }
+  get questions() {
+    let questions = [];
+    const history = localStorage.getItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_6__.LS_HISTORY);
+    if (history) {
+      questions = JSON.parse(history).slice(0, 1000);
+    }
+    return questions;
+  }
+  constructor(modalService, router, progressAndPerformanceService, gameTimerService) {
+    this.modalService = modalService;
+    this.router = router;
+    this.progressAndPerformanceService = progressAndPerformanceService;
+    this.gameTimerService = gameTimerService;
+    this._score = 0;
+    this.history = [];
+    this.logger = new _utils_logger__WEBPACK_IMPORTED_MODULE_11__.Logger("info", true);
+    this.loadScore();
+    window.syllogimous = this;
+    // Create a first dummy question to avoid null pointer etc...
+    const firstDummyQuestion = this.createSyllogism(2);
+    firstDummyQuestion.conclusion = "!";
+    this.question = firstDummyQuestion;
+  }
+  loadScore() {
+    const lsScore = localStorage.getItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_6__.LS_SCORE);
+    if (lsScore) {
+      this.score = JSON.parse(lsScore);
+    }
+  }
+  pushIntoHistory(question) {
+    localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_6__.LS_HISTORY, JSON.stringify([question, ...this.questions]));
+  }
+  /** Given an EnumTiers value construct a Settings instance */
+  getSettingsFromTier(tier) {
+    const tierIdx = _constants_game_constants__WEBPACK_IMPORTED_MODULE_5__.ORDERED_TIERS.findIndex(_tier => _tier === tier);
+    const settings = new _models_settings_models__WEBPACK_IMPORTED_MODULE_8__.Settings();
+    settings.setEnable("negation", false);
+    settings.setEnable("meta", false);
+    for (let i = 0; i < _constants_game_constants__WEBPACK_IMPORTED_MODULE_5__.TIERS_MATRIX[tierIdx].length; i++) {
+      const questionType = _constants_game_constants__WEBPACK_IMPORTED_MODULE_5__.ORDERED_QUESTION_TYPES[i];
+      const isActive = !!_constants_game_constants__WEBPACK_IMPORTED_MODULE_5__.TIERS_MATRIX[tierIdx][i];
+      const numOfPremises = this.progressAndPerformanceService.getTrainingUnit(questionType).premises;
+      settings.setQuestionSettings(questionType, isActive, numOfPremises);
+    }
+    if (tierIdx > 5) {
+      settings.setEnable("negation", true);
+    }
+    if (tierIdx > 6) {
+      settings.setEnable("meta", true);
+    }
+    return settings;
+  }
+  /** Given question type and number of premises, returns a question creator function */
+  getCreateFn(questionType, numOfPremises) {
+    return {
+      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Distinction]: () => this.createDistinction(numOfPremises),
+      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.ComparisonNumerical]: () => this.createComparison(numOfPremises, _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.ComparisonNumerical),
+      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.ComparisonChronological]: () => this.createComparison(numOfPremises, _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.ComparisonChronological),
+      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Syllogism]: () => this.createSyllogism(numOfPremises),
+      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.LinearArrangement]: () => this.createArrangement(numOfPremises, _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.LinearArrangement),
+      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.CircularArrangement]: () => this.createArrangement(numOfPremises, _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.CircularArrangement),
+      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Direction]: () => this.createDirection(numOfPremises),
+      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Direction3DSpatial]: () => this.createDirection3D(numOfPremises, _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Direction3DSpatial),
+      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Direction3DTemporal]: () => this.createDirection3D(numOfPremises, _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Direction3DTemporal),
+      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.GraphMatching]: () => this.createGraphMatching(numOfPremises),
+      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Analogy]: () => this.createAnalogy(numOfPremises),
+      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Binary]: () => this.createBinary(numOfPremises)
+    }[questionType];
+  }
+  /** Return a random question based on the current settings */
+  createRandomQuestion(numOfPremises, basic) {
+    const settings = this.settings;
+    this.logger.info("Settings", settings);
+    this.logger.info("Training units", this.progressAndPerformanceService.getAllTrainingUnits());
+    const typeSettingTuples = Object.entries(settings.question);
+    const getQuestionGroup = qg => typeSettingTuples.filter(([qt, qs]) => qs.group == qg);
+    const groupsOfQuestions = [getQuestionGroup(undefined), getQuestionGroup(_constants_settings_constants__WEBPACK_IMPORTED_MODULE_10__.EnumQuestionGroup.Comparison), getQuestionGroup(_constants_settings_constants__WEBPACK_IMPORTED_MODULE_10__.EnumQuestionGroup.Direction), getQuestionGroup(_constants_settings_constants__WEBPACK_IMPORTED_MODULE_10__.EnumQuestionGroup.Arrangement)];
+    const choices = [];
+    // Pick one question from each group so that the distribution is uniform
+    // The "isUndefinedGroup" predicate is used to push all ungrouped question into choices
+    for (const grouped of groupsOfQuestions) {
+      const isUndefinedGroup = grouped === groupsOfQuestions[0];
+      const groupChoices = isUndefinedGroup ? choices : [];
+      for (const [qt, qs] of grouped) {
+        const shouldIncludeQuestion = basic == undefined ? true : qs.basic === basic;
+        if (qs.enabled && shouldIncludeQuestion) {
+          groupChoices.push(this.getCreateFn(qt, qs.clampNumOfPremises(numOfPremises || qs.getNumOfPremises())));
+        }
+      }
+      if (!isUndefinedGroup && groupChoices.length) {
+        choices.push((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(groupChoices, 1).picked[0]);
+      }
+    }
+    if (!choices.length) {
+      this.logger.warn("NO CHOICES AVAILABLE!");
+    }
+    const randomQuestion = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(choices, 1).picked[0]();
+    this.logger.info("Random question", randomQuestion);
+    return randomQuestion;
+  }
+  skipIntro(dontShowAnymore) {
+    if (dontShowAnymore) {
+      localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_6__.LS_DONT_SHOW + _constants_game_constants__WEBPACK_IMPORTED_MODULE_5__.EnumScreens.Intro, "1");
+    }
+    this.router.navigate([_constants_game_constants__WEBPACK_IMPORTED_MODULE_5__.EnumScreens.Start]);
+  }
+  play() {
+    this.question = this.createRandomQuestion();
+    if (this.playgroundSettings) {
+      this.router.navigate([_constants_game_constants__WEBPACK_IMPORTED_MODULE_5__.EnumScreens.Game]);
+    } else {
+      if (!localStorage.getItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_6__.LS_DONT_SHOW + this.question.type)) {
+        this.router.navigate([_constants_game_constants__WEBPACK_IMPORTED_MODULE_5__.EnumScreens.Tutorial, this.question.type]);
+      } else {
+        this.router.navigate([_constants_game_constants__WEBPACK_IMPORTED_MODULE_5__.EnumScreens.Game]);
+      }
+    }
+  }
+  playArcadeMode() {
+    this.playgroundSettings = undefined;
+    this.play();
+  }
+  skipTutorial(dontShowAnymore) {
+    if (dontShowAnymore) {
+      localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_6__.LS_DONT_SHOW + this.question.type, "1");
+    }
+    this.router.navigate([_constants_game_constants__WEBPACK_IMPORTED_MODULE_5__.EnumScreens.Game]);
+  }
+  checkQuestion(value) {
+    var _this = this;
+    return (0,C_Users_stopc_Documenti_GitHub_Syllogimous_v4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this.question.userAnswer = value;
+      _this.question.answeredAt = Date.now();
+      _this.question.timerTypeOnAnswer = localStorage.getItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_6__.LS_TIMER) || "0";
+      _this.question.playgroundMode = _this.settings === _this.playgroundSettings;
+      const type = _this.question.type;
+      const isQuestionValid = _this.question.userAnswer === _this.question.isValid;
+      // Playground doesn't progress tiers
+      if (!_this.question.playgroundMode) {
+        if (value == null) {
+          _this.progressAndPerformanceService.updateTrainingUnit(type, {
+            timeout: 1
+          });
+        } else if (isQuestionValid) {
+          _this.progressAndPerformanceService.updateTrainingUnit(type, {
+            right: 1
+          });
+        } else {
+          _this.progressAndPerformanceService.updateTrainingUnit(type, {
+            wrong: 1
+          });
+        }
+        const {
+          right,
+          timeout,
+          wrong
+        } = _this.progressAndPerformanceService.calcTrainingUnitPercentages(type);
+        const {
+          trainingUnitLength,
+          premisesUpThreshold,
+          premisesDownThreshold
+        } = _this.progressAndPerformanceService.getTrainingUnitSettings();
+        if (right + timeout + wrong >= trainingUnitLength) {
+          _this.progressAndPerformanceService.restartTrainingUnit(_this.question.type);
+          const {
+            premises
+          } = _this.progressAndPerformanceService.getTrainingUnit(type);
+          const {
+            minNumOfPremises,
+            maxNumOfPremises
+          } = _constants_settings_constants__WEBPACK_IMPORTED_MODULE_10__.QUESTION_TYPE_SETTING_PARAMS[type];
+          if ((timeout + wrong) / trainingUnitLength >= premisesDownThreshold) {
+            if (premises > minNumOfPremises) {
+              _this.gameTimerService.stop();
+              const modalRef = _this.modalService.open(_components_modal_level_change_modal_level_change_component__WEBPACK_IMPORTED_MODULE_7__.ModalLevelChangeComponent, {
+                centered: true
+              });
+              modalRef.componentInstance.title = "Number of Premises Decreased";
+              modalRef.componentInstance.content = `Your last <b>${trainingUnitLength}</b> answers for<br><b class="modal-level-type">${type}</b><br>have yielded this results:<div class="d-flex flex-row justify-content-center my-3"><span class="p-2"><b>${right}</b> right</span><span class="p-2 border-start border-end"><b>${timeout}</b> timeout</span><span class="p-2"><b>${wrong}</b> wrong</span></div>The number of premises for<br><b class="modal-level-type">${type}</b><br>has <b>decreased</b> to ${premises - 1}.`;
+              yield modalRef.result;
+            }
+            _this.progressAndPerformanceService.updateTrainingUnit(type, {
+              premises: -1
+            });
+          } else if (right / trainingUnitLength >= premisesUpThreshold) {
+            if (premises < maxNumOfPremises) {
+              _this.gameTimerService.stop();
+              const modalRef = _this.modalService.open(_components_modal_level_change_modal_level_change_component__WEBPACK_IMPORTED_MODULE_7__.ModalLevelChangeComponent, {
+                centered: true
+              });
+              modalRef.componentInstance.title = "Number of Premises Increased";
+              modalRef.componentInstance.content = `Your last <b>${trainingUnitLength}</b> answers for<br><b class="modal-level-type">${type}</b><br>have yielded this results:<div class="d-flex flex-row justify-content-center my-3"><span class="p-2"><b>${right}</b> right</span><span class="p-2 border-start border-end"><b>${timeout}</b> timeout</span><span class="p-2"><b>${wrong}</b> wrong</span></div>The number of premises for<br><b class="modal-level-type">${type}</b><br>has <b>increased</b> to ${premises + 1}.`;
+              yield modalRef.result;
+            }
+            _this.progressAndPerformanceService.updateTrainingUnit(type, {
+              premises: 1
+            });
+          }
+        }
+        // Adjust tier based on score
+        const currTier = _this.tier;
+        let ds = 0;
+        if (isQuestionValid) {
+          _this.score += _constants_game_constants__WEBPACK_IMPORTED_MODULE_5__.TIER_SCORE_ADJUSTMENTS[_this.tier].increment;
+          ds += 1;
+        } else {
+          _this.score = Math.max(0, _this.score - _constants_game_constants__WEBPACK_IMPORTED_MODULE_5__.TIER_SCORE_ADJUSTMENTS[_this.tier].decrement);
+          if (_this.score > 0) {
+            ds -= 1;
+          }
+        }
+        _this.question.userScore = _this.score;
+        const nextTier = _this.tier;
+        // Level up/down
+        if (currTier !== nextTier) {
+          _this.gameTimerService.stop();
+          const modalRef = _this.modalService.open(_components_modal_level_change_modal_level_change_component__WEBPACK_IMPORTED_MODULE_7__.ModalLevelChangeComponent, {
+            centered: true
+          });
+          if (ds > 0) {
+            modalRef.componentInstance.title = "Level Up";
+            modalRef.componentInstance.content = "Your hard work is paying off.<br>Keep going to unlock more question types and points!";
+          } else if (ds < 0) {
+            modalRef.componentInstance.title = "Level Down";
+            modalRef.componentInstance.content = "Take this as a learning step.<br>Refocus your efforts and you’ll be back on top in no time!";
+          }
+        }
+      }
+      _this.pushIntoHistory(_this.question);
+      _this.progressAndPerformanceService.setDailyProgress(_this.progressAndPerformanceService.getToday(), _this.question.answeredAt - _this.question.createdAt);
+      _this.router.navigate([_constants_game_constants__WEBPACK_IMPORTED_MODULE_5__.EnumScreens.Feedback]);
+    })();
+  }
+  createDistinction(numOfPremises) {
+    this.logger.info("createDistinction");
+    const type = _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Distinction;
+    const settings = this.settings;
+    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_8__.canGenerateQuestion)(type, numOfPremises, settings)) {
+      throw new Error("Cannot generate.");
+    }
+    const length = numOfPremises + 1;
+    const symbols = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRandomSymbols)(settings, length);
+    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(type);
+    do {
+      const rnd = Math.floor(Math.random() * symbols.length);
+      const first = symbols.splice(rnd, 1);
+      let prev = first;
+      let curr = [];
+      question.buckets = [[prev], []];
+      let prevBucket = 0;
+      question.premises = [];
+      for (let i = 0; i < length - 1; i++) {
+        const rnd = Math.floor(Math.random() * symbols.length);
+        curr = symbols.splice(rnd, 1);
+        const isSameAs = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
+        const relation = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRelation)(settings, type, isSameAs);
+        question.premises.push(`<span class="subject">${prev}</span> is ${relation} <span class="subject">${curr}</span>`);
+        if (!isSameAs) {
+          prevBucket = (prevBucket + 1) % 2;
+        }
+        question.buckets[prevBucket].push(curr);
+        prev = curr;
+      }
+      // All same is useless, in that case repeat
+      if (!question.buckets[0].length || !question.buckets[1].length) {
+        return this.createDistinction(numOfPremises);
+      }
+      (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.createMetaRelationships)(settings, question, length);
+      const isSameAs = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
+      const relation = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRelation)(settings, type, isSameAs);
+      question.conclusion = `<span class="subject">${first}</span> is ${relation} <span class="subject">${curr}</span>`;
+      question.isValid = isSameAs ? question.buckets[0].includes(curr) : question.buckets[1].includes(curr);
+    } while ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.isPremiseLikeConclusion)(question.premises, question.conclusion));
+    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(question.premises);
+    return question;
+  }
+  createComparison(numOfPremises, type) {
+    this.logger.info("createComparison:", type);
+    const settings = this.settings;
+    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_8__.canGenerateQuestion)(type, numOfPremises, settings)) {
+      throw new Error("Cannot generate.");
+    }
+    const length = numOfPremises + 1;
+    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(type);
+    do {
+      question.bucket = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRandomSymbols)(settings, length);
+      question.premises = [];
+      const sign = [-1, 1][Math.floor(Math.random() * 2)];
+      let next = "";
+      for (let i = 0; i < length - 1; i++) {
+        const curr = question.bucket[i];
+        next = question.bucket[i + 1];
+        const isMoreOrAfter = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
+        const [first, last] = sign === 1 === isMoreOrAfter ? [next, curr] : [curr, next];
+        const relation = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRelation)(settings, type, isMoreOrAfter);
+        question.premises.push(`<span class="subject">${first}</span> is ${relation} <span class="subject">${last}</span>`);
+      }
+      (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.createMetaRelationships)(settings, question, length);
+      const a = Math.floor(Math.random() * question.bucket.length);
+      let b = Math.floor(Math.random() * question.bucket.length);
+      while (a === b) {
+        b = Math.floor(Math.random() * question.bucket.length);
+      }
+      const isMoreOrAfter = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
+      const relation = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRelation)(settings, type, isMoreOrAfter);
+      question.conclusion = `<span class="subject">${question.bucket[a]}</span> is ${relation} <span class="subject">${question.bucket[b]}</span>`;
+      question.isValid = isMoreOrAfter ? sign === 1 && a > b || sign === -1 && a < b : sign === 1 && a < b || sign === -1 && a > b;
+    } while ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.isPremiseLikeConclusion)(question.premises, question.conclusion));
+    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(question.premises);
+    return question;
+  }
+  createArrangement(numOfPremises, type) {
+    this.logger.info("createArrangement:", type);
+    const settings = this.settings;
+    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_8__.canGenerateQuestion)(type, numOfPremises, settings)) {
+      throw new Error("Cannot generate.");
+    }
+    const numOfEls = numOfPremises + 1;
+    const isLinear = type === _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.LinearArrangement;
+    const getWays = isLinear ? _utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getLinearWays : _utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getCircularWays;
+    const symbols = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getSymbols)(settings);
+    const words = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(symbols, numOfEls).picked;
+    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(type);
+    question.instructions = [];
+    question.instructions.push(`There are <b>${_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.NUMBER_WORDS[numOfEls] || numOfEls} subjects</b> along a <b>${isLinear ? "linear" : "circular"}</b> path.`);
+    const relationshipAlreadyExistent = (a, b) => premises.find(({
+      a: pA,
+      b: pB
+    }) => pA === a && pB === b || pA === b && pB === a);
+    let premises = [];
+    let subjects = [...words];
+    let a = undefined;
+    let safe = 1e2;
+    while (safe-- && premises.length < numOfEls - 1) {
+      let premise = undefined;
+      let safe = 1e2;
+      while (safe-- && premise == undefined) {
+        // Pick A
+        a = a || (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(subjects, 1).picked[0];
+        this.logger.info("a", a);
+        const aid = words.indexOf(a);
+        // Pick B
+        const b = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(subjects.filter(sub => sub !== a), 1).picked[0];
+        this.logger.info("b", b);
+        const bid = words.indexOf(b);
+        // Pick a way between A and B and check there are no connections already established between A and B
+        const [wayDescription, wayData] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(Object.entries(getWays(aid, bid, numOfEls)), 1).picked[0];
+        if (wayData.possible && !relationshipAlreadyExistent(a, b)) {
+          premise = {
+            a,
+            b,
+            relationship: {
+              description: wayDescription,
+              steps: wayData.steps
+            },
+            metaRelationships: [],
+            uid: (0,src_app_utils_uuid__WEBPACK_IMPORTED_MODULE_9__.guid)()
+          };
+          subjects = subjects.filter(s => s !== a && s !== b);
+          a = b;
+        }
+      }
+      if (safe <= 0) {
+        throw new Error("MAXIMUM ITERATION COUNT REACHED!");
+      }
+      premises.push(premise);
+    }
+    if (safe <= 0) {
+      throw new Error("MAXIMUM ITERATION COUNT REACHED!");
+    }
+    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.horizontalShuffleArrangement)(premises);
+    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(premises);
+    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.metarelateArrangement)(premises);
+    let b = undefined;
+    safe = 1e2;
+    while (safe-- && b == undefined) {
+      const subject = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(words, 1).picked[0];
+      if (subject !== a && !relationshipAlreadyExistent(a, subject)) {
+        b = subject;
+      }
+    }
+    if (safe <= 0) {
+      throw new Error("MAXIMUM ITERATION COUNT REACHED!");
+    }
+    const [aid, bid] = [words.indexOf(a), words.indexOf(b)];
+    const ways = getWays(aid, bid, numOfEls, true);
+    this.logger.info("a", a);
+    this.logger.info("a", b);
+    this.logger.info("ways", ways);
+    question.isValid = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
+    const conclusions = Object.entries(ways).filter(([description, data]) => data.possible === question.isValid);
+    const picked = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(conclusions, 1).picked[0];
+    const description = picked[0];
+    const steps = picked[1].steps;
+    const interpolated = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.interpolateArrangementRelationship)({
+      description,
+      steps
+    }, settings);
+    question.conclusion = `<span class="subject">${a}</span> ${interpolated} <span class="subject">${b}</span>`;
+    // Next to relationship with 3 elements are useless, in that case regenerate
+    if (!isLinear && numOfEls === 3 && interpolated === _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumArrangements.Next) {
+      return this.createArrangement(numOfPremises, type);
+    }
+    question.rule = words.join(", ");
+    const metaRelationshipLookupMap = {};
+    question.premises = premises.map(({
+      a,
+      b,
+      relationship,
+      metaRelationships,
+      uid
+    }) => {
+      if (settings.enabled.meta && (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() && metaRelationships.length && !metaRelationshipLookupMap[uid]) {
+        const premise = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(metaRelationships, 1).picked[0];
+        metaRelationshipLookupMap[premise.uid] = true;
+        return `<span class="subject">${a}</span> to <span class="subject">${b}</span> has the same relation as <span class="subject">${premise.a}</span> to <span class="subject">${premise.b}</span>`;
+      }
+      const {
+        description,
+        steps
+      } = relationship;
+      const interpolated = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.interpolateArrangementRelationship)({
+        description,
+        steps
+      }, settings);
+      return `<span class="subject">${a}</span> ${interpolated} <span class="subject">${b}</span>`;
+    });
+    return question;
+  }
+  createDirection(numOfPremises) {
+    this.logger.info("createDirection");
+    const type = _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Direction;
+    const settings = this.settings;
+    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_8__.canGenerateQuestion)(type, numOfPremises, settings)) {
+      throw new Error("Cannot generate.");
+    }
+    const numOfEls = numOfPremises + 1;
+    const symbols = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getSymbols)(settings);
+    const words = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(symbols, numOfEls).picked;
+    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(type);
+    const sideSize = 1 + Math.round(Math.sqrt(numOfEls));
+    const cardinalOppositeMap = {
+      "North": "South",
+      "South": "North",
+      "East": "West",
+      "West": "East"
+    };
+    // Give random coords to each subject
+    const coords = [];
+    let pool = [...words];
+    while (pool.length) {
+      let ri;
+      let rj;
+      while (ri == null || rj == null || coords.find(([_, x, y]) => ri === x && rj === y)) {
+        ri = Math.floor(Math.random() * sideSize);
+        rj = Math.floor(Math.random() * sideSize);
+      }
+      const {
+        picked,
+        remaining
+      } = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(pool, 1);
+      coords.push([picked[0], ri, rj]);
+      pool = remaining;
+    }
+    question.coords = coords;
+    this.logger.info("Coords", coords);
+    // Create pairs of subjects
+    let copyOfCoords = [...coords];
+    const pairs = [];
+    const pairAlreadyEstablished = (a, b) => pairs.find(([x, y]) => x[0] === a && y[0] === b || x[0] === b && y[0] === a);
+    for (let i = 0; i < numOfEls - 1; i++) {
+      const {
+        picked,
+        remaining
+      } = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(copyOfCoords, 1);
+      const subject = i === 0 ? (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(remaining, 1).picked[0] : (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(pairs, 1).picked[0][Math.floor(Math.random() * 2)];
+      const a = picked[0][0];
+      const b = subject[0];
+      if (a === b || pairAlreadyEstablished(a, b)) {
+        i--;
+        continue;
+      }
+      pairs.push([picked[0], subject]);
+      copyOfCoords = remaining;
+    }
+    const usedCoords = Object.values(pairs.reduce((a, c) => {
+      a[c[0][0]] = c[0];
+      a[c[1][0]] = c[1];
+      return a;
+    }, {}));
+    // Add one more pair that will represent the conclusion
+    let coorda;
+    let coordb;
+    let safe = 1e2;
+    while (safe-- && (!coorda || !coordb || pairAlreadyEstablished(coorda[0], coordb[0]))) {
+      [coorda, coordb] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(usedCoords, 2).picked;
+    }
+    if (safe < 1) {
+      this.logger.error("MAXIMUM ITERATION COUNT REACHED!");
+      return this.createDirection(numOfPremises);
+    }
+    pairs.push([coorda, coordb]);
+    this.logger.info("Pairs", pairs);
+    // Calculate cardinals and relationship of each pair
+    const premises = [];
+    const getRelationship = (cardinals, tweaked = false) => {
+      let relationship = "";
+      if (!tweaked && cardinals.every(c => c[1] === 1)) {
+        relationship = "adjacent and " + cardinals[0][0];
+        if (cardinals.length === 2) {
+          relationship += "-" + cardinals[1][0];
+        }
+      } else {
+        const numStepsVertical = _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.NUMBER_WORDS[cardinals[0][1]] || cardinals[0][1];
+        relationship = numStepsVertical + " step" + (cardinals[0][1] > 1 ? "s" : "") + " " + cardinals[0][0];
+        if (cardinals.length === 2) {
+          const numStepsHorizontal = _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.NUMBER_WORDS[cardinals[1][1]] || cardinals[1][1];
+          relationship += " and " + numStepsHorizontal + " step" + (cardinals[1][1] > 1 ? "s" : "") + " " + cardinals[1][0];
+        }
+      }
+      return relationship;
+    };
+    for (const pair of pairs) {
+      const [subja, subjb] = pair;
+      const [a, ax, ay] = subja;
+      const [b, bx, by] = subjb;
+      const cardinals = [];
+      const diffy = ay - by;
+      const absdiffy = Math.abs(diffy);
+      const diffx = ax - bx;
+      const absdiffx = Math.abs(diffx);
+      if (diffy > 0) {
+        cardinals.push(["North", absdiffy]);
+      } else if (diffy < 0) {
+        cardinals.push(["South", absdiffy]);
+      }
+      if (diffx > 0) {
+        cardinals.push(["East", absdiffx]);
+      } else if (diffx < 0) {
+        cardinals.push(["West", absdiffx]);
+      }
+      premises.push({
+        pair,
+        cardinals,
+        relationship: getRelationship(cardinals),
+        uid: (0,src_app_utils_uuid__WEBPACK_IMPORTED_MODULE_9__.guid)()
+      });
+    }
+    this.logger.info("Premises", premises);
+    // Sanity check, this fixes a bug with analogy questions
+    if (new Set(premises.map(x => x.pair[0][0])).size !== coords.length) {
+      this.logger.error("Missing subject in premises");
+      return this.createDirection(numOfPremises);
+    }
+    // Extract the last premise and say it's the conclusion
+    // Flip a coin and either keep or tweak the conclusion
+    let conclusion = premises.pop();
+    let tweaked = false;
+    const isValid = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
+    if (isValid) {
+      this.logger.info("Keep conclusion");
+    } else {
+      this.logger.info("Tweak conclusion");
+      const rndIdx = Math.floor(Math.random() * conclusion.cardinals.length);
+      if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
+        this.logger.info("Add one to one cardinal");
+        conclusion.cardinals[rndIdx][1]++;
+      } else {
+        this.logger.info("One cardinal flipped");
+        conclusion.cardinals[rndIdx][0] = cardinalOppositeMap[conclusion.cardinals[rndIdx][0]];
+      }
+      tweaked = true;
+    }
+    // Regenerate conclusion relationship
+    conclusion.relationship = getRelationship(conclusion.cardinals, tweaked);
+    this.logger.info("Conclusion", conclusion);
+    const negateRelationship = relationship => {
+      return relationship.replaceAll(/(north|south|east|west)/gi, substr => {
+        if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
+          question.negations++;
+          return `<span class="is-negated">${cardinalOppositeMap[substr]}</span>`;
+        }
+        return substr;
+      });
+    };
+    const stringifyProposition = p => {
+      const relationship = settings.enabled.negation ? negateRelationship(p.relationship) : p.relationship;
+      return `<span class="subject">${p.pair[0][0]}</span> is ${relationship} of <span class="subject">${p.pair[1][0]}</span>`;
+    };
+    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(premises);
+    question.isValid = isValid;
+    question.premises = premises.map(stringifyProposition);
+    question.conclusion = stringifyProposition(conclusion);
+    question.notes = ["Note that cardinal directions are exact and direct<br>(e.g., \"north\" is not \"north-east\" or \"north-west\")"];
+    // TODO: Create meta relationship
+    return question;
+  }
+  createDirection3D(numOfPremises, type) {
+    this.logger.info("createDirection3D");
+    const settings = this.settings;
+    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_8__.canGenerateQuestion)(type, numOfPremises, settings)) {
+      throw new Error("Cannot generate.");
+    }
+    const numOfEls = numOfPremises + 1;
+    const symbols = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getSymbols)(settings);
+    const words = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(symbols, numOfEls).picked;
+    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(type);
+    const isSpatial = type === _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Direction3DSpatial;
+    const sideSize = 1 + Math.round(Math.cbrt(numOfEls));
+    const trasversalOpposite = {
+      "before": "after",
+      "after": "before",
+      "below": "above",
+      "above": "below"
+    };
+    const cardinalOppositeMap = {
+      "North": "South",
+      "South": "North",
+      "East": "West",
+      "West": "East"
+    };
+    // Give random coords to each subject
+    const coords = [];
+    const alreadyHasCoords = (ri, rj, rk) => {
+      return coords.find(([_, x, y, k]) => ri === x && rj === y && rk === k);
+    };
+    let pool = [...words];
+    while (pool.length) {
+      let ri;
+      let rj;
+      let rt;
+      while (ri == null || rj == null || rt == null || alreadyHasCoords(ri, rj, rt)) {
+        ri = Math.floor(Math.random() * sideSize);
+        rj = Math.floor(Math.random() * sideSize);
+        rt = Math.floor(Math.random() * sideSize);
+      }
+      const {
+        picked,
+        remaining
+      } = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(pool, 1);
+      coords.push([picked[0], ri, rj, rt]);
+      pool = remaining;
+    }
+    this.logger.info("All coords", coords);
+    // Create pairs of subjects
+    let copyOfCoords = [...coords];
+    const pairs = [];
+    const subjectsAlreadyIncluded = (a, b) => pairs.find(([x, y]) => x[0] === a && y[0] === b || x[0] === b && y[0] === a);
+    for (let i = 0; i < numOfEls - 1; i++) {
+      const {
+        picked,
+        remaining
+      } = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(copyOfCoords, 1);
+      const subject = i === 0 ? (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(remaining, 1).picked[0] : (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(pairs, 1).picked[0][Math.floor(Math.random() * 2)];
+      const a = picked[0][0];
+      const b = subject[0];
+      if (a === b || subjectsAlreadyIncluded(a, b)) {
+        i--;
+        continue;
+      }
+      pairs.push([picked[0], subject]);
+      copyOfCoords = remaining;
+    }
+    const usedCoords = Object.values(pairs.reduce((a, c) => {
+      a[c[0][0]] = c[0];
+      a[c[1][0]] = c[1];
+      return a;
+    }, {}));
+    question.coords3D = usedCoords;
+    this.logger.info("Used coords", usedCoords);
+    // Add one more pair that will represent the conclusion
+    let coorda;
+    let coordb;
+    let safe = 1e2;
+    while (safe-- && (!coorda || !coordb || subjectsAlreadyIncluded(coorda[0], coordb[0]))) {
+      [coorda, coordb] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(usedCoords, 2).picked;
+    }
+    if (safe < 1) {
+      this.logger.error("MAXIMUM ITERATION COUNT REACHED!");
+      return this.createDirection3D(numOfPremises, type);
+    }
+    pairs.push([coorda, coordb]);
+    this.logger.info("Pairs", pairs);
+    // Calculate relationship of each pair
+    const premises = [];
+    const getTrasversalRelationship = tdiff => {
+      const absdiff = Math.abs(tdiff);
+      const s = absdiff > 1 ? "s" : "";
+      const n = _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.NUMBER_WORDS[absdiff] || absdiff;
+      if (isSpatial) {
+        if (tdiff === 0) {
+          return "on the same level";
+        } else if (tdiff < 0) {
+          return `${n} level${s} below`;
+        } else {
+          return `${n} level${s} above`;
+        }
+      } else {
+        if (tdiff === 0) {
+          return "at the same time";
+        } else if (tdiff < 0) {
+          return `${n} hour${s} before`;
+        } else {
+          return `${n} hour${s} after`;
+        }
+      }
+    };
+    const SAME_CARDINAL_DIRECTION = "in the same cardinal position";
+    const getCardinalRelationship = _cardinals => {
+      if (_cardinals.every(c => c[1] === 0)) {
+        return SAME_CARDINAL_DIRECTION;
+      }
+      const cardinals = _cardinals.filter(c => c[1] !== 0);
+      let relationship = "";
+      const numStepsVertical = _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.NUMBER_WORDS[cardinals[0][1]] || cardinals[0][1];
+      const s = cardinals[0][1] > 1 ? "s" : "";
+      relationship = `${numStepsVertical} step${s} ${cardinals[0][0]}`;
+      if (cardinals.length === 2) {
+        const numStepsHorizontal = _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.NUMBER_WORDS[cardinals[1][1]] || cardinals[1][1];
+        const s = cardinals[1][1] > 1 ? "s" : "";
+        relationship += ` and ${numStepsHorizontal} step${s} ${cardinals[1][0]}`;
+      }
+      return relationship;
+    };
+    for (const pair of pairs) {
+      const [subja, subjb] = pair;
+      const [a, ax, ay, at] = subja;
+      const [b, bx, by, bt] = subjb;
+      const trasversalDifference = at - bt;
+      const cardinals = [];
+      const diffy = ay - by;
+      const absdiffy = Math.abs(diffy);
+      const diffx = ax - bx;
+      const absdiffx = Math.abs(diffx);
+      if (diffy > 0) {
+        cardinals.push(["North", absdiffy]);
+      } else if (diffy < 0) {
+        cardinals.push(["South", absdiffy]);
+      } else {
+        cardinals.push(["!", 0]);
+      }
+      if (diffx > 0) {
+        cardinals.push(["East", absdiffx]);
+      } else if (diffx < 0) {
+        cardinals.push(["West", absdiffx]);
+      } else {
+        cardinals.push(["!", 0]);
+      }
+      const trasversalRelationship = getTrasversalRelationship(trasversalDifference);
+      const cardinalRelationship = getCardinalRelationship(cardinals);
+      const connector = cardinalRelationship === SAME_CARDINAL_DIRECTION ? " and " : cardinalRelationship.indexOf(" and ") > -1 ? ", " : " and ";
+      const relationship = trasversalRelationship + connector + cardinalRelationship;
+      premises.push({
+        pair,
+        trasversalDifference,
+        cardinals,
+        relationship,
+        uid: (0,src_app_utils_uuid__WEBPACK_IMPORTED_MODULE_9__.guid)()
+      });
+    }
+    this.logger.info("Premises", premises);
+    // Extract the last premise and say it's the conclusion
+    // Flip a coin and either keep or tweak the conclusion
+    let conclusion = premises.pop();
+    const isValid = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
+    if (isValid) {
+      this.logger.info("Keep conclusion");
+      // Filter out collinear cardinals
+      conclusion.cardinals = conclusion.cardinals.filter(c => c[0] !== "!");
+    } else {
+      this.logger.info("Tweak conclusion");
+      if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
+        this.logger.info("Invert trasversal difference");
+        conclusion.trasversalDifference = conclusion.trasversalDifference * -1;
+      }
+      // Filter out collinear cardinals and zero cardinals
+      conclusion.cardinals = conclusion.cardinals.filter(c => c[0] !== "!" && c[1] !== 0);
+      if (!conclusion.cardinals.length) {
+        return this.createDirection3D(numOfPremises, type);
+      }
+      const rndIdx = Math.floor(Math.random() * conclusion.cardinals.length);
+      if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
+        this.logger.info("One cardinal flipped");
+        conclusion.cardinals[rndIdx][0] = cardinalOppositeMap[conclusion.cardinals[rndIdx][0]];
+      } else {
+        this.logger.info("Add one to one cardinal");
+        conclusion.cardinals[rndIdx][1]++;
+      }
+    }
+    // Regenerate conclusion relationship
+    conclusion.trasversalDifference = conclusion.pair[0][3] - conclusion.pair[1][3];
+    const trasversalRelationship = getTrasversalRelationship(conclusion.trasversalDifference);
+    const cardinalRelationship = getCardinalRelationship(conclusion.cardinals);
+    const connector = cardinalRelationship === SAME_CARDINAL_DIRECTION ? " and " : cardinalRelationship.indexOf(" and ") > -1 ? ", " : " and ";
+    conclusion.relationship = trasversalRelationship + connector + cardinalRelationship;
+    this.logger.info("Conclusion", conclusion);
+    const negateRelationship = relationship => {
+      return relationship.replaceAll(/(before|after|below|above)/gi, substr => {
+        if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
+          question.negations++;
+          return `<span class="is-negated">${trasversalOpposite[substr]}</span>`;
+        }
+        return substr;
+      }).replaceAll(/(north|south|east|west)/gi, substr => {
+        if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
+          question.negations++;
+          return `<span class="is-negated">${cardinalOppositeMap[substr]}</span>`;
+        }
+        return substr;
+      });
+    };
+    const stringifyProposition = p => {
+      const relationship = settings.enabled.negation ? negateRelationship(p.relationship) : p.relationship;
+      return `<span class="subject">${p.pair[0][0]}</span> is ${relationship} of <span class="subject">${p.pair[1][0]}</span>`;
+    };
+    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(premises);
+    question.isValid = isValid;
+    question.premises = premises.map(stringifyProposition);
+    question.conclusion = stringifyProposition(conclusion);
+    question.notes = ["Note that cardinal directions are exact and direct<br>(e.g., \"north\" is not \"north-east\" or \"north-west\")"];
+    // TODO: Create meta relationship
+    return question;
+  }
+  createGraphMatching(numOfPremises) {
+    this.logger.info("createGraphMatching");
+    const type = _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.GraphMatching;
+    const settings = this.settings;
+    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_8__.canGenerateQuestion)(type, numOfPremises, settings)) {
+      throw new Error("Cannot generate.");
+    }
+    const numOfEls = numOfPremises + 1;
+    const symbols = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getSymbols)(settings);
+    const words = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(symbols, numOfEls).picked;
+    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(type);
+    let edgeList = [];
+    const inverseMap = {
+      "→": "←",
+      "←": "→"
+    };
+    const _words = [...words];
+    const isWordUsed = w => edgeList.reduce((a, c) => (a.add(c[0]), a.add(c[2]), a), new Set()).has(w);
+    const notAllUsed = () => _words.some(w => !isWordUsed(w));
+    const edgeAlreadyExists = (a, b) => edgeList.some(([_a, _, _b]) => _a === a && _b === b || _a === b && _b === a);
+    let safe = 1e3;
+    while (safe-- && notAllUsed()) {
+      const [a, b] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(_words, 2).picked;
+      if (edgeAlreadyExists(a, b)) {
+        continue;
+      }
+      const newEdge = Math.random() < 0.25 ? [a, "↔", b] : (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() ? [a, "→", b] : [a, "←", b];
+      edgeList.push(newEdge);
+      if (_words.length > 2 && (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
+        const subject = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() ? a : b;
+        const foundIdx = _words.indexOf(subject);
+        _words.splice(foundIdx, 1);
+      }
+    }
+    if (safe <= 0) {
+      throw new Error("MAXIMUM NUMBER OF ITERATIONS REACHED!");
+    }
+    const edgeDiscrepancyCount = edgeList.length !== numOfPremises;
+    const all3ElementsAre2Way = numOfEls === 3 && edgeList.every(([a, rel, b]) => rel === "↔");
+    if (edgeDiscrepancyCount || all3ElementsAre2Way) {
+      return this.createGraphMatching(numOfPremises);
+    }
+    const newWords = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(symbols, numOfEls).picked;
+    let edgeList2 = edgeList.map(([a, rel, b]) => [newWords[words.indexOf(a)], rel, newWords[words.indexOf(b)]]);
+    question.isValid = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
+    if (!question.isValid) {
+      this.logger.info("Modifying graph in an invalid way");
+      while ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.areGraphsIsomorphic)(edgeList, edgeList2)) {
+        const {
+          picked
+        } = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(edgeList2, 1);
+        const [a, rel, b] = picked[0];
+        if (rel === "→" || rel === "←") {
+          if (Math.random() < 0.15) {
+            this.logger.info("Swap 1-way for 2-way");
+            picked[0][1] = "↔";
+          } else if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
+            this.logger.info("Rotate 1-way direction");
+            picked[0][1] = inverseMap[picked[0][1]];
+          }
+        } else if (Math.random() < 0.15) {
+          this.logger.info("Swap 2-way for 1-way");
+          picked[0][1] = {
+            "true": "→",
+            "false": "←"
+          }[String((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)())];
+        }
+        if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() && numOfEls > 3) {
+          const rndBool = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
+          const bool2subject = {
+            "true": 0,
+            "false": 2
+          };
+          const subjectPosIdx = bool2subject[String(rndBool)];
+          const subjectNegIdx = bool2subject[String(!rndBool)];
+          const {
+            picked: picked2
+          } = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(edgeList2, 1);
+          let picked;
+          while (!picked || picked === picked2[0][subjectPosIdx] || picked === picked2[0][subjectNegIdx]) {
+            picked = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(newWords, 1).picked[0];
+          }
+          this.logger.info("Change an edge by connecting a/b to a different subject", [picked2[0][subjectPosIdx], picked]);
+          picked2[0][subjectPosIdx] = picked;
+        }
+      }
+    }
+    const horizontalShuffle = _edgeList => _edgeList.map(([a, rel, b]) => {
+      this.logger.info("Before", [a, rel, b]);
+      let result;
+      if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() && (rel === "→" || rel === "←")) {
+        result = [b, inverseMap[rel], a];
+      } else {
+        result = [a, rel, b];
+      }
+      this.logger.info("After", result);
+      return result;
+    });
+    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(edgeList);
+    edgeList = horizontalShuffle(edgeList);
+    question.graphPremises = edgeList;
+    this.logger.info("EdgeList", edgeList);
+    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(edgeList2);
+    edgeList2 = horizontalShuffle(edgeList2);
+    question.graphConclusion = edgeList2;
+    this.logger.info("EdgeList2", edgeList2);
+    const usedEdges = new Set();
+    const readable = (edges, edge, negated = false, meta = false) => {
+      const getSubject = subject => `<span class="subject">${subject}</span>`;
+      const readMap = {
+        "→": "goes to",
+        "←": "comes from",
+        "↔": "is connected to"
+      };
+      let relationship = readMap[edge[1]];
+      let isMetaRelated = false;
+      if (meta) {
+        const getEdgeKey = edge => [...edge].join(";");
+        const edgeKey = getEdgeKey(edge);
+        const pickedEdge = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(edges, 1).picked[0];
+        const pickedEdgeKey = getEdgeKey(pickedEdge);
+        if (!usedEdges.has(pickedEdgeKey) && edgeKey !== pickedEdgeKey && edge[1] === pickedEdge[1]) {
+          usedEdges.add(edgeKey);
+          usedEdges.add(pickedEdgeKey);
+          if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() && edge[1] !== "↔") {
+            relationship = `the inverse of ${getSubject(pickedEdge[2])} to ${getSubject(pickedEdge[0])}`;
+          } else {
+            relationship = `${getSubject(pickedEdge[0])} is to ${getSubject(pickedEdge[2])}`;
+          }
+          isMetaRelated = true;
+          this.logger.info("Metarelated");
+          question.metaRelations++;
+        }
+      } else if (negated && (edge[1] === "→" || edge[1] === "←")) {
+        this.logger.info("Negated");
+        question.negations++;
+        relationship = `<span class="is-negated">${readMap[inverseMap[edge[1]]]}</span>`;
+      }
+      return isMetaRelated ? `${getSubject(edge[0])} is to ${getSubject(edge[2])} as ${relationship}` : `${getSubject(edge[0])} ${relationship} ${getSubject(edge[2])}`;
+    };
+    question.premises = edgeList.map((edge, _, edges) => readable(edges, edge, settings.enabled.negation && (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)(), settings.enabled.meta && (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()));
+    question.conclusion = edgeList2.map((edge, _, edges) => readable(edges, edge, settings.enabled.negation && (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)(), settings.enabled.meta && (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()));
+    question.instructions = ["Check isomorphism between premise and conclusion graphs."];
+    return question;
+  }
+  createAnalogy(length) {
+    this.logger.info("createAnalogy");
+    const topType = _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Analogy;
+    const settings = this.settings;
+    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_8__.canGenerateQuestion)(topType, length, settings)) {
+      throw new Error("Cannot generate.");
+    }
+    const choiceIndices = [];
+    if (settings.question[_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Distinction].enabled) {
+      choiceIndices.push(0);
+    }
+    // Randomly pick one comparison question from the comparison questions enabled
+    const comparisonChoices = [];
+    if (settings.question[_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.ComparisonNumerical].enabled) {
+      comparisonChoices.push(1);
+    }
+    if (settings.question[_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.ComparisonChronological].enabled) {
+      comparisonChoices.push(2);
+    }
+    if (comparisonChoices.length) {
+      choiceIndices.push((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(comparisonChoices, 1).picked[0]);
+    }
+    // Randomly pick one direction question from the direction questions enabled
+    const directionsChoices = [];
+    if (settings.question[_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Direction].enabled) {
+      directionsChoices.push(3);
+    }
+    if (settings.question[_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Direction3DSpatial].enabled) {
+      directionsChoices.push(4);
+    }
+    if (settings.question[_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Direction3DTemporal].enabled) {
+      directionsChoices.push(5);
+    }
+    if (directionsChoices.length) {
+      choiceIndices.push((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(directionsChoices, 1).picked[0]);
+    }
+    // Randomly pick one arrangement from enabled arrangements
+    const arrangementChoices = [];
+    if (settings.question[_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.LinearArrangement].enabled) {
+      arrangementChoices.push(6);
+    }
+    if (settings.question[_constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.CircularArrangement].enabled) {
+      arrangementChoices.push(7);
+    }
+    if (arrangementChoices.length) {
+      choiceIndices.push((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(arrangementChoices, 1).picked[0]);
+    }
+    const choiceIndex = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(choiceIndices, 1).picked[0];
+    let question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(topType);
+    let isValidSame;
+    let a, b, c, d;
+    let indexOfA, indexOfB, indexOfC, indexOfD;
+    const flip = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
+    switch (choiceIndex) {
+      case 0:
+        question = this.createDistinction(length);
+        question.type = topType;
+        question.conclusion = "";
+        [a, b, c, d] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)([...question.buckets[0], ...question.buckets[1]], 4).picked;
+        question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
+        [indexOfA, indexOfB, indexOfC, indexOfD] = [Number(question.buckets[0].indexOf(a) !== -1), Number(question.buckets[0].indexOf(b) !== -1), Number(question.buckets[0].indexOf(c) !== -1), Number(question.buckets[0].indexOf(d) !== -1)];
+        isValidSame = indexOfA === indexOfB && indexOfC === indexOfD || indexOfA !== indexOfB && indexOfC !== indexOfD;
+        break;
+      case 1:
+      case 2:
+        const type = choiceIndex === 1 ? _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.ComparisonNumerical : _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.ComparisonChronological;
+        question = this.createComparison(length, type);
+        question.type = topType;
+        question.conclusion = "";
+        [a, b, c, d] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(question.bucket, 4).picked;
+        question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
+        [indexOfA, indexOfB] = [question.bucket.indexOf(a), question.bucket.indexOf(b)];
+        [indexOfC, indexOfD] = [question.bucket.indexOf(c), question.bucket.indexOf(d)];
+        isValidSame = indexOfA > indexOfB && indexOfC > indexOfD || indexOfA < indexOfB && indexOfC < indexOfD;
+        break;
+      case 3:
+        while (flip !== isValidSame) {
+          question = this.createDirection(length);
+          question.type = topType;
+          question.conclusion = "";
+          const [coordsa, coordsb, coordsc, coordsd] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(question.coords, 4).picked;
+          [a, b, c, d] = [coordsa[0], coordsb[0], coordsc[0], coordsd[0]];
+          question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
+          const dxatob = coordsa[1] - coordsb[1];
+          const dyatob = coordsa[2] - coordsb[2];
+          const dxctod = coordsc[1] - coordsd[1];
+          const dyctod = coordsc[2] - coordsd[2];
+          isValidSame = dxatob === dxctod && dyatob === dyctod;
+        }
+        break;
+      case 4:
+      case 5:
+        {
+          const type = choiceIndex === 4 ? _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Direction3DSpatial : _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Direction3DTemporal;
+          while (flip !== isValidSame) {
+            question = this.createDirection3D(length, type);
+            question.type = topType;
+            question.conclusion = "";
+            const [coordsa, coordsb, coordsc, coordsd] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(question.coords3D, 4).picked;
+            [a, b, c, d] = [coordsa[0], coordsb[0], coordsc[0], coordsd[0]];
+            question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
+            const dxatob = coordsa[1] - coordsb[1];
+            const dyatob = coordsa[2] - coordsb[2];
+            const dtatob = coordsa[3] - coordsb[3];
+            const dxctod = coordsc[1] - coordsd[1];
+            const dyctod = coordsc[2] - coordsd[2];
+            const dtctod = coordsc[3] - coordsd[3];
+            isValidSame = dxatob === dxctod && dyatob === dyctod && dtatob === dtctod;
+          }
+          break;
+        }
+      case 6:
+      case 7:
+        {
+          const type = choiceIndex === 6 ? _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.LinearArrangement : _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.CircularArrangement;
+          const isLinear = type === _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.LinearArrangement;
+          question = this.createArrangement(length, type);
+          question.type = topType;
+          question.conclusion = "";
+          question.notes = [];
+          if (isLinear) {
+            question.notes.push("Proximity makes the relationship alike.");
+          } else {
+            question.notes.push("Proximity and diametrical opposition makes the relationship alike.");
+          }
+          const subjects = question.rule.split(", ");
+          [a, b, c, d] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(subjects, 4).picked;
+          question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
+          const [idxA, idxB, idxC, idxD] = [subjects.indexOf(a), subjects.indexOf(b), subjects.indexOf(c), subjects.indexOf(d)];
+          const getWays = isLinear ? _utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getLinearWays : _utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getCircularWays;
+          const waysA2B = getWays(idxA, idxB, length + 1, true, true);
+          const waysC2D = getWays(idxC, idxD, length + 1, true, true);
+          this.logger.info("Ways A2B", waysA2B);
+          this.logger.info("Ways C2D", waysC2D);
+          isValidSame = false;
+          for (const key in waysA2B) {
+            if (waysA2B[key].possible && waysC2D[key].possible && waysA2B[key].steps === waysC2D[key].steps) {
+              isValidSame = true;
+            }
+          }
+          this.logger.info('Is a valid "same" relationship?', isValidSame);
+          break;
+        }
+    }
+    if (isValidSame === undefined) {
+      throw new Error("Shouldn't be here...");
+    }
+    const isSameRelationship = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
+    question.isValid = isSameRelationship ? isValidSame : !isValidSame;
+    if (settings.enabled.negation && (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
+      question.negations++;
+      question.conclusion += `<div class="analogy-conclusion is-negated">is ${isSameRelationship ? 'unlike' : 'alike'}</div>`;
+    } else {
+      question.conclusion += `<div class="analogy-conclusion">is ${isSameRelationship ? 'alike' : 'unlike'}</div>`;
+    }
+    question.conclusion += `<span class="subject">${c}</span> to <span class="subject">${d}</span>`;
+    return question;
+  }
+  createBinary(numOfPremises) {
+    this.logger.info("createBinary");
+    const topType = _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Binary;
+    const settings = this.settings;
+    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_8__.canGenerateQuestion)(topType, numOfPremises, settings)) {
+      throw new Error("Cannot generate.");
+    }
+    const operands = [];
+    const operandNames = [];
+    const operandTemplates = [];
+    if (settings.enabled.binary.and) {
+      operands.push("a&&b");
+      operandNames.push("AND");
+      operandTemplates.push('$a <div class="is-connector">and</div> $b');
+    }
+    if (settings.enabled.binary.nand) {
+      operands.push("!(a&&b)");
+      operandNames.push("NAND");
+      operandTemplates.push('$a <div class="is-connector">and</div> $b <div class="is-connector">are not both true</div>');
+    }
+    if (settings.enabled.binary.or) {
+      operands.push("a||b");
+      operandNames.push("OR");
+      operandTemplates.push('$a <div class="is-connector">or</div> $b');
+    }
+    if (settings.enabled.binary.nor) {
+      operands.push("!(a||b)");
+      operandNames.push("NOR");
+      operandTemplates.push('$a <div class="is-connector">and</div> $b <div class="is-connector">are both false</div>');
+    }
+    if (settings.enabled.binary.xor) {
+      operands.push("!(a&&b)&&(a||b)");
+      operandNames.push("XOR");
+      operandTemplates.push('$a <div class="is-connector">differs from</div> $b');
+    }
+    if (settings.enabled.binary.xnor) {
+      operands.push("!(!(a&&b)&&(a||b))");
+      operandNames.push("XNOR");
+      operandTemplates.push('$a <div class="is-connector">is equal to</div> $b');
+    }
+    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(topType);
+    const flip = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
+    const operandIndex = Math.floor(Math.random() * operands.length);
+    const operand = operands[operandIndex];
+    let safe = 1e2;
+    do {
+      const a = this.createRandomQuestion(Math.floor(numOfPremises / 2), true);
+      const b = this.createRandomQuestion(Math.ceil(numOfPremises / 2), true);
+      const choices = [a, b];
+      question.instructions = [(0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.fixBinaryInstructions)(a), (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.fixBinaryInstructions)(b)].filter(instr => !!instr);
+      question.premises = [...choices[0].premises, ...choices[1].premises];
+      (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(question.premises);
+      question.conclusion = operandTemplates[operandIndex].replace("$a", Array.isArray(choices[0].conclusion) ? choices[0].conclusion[0] : choices[0].conclusion).replace("$b", Array.isArray(choices[1].conclusion) ? choices[1].conclusion[0] : choices[1].conclusion);
+      question.isValid = eval(operand.replaceAll("a", String(choices[0].isValid)).replaceAll("b", String(choices[1].isValid)));
+    } while (safe-- && flip !== question.isValid);
+    if (safe <= 0) {
+      throw new Error("MAXIMUM NUMBER OF ITERATIONS REACHED!");
+    }
+    return question;
+  }
+  createSyllogismOld(numOfPremises) {
+    this.logger.info("createSyllogism");
+    const type = _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Syllogism;
+    const settings = this.settings;
+    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_8__.canGenerateQuestion)(type, numOfPremises, settings)) {
+      throw new Error("Cannot generate.");
+    }
+    const length = numOfPremises + 1;
+    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(type);
+    question.isValid = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
+    do {
+      question.rule = question.isValid ? (0,_utils_syllogism_utils__WEBPACK_IMPORTED_MODULE_3__.getRandomRuleValid)() : (0,_utils_syllogism_utils__WEBPACK_IMPORTED_MODULE_3__.getRandomRuleInvalid)();
+      question.bucket = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRandomSymbols)(settings, length);
+      question.premises = [];
+      [question.premises[0], question.premises[1], question.conclusion] = (0,_utils_syllogism_utils__WEBPACK_IMPORTED_MODULE_3__.getSyllogism)(settings, question.bucket[0], question.bucket[1], question.bucket[2], question.isValid ? (0,_utils_syllogism_utils__WEBPACK_IMPORTED_MODULE_3__.getRandomRuleValid)() : (0,_utils_syllogism_utils__WEBPACK_IMPORTED_MODULE_3__.getRandomRuleInvalid)());
+    } while ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.isPremiseLikeConclusion)(question.premises, question.conclusion));
+    for (let i = 3; i < length; i++) {
+      const rnd = Math.floor(Math.random() * (i - 1));
+      const flip = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
+      const [p, m] = flip ? [question.bucket[i], question.bucket[rnd]] : [question.bucket[rnd], question.bucket[i]];
+      question.premises.push((0,_utils_syllogism_utils__WEBPACK_IMPORTED_MODULE_3__.getSyllogism)(settings, "#####", p, m, (0,_utils_syllogism_utils__WEBPACK_IMPORTED_MODULE_3__.getRandomRuleInvalid)())[0]);
+    }
+    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(question.premises);
+    return question;
+  }
+  createSyllogism(numOfPremises) {
+    this.logger.info("createSyllogism");
+    const type = _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Syllogism;
+    const settings = this.settings;
+    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_8__.canGenerateQuestion)(type, numOfPremises, settings)) {
+      throw new Error("Cannot generate.");
+    }
+    // @ts-ignore
+    if (false) {}
+    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(type);
+    const minDepth = Math.min(2, numOfPremises);
+    const maxDepth = numOfPremises;
+    const chainDepth = Math.floor(Math.random() * (maxDepth - minDepth + 1)) + minDepth;
+    const chainTermsNeeded = chainDepth + 1;
+    const numDistractors = numOfPremises - chainDepth;
+    const minExtra = Math.ceil(numDistractors / chainTermsNeeded);
+    const maxExtra = numDistractors;
+    const extra = Math.floor(Math.random() * (maxExtra - minExtra + 1)) + minExtra;
+    const poolSize = chainTermsNeeded + extra;
+    const termPool = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRandomSymbols)(settings, poolSize);
+    const wantTrue = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
+    const {
+      premises,
+      conclusion,
+      conclusionIsTrue
+    } = (0,_utils_syllogism_utils__WEBPACK_IMPORTED_MODULE_3__.generatePolysyllogism)({
+      nPremises: numOfPremises,
+      chainDepth,
+      termPool,
+      trueConclusion: wantTrue
+    });
+    const negated = settings.enabled.negation && (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
+    question.bucket = termPool;
+    question.isValid = conclusionIsTrue;
+    question.premises = premises.map(p => (0,_utils_syllogism_utils__WEBPACK_IMPORTED_MODULE_3__.formatSylPremise)(p, negated));
+    question.conclusion = (0,_utils_syllogism_utils__WEBPACK_IMPORTED_MODULE_3__.formatSylPremise)(conclusion, negated);
+    return question;
+  }
+  static {
+    this.ɵfac = function GameService_Factory(t) {
+      return new (t || GameService)(_angular_core__WEBPACK_IMPORTED_MODULE_14__["ɵɵinject"](_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_15__.NgbModal), _angular_core__WEBPACK_IMPORTED_MODULE_14__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_16__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_14__["ɵɵinject"](_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_12__.ProgressAndPerformanceService), _angular_core__WEBPACK_IMPORTED_MODULE_14__["ɵɵinject"](_game_timer_service__WEBPACK_IMPORTED_MODULE_13__.GameTimerService));
+    };
+  }
+  static {
+    this.ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_14__["ɵɵdefineInjectable"]({
+      token: GameService,
+      factory: GameService.ɵfac,
+      providedIn: "root"
+    });
+  }
+}
+
+/***/ }),
+
 /***/ 2740:
 /*!**************************************************************************!*\
   !*** ./src/app/syllogimous/services/progress-and-performance.service.ts ***!
@@ -6828,1297 +8214,6 @@ class ProgressAndPerformanceService {
 
 /***/ }),
 
-/***/ 3943:
-/*!*************************************************************!*\
-  !*** ./src/app/syllogimous/services/syllogimous.service.ts ***!
-  \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "SyllogimousService": () => (/* binding */ SyllogimousService)
-/* harmony export */ });
-/* harmony import */ var C_Users_stopc_Documenti_GitHub_Syllogimous_v4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 1670);
-/* harmony import */ var _models_question_models__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/question.models */ 2631);
-/* harmony import */ var _utils_question_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/question.utils */ 8251);
-/* harmony import */ var _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants/question.constants */ 6189);
-/* harmony import */ var _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../constants/syllogimous.constants */ 9182);
-/* harmony import */ var _constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../constants/local-storage.constants */ 6376);
-/* harmony import */ var _components_modal_level_change_modal_level_change_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/modal-level-change/modal-level-change.component */ 8487);
-/* harmony import */ var _models_settings_models__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../models/settings.models */ 5003);
-/* harmony import */ var src_app_utils_uuid__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/utils/uuid */ 3488);
-/* harmony import */ var _constants_settings_constants__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../constants/settings.constants */ 8266);
-/* harmony import */ var _utils_logger__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../utils/logger */ 3476);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ 4534);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/router */ 124);
-/* harmony import */ var _progress_and_performance_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./progress-and-performance.service */ 2740);
-/* harmony import */ var _game_timer_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./game-timer.service */ 6002);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class SyllogimousService {
-  get score() {
-    return this._score;
-  }
-  set score(value) {
-    this._score = value;
-    localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_5__.LS_SCORE, JSON.stringify(value));
-  }
-  get tier() {
-    for (const tier of Object.values(_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__.EnumTiers)) {
-      const range = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__.TIER_SCORE_RANGES[tier];
-      if (this.score >= range.minScore && this.score <= range.maxScore) {
-        return tier;
-      }
-    }
-    return _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__.EnumTiers.Adept;
-  }
-  get settings() {
-    return this.playgroundSettings || this.getSettingsFromTier(this.tier);
-  }
-  get questions() {
-    let questions = [];
-    const history = localStorage.getItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_5__.LS_HISTORY);
-    if (history) {
-      questions = JSON.parse(history).slice(0, 1000);
-    }
-    return questions;
-  }
-  constructor(modalService, router, progressAndPerformanceService, gameTimerService) {
-    this.modalService = modalService;
-    this.router = router;
-    this.progressAndPerformanceService = progressAndPerformanceService;
-    this.gameTimerService = gameTimerService;
-    this._score = 0;
-    this.history = [];
-    this.logger = new _utils_logger__WEBPACK_IMPORTED_MODULE_10__.Logger("info", true);
-    this.loadScore();
-    window.syllogimous = this;
-    // Create a first dummy question to avoid null pointer etc...
-    const firstDummyQuestion = this.createSyllogism(2);
-    firstDummyQuestion.conclusion = "!";
-    this.question = firstDummyQuestion;
-  }
-  loadScore() {
-    const lsScore = localStorage.getItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_5__.LS_SCORE);
-    if (lsScore) {
-      this.score = JSON.parse(lsScore);
-    }
-  }
-  pushIntoHistory(question) {
-    localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_5__.LS_HISTORY, JSON.stringify([question, ...this.questions]));
-  }
-  /** Given an EnumTiers value construct a Settings instance */
-  getSettingsFromTier(tier) {
-    const tierIdx = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__.ORDERED_TIERS.findIndex(_tier => _tier === tier);
-    const settings = new _models_settings_models__WEBPACK_IMPORTED_MODULE_7__.Settings();
-    settings.setEnable("negation", false);
-    settings.setEnable("meta", false);
-    for (let i = 0; i < _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__.TIERS_MATRIX[tierIdx].length; i++) {
-      const questionType = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__.ORDERED_QUESTION_TYPES[i];
-      const isActive = !!_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__.TIERS_MATRIX[tierIdx][i];
-      const numOfPremises = this.progressAndPerformanceService.getTrainingUnit(questionType).premises;
-      settings.setQuestionSettings(questionType, isActive, numOfPremises);
-    }
-    if (tierIdx > 5) {
-      settings.setEnable("negation", true);
-    }
-    if (tierIdx > 6) {
-      settings.setEnable("meta", true);
-    }
-    return settings;
-  }
-  /** Given question type and number of premises, returns a question creator function */
-  getCreateFn(questionType, numOfPremises) {
-    return {
-      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Distinction]: () => this.createDistinction(numOfPremises),
-      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.ComparisonNumerical]: () => this.createComparison(numOfPremises, _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.ComparisonNumerical),
-      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.ComparisonChronological]: () => this.createComparison(numOfPremises, _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.ComparisonChronological),
-      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Syllogism]: () => this.createSyllogism(numOfPremises),
-      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.LinearArrangement]: () => this.createArrangement(numOfPremises, _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.LinearArrangement),
-      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.CircularArrangement]: () => this.createArrangement(numOfPremises, _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.CircularArrangement),
-      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Direction]: () => this.createDirection(numOfPremises),
-      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Direction3DSpatial]: () => this.createDirection3D(numOfPremises, _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Direction3DSpatial),
-      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Direction3DTemporal]: () => this.createDirection3D(numOfPremises, _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Direction3DTemporal),
-      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.GraphMatching]: () => this.createGraphMatching(numOfPremises),
-      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Analogy]: () => this.createAnalogy(numOfPremises),
-      [_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Binary]: () => this.createBinary(numOfPremises)
-    }[questionType];
-  }
-  /** Return a random question based on the current settings */
-  createRandomQuestion(numOfPremises, basic) {
-    const settings = this.settings;
-    this.logger.info("Settings", settings);
-    this.logger.info("Training units", this.progressAndPerformanceService.getAllTrainingUnits());
-    const typeSettingTuples = Object.entries(settings.question);
-    const getQuestionGroup = qg => typeSettingTuples.filter(([qt, qs]) => qs.group == qg);
-    const groupsOfQuestions = [getQuestionGroup(undefined), getQuestionGroup(_constants_settings_constants__WEBPACK_IMPORTED_MODULE_9__.EnumQuestionGroup.Comparison), getQuestionGroup(_constants_settings_constants__WEBPACK_IMPORTED_MODULE_9__.EnumQuestionGroup.Direction), getQuestionGroup(_constants_settings_constants__WEBPACK_IMPORTED_MODULE_9__.EnumQuestionGroup.Arrangement)];
-    const choices = [];
-    // Pick one question from each group so that the distribution is uniform
-    // The "isUndefinedGroup" predicate is used to push all ungrouped question into choices
-    for (const grouped of groupsOfQuestions) {
-      const isUndefinedGroup = grouped === groupsOfQuestions[0];
-      const groupChoices = isUndefinedGroup ? choices : [];
-      for (const [qt, qs] of grouped) {
-        const shouldIncludeQuestion = basic == undefined ? true : qs.basic === basic;
-        if (qs.enabled && shouldIncludeQuestion) {
-          groupChoices.push(this.getCreateFn(qt, qs.clampNumOfPremises(numOfPremises || qs.getNumOfPremises())));
-        }
-      }
-      if (!isUndefinedGroup && groupChoices.length) {
-        choices.push((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(groupChoices, 1).picked[0]);
-      }
-    }
-    if (!choices.length) {
-      this.logger.warn("NO CHOICES AVAILABLE!");
-    }
-    const randomQuestion = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(choices, 1).picked[0]();
-    this.logger.info("Random question", randomQuestion);
-    return randomQuestion;
-  }
-  skipIntro(dontShowAnymore) {
-    if (dontShowAnymore) {
-      localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_5__.LS_DONT_SHOW + _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__.EnumScreens.Intro, "1");
-    }
-    this.router.navigate([_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__.EnumScreens.Start]);
-  }
-  play() {
-    this.question = this.createRandomQuestion();
-    if (this.playgroundSettings) {
-      this.router.navigate([_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__.EnumScreens.Game]);
-    } else {
-      if (!localStorage.getItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_5__.LS_DONT_SHOW + this.question.type)) {
-        this.router.navigate([_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__.EnumScreens.Tutorial, this.question.type]);
-      } else {
-        this.router.navigate([_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__.EnumScreens.Game]);
-      }
-    }
-  }
-  playArcadeMode() {
-    this.playgroundSettings = undefined;
-    this.play();
-  }
-  skipTutorial(dontShowAnymore) {
-    if (dontShowAnymore) {
-      localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_5__.LS_DONT_SHOW + this.question.type, "1");
-    }
-    this.router.navigate([_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__.EnumScreens.Game]);
-  }
-  checkQuestion(value) {
-    var _this = this;
-    return (0,C_Users_stopc_Documenti_GitHub_Syllogimous_v4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this.question.userAnswer = value;
-      _this.question.answeredAt = Date.now();
-      _this.question.timerTypeOnAnswer = localStorage.getItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_5__.LS_TIMER) || "0";
-      _this.question.playgroundMode = _this.settings === _this.playgroundSettings;
-      const type = _this.question.type;
-      const isQuestionValid = _this.question.userAnswer === _this.question.isValid;
-      // Playground doesn't progress tiers
-      if (!_this.question.playgroundMode) {
-        if (value == null) {
-          _this.progressAndPerformanceService.updateTrainingUnit(type, {
-            timeout: 1
-          });
-        } else if (isQuestionValid) {
-          _this.progressAndPerformanceService.updateTrainingUnit(type, {
-            right: 1
-          });
-        } else {
-          _this.progressAndPerformanceService.updateTrainingUnit(type, {
-            wrong: 1
-          });
-        }
-        const {
-          right,
-          timeout,
-          wrong
-        } = _this.progressAndPerformanceService.calcTrainingUnitPercentages(type);
-        const {
-          trainingUnitLength,
-          premisesUpThreshold,
-          premisesDownThreshold
-        } = _this.progressAndPerformanceService.getTrainingUnitSettings();
-        if (right + timeout + wrong >= trainingUnitLength) {
-          _this.progressAndPerformanceService.restartTrainingUnit(_this.question.type);
-          const {
-            premises
-          } = _this.progressAndPerformanceService.getTrainingUnit(type);
-          const {
-            minNumOfPremises,
-            maxNumOfPremises
-          } = _constants_settings_constants__WEBPACK_IMPORTED_MODULE_9__.QUESTION_TYPE_SETTING_PARAMS[type];
-          if ((timeout + wrong) / trainingUnitLength >= premisesDownThreshold) {
-            if (premises > minNumOfPremises) {
-              _this.gameTimerService.stop();
-              const modalRef = _this.modalService.open(_components_modal_level_change_modal_level_change_component__WEBPACK_IMPORTED_MODULE_6__.ModalLevelChangeComponent, {
-                centered: true
-              });
-              modalRef.componentInstance.title = "Number of Premises Decreased";
-              modalRef.componentInstance.content = `Your last <b>${trainingUnitLength}</b> answers for<br><b class="modal-level-type">${type}</b><br>have yielded this results:<div class="d-flex flex-row justify-content-center my-3"><span class="p-2"><b>${right}</b> right</span><span class="p-2 border-start border-end"><b>${timeout}</b> timeout</span><span class="p-2"><b>${wrong}</b> wrong</span></div>The number of premises for<br><b class="modal-level-type">${type}</b><br>has <b>decreased</b> to ${premises - 1}.`;
-              yield modalRef.result;
-            }
-            _this.progressAndPerformanceService.updateTrainingUnit(type, {
-              premises: -1
-            });
-          } else if (right / trainingUnitLength >= premisesUpThreshold) {
-            if (premises < maxNumOfPremises) {
-              _this.gameTimerService.stop();
-              const modalRef = _this.modalService.open(_components_modal_level_change_modal_level_change_component__WEBPACK_IMPORTED_MODULE_6__.ModalLevelChangeComponent, {
-                centered: true
-              });
-              modalRef.componentInstance.title = "Number of Premises Increased";
-              modalRef.componentInstance.content = `Your last <b>${trainingUnitLength}</b> answers for<br><b class="modal-level-type">${type}</b><br>have yielded this results:<div class="d-flex flex-row justify-content-center my-3"><span class="p-2"><b>${right}</b> right</span><span class="p-2 border-start border-end"><b>${timeout}</b> timeout</span><span class="p-2"><b>${wrong}</b> wrong</span></div>The number of premises for<br><b class="modal-level-type">${type}</b><br>has <b>increased</b> to ${premises + 1}.`;
-              yield modalRef.result;
-            }
-            _this.progressAndPerformanceService.updateTrainingUnit(type, {
-              premises: 1
-            });
-          }
-        }
-        // Adjust tier based on score
-        const currTier = _this.tier;
-        let ds = 0;
-        if (isQuestionValid) {
-          _this.score += _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__.TIER_SCORE_ADJUSTMENTS[_this.tier].increment;
-          ds += 1;
-        } else {
-          _this.score = Math.max(0, _this.score - _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__.TIER_SCORE_ADJUSTMENTS[_this.tier].decrement);
-          if (_this.score > 0) {
-            ds -= 1;
-          }
-        }
-        _this.question.userScore = _this.score;
-        const nextTier = _this.tier;
-        // Level up/down
-        if (currTier !== nextTier) {
-          _this.gameTimerService.stop();
-          const modalRef = _this.modalService.open(_components_modal_level_change_modal_level_change_component__WEBPACK_IMPORTED_MODULE_6__.ModalLevelChangeComponent, {
-            centered: true
-          });
-          if (ds > 0) {
-            modalRef.componentInstance.title = "Level Up";
-            modalRef.componentInstance.content = "Your hard work is paying off.<br>Keep going to unlock more question types and points!";
-          } else if (ds < 0) {
-            modalRef.componentInstance.title = "Level Down";
-            modalRef.componentInstance.content = "Take this as a learning step.<br>Refocus your efforts and you’ll be back on top in no time!";
-          }
-        }
-      }
-      _this.pushIntoHistory(_this.question);
-      _this.progressAndPerformanceService.setDailyProgress(_this.progressAndPerformanceService.getToday(), _this.question.answeredAt - _this.question.createdAt);
-      _this.router.navigate([_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_4__.EnumScreens.Feedback]);
-    })();
-  }
-  createSyllogism(numOfPremises) {
-    this.logger.info("createSyllogism");
-    const type = _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Syllogism;
-    const settings = this.settings;
-    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_7__.canGenerateQuestion)(type, numOfPremises, settings)) {
-      throw new Error("Cannot generate.");
-    }
-    const length = numOfPremises + 1;
-    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(type);
-    question.isValid = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
-    do {
-      question.rule = question.isValid ? (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRandomRuleValid)() : (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRandomRuleInvalid)();
-      question.bucket = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRandomSymbols)(settings, length);
-      question.premises = [];
-      [question.premises[0], question.premises[1], question.conclusion] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getSyllogism)(settings, question.bucket[0], question.bucket[1], question.bucket[2], question.isValid ? (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRandomRuleValid)() : (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRandomRuleInvalid)());
-    } while ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.isPremiseLikeConclusion)(question.premises, question.conclusion));
-    for (let i = 3; i < length; i++) {
-      const rnd = Math.floor(Math.random() * (i - 1));
-      const flip = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
-      const [p, m] = flip ? [question.bucket[i], question.bucket[rnd]] : [question.bucket[rnd], question.bucket[i]];
-      question.premises.push((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getSyllogism)(settings, "#####", p, m, (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRandomRuleInvalid)())[0]);
-    }
-    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(question.premises);
-    return question;
-  }
-  createDistinction(numOfPremises) {
-    this.logger.info("createDistinction");
-    const type = _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Distinction;
-    const settings = this.settings;
-    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_7__.canGenerateQuestion)(type, numOfPremises, settings)) {
-      throw new Error("Cannot generate.");
-    }
-    const length = numOfPremises + 1;
-    const symbols = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRandomSymbols)(settings, length);
-    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(type);
-    do {
-      const rnd = Math.floor(Math.random() * symbols.length);
-      const first = symbols.splice(rnd, 1);
-      let prev = first;
-      let curr = [];
-      question.buckets = [[prev], []];
-      let prevBucket = 0;
-      question.premises = [];
-      for (let i = 0; i < length - 1; i++) {
-        const rnd = Math.floor(Math.random() * symbols.length);
-        curr = symbols.splice(rnd, 1);
-        const isSameAs = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
-        const relation = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRelation)(settings, type, isSameAs);
-        question.premises.push(`<span class="subject">${prev}</span> is ${relation} <span class="subject">${curr}</span>`);
-        if (!isSameAs) {
-          prevBucket = (prevBucket + 1) % 2;
-        }
-        question.buckets[prevBucket].push(curr);
-        prev = curr;
-      }
-      // All same is useless, in that case repeat
-      if (!question.buckets[0].length || !question.buckets[1].length) {
-        return this.createDistinction(numOfPremises);
-      }
-      (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.createMetaRelationships)(settings, question, length);
-      const isSameAs = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
-      const relation = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRelation)(settings, type, isSameAs);
-      question.conclusion = `<span class="subject">${first}</span> is ${relation} <span class="subject">${curr}</span>`;
-      question.isValid = isSameAs ? question.buckets[0].includes(curr) : question.buckets[1].includes(curr);
-    } while ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.isPremiseLikeConclusion)(question.premises, question.conclusion));
-    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(question.premises);
-    return question;
-  }
-  createComparison(numOfPremises, type) {
-    this.logger.info("createComparison:", type);
-    const settings = this.settings;
-    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_7__.canGenerateQuestion)(type, numOfPremises, settings)) {
-      throw new Error("Cannot generate.");
-    }
-    const length = numOfPremises + 1;
-    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(type);
-    do {
-      question.bucket = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRandomSymbols)(settings, length);
-      question.premises = [];
-      const sign = [-1, 1][Math.floor(Math.random() * 2)];
-      let next = "";
-      for (let i = 0; i < length - 1; i++) {
-        const curr = question.bucket[i];
-        next = question.bucket[i + 1];
-        const isMoreOrAfter = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
-        const [first, last] = sign === 1 === isMoreOrAfter ? [next, curr] : [curr, next];
-        const relation = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRelation)(settings, type, isMoreOrAfter);
-        question.premises.push(`<span class="subject">${first}</span> is ${relation} <span class="subject">${last}</span>`);
-      }
-      (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.createMetaRelationships)(settings, question, length);
-      const a = Math.floor(Math.random() * question.bucket.length);
-      let b = Math.floor(Math.random() * question.bucket.length);
-      while (a === b) {
-        b = Math.floor(Math.random() * question.bucket.length);
-      }
-      const isMoreOrAfter = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
-      const relation = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getRelation)(settings, type, isMoreOrAfter);
-      question.conclusion = `<span class="subject">${question.bucket[a]}</span> is ${relation} <span class="subject">${question.bucket[b]}</span>`;
-      question.isValid = isMoreOrAfter ? sign === 1 && a > b || sign === -1 && a < b : sign === 1 && a < b || sign === -1 && a > b;
-    } while ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.isPremiseLikeConclusion)(question.premises, question.conclusion));
-    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(question.premises);
-    return question;
-  }
-  createArrangement(numOfPremises, type) {
-    this.logger.info("createArrangement:", type);
-    const settings = this.settings;
-    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_7__.canGenerateQuestion)(type, numOfPremises, settings)) {
-      throw new Error("Cannot generate.");
-    }
-    const numOfEls = numOfPremises + 1;
-    const isLinear = type === _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.LinearArrangement;
-    const getWays = isLinear ? _utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getLinearWays : _utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getCircularWays;
-    const symbols = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getSymbols)(settings);
-    const words = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(symbols, numOfEls).picked;
-    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(type);
-    question.instructions = [];
-    question.instructions.push(`There are <b>${_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.NUMBER_WORDS[numOfEls] || numOfEls} subjects</b> along a <b>${isLinear ? "linear" : "circular"}</b> path.`);
-    const relationshipAlreadyExistent = (a, b) => premises.find(({
-      a: pA,
-      b: pB
-    }) => pA === a && pB === b || pA === b && pB === a);
-    let premises = [];
-    let subjects = [...words];
-    let a = undefined;
-    let safe = 1e2;
-    while (safe-- && premises.length < numOfEls - 1) {
-      let premise = undefined;
-      let safe = 1e2;
-      while (safe-- && premise == undefined) {
-        // Pick A
-        a = a || (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(subjects, 1).picked[0];
-        this.logger.info("a", a);
-        const aid = words.indexOf(a);
-        // Pick B
-        const b = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(subjects.filter(sub => sub !== a), 1).picked[0];
-        this.logger.info("b", b);
-        const bid = words.indexOf(b);
-        // Pick a way between A and B and check there are no connections already established between A and B
-        const [wayDescription, wayData] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(Object.entries(getWays(aid, bid, numOfEls)), 1).picked[0];
-        if (wayData.possible && !relationshipAlreadyExistent(a, b)) {
-          premise = {
-            a,
-            b,
-            relationship: {
-              description: wayDescription,
-              steps: wayData.steps
-            },
-            metaRelationships: [],
-            uid: (0,src_app_utils_uuid__WEBPACK_IMPORTED_MODULE_8__.guid)()
-          };
-          subjects = subjects.filter(s => s !== a && s !== b);
-          a = b;
-        }
-      }
-      if (safe <= 0) {
-        throw new Error("MAXIMUM ITERATION COUNT REACHED!");
-      }
-      premises.push(premise);
-    }
-    if (safe <= 0) {
-      throw new Error("MAXIMUM ITERATION COUNT REACHED!");
-    }
-    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.horizontalShuffleArrangement)(premises);
-    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(premises);
-    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.metarelateArrangement)(premises);
-    let b = undefined;
-    safe = 1e2;
-    while (safe-- && b == undefined) {
-      const subject = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(words, 1).picked[0];
-      if (subject !== a && !relationshipAlreadyExistent(a, subject)) {
-        b = subject;
-      }
-    }
-    if (safe <= 0) {
-      throw new Error("MAXIMUM ITERATION COUNT REACHED!");
-    }
-    const [aid, bid] = [words.indexOf(a), words.indexOf(b)];
-    const ways = getWays(aid, bid, numOfEls, true);
-    this.logger.info("a", a);
-    this.logger.info("a", b);
-    this.logger.info("ways", ways);
-    question.isValid = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
-    const conclusions = Object.entries(ways).filter(([description, data]) => data.possible === question.isValid);
-    const picked = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(conclusions, 1).picked[0];
-    const description = picked[0];
-    const steps = picked[1].steps;
-    const interpolated = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.interpolateArrangementRelationship)({
-      description,
-      steps
-    }, settings);
-    question.conclusion = `<span class="subject">${a}</span> ${interpolated} <span class="subject">${b}</span>`;
-    // Next to relationship with 3 elements are useless, in that case regenerate
-    if (!isLinear && numOfEls === 3 && interpolated === _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumArrangements.Next) {
-      return this.createArrangement(numOfPremises, type);
-    }
-    question.rule = words.join(", ");
-    const metaRelationshipLookupMap = {};
-    question.premises = premises.map(({
-      a,
-      b,
-      relationship,
-      metaRelationships,
-      uid
-    }) => {
-      if (settings.enabled.meta && (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() && metaRelationships.length && !metaRelationshipLookupMap[uid]) {
-        const premise = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(metaRelationships, 1).picked[0];
-        metaRelationshipLookupMap[premise.uid] = true;
-        return `<span class="subject">${a}</span> to <span class="subject">${b}</span> has the same relation as <span class="subject">${premise.a}</span> to <span class="subject">${premise.b}</span>`;
-      }
-      const {
-        description,
-        steps
-      } = relationship;
-      const interpolated = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.interpolateArrangementRelationship)({
-        description,
-        steps
-      }, settings);
-      return `<span class="subject">${a}</span> ${interpolated} <span class="subject">${b}</span>`;
-    });
-    return question;
-  }
-  createDirection(numOfPremises) {
-    this.logger.info("createDirection");
-    const type = _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Direction;
-    const settings = this.settings;
-    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_7__.canGenerateQuestion)(type, numOfPremises, settings)) {
-      throw new Error("Cannot generate.");
-    }
-    const numOfEls = numOfPremises + 1;
-    const symbols = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getSymbols)(settings);
-    const words = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(symbols, numOfEls).picked;
-    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(type);
-    const sideSize = 1 + Math.round(Math.sqrt(numOfEls));
-    const cardinalOppositeMap = {
-      "North": "South",
-      "South": "North",
-      "East": "West",
-      "West": "East"
-    };
-    // Give random coords to each subject
-    const coords = [];
-    let pool = [...words];
-    while (pool.length) {
-      let ri;
-      let rj;
-      while (ri == null || rj == null || coords.find(([_, x, y]) => ri === x && rj === y)) {
-        ri = Math.floor(Math.random() * sideSize);
-        rj = Math.floor(Math.random() * sideSize);
-      }
-      const {
-        picked,
-        remaining
-      } = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(pool, 1);
-      coords.push([picked[0], ri, rj]);
-      pool = remaining;
-    }
-    question.coords = coords;
-    this.logger.info("Coords", coords);
-    // Create pairs of subjects
-    let copyOfCoords = [...coords];
-    const pairs = [];
-    const pairAlreadyEstablished = (a, b) => pairs.find(([x, y]) => x[0] === a && y[0] === b || x[0] === b && y[0] === a);
-    for (let i = 0; i < numOfEls - 1; i++) {
-      const {
-        picked,
-        remaining
-      } = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(copyOfCoords, 1);
-      const subject = i === 0 ? (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(remaining, 1).picked[0] : (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(pairs, 1).picked[0][Math.floor(Math.random() * 2)];
-      const a = picked[0][0];
-      const b = subject[0];
-      if (a === b || pairAlreadyEstablished(a, b)) {
-        i--;
-        continue;
-      }
-      pairs.push([picked[0], subject]);
-      copyOfCoords = remaining;
-    }
-    const usedCoords = Object.values(pairs.reduce((a, c) => {
-      a[c[0][0]] = c[0];
-      a[c[1][0]] = c[1];
-      return a;
-    }, {}));
-    // Add one more pair that will represent the conclusion
-    let coorda;
-    let coordb;
-    let safe = 1e2;
-    while (safe-- && (!coorda || !coordb || pairAlreadyEstablished(coorda[0], coordb[0]))) {
-      [coorda, coordb] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(usedCoords, 2).picked;
-    }
-    if (safe < 1) {
-      this.logger.error("MAXIMUM ITERATION COUNT REACHED!");
-      return this.createDirection(numOfPremises);
-    }
-    pairs.push([coorda, coordb]);
-    this.logger.info("Pairs", pairs);
-    // Calculate cardinals and relationship of each pair
-    const premises = [];
-    const getRelationship = (cardinals, tweaked = false) => {
-      let relationship = "";
-      if (!tweaked && cardinals.every(c => c[1] === 1)) {
-        relationship = "adjacent and " + cardinals[0][0];
-        if (cardinals.length === 2) {
-          relationship += "-" + cardinals[1][0];
-        }
-      } else {
-        const numStepsVertical = _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.NUMBER_WORDS[cardinals[0][1]] || cardinals[0][1];
-        relationship = numStepsVertical + " step" + (cardinals[0][1] > 1 ? "s" : "") + " " + cardinals[0][0];
-        if (cardinals.length === 2) {
-          const numStepsHorizontal = _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.NUMBER_WORDS[cardinals[1][1]] || cardinals[1][1];
-          relationship += " and " + numStepsHorizontal + " step" + (cardinals[1][1] > 1 ? "s" : "") + " " + cardinals[1][0];
-        }
-      }
-      return relationship;
-    };
-    for (const pair of pairs) {
-      const [subja, subjb] = pair;
-      const [a, ax, ay] = subja;
-      const [b, bx, by] = subjb;
-      const cardinals = [];
-      const diffy = ay - by;
-      const absdiffy = Math.abs(diffy);
-      const diffx = ax - bx;
-      const absdiffx = Math.abs(diffx);
-      if (diffy > 0) {
-        cardinals.push(["North", absdiffy]);
-      } else if (diffy < 0) {
-        cardinals.push(["South", absdiffy]);
-      }
-      if (diffx > 0) {
-        cardinals.push(["East", absdiffx]);
-      } else if (diffx < 0) {
-        cardinals.push(["West", absdiffx]);
-      }
-      premises.push({
-        pair,
-        cardinals,
-        relationship: getRelationship(cardinals),
-        uid: (0,src_app_utils_uuid__WEBPACK_IMPORTED_MODULE_8__.guid)()
-      });
-    }
-    this.logger.info("Premises", premises);
-    // Sanity check, this fixes a bug with analogy questions
-    if (new Set(premises.map(x => x.pair[0][0])).size !== coords.length) {
-      this.logger.error("Missing subject in premises");
-      return this.createDirection(numOfPremises);
-    }
-    // Extract the last premise and say it's the conclusion
-    // Flip a coin and either keep or tweak the conclusion
-    let conclusion = premises.pop();
-    let tweaked = false;
-    const isValid = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
-    if (isValid) {
-      this.logger.info("Keep conclusion");
-    } else {
-      this.logger.info("Tweak conclusion");
-      const rndIdx = Math.floor(Math.random() * conclusion.cardinals.length);
-      if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
-        this.logger.info("Add one to one cardinal");
-        conclusion.cardinals[rndIdx][1]++;
-      } else {
-        this.logger.info("One cardinal flipped");
-        conclusion.cardinals[rndIdx][0] = cardinalOppositeMap[conclusion.cardinals[rndIdx][0]];
-      }
-      tweaked = true;
-    }
-    // Regenerate conclusion relationship
-    conclusion.relationship = getRelationship(conclusion.cardinals, tweaked);
-    this.logger.info("Conclusion", conclusion);
-    const negateRelationship = relationship => {
-      return relationship.replaceAll(/(north|south|east|west)/gi, substr => {
-        if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
-          question.negations++;
-          return `<span class="is-negated">${cardinalOppositeMap[substr]}</span>`;
-        }
-        return substr;
-      });
-    };
-    const stringifyProposition = p => {
-      const relationship = settings.enabled.negation ? negateRelationship(p.relationship) : p.relationship;
-      return `<span class="subject">${p.pair[0][0]}</span> is ${relationship} of <span class="subject">${p.pair[1][0]}</span>`;
-    };
-    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(premises);
-    question.isValid = isValid;
-    question.premises = premises.map(stringifyProposition);
-    question.conclusion = stringifyProposition(conclusion);
-    question.notes = ["Note that cardinal directions are exact and direct<br>(e.g., \"north\" is not \"north-east\" or \"north-west\")"];
-    // TODO: Create meta relationship
-    return question;
-  }
-  createDirection3D(numOfPremises, type) {
-    this.logger.info("createDirection3D");
-    const settings = this.settings;
-    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_7__.canGenerateQuestion)(type, numOfPremises, settings)) {
-      throw new Error("Cannot generate.");
-    }
-    const numOfEls = numOfPremises + 1;
-    const symbols = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getSymbols)(settings);
-    const words = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(symbols, numOfEls).picked;
-    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(type);
-    const isSpatial = type === _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Direction3DSpatial;
-    const sideSize = 1 + Math.round(Math.cbrt(numOfEls));
-    const trasversalOpposite = {
-      "before": "after",
-      "after": "before",
-      "below": "above",
-      "above": "below"
-    };
-    const cardinalOppositeMap = {
-      "North": "South",
-      "South": "North",
-      "East": "West",
-      "West": "East"
-    };
-    // Give random coords to each subject
-    const coords = [];
-    const alreadyHasCoords = (ri, rj, rk) => {
-      return coords.find(([_, x, y, k]) => ri === x && rj === y && rk === k);
-    };
-    let pool = [...words];
-    while (pool.length) {
-      let ri;
-      let rj;
-      let rt;
-      while (ri == null || rj == null || rt == null || alreadyHasCoords(ri, rj, rt)) {
-        ri = Math.floor(Math.random() * sideSize);
-        rj = Math.floor(Math.random() * sideSize);
-        rt = Math.floor(Math.random() * sideSize);
-      }
-      const {
-        picked,
-        remaining
-      } = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(pool, 1);
-      coords.push([picked[0], ri, rj, rt]);
-      pool = remaining;
-    }
-    this.logger.info("All coords", coords);
-    // Create pairs of subjects
-    let copyOfCoords = [...coords];
-    const pairs = [];
-    const subjectsAlreadyIncluded = (a, b) => pairs.find(([x, y]) => x[0] === a && y[0] === b || x[0] === b && y[0] === a);
-    for (let i = 0; i < numOfEls - 1; i++) {
-      const {
-        picked,
-        remaining
-      } = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(copyOfCoords, 1);
-      const subject = i === 0 ? (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(remaining, 1).picked[0] : (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(pairs, 1).picked[0][Math.floor(Math.random() * 2)];
-      const a = picked[0][0];
-      const b = subject[0];
-      if (a === b || subjectsAlreadyIncluded(a, b)) {
-        i--;
-        continue;
-      }
-      pairs.push([picked[0], subject]);
-      copyOfCoords = remaining;
-    }
-    const usedCoords = Object.values(pairs.reduce((a, c) => {
-      a[c[0][0]] = c[0];
-      a[c[1][0]] = c[1];
-      return a;
-    }, {}));
-    question.coords3D = usedCoords;
-    this.logger.info("Used coords", usedCoords);
-    // Add one more pair that will represent the conclusion
-    let coorda;
-    let coordb;
-    let safe = 1e2;
-    while (safe-- && (!coorda || !coordb || subjectsAlreadyIncluded(coorda[0], coordb[0]))) {
-      [coorda, coordb] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(usedCoords, 2).picked;
-    }
-    if (safe < 1) {
-      this.logger.error("MAXIMUM ITERATION COUNT REACHED!");
-      return this.createDirection3D(numOfPremises, type);
-    }
-    pairs.push([coorda, coordb]);
-    this.logger.info("Pairs", pairs);
-    // Calculate relationship of each pair
-    const premises = [];
-    const getTrasversalRelationship = tdiff => {
-      const absdiff = Math.abs(tdiff);
-      const s = absdiff > 1 ? "s" : "";
-      const n = _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.NUMBER_WORDS[absdiff] || absdiff;
-      if (isSpatial) {
-        if (tdiff === 0) {
-          return "on the same level";
-        } else if (tdiff < 0) {
-          return `${n} level${s} below`;
-        } else {
-          return `${n} level${s} above`;
-        }
-      } else {
-        if (tdiff === 0) {
-          return "at the same time";
-        } else if (tdiff < 0) {
-          return `${n} hour${s} before`;
-        } else {
-          return `${n} hour${s} after`;
-        }
-      }
-    };
-    const SAME_CARDINAL_DIRECTION = "in the same cardinal position";
-    const getCardinalRelationship = _cardinals => {
-      if (_cardinals.every(c => c[1] === 0)) {
-        return SAME_CARDINAL_DIRECTION;
-      }
-      const cardinals = _cardinals.filter(c => c[1] !== 0);
-      let relationship = "";
-      const numStepsVertical = _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.NUMBER_WORDS[cardinals[0][1]] || cardinals[0][1];
-      const s = cardinals[0][1] > 1 ? "s" : "";
-      relationship = `${numStepsVertical} step${s} ${cardinals[0][0]}`;
-      if (cardinals.length === 2) {
-        const numStepsHorizontal = _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.NUMBER_WORDS[cardinals[1][1]] || cardinals[1][1];
-        const s = cardinals[1][1] > 1 ? "s" : "";
-        relationship += ` and ${numStepsHorizontal} step${s} ${cardinals[1][0]}`;
-      }
-      return relationship;
-    };
-    for (const pair of pairs) {
-      const [subja, subjb] = pair;
-      const [a, ax, ay, at] = subja;
-      const [b, bx, by, bt] = subjb;
-      const trasversalDifference = at - bt;
-      const cardinals = [];
-      const diffy = ay - by;
-      const absdiffy = Math.abs(diffy);
-      const diffx = ax - bx;
-      const absdiffx = Math.abs(diffx);
-      if (diffy > 0) {
-        cardinals.push(["North", absdiffy]);
-      } else if (diffy < 0) {
-        cardinals.push(["South", absdiffy]);
-      } else {
-        cardinals.push(["!", 0]);
-      }
-      if (diffx > 0) {
-        cardinals.push(["East", absdiffx]);
-      } else if (diffx < 0) {
-        cardinals.push(["West", absdiffx]);
-      } else {
-        cardinals.push(["!", 0]);
-      }
-      const trasversalRelationship = getTrasversalRelationship(trasversalDifference);
-      const cardinalRelationship = getCardinalRelationship(cardinals);
-      const connector = cardinalRelationship === SAME_CARDINAL_DIRECTION ? " and " : cardinalRelationship.indexOf(" and ") > -1 ? ", " : " and ";
-      const relationship = trasversalRelationship + connector + cardinalRelationship;
-      premises.push({
-        pair,
-        trasversalDifference,
-        cardinals,
-        relationship,
-        uid: (0,src_app_utils_uuid__WEBPACK_IMPORTED_MODULE_8__.guid)()
-      });
-    }
-    this.logger.info("Premises", premises);
-    // Extract the last premise and say it's the conclusion
-    // Flip a coin and either keep or tweak the conclusion
-    let conclusion = premises.pop();
-    const isValid = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
-    if (isValid) {
-      this.logger.info("Keep conclusion");
-      // Filter out collinear cardinals
-      conclusion.cardinals = conclusion.cardinals.filter(c => c[0] !== "!");
-    } else {
-      this.logger.info("Tweak conclusion");
-      if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
-        this.logger.info("Invert trasversal difference");
-        conclusion.trasversalDifference = conclusion.trasversalDifference * -1;
-      }
-      // Filter out collinear cardinals and zero cardinals
-      conclusion.cardinals = conclusion.cardinals.filter(c => c[0] !== "!" && c[1] !== 0);
-      if (!conclusion.cardinals.length) {
-        return this.createDirection3D(numOfPremises, type);
-      }
-      const rndIdx = Math.floor(Math.random() * conclusion.cardinals.length);
-      if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
-        this.logger.info("One cardinal flipped");
-        conclusion.cardinals[rndIdx][0] = cardinalOppositeMap[conclusion.cardinals[rndIdx][0]];
-      } else {
-        this.logger.info("Add one to one cardinal");
-        conclusion.cardinals[rndIdx][1]++;
-      }
-    }
-    // Regenerate conclusion relationship
-    conclusion.trasversalDifference = conclusion.pair[0][3] - conclusion.pair[1][3];
-    const trasversalRelationship = getTrasversalRelationship(conclusion.trasversalDifference);
-    const cardinalRelationship = getCardinalRelationship(conclusion.cardinals);
-    const connector = cardinalRelationship === SAME_CARDINAL_DIRECTION ? " and " : cardinalRelationship.indexOf(" and ") > -1 ? ", " : " and ";
-    conclusion.relationship = trasversalRelationship + connector + cardinalRelationship;
-    this.logger.info("Conclusion", conclusion);
-    const negateRelationship = relationship => {
-      return relationship.replaceAll(/(before|after|below|above)/gi, substr => {
-        if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
-          question.negations++;
-          return `<span class="is-negated">${trasversalOpposite[substr]}</span>`;
-        }
-        return substr;
-      }).replaceAll(/(north|south|east|west)/gi, substr => {
-        if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
-          question.negations++;
-          return `<span class="is-negated">${cardinalOppositeMap[substr]}</span>`;
-        }
-        return substr;
-      });
-    };
-    const stringifyProposition = p => {
-      const relationship = settings.enabled.negation ? negateRelationship(p.relationship) : p.relationship;
-      return `<span class="subject">${p.pair[0][0]}</span> is ${relationship} of <span class="subject">${p.pair[1][0]}</span>`;
-    };
-    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(premises);
-    question.isValid = isValid;
-    question.premises = premises.map(stringifyProposition);
-    question.conclusion = stringifyProposition(conclusion);
-    question.notes = ["Note that cardinal directions are exact and direct<br>(e.g., \"north\" is not \"north-east\" or \"north-west\")"];
-    // TODO: Create meta relationship
-    return question;
-  }
-  createGraphMatching(numOfPremises) {
-    this.logger.info("createGraphMatching");
-    const type = _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.GraphMatching;
-    const settings = this.settings;
-    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_7__.canGenerateQuestion)(type, numOfPremises, settings)) {
-      throw new Error("Cannot generate.");
-    }
-    const numOfEls = numOfPremises + 1;
-    const symbols = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getSymbols)(settings);
-    const words = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(symbols, numOfEls).picked;
-    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(type);
-    let edgeList = [];
-    const inverseMap = {
-      "→": "←",
-      "←": "→"
-    };
-    const _words = [...words];
-    const isWordUsed = w => edgeList.reduce((a, c) => (a.add(c[0]), a.add(c[2]), a), new Set()).has(w);
-    const notAllUsed = () => _words.some(w => !isWordUsed(w));
-    const edgeAlreadyExists = (a, b) => edgeList.some(([_a, _, _b]) => _a === a && _b === b || _a === b && _b === a);
-    let safe = 1e3;
-    while (safe-- && notAllUsed()) {
-      const [a, b] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(_words, 2).picked;
-      if (edgeAlreadyExists(a, b)) {
-        continue;
-      }
-      const newEdge = Math.random() < 0.25 ? [a, "↔", b] : (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() ? [a, "→", b] : [a, "←", b];
-      edgeList.push(newEdge);
-      if (_words.length > 2 && (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
-        const subject = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() ? a : b;
-        const foundIdx = _words.indexOf(subject);
-        _words.splice(foundIdx, 1);
-      }
-    }
-    if (safe <= 0) {
-      throw new Error("MAXIMUM NUMBER OF ITERATIONS REACHED!");
-    }
-    const edgeDiscrepancyCount = edgeList.length !== numOfPremises;
-    const all3ElementsAre2Way = numOfEls === 3 && edgeList.every(([a, rel, b]) => rel === "↔");
-    if (edgeDiscrepancyCount || all3ElementsAre2Way) {
-      return this.createGraphMatching(numOfPremises);
-    }
-    const newWords = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(symbols, numOfEls).picked;
-    let edgeList2 = edgeList.map(([a, rel, b]) => [newWords[words.indexOf(a)], rel, newWords[words.indexOf(b)]]);
-    question.isValid = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
-    if (!question.isValid) {
-      this.logger.info("Modifying graph in an invalid way");
-      while ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.areGraphsIsomorphic)(edgeList, edgeList2)) {
-        const {
-          picked
-        } = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(edgeList2, 1);
-        const [a, rel, b] = picked[0];
-        if (rel === "→" || rel === "←") {
-          if (Math.random() < 0.15) {
-            this.logger.info("Swap 1-way for 2-way");
-            picked[0][1] = "↔";
-          } else if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
-            this.logger.info("Rotate 1-way direction");
-            picked[0][1] = inverseMap[picked[0][1]];
-          }
-        } else if (Math.random() < 0.15) {
-          this.logger.info("Swap 2-way for 1-way");
-          picked[0][1] = {
-            "true": "→",
-            "false": "←"
-          }[String((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)())];
-        }
-        if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() && numOfEls > 3) {
-          const rndBool = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
-          const bool2subject = {
-            "true": 0,
-            "false": 2
-          };
-          const subjectPosIdx = bool2subject[String(rndBool)];
-          const subjectNegIdx = bool2subject[String(!rndBool)];
-          const {
-            picked: picked2
-          } = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(edgeList2, 1);
-          let picked;
-          while (!picked || picked === picked2[0][subjectPosIdx] || picked === picked2[0][subjectNegIdx]) {
-            picked = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(newWords, 1).picked[0];
-          }
-          this.logger.info("Change an edge by connecting a/b to a different subject", [picked2[0][subjectPosIdx], picked]);
-          picked2[0][subjectPosIdx] = picked;
-        }
-      }
-    }
-    const horizontalShuffle = _edgeList => _edgeList.map(([a, rel, b]) => {
-      this.logger.info("Before", [a, rel, b]);
-      let result;
-      if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() && (rel === "→" || rel === "←")) {
-        result = [b, inverseMap[rel], a];
-      } else {
-        result = [a, rel, b];
-      }
-      this.logger.info("After", result);
-      return result;
-    });
-    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(edgeList);
-    edgeList = horizontalShuffle(edgeList);
-    question.graphPremises = edgeList;
-    this.logger.info("EdgeList", edgeList);
-    (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(edgeList2);
-    edgeList2 = horizontalShuffle(edgeList2);
-    question.graphConclusion = edgeList2;
-    this.logger.info("EdgeList2", edgeList2);
-    const usedEdges = new Set();
-    const readable = (edges, edge, negated = false, meta = false) => {
-      const getSubject = subject => `<span class="subject">${subject}</span>`;
-      const readMap = {
-        "→": "goes to",
-        "←": "comes from",
-        "↔": "is connected to"
-      };
-      let relationship = readMap[edge[1]];
-      let isMetaRelated = false;
-      if (meta) {
-        const getEdgeKey = edge => [...edge].join(";");
-        const edgeKey = getEdgeKey(edge);
-        const pickedEdge = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(edges, 1).picked[0];
-        const pickedEdgeKey = getEdgeKey(pickedEdge);
-        if (!usedEdges.has(pickedEdgeKey) && edgeKey !== pickedEdgeKey && edge[1] === pickedEdge[1]) {
-          usedEdges.add(edgeKey);
-          usedEdges.add(pickedEdgeKey);
-          if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)() && edge[1] !== "↔") {
-            relationship = `the inverse of ${getSubject(pickedEdge[2])} to ${getSubject(pickedEdge[0])}`;
-          } else {
-            relationship = `${getSubject(pickedEdge[0])} is to ${getSubject(pickedEdge[2])}`;
-          }
-          isMetaRelated = true;
-          this.logger.info("Metarelated");
-          question.metaRelations++;
-        }
-      } else if (negated && (edge[1] === "→" || edge[1] === "←")) {
-        this.logger.info("Negated");
-        question.negations++;
-        relationship = `<span class="is-negated">${readMap[inverseMap[edge[1]]]}</span>`;
-      }
-      return isMetaRelated ? `${getSubject(edge[0])} is to ${getSubject(edge[2])} as ${relationship}` : `${getSubject(edge[0])} ${relationship} ${getSubject(edge[2])}`;
-    };
-    question.premises = edgeList.map((edge, _, edges) => readable(edges, edge, settings.enabled.negation && (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)(), settings.enabled.meta && (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()));
-    question.conclusion = edgeList2.map((edge, _, edges) => readable(edges, edge, settings.enabled.negation && (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)(), settings.enabled.meta && (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()));
-    question.instructions = ["Check isomorphism between premise and conclusion graphs."];
-    return question;
-  }
-  createAnalogy(length) {
-    this.logger.info("createAnalogy");
-    const topType = _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Analogy;
-    const settings = this.settings;
-    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_7__.canGenerateQuestion)(topType, length, settings)) {
-      throw new Error("Cannot generate.");
-    }
-    const choiceIndices = [];
-    if (settings.question[_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Distinction].enabled) {
-      choiceIndices.push(0);
-    }
-    // Randomly pick one comparison question from the comparison questions enabled
-    const comparisonChoices = [];
-    if (settings.question[_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.ComparisonNumerical].enabled) {
-      comparisonChoices.push(1);
-    }
-    if (settings.question[_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.ComparisonChronological].enabled) {
-      comparisonChoices.push(2);
-    }
-    if (comparisonChoices.length) {
-      choiceIndices.push((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(comparisonChoices, 1).picked[0]);
-    }
-    // Randomly pick one direction question from the direction questions enabled
-    const directionsChoices = [];
-    if (settings.question[_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Direction].enabled) {
-      directionsChoices.push(3);
-    }
-    if (settings.question[_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Direction3DSpatial].enabled) {
-      directionsChoices.push(4);
-    }
-    if (settings.question[_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Direction3DTemporal].enabled) {
-      directionsChoices.push(5);
-    }
-    if (directionsChoices.length) {
-      choiceIndices.push((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(directionsChoices, 1).picked[0]);
-    }
-    // Randomly pick one arrangement from enabled arrangements
-    const arrangementChoices = [];
-    if (settings.question[_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.LinearArrangement].enabled) {
-      arrangementChoices.push(6);
-    }
-    if (settings.question[_constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.CircularArrangement].enabled) {
-      arrangementChoices.push(7);
-    }
-    if (arrangementChoices.length) {
-      choiceIndices.push((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(arrangementChoices, 1).picked[0]);
-    }
-    const choiceIndex = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(choiceIndices, 1).picked[0];
-    let question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(topType);
-    let isValidSame;
-    let a, b, c, d;
-    let indexOfA, indexOfB, indexOfC, indexOfD;
-    const flip = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
-    switch (choiceIndex) {
-      case 0:
-        question = this.createDistinction(length);
-        question.type = topType;
-        question.conclusion = "";
-        [a, b, c, d] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)([...question.buckets[0], ...question.buckets[1]], 4).picked;
-        question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
-        [indexOfA, indexOfB, indexOfC, indexOfD] = [Number(question.buckets[0].indexOf(a) !== -1), Number(question.buckets[0].indexOf(b) !== -1), Number(question.buckets[0].indexOf(c) !== -1), Number(question.buckets[0].indexOf(d) !== -1)];
-        isValidSame = indexOfA === indexOfB && indexOfC === indexOfD || indexOfA !== indexOfB && indexOfC !== indexOfD;
-        break;
-      case 1:
-      case 2:
-        const type = choiceIndex === 1 ? _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.ComparisonNumerical : _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.ComparisonChronological;
-        question = this.createComparison(length, type);
-        question.type = topType;
-        question.conclusion = "";
-        [a, b, c, d] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(question.bucket, 4).picked;
-        question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
-        [indexOfA, indexOfB] = [question.bucket.indexOf(a), question.bucket.indexOf(b)];
-        [indexOfC, indexOfD] = [question.bucket.indexOf(c), question.bucket.indexOf(d)];
-        isValidSame = indexOfA > indexOfB && indexOfC > indexOfD || indexOfA < indexOfB && indexOfC < indexOfD;
-        break;
-      case 3:
-        while (flip !== isValidSame) {
-          question = this.createDirection(length);
-          question.type = topType;
-          question.conclusion = "";
-          const [coordsa, coordsb, coordsc, coordsd] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(question.coords, 4).picked;
-          [a, b, c, d] = [coordsa[0], coordsb[0], coordsc[0], coordsd[0]];
-          question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
-          const dxatob = coordsa[1] - coordsb[1];
-          const dyatob = coordsa[2] - coordsb[2];
-          const dxctod = coordsc[1] - coordsd[1];
-          const dyctod = coordsc[2] - coordsd[2];
-          isValidSame = dxatob === dxctod && dyatob === dyctod;
-        }
-        break;
-      case 4:
-      case 5:
-        {
-          const type = choiceIndex === 4 ? _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Direction3DSpatial : _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Direction3DTemporal;
-          while (flip !== isValidSame) {
-            question = this.createDirection3D(length, type);
-            question.type = topType;
-            question.conclusion = "";
-            const [coordsa, coordsb, coordsc, coordsd] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(question.coords3D, 4).picked;
-            [a, b, c, d] = [coordsa[0], coordsb[0], coordsc[0], coordsd[0]];
-            question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
-            const dxatob = coordsa[1] - coordsb[1];
-            const dyatob = coordsa[2] - coordsb[2];
-            const dtatob = coordsa[3] - coordsb[3];
-            const dxctod = coordsc[1] - coordsd[1];
-            const dyctod = coordsc[2] - coordsd[2];
-            const dtctod = coordsc[3] - coordsd[3];
-            isValidSame = dxatob === dxctod && dyatob === dyctod && dtatob === dtctod;
-          }
-          break;
-        }
-      case 6:
-      case 7:
-        {
-          const type = choiceIndex === 6 ? _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.LinearArrangement : _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.CircularArrangement;
-          const isLinear = type === _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.LinearArrangement;
-          question = this.createArrangement(length, type);
-          question.type = topType;
-          question.conclusion = "";
-          question.notes = [];
-          if (isLinear) {
-            question.notes.push("Proximity makes the relationship alike.");
-          } else {
-            question.notes.push("Proximity and diametrical opposition makes the relationship alike.");
-          }
-          const subjects = question.rule.split(", ");
-          [a, b, c, d] = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.pickUniqueItems)(subjects, 4).picked;
-          question.conclusion += `<span class="subject">${a}</span> to <span class="subject">${b}</span>`;
-          const [idxA, idxB, idxC, idxD] = [subjects.indexOf(a), subjects.indexOf(b), subjects.indexOf(c), subjects.indexOf(d)];
-          const getWays = isLinear ? _utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getLinearWays : _utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.getCircularWays;
-          const waysA2B = getWays(idxA, idxB, length + 1, true, true);
-          const waysC2D = getWays(idxC, idxD, length + 1, true, true);
-          this.logger.info("Ways A2B", waysA2B);
-          this.logger.info("Ways C2D", waysC2D);
-          isValidSame = false;
-          for (const key in waysA2B) {
-            if (waysA2B[key].possible && waysC2D[key].possible && waysA2B[key].steps === waysC2D[key].steps) {
-              isValidSame = true;
-            }
-          }
-          this.logger.info('Is a valid "same" relationship?', isValidSame);
-          break;
-        }
-    }
-    if (isValidSame === undefined) {
-      throw new Error("Shouldn't be here...");
-    }
-    const isSameRelationship = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
-    question.isValid = isSameRelationship ? isValidSame : !isValidSame;
-    if (settings.enabled.negation && (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
-      question.negations++;
-      question.conclusion += `<div class="analogy-conclusion is-negated">is ${isSameRelationship ? 'unlike' : 'alike'}</div>`;
-    } else {
-      question.conclusion += `<div class="analogy-conclusion">is ${isSameRelationship ? 'alike' : 'unlike'}</div>`;
-    }
-    question.conclusion += `<span class="subject">${c}</span> to <span class="subject">${d}</span>`;
-    return question;
-  }
-  createBinary(numOfPremises) {
-    this.logger.info("createBinary");
-    const topType = _constants_question_constants__WEBPACK_IMPORTED_MODULE_3__.EnumQuestionType.Binary;
-    const settings = this.settings;
-    if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_7__.canGenerateQuestion)(topType, numOfPremises, settings)) {
-      throw new Error("Cannot generate.");
-    }
-    const operands = [];
-    const operandNames = [];
-    const operandTemplates = [];
-    if (settings.enabled.binary.and) {
-      operands.push("a&&b");
-      operandNames.push("AND");
-      operandTemplates.push('$a <div class="is-connector">and</div> $b');
-    }
-    if (settings.enabled.binary.nand) {
-      operands.push("!(a&&b)");
-      operandNames.push("NAND");
-      operandTemplates.push('$a <div class="is-connector">and</div> $b <div class="is-connector">are not both true</div>');
-    }
-    if (settings.enabled.binary.or) {
-      operands.push("a||b");
-      operandNames.push("OR");
-      operandTemplates.push('$a <div class="is-connector">or</div> $b');
-    }
-    if (settings.enabled.binary.nor) {
-      operands.push("!(a||b)");
-      operandNames.push("NOR");
-      operandTemplates.push('$a <div class="is-connector">and</div> $b <div class="is-connector">are both false</div>');
-    }
-    if (settings.enabled.binary.xor) {
-      operands.push("!(a&&b)&&(a||b)");
-      operandNames.push("XOR");
-      operandTemplates.push('$a <div class="is-connector">differs from</div> $b');
-    }
-    if (settings.enabled.binary.xnor) {
-      operands.push("!(!(a&&b)&&(a||b))");
-      operandNames.push("XNOR");
-      operandTemplates.push('$a <div class="is-connector">is equal to</div> $b');
-    }
-    const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(topType);
-    const flip = (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)();
-    const operandIndex = Math.floor(Math.random() * operands.length);
-    const operand = operands[operandIndex];
-    let safe = 1e2;
-    do {
-      const a = this.createRandomQuestion(Math.floor(numOfPremises / 2), true);
-      const b = this.createRandomQuestion(Math.ceil(numOfPremises / 2), true);
-      const choices = [a, b];
-      question.instructions = [(0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.fixBinaryInstructions)(a), (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.fixBinaryInstructions)(b)].filter(instr => !!instr);
-      question.premises = [...choices[0].premises, ...choices[1].premises];
-      (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(question.premises);
-      question.conclusion = operandTemplates[operandIndex].replace("$a", Array.isArray(choices[0].conclusion) ? choices[0].conclusion[0] : choices[0].conclusion).replace("$b", Array.isArray(choices[1].conclusion) ? choices[1].conclusion[0] : choices[1].conclusion);
-      question.isValid = eval(operand.replaceAll("a", String(choices[0].isValid)).replaceAll("b", String(choices[1].isValid)));
-    } while (safe-- && flip !== question.isValid);
-    if (safe <= 0) {
-      throw new Error("MAXIMUM NUMBER OF ITERATIONS REACHED!");
-    }
-    return question;
-  }
-  static {
-    this.ɵfac = function SyllogimousService_Factory(t) {
-      return new (t || SyllogimousService)(_angular_core__WEBPACK_IMPORTED_MODULE_13__["ɵɵinject"](_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_14__.NgbModal), _angular_core__WEBPACK_IMPORTED_MODULE_13__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_15__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_13__["ɵɵinject"](_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_11__.ProgressAndPerformanceService), _angular_core__WEBPACK_IMPORTED_MODULE_13__["ɵɵinject"](_game_timer_service__WEBPACK_IMPORTED_MODULE_12__.GameTimerService));
-    };
-  }
-  static {
-    this.ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_13__["ɵɵdefineInjectable"]({
-      token: SyllogimousService,
-      factory: SyllogimousService.ɵfac,
-      providedIn: "root"
-    });
-  }
-}
-
-/***/ }),
-
 /***/ 3476:
 /*!*********************************************!*\
   !*** ./src/app/syllogimous/utils/logger.ts ***!
@@ -8194,11 +8289,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getCircularWays": () => (/* binding */ getCircularWays),
 /* harmony export */   "getLinearWays": () => (/* binding */ getLinearWays),
 /* harmony export */   "getMetaReplacer": () => (/* binding */ getMetaReplacer),
-/* harmony export */   "getRandomRuleInvalid": () => (/* binding */ getRandomRuleInvalid),
-/* harmony export */   "getRandomRuleValid": () => (/* binding */ getRandomRuleValid),
 /* harmony export */   "getRandomSymbols": () => (/* binding */ getRandomSymbols),
 /* harmony export */   "getRelation": () => (/* binding */ getRelation),
-/* harmony export */   "getSyllogism": () => (/* binding */ getSyllogism),
 /* harmony export */   "getSymbols": () => (/* binding */ getSymbols),
 /* harmony export */   "horizontalShuffleArrangement": () => (/* binding */ horizontalShuffleArrangement),
 /* harmony export */   "interpolateArrangementRelationship": () => (/* binding */ interpolateArrangementRelationship),
@@ -8240,22 +8332,6 @@ function shuffle(array) {
   }
   return array;
 }
-function getRandomRuleValid() {
-  return _constants_question_constants__WEBPACK_IMPORTED_MODULE_0__.VALID_RULES[Math.floor(Math.random() * _constants_question_constants__WEBPACK_IMPORTED_MODULE_0__.VALID_RULES.length)];
-}
-function getRandomRuleInvalid() {
-  let rule;
-  while (!rule || _constants_question_constants__WEBPACK_IMPORTED_MODULE_0__.VALID_RULES.includes(rule)) {
-    rule = "";
-    for (let i = 0; i < 3; i++) {
-      rule += Math.floor(Math.random() * 4); // Form
-    }
-
-    rule += 1 + Math.floor(Math.random() * 4); // Figure
-  }
-
-  return rule;
-}
 function extractSubjects(phrase) {
   return [...phrase.matchAll(/<span class="subject">(.*?)<\/span>/g)].map(a => a[1]);
 }
@@ -8282,42 +8358,6 @@ function getRandomSymbols(settings, length) {
     seen.add(rnd);
     return symbols[rnd];
   });
-}
-function getSyllogism(settings, s, p, m, rule) {
-  const _forms = !settings.enabled.negation ? _constants_question_constants__WEBPACK_IMPORTED_MODULE_0__.FORMS[0] : pickUniqueItems(_constants_question_constants__WEBPACK_IMPORTED_MODULE_0__.FORMS, 1).picked[0];
-  let major = _forms[+rule[0]];
-  let minor = _forms[+rule[1]];
-  let conclusion = _forms[+rule[2]];
-  const figure = +rule[3];
-  switch (figure) {
-    case 1:
-      major = major.replace("$", m);
-      major = major.replace("$", p);
-      minor = minor.replace("$", s);
-      minor = minor.replace("$", m);
-      break;
-    case 2:
-      major = major.replace("$", p);
-      major = major.replace("$", m);
-      minor = minor.replace("$", s);
-      minor = minor.replace("$", m);
-      break;
-    case 3:
-      major = major.replace("$", m);
-      major = major.replace("$", p);
-      minor = minor.replace("$", m);
-      minor = minor.replace("$", s);
-      break;
-    case 4:
-      major = major.replace("$", p);
-      major = major.replace("$", m);
-      minor = minor.replace("$", m);
-      minor = minor.replace("$", s);
-      break;
-  }
-  conclusion = conclusion.replace("$", s);
-  conclusion = conclusion.replace("$", p);
-  return [major, minor, conclusion];
 }
 function getMetaReplacer(settings, choosenPair, relations, negations) {
   const choosenSubjects = [...choosenPair.picked[0].matchAll(/<span class="subject">(.*?)<\/span>/g)];
@@ -8642,7 +8682,7 @@ function buildGraph(edgeList) {
   });
   return graph;
 }
-// Checks if two directed graphs (given as edge lists) are isomorphic
+/** Checks if two directed graphs (given as edge lists) are isomorphic */
 function areGraphsIsomorphic(edgeList1, edgeList2) {
   const graph1 = buildGraph(edgeList1);
   const graph2 = buildGraph(edgeList2);
@@ -8697,6 +8737,455 @@ function areGraphsIsomorphic(edgeList1, edgeList2) {
     return false;
   }
   return backtrack(0);
+}
+
+/***/ }),
+
+/***/ 9879:
+/*!******************************************************!*\
+  !*** ./src/app/syllogimous/utils/syllogism.utils.ts ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "formatSylPremise": () => (/* binding */ formatSylPremise),
+/* harmony export */   "generatePolysyllogism": () => (/* binding */ generatePolysyllogism),
+/* harmony export */   "getRandomRuleInvalid": () => (/* binding */ getRandomRuleInvalid),
+/* harmony export */   "getRandomRuleValid": () => (/* binding */ getRandomRuleValid),
+/* harmony export */   "getSyllogism": () => (/* binding */ getSyllogism)
+/* harmony export */ });
+/* harmony import */ var _constants_syllogism_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/syllogism.constants */ 4338);
+/* harmony import */ var _question_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./question.utils */ 8251);
+
+
+//    ____  __    ____     _____________   ____________  ___  __________  ____ 
+//   / __ \/ /   / __ \   / ____/ ____/ | / / ____/ __ \/   |/_  __/ __ \/ __ \
+//  / / / / /   / / / /  / / __/ __/ /  |/ / __/ / /_/ / /| | / / / / / / /_/ /
+// / /_/ / /___/ /_/ /  / /_/ / /___/ /|  / /___/ _, _/ ___ |/ / / /_/ / _, _/ 
+// \____/_____/_____/   \____/_____/_/ |_/_____/_/ |_/_/  |_/_/  \____/_/ |_|  
+function getRandomRuleValid() {
+  return _constants_syllogism_constants__WEBPACK_IMPORTED_MODULE_0__.VALID_RULES[Math.floor(Math.random() * _constants_syllogism_constants__WEBPACK_IMPORTED_MODULE_0__.VALID_RULES.length)];
+}
+function getRandomRuleInvalid() {
+  let rule;
+  while (!rule || _constants_syllogism_constants__WEBPACK_IMPORTED_MODULE_0__.VALID_RULES.includes(rule)) {
+    rule = "";
+    for (let i = 0; i < 3; i++) {
+      rule += Math.floor(Math.random() * 4); // Form
+    }
+
+    rule += 1 + Math.floor(Math.random() * 4); // Figure
+  }
+
+  return rule;
+}
+function getSyllogism(settings, s, p, m, rule) {
+  const _forms = !settings.enabled.negation ? _constants_syllogism_constants__WEBPACK_IMPORTED_MODULE_0__.FORMS[0] : (0,_question_utils__WEBPACK_IMPORTED_MODULE_1__.pickUniqueItems)(_constants_syllogism_constants__WEBPACK_IMPORTED_MODULE_0__.FORMS, 1).picked[0];
+  let major = _forms[+rule[0]];
+  let minor = _forms[+rule[1]];
+  let conclusion = _forms[+rule[2]];
+  const figure = +rule[3];
+  switch (figure) {
+    case 1:
+      major = major.replace("$", m);
+      major = major.replace("$", p);
+      minor = minor.replace("$", s);
+      minor = minor.replace("$", m);
+      break;
+    case 2:
+      major = major.replace("$", p);
+      major = major.replace("$", m);
+      minor = minor.replace("$", s);
+      minor = minor.replace("$", m);
+      break;
+    case 3:
+      major = major.replace("$", m);
+      major = major.replace("$", p);
+      minor = minor.replace("$", m);
+      minor = minor.replace("$", s);
+      break;
+    case 4:
+      major = major.replace("$", p);
+      major = major.replace("$", m);
+      minor = minor.replace("$", m);
+      minor = minor.replace("$", s);
+      break;
+  }
+  conclusion = conclusion.replace("$", s);
+  conclusion = conclusion.replace("$", p);
+  return [major, minor, conclusion];
+}
+//     _   _________       __   _____________   ____________  ___  __________  ____ 
+//    / | / / ____/ |     / /  / ____/ ____/ | / / ____/ __ \/   |/_  __/ __ \/ __ \
+//   /  |/ / __/  | | /| / /  / / __/ __/ /  |/ / __/ / /_/ / /| | / / / / / / /_/ /
+//  / /|  / /___  | |/ |/ /  / /_/ / /___/ /|  / /___/ _, _/ ___ |/ / / /_/ / _, _/ 
+// /_/ |_/_____/  |__/|__/   \____/_____/_/ |_/_____/_/ |_/_/  |_/_/  \____/_/ |_|  
+function sylNegate(premise) {
+  const [a, k, b] = premise;
+  const map = {
+    "all": [a, "some_not", b],
+    "no": [a, "some", b],
+    "some": [a, "no", b],
+    "some_not": [a, "all", b]
+  };
+  return map[k];
+}
+function sylUnion(a, b) {
+  const r = new Set(a);
+  for (const x of b) r.add(x);
+  return r;
+}
+function sylIntersect(a, b) {
+  const r = new Set();
+  for (const x of a) if (b.has(x)) r.add(x);
+  return r;
+}
+function sylIsConsistent(premises) {
+  const terms = new Set();
+  for (const [a,, b] of premises) {
+    terms.add(a);
+    terms.add(b);
+  }
+  if (!terms.size) return true;
+  const subset = new Map();
+  const disjoint = new Map();
+  for (const t of terms) {
+    subset.set(t, new Set([t]));
+    disjoint.set(t, new Set());
+  }
+  for (const [a, k, b] of premises) {
+    if (k === "all") subset.get(a).add(b);else if (k === "no") {
+      disjoint.get(a).add(b);
+      disjoint.get(b).add(a);
+    }
+  }
+  // Transitive closure of subset
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const x of terms) {
+      const sx = subset.get(x);
+      const initial = sx.size;
+      const extra = new Set();
+      for (const y of sx) for (const z of subset.get(y)) extra.add(z);
+      for (const z of extra) sx.add(z);
+      if (sx.size > initial) changed = true;
+    }
+  }
+  // Propagate disjointness through subset and symmetrize
+  changed = true;
+  while (changed) {
+    changed = false;
+    for (const x of terms) {
+      const dx = disjoint.get(x);
+      const initial = dx.size;
+      const extra = new Set();
+      for (const y of subset.get(x)) for (const z of disjoint.get(y)) extra.add(z);
+      for (const z of extra) dx.add(z);
+      if (dx.size > initial) changed = true;
+    }
+    for (const x of terms) for (const y of disjoint.get(x)) {
+      const dy = disjoint.get(y);
+      if (!dy.has(x)) {
+        dy.add(x);
+        changed = true;
+      }
+    }
+  }
+  // Existential import: a term must not be subset+disjoint of itself
+  for (const t of terms) {
+    if (sylIntersect(subset.get(t), disjoint.get(t)).size) return false;
+  }
+  for (const [a, k, b] of premises) {
+    if (k === "some") {
+      const mustIn = sylUnion(subset.get(a), subset.get(b));
+      const mustOut = sylUnion(disjoint.get(a), disjoint.get(b));
+      if (sylIntersect(mustIn, mustOut).size) return false;
+    } else if (k === "some_not") {
+      const mustIn = subset.get(a);
+      const mustOut = sylUnion(disjoint.get(a), new Set([b]));
+      if (sylIntersect(mustIn, mustOut).size) return false;
+    }
+  }
+  return true;
+}
+function sylEntails(premises, conclusion) {
+  return !sylIsConsistent([...premises, sylNegate(conclusion)]);
+}
+function sylApplySyllogism(premisesDict, figure, word1, word2, word3, kind1, kind2, kind3, addKind1) {
+  const setPair = (a, b, k) => {
+    if (!premisesDict[a]) premisesDict[a] = {};
+    premisesDict[a][b] = k;
+  };
+  switch (figure) {
+    case "1":
+      // M-P, S-M => S-P
+      if (addKind1) setPair(word1, word2, kind1);
+      setPair(word3, word1, kind2);
+      return [word3, word2, kind3];
+    case "2":
+      // P-M, S-M => S-P
+      if (addKind1) setPair(word1, word2, kind1);
+      setPair(word3, word2, kind2);
+      return [word3, word1, kind3];
+    case "3":
+      // M-P, M-S => S-P
+      if (addKind1) setPair(word1, word2, kind1);
+      setPair(word1, word3, kind2);
+      return [word3, word2, kind3];
+    case "4":
+      // P-M, M-S => S-P
+      if (addKind1) setPair(word1, word2, kind1);
+      setPair(word2, word3, kind2);
+      return [word3, word1, kind3];
+    default:
+      throw new Error("Invalid figure: " + figure);
+  }
+}
+function sylDictToList(premisesDict) {
+  const out = [];
+  for (const a of Object.keys(premisesDict)) {
+    for (const b of Object.keys(premisesDict[a])) {
+      out.push([a, premisesDict[a][b], b]);
+    }
+  }
+  return out;
+}
+function sylRandPick(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+function sylShuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+function sylPairKey([a,, b]) {
+  return a < b ? `${a}|${b}` : `${b}|${a}`;
+}
+function* sylShortPremisePaths(premises, w1, w2, maxLen) {
+  const adj = new Map();
+  premises.forEach((p, idx) => {
+    const [a,, b] = p;
+    if (!adj.has(a)) adj.set(a, []);
+    if (!adj.has(b)) adj.set(b, []);
+    adj.get(a).push({
+      idx,
+      other: b
+    });
+    adj.get(b).push({
+      idx,
+      other: a
+    });
+  });
+  const usedEdge = new Set();
+  const usedNode = new Set([w1]);
+  const stack = [];
+  function* dfs(node) {
+    if (node === w2 && stack.length > 0) {
+      yield stack.slice();
+      return;
+    }
+    if (stack.length >= maxLen) return;
+    for (const {
+      idx,
+      other
+    } of adj.get(node) || []) {
+      if (usedEdge.has(idx)) continue;
+      if (usedNode.has(other) && other !== w2) continue;
+      usedEdge.add(idx);
+      usedNode.add(other);
+      stack.push(idx);
+      yield* dfs(other);
+      stack.pop();
+      usedNode.delete(other);
+      usedEdge.delete(idx);
+    }
+  }
+  yield* dfs(w1);
+}
+function sylHasShorterProof(premises, conclusion, chainDepth) {
+  const [w1,, w2] = conclusion;
+  for (const idxs of sylShortPremisePaths(premises, w1, w2, chainDepth - 1)) {
+    const subset = idxs.map(i => premises[i]);
+    if (sylEntails(subset, conclusion)) return true;
+  }
+  return false;
+}
+function sylRelationDeterminableShort(premises, w1, w2, chainDepth) {
+  for (const idxs of sylShortPremisePaths(premises, w1, w2, chainDepth - 1)) {
+    const subset = idxs.map(i => premises[i]);
+    for (const [a, b] of [[w1, w2], [w2, w1]]) {
+      for (const k of _constants_syllogism_constants__WEBPACK_IMPORTED_MODULE_0__.SYL_KINDS) {
+        if (sylEntails(subset, [a, k, b])) return true;
+      }
+    }
+  }
+  return false;
+}
+function generatePolysyllogism(opts) {
+  const {
+    nPremises,
+    chainDepth,
+    termPool,
+    trueConclusion
+  } = opts;
+  if (chainDepth < 1) throw new Error("chainDepth must be >= 1");
+  if (chainDepth > nPremises) throw new Error("chainDepth must be <= nPremises");
+  const chainTermsNeeded = chainDepth + 1;
+  const numDistractors = nPremises - chainDepth;
+  if (termPool.length < chainTermsNeeded) {
+    throw new Error("not enough terms in termPool");
+  }
+  while (true) {
+    const pool = sylShuffle([...termPool]);
+    const chainTerms = pool.slice(0, chainTermsNeeded);
+    const distractorTerms = pool;
+    const premisesDict = {};
+    let w1, w2, conclusion;
+    let failed = false;
+    if (chainDepth === 1) {
+      const [wA, wB] = chainTerms;
+      const inf = sylRandPick(_constants_syllogism_constants__WEBPACK_IMPORTED_MODULE_0__.SYL_IMMEDIATE_INFERENCES);
+      premisesDict[wA] = {
+        [wB]: inf.kind
+      };
+      w1 = inf.swap ? wB : wA;
+      w2 = inf.swap ? wA : wB;
+      conclusion = inf.conclKind;
+    } else {
+      const [word1, word2, word3, ...otherWords] = chainTerms;
+      const initKey = sylRandPick(_constants_syllogism_constants__WEBPACK_IMPORTED_MODULE_0__.SYL_TRUE_CONCLUSIONS_KEYS);
+      const [k1, k2, fig] = initKey.split(",");
+      const k3 = sylRandPick(_constants_syllogism_constants__WEBPACK_IMPORTED_MODULE_0__.SYL_TRUE_CONCLUSIONS[initKey]);
+      [w1, w2, conclusion] = sylApplySyllogism(premisesDict, fig, word1, word2, word3, k1, k2, k3, true);
+      for (let i = 0; i < chainDepth - 2; i++) {
+        const newWord = otherWords[i];
+        const kind1 = conclusion;
+        const variants = [];
+        for (const key of _constants_syllogism_constants__WEBPACK_IMPORTED_MODULE_0__.SYL_TRUE_CONCLUSIONS_KEYS) {
+          const [pK1, pK2, pFig] = key.split(",");
+          if (pK1 !== kind1) continue;
+          for (const k3i of _constants_syllogism_constants__WEBPACK_IMPORTED_MODULE_0__.SYL_TRUE_CONCLUSIONS[key]) {
+            variants.push([pK2, pFig, k3i]);
+          }
+        }
+        if (variants.length === 0) {
+          failed = true;
+          break;
+        }
+        const [kind2, figure_i, kind3] = sylRandPick(variants);
+        [w1, w2, conclusion] = sylApplySyllogism(premisesDict, figure_i, w1, w2, newWord, kind1, kind2, kind3, false);
+      }
+    }
+    if (failed) continue;
+    let finalConclusion = [w1, conclusion, w2];
+    const distractorPremises = [];
+    const chainPremises = sylDictToList(premisesDict);
+    const seenKeys = new Set(chainPremises.map(sylPairKey));
+    let dFailed = false;
+    for (let i = 0; i < numDistractors; i++) {
+      let placed = false;
+      for (let tries = 0; tries < 200; tries++) {
+        let i1, i2;
+        do {
+          i1 = sylRandPick(distractorTerms);
+          i2 = sylRandPick(distractorTerms);
+        } while (i1 === i2 || !chainTerms.includes(i1) && !chainTerms.includes(i2));
+        const trial = [i1, sylRandPick(_constants_syllogism_constants__WEBPACK_IMPORTED_MODULE_0__.SYL_KINDS), i2];
+        const key = sylPairKey(trial);
+        if (seenKeys.has(key)) continue;
+        const current = [...chainPremises, ...distractorPremises];
+        if (sylEntails(current, trial)) continue;
+        if (!sylIsConsistent([...current, trial])) continue;
+        if (sylHasShorterProof([...current, trial], finalConclusion, chainDepth)) continue; // strict chainDepth [true conclusion]
+        distractorPremises.push(trial);
+        seenKeys.add(key);
+        placed = true;
+        break;
+      }
+      if (!placed) {
+        dFailed = true;
+        break;
+      }
+    }
+    if (dFailed) continue;
+    const premises = [...sylDictToList(premisesDict), ...distractorPremises];
+    let conclusionIsTrue = true;
+    if (premises.length !== nPremises) continue;
+    if (!sylIsConsistent(premises)) continue;
+    if (!sylEntails(premises, finalConclusion)) continue;
+    if (!trueConclusion) {
+      const [cl, ck, cr] = finalConclusion;
+      const alternatives = [];
+      for (const k of _constants_syllogism_constants__WEBPACK_IMPORTED_MODULE_0__.SYL_KINDS) {
+        for (const [a, b] of [[cl, cr], [cr, cl]]) {
+          if (a === cl && b === cr && k === ck) continue;
+          const alt = [a, k, b];
+          if (sylEntails(premises, alt)) continue;
+          if (sylRelationDeterminableShort(premises, a, b, chainDepth)) continue; // strict chainDepth [false conclusion]
+          alternatives.push(alt);
+        }
+      }
+      finalConclusion = alternatives.length ? sylRandPick(alternatives) : sylNegate(finalConclusion);
+      conclusionIsTrue = false;
+    }
+    sylShuffle(premises);
+    if (!sylIsConsistent(premises)) {
+      console.log("Internal: premises are inconsistent");
+      continue;
+    }
+    if (conclusionIsTrue) {
+      if (!sylEntails(premises, finalConclusion)) {
+        console.log("Internal: true conclusion not entailed");
+        continue;
+      }
+    } else {
+      if (sylEntails(premises, finalConclusion)) {
+        console.log("Internal: false conclusion is entailed");
+        continue;
+      }
+      if (sylRelationDeterminableShort(premises, w1, w2, chainDepth)) {
+        // strict chainDepth [false conclusion]
+        continue;
+      }
+    }
+    return {
+      premises,
+      conclusion: finalConclusion,
+      conclusionIsTrue
+    };
+  }
+}
+function formatSylPremise([a, k, b], negated = false) {
+  const A = `<span class="subject">${a}</span>`;
+  const B = `<span class="subject">${b}</span>`;
+  if (!negated) {
+    switch (k) {
+      case "all":
+        return `All ${A} is ${B}`;
+      case "no":
+        return `No ${A} is ${B}`;
+      case "some":
+        return `Some ${A} is ${B}`;
+      case "some_not":
+        return `Some ${A} is not ${B}`;
+    }
+  } else {
+    switch (k) {
+      case "all":
+        return `<span class="is-negated">No</span> ${A} is ${B}`;
+      case "no":
+        return `<span class="is-negated">All</span> ${A} is ${B}`;
+      case "some":
+        return `Some ${A} <span class="is-negated">is not</span> ${B}`;
+      case "some_not":
+        return `Some ${A} <span class="is-negated">is</span> ${B}`;
+    }
+  }
 }
 
 /***/ }),

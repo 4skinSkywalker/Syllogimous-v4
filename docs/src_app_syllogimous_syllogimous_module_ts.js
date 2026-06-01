@@ -12,7 +12,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "DailyProgressComponent": () => (/* binding */ DailyProgressComponent)
 /* harmony export */ });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _services_syllogimous_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/syllogimous.service */ 3943);
+/* harmony import */ var _services_game_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/game.service */ 6513);
 /* harmony import */ var _services_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/progress-and-performance.service */ 2740);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ 4666);
 /* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ 4534);
@@ -73,12 +73,12 @@ function DailyProgressComponent_ng_container_10_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", ctx_r1.trainingUnitPercentage.wrong, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](ctx_r1.sylSrv.question.type);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](ctx_r1.game.question.type);
   }
 }
 class DailyProgressComponent {
-  constructor(sylSrv, progressAndPerformanceService) {
-    this.sylSrv = sylSrv;
+  constructor(game, progressAndPerformanceService) {
+    this.game = game;
     this.progressAndPerformanceService = progressAndPerformanceService;
     this.feedbackPage = false;
     this.playgroundMode = false;
@@ -96,11 +96,11 @@ class DailyProgressComponent {
     const today = progressAndPerformanceService.getToday();
     this.dailyProgressPercentage = progressAndPerformanceService.calcDailyProgress(today);
     this.weeklyProgressPercentage = progressAndPerformanceService.calcWeeklyProgress(today);
-    this.trainingUnitPercentage = progressAndPerformanceService.calcTrainingUnitPercentages(sylSrv.question.type);
+    this.trainingUnitPercentage = progressAndPerformanceService.calcTrainingUnitPercentages(game.question.type);
   }
   static {
     this.ɵfac = function DailyProgressComponent_Factory(t) {
-      return new (t || DailyProgressComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_0__.SyllogimousService), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_1__.ProgressAndPerformanceService));
+      return new (t || DailyProgressComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_game_service__WEBPACK_IMPORTED_MODULE_0__.GameService), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_1__.ProgressAndPerformanceService));
     };
   }
   static {
@@ -229,9 +229,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "FeedbackComponent": () => (/* binding */ FeedbackComponent)
 /* harmony export */ });
-/* harmony import */ var _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/syllogimous.constants */ 9182);
+/* harmony import */ var _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/game.constants */ 6904);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _services_syllogimous_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/syllogimous.service */ 3943);
+/* harmony import */ var _services_game_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/game.service */ 6513);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ 124);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ 4666);
 /* harmony import */ var _components_card_card_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/card/card.component */ 8640);
@@ -263,14 +263,14 @@ const _c0 = function (a0, a1) {
   };
 };
 class FeedbackComponent {
-  constructor(sylSrv, router) {
-    this.sylSrv = sylSrv;
+  constructor(game, router) {
+    this.game = game;
     this.router = router;
-    this.EnumScreens = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.EnumScreens;
+    this.EnumScreens = _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.EnumScreens;
   }
   static {
     this.ɵfac = function FeedbackComponent_Factory(t) {
-      return new (t || FeedbackComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_1__.SyllogimousService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__.Router));
+      return new (t || FeedbackComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_services_game_service__WEBPACK_IMPORTED_MODULE_1__.GameService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__.Router));
     };
   }
   static {
@@ -295,7 +295,7 @@ class FeedbackComponent {
           _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]()();
           _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](9, "div")(10, "button", 6);
           _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function FeedbackComponent_Template_button_click_10_listener() {
-            return ctx.sylSrv.play();
+            return ctx.game.play();
           });
           _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](11, " Play ");
           _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](12, "i", 7);
@@ -303,9 +303,9 @@ class FeedbackComponent {
         }
         if (rf & 2) {
           _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](2);
-          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("feedbackPage", true)("playgroundMode", ctx.sylSrv.settings === ctx.sylSrv.playgroundSettings);
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("feedbackPage", true)("playgroundMode", ctx.game.settings === ctx.game.playgroundSettings);
           _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpureFunction2"](3, _c0, ctx.sylSrv.question.userAnswer === undefined, ctx.sylSrv.question.userAnswer === ctx.sylSrv.question.isValid));
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpureFunction2"](3, _c0, ctx.game.question.userAnswer === undefined, ctx.game.question.userAnswer === ctx.game.question.isValid));
         }
       },
       dependencies: [_angular_common__WEBPACK_IMPORTED_MODULE_6__.NgIf, _components_card_card_component__WEBPACK_IMPORTED_MODULE_2__.CardComponent, _components_progress_and_performance_progress_and_performance_component__WEBPACK_IMPORTED_MODULE_3__.DailyProgressComponent],
@@ -329,9 +329,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var C_Users_stopc_Documenti_GitHub_Syllogimous_v4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 1670);
 /* harmony import */ var _constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../constants/local-storage.constants */ 6376);
 /* harmony import */ var _settings_modal_timer_settings_modal_timer_settings_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../settings/modal-timer-settings/modal-timer-settings.component */ 3135);
-/* harmony import */ var _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../constants/syllogimous.constants */ 9182);
+/* harmony import */ var _constants_game_constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../constants/game.constants */ 6904);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _services_syllogimous_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/syllogimous.service */ 3943);
+/* harmony import */ var _services_game_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/game.service */ 6513);
 /* harmony import */ var _services_game_timer_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../services/game-timer.service */ 6002);
 /* harmony import */ var _services_stats_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../services/stats.service */ 1750);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/router */ 124);
@@ -434,7 +434,7 @@ function GameComponent_ng_template_0_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵpureFunction2"](1, _c0, ctx_r1.sylSrv.question.instructions, ctx_r1.sylSrv.question.notes));
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵpureFunction2"](1, _c0, ctx_r1.game.question.instructions, ctx_r1.game.question.notes));
   }
 }
 function GameComponent_ngb_progressbar_5_Template(rf, ctx) {
@@ -530,7 +530,7 @@ function GameComponent_ng_container_11_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngForOf", ctx_r6.sylSrv.question.conclusion);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngForOf", ctx_r6.game.question.conclusion);
   }
 }
 function GameComponent_ng_template_12_ng_template_0_Template(rf, ctx) {
@@ -544,7 +544,7 @@ function GameComponent_ng_template_12_ng_template_0_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r41 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵnextContext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("innerHTML", ctx_r41.sylSrv.question.conclusion, _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵsanitizeHtml"]);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("innerHTML", ctx_r41.game.question.conclusion, _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵsanitizeHtml"]);
   }
 }
 function GameComponent_ng_template_12_Template(rf, ctx) {
@@ -610,7 +610,7 @@ function GameComponent_div_27_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r11 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](3);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx_r11.sylSrv.question.conclusion);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx_r11.game.question.conclusion);
   }
 }
 function GameComponent_ng_template_28_Template(rf, ctx) {
@@ -624,7 +624,7 @@ function GameComponent_ng_template_28_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r13 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](3);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("innerHTML", ctx_r13.sylSrv.question.conclusion, _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵsanitizeHtml"]);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("innerHTML", ctx_r13.game.question.conclusion, _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵsanitizeHtml"]);
   }
 }
 function GameComponent_button_31_Template(rf, ctx) {
@@ -634,7 +634,7 @@ function GameComponent_button_31_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵlistener"]("click", function GameComponent_button_31_Template_button_click_0_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵrestoreView"](_r50);
       const ctx_r49 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵnextContext"]();
-      return _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵresetView"](ctx_r49.sylSrv.checkQuestion(true));
+      return _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵresetView"](ctx_r49.game.checkQuestion(true));
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](1, "True");
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
@@ -647,7 +647,7 @@ function GameComponent_button_34_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵlistener"]("click", function GameComponent_button_34_Template_button_click_0_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵrestoreView"](_r52);
       const ctx_r51 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵnextContext"]();
-      return _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵresetView"](ctx_r51.sylSrv.checkQuestion(true));
+      return _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵresetView"](ctx_r51.game.checkQuestion(true));
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](1, "True");
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
@@ -659,9 +659,9 @@ const _c1 = function (a0) {
   };
 };
 class GameComponent {
-  constructor(sylSrv, gameTimerService, statsService, router) {
+  constructor(game, gameTimerService, statsService, router) {
     var _this = this;
-    this.sylSrv = sylSrv;
+    this.game = game;
     this.gameTimerService = gameTimerService;
     this.statsService = statsService;
     this.router = router;
@@ -670,13 +670,13 @@ class GameComponent {
     this.trueButtonToTheRight = false;
     this.kickTimer = /*#__PURE__*/(0,C_Users_stopc_Documenti_GitHub_Syllogimous_v4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       yield _this.gameTimerService.start(_this.timerTimeSeconds);
-      _this.sylSrv.checkQuestion();
+      _this.game.checkQuestion();
     });
     this.timerType = localStorage.getItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_1__.LS_TIMER) || '0';
     this.gameMode = localStorage.getItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_1__.LS_GAME_MODE) || '0';
     this.trueButtonToTheRight = Math.random() > 0.5;
-    if (this.sylSrv.question.conclusion === "!") {
-      this.router.navigate([_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_3__.EnumScreens.Start]);
+    if (this.game.question.conclusion === "!") {
+      this.router.navigate([_constants_game_constants__WEBPACK_IMPORTED_MODULE_3__.EnumScreens.Start]);
     }
   }
   ngOnInit() {
@@ -685,7 +685,7 @@ class GameComponent {
         {
           console.log("Custom timer");
           const customTimers = JSON.parse(localStorage.getItem(_settings_modal_timer_settings_modal_timer_settings_component__WEBPACK_IMPORTED_MODULE_2__.LS_CUSTOM_TIMERS_KEY) || "{}");
-          this.timerTimeSeconds = customTimers[this.sylSrv.question.type] || 90;
+          this.timerTimeSeconds = customTimers[this.game.question.type] || 90;
           this.kickTimer();
           break;
         }
@@ -699,8 +699,8 @@ class GameComponent {
           const negationBonus = 3;
           const metaRelationBonus = 4;
           this.timerTimeSeconds = 90;
-          const questionType = this.sylSrv.question.type;
-          const questionPremises = this.sylSrv.question.premises.length;
+          const questionType = this.game.question.type;
+          const questionPremises = this.game.question.premises.length;
           const {
             typeBasedStats
           } = this.statsService.calcStats(this.timerType);
@@ -722,8 +722,8 @@ class GameComponent {
               avgTimeToRespond += newLevelBonus; // Bonus for the new level
             }
 
-            avgTimeToRespond += negationBonus * this.sylSrv.question.negations;
-            avgTimeToRespond += metaRelationBonus * this.sylSrv.question.metaRelations;
+            avgTimeToRespond += negationBonus * this.game.question.negations;
+            avgTimeToRespond += metaRelationBonus * this.game.question.metaRelations;
             this.timerTimeSeconds = Math.floor(Math.max(0, avgTimeToRespond));
           }
           this.kickTimer();
@@ -740,7 +740,7 @@ class GameComponent {
   }
   static {
     this.ɵfac = function GameComponent_Factory(t) {
-      return new (t || GameComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_4__.SyllogimousService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_services_game_timer_service__WEBPACK_IMPORTED_MODULE_5__.GameTimerService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_services_stats_service__WEBPACK_IMPORTED_MODULE_6__.StatsService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_9__.Router));
+      return new (t || GameComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_services_game_service__WEBPACK_IMPORTED_MODULE_4__.GameService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_services_game_timer_service__WEBPACK_IMPORTED_MODULE_5__.GameTimerService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_services_stats_service__WEBPACK_IMPORTED_MODULE_6__.StatsService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_9__.Router));
     };
   }
   static {
@@ -795,7 +795,7 @@ class GameComponent {
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](31, GameComponent_button_31_Template, 2, 0, "button", 21);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](32, "button", 22);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵlistener"]("click", function GameComponent_Template_button_click_32_listener() {
-            return ctx.sylSrv.checkQuestion(false);
+            return ctx.game.checkQuestion(false);
           });
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](33, "False");
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
@@ -815,11 +815,11 @@ class GameComponent {
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](1);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("interval", 999999999)("showNavigationArrows", false)("showNavigationIndicators", false);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](2);
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", (ctx.sylSrv.question.instructions == null ? null : ctx.sylSrv.question.instructions.length) || (ctx.sylSrv.question.notes == null ? null : ctx.sylSrv.question.notes.length));
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", (ctx.game.question.instructions == null ? null : ctx.game.question.instructions.length) || (ctx.game.question.notes == null ? null : ctx.game.question.notes.length));
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](1);
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngForOf", ctx.sylSrv.question.premises);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngForOf", ctx.game.question.premises);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](1);
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx.Array.isArray(ctx.sylSrv.question.conclusion))("ngIfElse", _r7);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx.Array.isArray(ctx.game.question.conclusion))("ngIfElse", _r7);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](4);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("disabled", ctx.gameMode === "2");
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](6);
@@ -827,9 +827,9 @@ class GameComponent {
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](1);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngTemplateOutlet", _r0);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](4);
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx.sylSrv.question.premises);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx.game.question.premises);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](1);
-          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx.Array.isArray(ctx.sylSrv.question.conclusion))("ngIfElse", _r12);
+          _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx.Array.isArray(ctx.game.question.conclusion))("ngIfElse", _r12);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](4);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", !ctx.trueButtonToTheRight);
           _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](3);
@@ -854,9 +854,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "HistoryComponent": () => (/* binding */ HistoryComponent)
 /* harmony export */ });
-/* harmony import */ var _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/syllogimous.constants */ 9182);
+/* harmony import */ var _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/game.constants */ 6904);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _services_syllogimous_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/syllogimous.service */ 3943);
+/* harmony import */ var _services_game_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/game.service */ 6513);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ 124);
 /* harmony import */ var src_app_services_toast_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/toast.service */ 4465);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ 4666);
@@ -880,7 +880,7 @@ function HistoryComponent_div_2_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function HistoryComponent_div_2_Template_button_click_3_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r4);
       const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
-      return _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵresetView"](ctx_r3.sylSrv.playArcadeMode());
+      return _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵresetView"](ctx_r3.game.playArcadeMode());
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](4, " Play ");
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](5, "i", 11);
@@ -1079,18 +1079,18 @@ function HistoryComponent_div_5_Template(rf, ctx) {
   }
 }
 class HistoryComponent {
-  constructor(sylSrv, router, toaster) {
-    this.sylSrv = sylSrv;
+  constructor(game, router, toaster) {
+    this.game = game;
     this.router = router;
     this.toaster = toaster;
     this.Array = Array;
-    this.EnumScreens = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.EnumScreens;
+    this.EnumScreens = _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.EnumScreens;
     this.allQuestions = [];
     this.questions = [];
     this.sliceIdx = -25;
   }
   ngOnInit() {
-    this.allQuestions = this.sylSrv.questions;
+    this.allQuestions = this.game.questions;
     this.loadMoreQuestions();
   }
   loadMoreQuestions() {
@@ -1111,7 +1111,7 @@ class HistoryComponent {
   }
   static {
     this.ɵfac = function HistoryComponent_Factory(t) {
-      return new (t || HistoryComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_1__.SyllogimousService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_toast_service__WEBPACK_IMPORTED_MODULE_2__.ToastService));
+      return new (t || HistoryComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_services_game_service__WEBPACK_IMPORTED_MODULE_1__.GameService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_toast_service__WEBPACK_IMPORTED_MODULE_2__.ToastService));
     };
   }
   static {
@@ -1170,18 +1170,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "IntroComponent": () => (/* binding */ IntroComponent)
 /* harmony export */ });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _services_syllogimous_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/syllogimous.service */ 3943);
+/* harmony import */ var _services_game_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/game.service */ 6513);
 /* harmony import */ var _components_card_card_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/card/card.component */ 8640);
 
 
 
 class IntroComponent {
-  constructor(sylSrv) {
-    this.sylSrv = sylSrv;
+  constructor(game) {
+    this.game = game;
   }
   static {
     this.ɵfac = function IntroComponent_Factory(t) {
-      return new (t || IntroComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_0__.SyllogimousService));
+      return new (t || IntroComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_game_service__WEBPACK_IMPORTED_MODULE_0__.GameService));
     };
   }
   static {
@@ -1228,7 +1228,7 @@ class IntroComponent {
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function IntroComponent_Template_button_click_28_listener() {
             _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r1);
             const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](24);
-            return _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵresetView"](ctx.sylSrv.skipIntro(_r0.checked));
+            return _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵresetView"](ctx.game.skipIntro(_r0.checked));
           });
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](29, "Skip Intro");
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()()()();
@@ -1252,7 +1252,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "OtherGamesComponent": () => (/* binding */ OtherGamesComponent)
 /* harmony export */ });
-/* harmony import */ var _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/syllogimous.constants */ 9182);
+/* harmony import */ var _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/game.constants */ 6904);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 2560);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ 124);
 /* harmony import */ var _components_card_card_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/card/card.component */ 8640);
@@ -1263,7 +1263,7 @@ __webpack_require__.r(__webpack_exports__);
 class OtherGamesComponent {
   constructor(router) {
     this.router = router;
-    this.EnumScreens = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.EnumScreens;
+    this.EnumScreens = _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.EnumScreens;
   }
   static {
     this.ɵfac = function OtherGamesComponent_Factory(t) {
@@ -1351,12 +1351,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var C_Users_stopc_Documenti_GitHub_Syllogimous_v4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 1670);
 /* harmony import */ var src_app_syllogimous_models_settings_models__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/syllogimous/models/settings.models */ 5003);
-/* harmony import */ var _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants/syllogimous.constants */ 9182);
+/* harmony import */ var _constants_game_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants/game.constants */ 6904);
 /* harmony import */ var _constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../constants/local-storage.constants */ 6376);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 2560);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/router */ 124);
 /* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ 4534);
-/* harmony import */ var src_app_syllogimous_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/syllogimous/services/syllogimous.service */ 3943);
+/* harmony import */ var src_app_syllogimous_services_game_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/syllogimous/services/game.service */ 6513);
 /* harmony import */ var _shared_components_dynamic_form_dynamic_form_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../shared/components/dynamic-form/dynamic-form.component */ 1224);
 /* harmony import */ var _components_card_card_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/card/card.component */ 8640);
 /* harmony import */ var _settings_timer_choose_timer_choose_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../settings/timer-choose/timer-choose.component */ 1532);
@@ -1412,11 +1412,11 @@ function decomposeCamelCase(val) {
   return splitted.map(x => capitalize(x)).join(" ");
 }
 class PlaygroundModeComponent {
-  constructor(router, modalService, sylSrv) {
+  constructor(router, modalService, game) {
     this.router = router;
     this.modalService = modalService;
-    this.sylSrv = sylSrv;
-    this.EnumScreens = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_2__.EnumScreens;
+    this.game = game;
+    this.EnumScreens = _constants_game_constants__WEBPACK_IMPORTED_MODULE_2__.EnumScreens;
     this.fields = [];
     this.formData = {};
     this.validationError = null;
@@ -1493,10 +1493,10 @@ class PlaygroundModeComponent {
         }).result;
         return;
       }
-      _this.sylSrv.playgroundSettings = settings;
+      _this.game.playgroundSettings = settings;
       console.log("Playground settings", settings);
       _this.savePlaygroundSettings(settings);
-      _this.sylSrv.play();
+      _this.game.play();
     })();
   }
   loadPlaygroundSettings() {
@@ -1513,7 +1513,7 @@ class PlaygroundModeComponent {
   }
   static {
     this.ɵfac = function PlaygroundModeComponent_Factory(t) {
-      return new (t || PlaygroundModeComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_10__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵdirectiveInject"](_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_11__.NgbModal), _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵdirectiveInject"](src_app_syllogimous_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_4__.SyllogimousService));
+      return new (t || PlaygroundModeComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_10__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵdirectiveInject"](_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_11__.NgbModal), _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵdirectiveInject"](src_app_syllogimous_services_game_service__WEBPACK_IMPORTED_MODULE_4__.GameService));
     };
   }
   static {
@@ -1590,10 +1590,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "StartComponent": () => (/* binding */ StartComponent)
 /* harmony export */ });
-/* harmony import */ var _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/syllogimous.constants */ 9182);
+/* harmony import */ var _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/game.constants */ 6904);
 /* harmony import */ var src_app_utils_date__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/utils/date */ 9322);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _services_syllogimous_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/syllogimous.service */ 3943);
+/* harmony import */ var _services_game_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/game.service */ 6513);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ 124);
 /* harmony import */ var _services_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/progress-and-performance.service */ 2740);
 /* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ 4534);
@@ -1609,15 +1609,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class StartComponent {
-  constructor(sylSrv, router, progressAndPerformanceService) {
-    this.sylSrv = sylSrv;
+  constructor(game, router, progressAndPerformanceService) {
+    this.game = game;
     this.router = router;
     this.progressAndPerformanceService = progressAndPerformanceService;
-    this.EnumScreens = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.EnumScreens;
+    this.EnumScreens = _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.EnumScreens;
     this.formatTime = src_app_utils_date__WEBPACK_IMPORTED_MODULE_1__.formatTime;
-    this.TIER_SCORE_RANGES = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.TIER_SCORE_RANGES;
-    this.tiers = Object.values(_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.EnumTiers);
-    this.nextTier = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.EnumTiers.Savant;
+    this.TIER_SCORE_RANGES = _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.TIER_SCORE_RANGES;
+    this.tiers = Object.values(_constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.EnumTiers);
+    this.nextTier = _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.EnumTiers.Savant;
     this.pointsRemaining = 0;
     this.questions = [];
     this.correctQs = [];
@@ -1631,10 +1631,10 @@ class StartComponent {
     this.timePlayedThisWeek = progressAndPerformanceService.getTimePlayedThisWeek(progressAndPerformanceService.getToday());
   }
   ngOnInit() {
-    const currTierIdx = this.tiers.findIndex(tier => tier === this.sylSrv.tier);
-    this.nextTier = this.tiers[currTierIdx + 1] || _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.NO_DATA;
-    this.pointsRemaining = this.nextTier !== _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.NO_DATA ? _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.TIER_SCORE_RANGES[this.nextTier].minScore - this.sylSrv.score : 0;
-    this.questions = this.sylSrv.questions;
+    const currTierIdx = this.tiers.findIndex(tier => tier === this.game.tier);
+    this.nextTier = this.tiers[currTierIdx + 1] || _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.NO_DATA;
+    this.pointsRemaining = this.nextTier !== _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.NO_DATA ? _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.TIER_SCORE_RANGES[this.nextTier].minScore - this.game.score : 0;
+    this.questions = this.game.questions;
     this.correctQs = this.questions.filter(q => q.userAnswer !== undefined && q.isValid === q.userAnswer);
     this.incorrectQs = this.questions.filter(q => q.userAnswer !== undefined && q.isValid !== q.userAnswer);
     this.unansweredQs = this.questions.filter(q => q.userAnswer === undefined);
@@ -1658,7 +1658,7 @@ class StartComponent {
   }
   static {
     this.ɵfac = function StartComponent_Factory(t) {
-      return new (t || StartComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdirectiveInject"](_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_2__.SyllogimousService), _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_7__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdirectiveInject"](_services_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_3__.ProgressAndPerformanceService));
+      return new (t || StartComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdirectiveInject"](_services_game_service__WEBPACK_IMPORTED_MODULE_2__.GameService), _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_7__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdirectiveInject"](_services_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_3__.ProgressAndPerformanceService));
     };
   }
   static {
@@ -1733,7 +1733,7 @@ class StartComponent {
           _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]()()();
           _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](52, "div", 8)(53, "button", 9);
           _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function StartComponent_Template_button_click_53_listener() {
-            return ctx.sylSrv.playArcadeMode();
+            return ctx.game.playArcadeMode();
           });
           _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](54, "Arcade");
           _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
@@ -1746,7 +1746,7 @@ class StartComponent {
         }
         if (rf & 2) {
           _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](8);
-          _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate2"]("", ctx.sylSrv.tier, " ", ctx.sylSrv.score, " pts ");
+          _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate2"]("", ctx.game.tier, " ", ctx.game.score, " pts ");
           _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](2);
           _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate1"]("(next ", ctx.nextTier, "");
           _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](1);
@@ -1786,12 +1786,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "AccuracyStatsComponent": () => (/* binding */ AccuracyStatsComponent)
 /* harmony export */ });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var src_app_syllogimous_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/syllogimous/services/syllogimous.service */ 3943);
+/* harmony import */ var src_app_syllogimous_services_game_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/syllogimous/services/game.service */ 6513);
 
 
 class AccuracyStatsComponent {
-  constructor(sylSrv) {
-    this.sylSrv = sylSrv;
+  constructor(game) {
+    this.game = game;
     this.questions = [];
     this.correctQs = [];
     this.incorrectQs = [];
@@ -1800,7 +1800,7 @@ class AccuracyStatsComponent {
     this.longestStreak = [];
   }
   ngOnInit() {
-    this.questions = this.sylSrv.questions;
+    this.questions = this.game.questions;
     this.correctQs = this.questions.filter(q => q.userAnswer !== undefined && q.isValid === q.userAnswer);
     this.incorrectQs = this.questions.filter(q => q.userAnswer !== undefined && q.isValid !== q.userAnswer);
     this.unansweredQs = this.questions.filter(q => q.userAnswer === undefined);
@@ -1824,7 +1824,7 @@ class AccuracyStatsComponent {
   }
   static {
     this.ɵfac = function AccuracyStatsComponent_Factory(t) {
-      return new (t || AccuracyStatsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](src_app_syllogimous_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_0__.SyllogimousService));
+      return new (t || AccuracyStatsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](src_app_syllogimous_services_game_service__WEBPACK_IMPORTED_MODULE_0__.GameService));
     };
   }
   static {
@@ -1901,18 +1901,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "ErrorAnalysisComponent": () => (/* binding */ ErrorAnalysisComponent)
 /* harmony export */ });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var src_app_syllogimous_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/syllogimous/services/syllogimous.service */ 3943);
+/* harmony import */ var src_app_syllogimous_services_game_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/syllogimous/services/game.service */ 6513);
 
 
 class ErrorAnalysisComponent {
-  constructor(sylSrv) {
-    this.sylSrv = sylSrv;
+  constructor(game) {
+    this.game = game;
     this.questions = [];
     this.mostCommonMistake = "No Mistakes Yet";
     this.leastCommonMistake = "No Mistakes Yet";
   }
   ngOnInit() {
-    this.questions = this.sylSrv.questions;
+    this.questions = this.game.questions;
     const typeMistakesCount = {};
     this.questions.filter(q => q.isValid !== q.userAnswer).forEach(q => {
       typeMistakesCount[q.type] = typeMistakesCount[q.type] || 0;
@@ -1926,7 +1926,7 @@ class ErrorAnalysisComponent {
   }
   static {
     this.ɵfac = function ErrorAnalysisComponent_Factory(t) {
-      return new (t || ErrorAnalysisComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](src_app_syllogimous_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_0__.SyllogimousService));
+      return new (t || ErrorAnalysisComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](src_app_syllogimous_services_game_service__WEBPACK_IMPORTED_MODULE_0__.GameService));
     };
   }
   static {
@@ -1982,7 +1982,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "StatsComponent": () => (/* binding */ StatsComponent)
 /* harmony export */ });
-/* harmony import */ var _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/syllogimous.constants */ 9182);
+/* harmony import */ var _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/game.constants */ 6904);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 2560);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/router */ 124);
 /* harmony import */ var _services_stats_export_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/stats-export.service */ 1506);
@@ -2006,7 +2006,7 @@ class StatsComponent {
   constructor(router, statsExportService) {
     this.router = router;
     this.statsExportService = statsExportService;
-    this.EnumScreens = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.EnumScreens;
+    this.EnumScreens = _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.EnumScreens;
   }
   exportStats() {
     this.statsExportService.exportStats();
@@ -2062,28 +2062,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "TierStatsComponent": () => (/* binding */ TierStatsComponent)
 /* harmony export */ });
-/* harmony import */ var src_app_syllogimous_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/syllogimous/constants/syllogimous.constants */ 9182);
+/* harmony import */ var src_app_syllogimous_constants_game_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/syllogimous/constants/game.constants */ 6904);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var src_app_syllogimous_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/syllogimous/services/syllogimous.service */ 3943);
+/* harmony import */ var src_app_syllogimous_services_game_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/syllogimous/services/game.service */ 6513);
 
 
 
 class TierStatsComponent {
-  constructor(sylSrv) {
-    this.sylSrv = sylSrv;
-    this.TIER_SCORE_RANGES = src_app_syllogimous_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.TIER_SCORE_RANGES;
-    this.tiers = Object.values(src_app_syllogimous_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.EnumTiers);
-    this.nextTier = src_app_syllogimous_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.EnumTiers.Savant;
+  constructor(game) {
+    this.game = game;
+    this.TIER_SCORE_RANGES = src_app_syllogimous_constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.TIER_SCORE_RANGES;
+    this.tiers = Object.values(src_app_syllogimous_constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.EnumTiers);
+    this.nextTier = src_app_syllogimous_constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.EnumTiers.Savant;
     this.pointsRemaining = 0;
   }
   ngOnInit() {
-    const currTierIdx = this.tiers.findIndex(tier => tier === this.sylSrv.tier);
+    const currTierIdx = this.tiers.findIndex(tier => tier === this.game.tier);
     this.nextTier = this.tiers[currTierIdx + 1] || "--";
-    this.pointsRemaining = this.nextTier ? src_app_syllogimous_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.TIER_SCORE_RANGES[this.nextTier].minScore - this.sylSrv.score : 0;
+    this.pointsRemaining = this.nextTier ? src_app_syllogimous_constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.TIER_SCORE_RANGES[this.nextTier].minScore - this.game.score : 0;
   }
   static {
     this.ɵfac = function TierStatsComponent_Factory(t) {
-      return new (t || TierStatsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](src_app_syllogimous_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_1__.SyllogimousService));
+      return new (t || TierStatsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](src_app_syllogimous_services_game_service__WEBPACK_IMPORTED_MODULE_1__.GameService));
     };
   }
   static {
@@ -2125,9 +2125,9 @@ class TierStatsComponent {
         }
         if (rf & 2) {
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](7);
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](ctx.sylSrv.tier);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](ctx.game.tier);
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](ctx.sylSrv.score);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](ctx.game.score);
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](ctx.nextTier);
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
@@ -2153,7 +2153,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var src_app_utils_date__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/utils/date */ 9322);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var src_app_syllogimous_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/syllogimous/services/syllogimous.service */ 3943);
+/* harmony import */ var src_app_syllogimous_services_game_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/syllogimous/services/game.service */ 6513);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ 4666);
 /* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ 4534);
 
@@ -2248,15 +2248,15 @@ const _c1 = function () {
   };
 };
 class TimeBasedStatsComponent {
-  constructor(sylSrv) {
-    this.sylSrv = sylSrv;
+  constructor(game) {
+    this.game = game;
     this.formatTime = src_app_utils_date__WEBPACK_IMPORTED_MODULE_0__.formatTime;
     this.questions = [];
     this.totalPlayTime = 0;
     this.avgAnswer = 0;
     this.fastestAnswer = 0;
     this.slowestAnswer = 0;
-    this.questions = this.sylSrv.questions;
+    this.questions = this.game.questions;
     this.timeBasedStats = {};
     for (const q of this.questions) {
       const ps = q.premises.length < 6 ? String(q.premises.length) : "6+";
@@ -2289,7 +2289,7 @@ class TimeBasedStatsComponent {
   }
   static {
     this.ɵfac = function TimeBasedStatsComponent_Factory(t) {
-      return new (t || TimeBasedStatsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](src_app_syllogimous_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_1__.SyllogimousService));
+      return new (t || TimeBasedStatsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](src_app_syllogimous_services_game_service__WEBPACK_IMPORTED_MODULE_1__.GameService));
     };
   }
   static {
@@ -2366,7 +2366,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var src_app_syllogimous_constants_question_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/syllogimous/constants/question.constants */ 6189);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var src_app_syllogimous_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/syllogimous/services/syllogimous.service */ 3943);
+/* harmony import */ var src_app_syllogimous_services_game_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/syllogimous/services/game.service */ 6513);
 /* harmony import */ var src_app_syllogimous_services_stats_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/syllogimous/services/stats.service */ 1750);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ 4666);
 /* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ 4534);
@@ -2389,7 +2389,7 @@ function TypeBasedStatsComponent_div_0_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("click", function TypeBasedStatsComponent_div_0_Template_button_click_5_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵrestoreView"](_r3);
       const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
-      return _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵresetView"](ctx_r2.sylSrv.playArcadeMode());
+      return _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵresetView"](ctx_r2.game.playArcadeMode());
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](6, " Play ");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](7, "i", 6);
@@ -2519,8 +2519,8 @@ function TypeBasedStatsComponent_div_2_Template(rf, ctx) {
   }
 }
 class TypeBasedStatsComponent {
-  constructor(sylSrv, statsService) {
-    this.sylSrv = sylSrv;
+  constructor(game, statsService) {
+    this.game = game;
     this.statsService = statsService;
     this.EnumQuestionType = src_app_syllogimous_constants_question_constants__WEBPACK_IMPORTED_MODULE_0__.EnumQuestionType;
     const {
@@ -2532,7 +2532,7 @@ class TypeBasedStatsComponent {
   }
   static {
     this.ɵfac = function TypeBasedStatsComponent_Factory(t) {
-      return new (t || TypeBasedStatsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_syllogimous_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_1__.SyllogimousService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_syllogimous_services_stats_service__WEBPACK_IMPORTED_MODULE_2__.StatsService));
+      return new (t || TypeBasedStatsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_syllogimous_services_game_service__WEBPACK_IMPORTED_MODULE_1__.GameService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_syllogimous_services_stats_service__WEBPACK_IMPORTED_MODULE_2__.StatsService));
     };
   }
   static {
@@ -2573,9 +2573,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "TiersMatrixComponent": () => (/* binding */ TiersMatrixComponent)
 /* harmony export */ });
-/* harmony import */ var _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/syllogimous.constants */ 9182);
+/* harmony import */ var _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/game.constants */ 6904);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _services_syllogimous_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/syllogimous.service */ 3943);
+/* harmony import */ var _services_game_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/game.service */ 6513);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ 4666);
 /* harmony import */ var _components_card_card_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/card/card.component */ 8640);
 
@@ -2631,26 +2631,26 @@ function TiersMatrixComponent_ng_container_12_Template(rf, ctx) {
   }
 }
 class TiersMatrixComponent {
-  constructor(sylSrv) {
-    this.sylSrv = sylSrv;
-    this.TIERS_MATRIX = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.TIERS_MATRIX;
-    this.entriesOfMatrix = Object.entries(_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.TIERS_MATRIX);
+  constructor(game) {
+    this.game = game;
+    this.TIERS_MATRIX = _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.TIERS_MATRIX;
+    this.entriesOfMatrix = Object.entries(_constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.TIERS_MATRIX);
     this.userTierIdx = 0;
     this.tier = "--click below--";
     this.questionType = "--click below--";
     this.cellSelI = -1;
     this.cellSelJ = -1;
-    this.userTierIdx = Math.max(0, _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.ORDERED_TIERS.findIndex(t => t === sylSrv.tier));
+    this.userTierIdx = Math.max(0, _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.ORDERED_TIERS.findIndex(t => t === game.tier));
   }
   showDetails(i, j) {
     this.cellSelI = i;
     this.cellSelJ = j;
-    this.tier = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.ORDERED_TIERS.find((_, _i) => _i === i) || "";
-    this.questionType = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.ORDERED_QUESTION_TYPES.find((_, _j) => _j === j) || "";
+    this.tier = _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.ORDERED_TIERS.find((_, _i) => _i === i) || "";
+    this.questionType = _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.ORDERED_QUESTION_TYPES.find((_, _j) => _j === j) || "";
   }
   static {
     this.ɵfac = function TiersMatrixComponent_Factory(t) {
-      return new (t || TiersMatrixComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_1__.SyllogimousService));
+      return new (t || TiersMatrixComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_services_game_service__WEBPACK_IMPORTED_MODULE_1__.GameService));
     };
   }
   static {
@@ -3737,9 +3737,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "TutorialComponent": () => (/* binding */ TutorialComponent)
 /* harmony export */ });
-/* harmony import */ var _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/syllogimous.constants */ 9182);
+/* harmony import */ var _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/game.constants */ 6904);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _services_syllogimous_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/syllogimous.service */ 3943);
+/* harmony import */ var _services_game_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/game.service */ 6513);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 124);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ 4666);
 /* harmony import */ var _components_card_card_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/card/card.component */ 8640);
@@ -3762,7 +3762,7 @@ function TutorialComponent_div_3_Template(rf, ctx) {
       _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵrestoreView"](_r5);
       const _r3 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵreference"](4);
       const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
-      return _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵresetView"](ctx_r4.sylSrv.skipTutorial(_r3.checked));
+      return _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵresetView"](ctx_r4.game.skipTutorial(_r3.checked));
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](9, "Skip Tutorial");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]()()();
@@ -3783,10 +3783,10 @@ function TutorialComponent_ng_template_4_Template(rf, ctx) {
   }
 }
 class TutorialComponent {
-  constructor(sylSrv, router) {
-    this.sylSrv = sylSrv;
+  constructor(game, router) {
+    this.game = game;
     this.router = router;
-    this.EnumScreens = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_0__.EnumScreens;
+    this.EnumScreens = _constants_game_constants__WEBPACK_IMPORTED_MODULE_0__.EnumScreens;
     this.showBack = false;
     const navigation = this.router.getCurrentNavigation();
     this.showBack = navigation?.extras.state?.data?.showBack;
@@ -3794,7 +3794,7 @@ class TutorialComponent {
   }
   static {
     this.ɵfac = function TutorialComponent_Factory(t) {
-      return new (t || TutorialComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_1__.SyllogimousService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__.Router));
+      return new (t || TutorialComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_services_game_service__WEBPACK_IMPORTED_MODULE_1__.GameService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__.Router));
     };
   }
   static {
@@ -3838,10 +3838,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "TutorialsComponent": () => (/* binding */ TutorialsComponent)
 /* harmony export */ });
 /* harmony import */ var _constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/local-storage.constants */ 6376);
-/* harmony import */ var _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../constants/syllogimous.constants */ 9182);
+/* harmony import */ var _constants_game_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../constants/game.constants */ 6904);
 /* harmony import */ var _constants_question_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants/question.constants */ 6189);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _services_syllogimous_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/syllogimous.service */ 3943);
+/* harmony import */ var _services_game_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/game.service */ 6513);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ 124);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common */ 4666);
 /* harmony import */ var _components_card_card_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/card/card.component */ 8640);
@@ -3863,7 +3863,7 @@ function TutorialsComponent_div_2_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("click", function TutorialsComponent_div_2_Template_button_click_3_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵrestoreView"](_r3);
       const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵnextContext"]();
-      return _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵresetView"](ctx_r2.sylSrv.playArcadeMode());
+      return _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵresetView"](ctx_r2.game.playArcadeMode());
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](4, " Play ");
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](5, "i", 9);
@@ -3907,10 +3907,10 @@ function TutorialsComponent_div_3_Template(rf, ctx) {
   }
 }
 class TutorialsComponent {
-  constructor(sylSrv, router) {
-    this.sylSrv = sylSrv;
+  constructor(game, router) {
+    this.game = game;
     this.router = router;
-    this.EnumScreens = _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_1__.EnumScreens;
+    this.EnumScreens = _constants_game_constants__WEBPACK_IMPORTED_MODULE_1__.EnumScreens;
     this.EnumQuestionType = _constants_question_constants__WEBPACK_IMPORTED_MODULE_2__.EnumQuestionType;
     this.questionTypes = [];
     this.questions = [];
@@ -3925,7 +3925,7 @@ class TutorialsComponent {
     }
   }
   navTo(type) {
-    this.router.navigate([_constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_1__.EnumScreens.Tutorial, type], {
+    this.router.navigate([_constants_game_constants__WEBPACK_IMPORTED_MODULE_1__.EnumScreens.Tutorial, type], {
       state: {
         data: {
           showBack: true
@@ -3935,7 +3935,7 @@ class TutorialsComponent {
   }
   static {
     this.ɵfac = function TutorialsComponent_Factory(t) {
-      return new (t || TutorialsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](_services_syllogimous_service__WEBPACK_IMPORTED_MODULE_3__.SyllogimousService), _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_6__.Router));
+      return new (t || TutorialsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](_services_game_service__WEBPACK_IMPORTED_MODULE_3__.GameService), _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_6__.Router));
     };
   }
   static {
@@ -3985,12 +3985,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "StatsExportService": () => (/* binding */ StatsExportService)
 /* harmony export */ });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _syllogimous_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./syllogimous.service */ 3943);
+/* harmony import */ var _game_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game.service */ 6513);
 
 
 class StatsExportService {
-  constructor(sylSrv) {
-    this.sylSrv = sylSrv;
+  constructor(game) {
+    this.game = game;
   }
   formatDateTime(timestamp) {
     return new Date(timestamp).toLocaleDateString("sv") + " " + new Date(timestamp).toLocaleTimeString("sv");
@@ -4008,7 +4008,7 @@ class StatsExportService {
     }
   }
   exportStats() {
-    const questions = [...this.sylSrv.questions].sort((a, b) => a.createdAt - b.createdAt);
+    const questions = [...this.game.questions].sort((a, b) => a.createdAt - b.createdAt);
     // Create CSV header
     let csvContent = ["ID", "Timestamp", "Mode", "Type", "Number of Premises", "Time Taken (seconds)", "Correct Answer", "User Answer", "Result", "Timer Setting", "User Score", "Has Negation", "Has Meta Relations", "Negation Count", "Meta Relations Count"].join(",") + "\n";
     let lastArcadeScore = 0;
@@ -4036,7 +4036,7 @@ class StatsExportService {
   }
   static {
     this.ɵfac = function StatsExportService_Factory(t) {
-      return new (t || StatsExportService)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵinject"](_syllogimous_service__WEBPACK_IMPORTED_MODULE_0__.SyllogimousService));
+      return new (t || StatsExportService)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵinject"](_game_service__WEBPACK_IMPORTED_MODULE_0__.GameService));
     };
   }
   static {
@@ -4064,17 +4064,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _models_stats_models__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/stats.models */ 5006);
 /* harmony import */ var _constants_question_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/question.constants */ 6189);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _syllogimous_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./syllogimous.service */ 3943);
+/* harmony import */ var _game_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./game.service */ 6513);
 
 
 
 
 
 class StatsService {
-  constructor(sylSrv) {
-    this.sylSrv = sylSrv;
+  constructor(game) {
+    this.game = game;
     this.calcStats = timerType => {
-      const questions = this.sylSrv.questions.filter(q => q.playgroundMode === !!this.sylSrv.playgroundSettings);
+      const questions = this.game.questions.filter(q => q.playgroundMode === !!this.game.playgroundSettings);
       const types = Object.values(_constants_question_constants__WEBPACK_IMPORTED_MODULE_2__.EnumQuestionType).filter(qt => Object.values(_constants_question_constants__WEBPACK_IMPORTED_MODULE_2__.EnumQuestionType).includes(qt));
       const typeBasedStats = new _models_stats_models__WEBPACK_IMPORTED_MODULE_1__.TypeBasedStats();
       for (let type of types) {
@@ -4139,7 +4139,7 @@ class StatsService {
   }
   static {
     this.ɵfac = function StatsService_Factory(t) {
-      return new (t || StatsService)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵinject"](_syllogimous_service__WEBPACK_IMPORTED_MODULE_3__.SyllogimousService));
+      return new (t || StatsService)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵinject"](_game_service__WEBPACK_IMPORTED_MODULE_3__.GameService));
     };
   }
   static {
@@ -4217,15 +4217,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! @angular/common */ 4666);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! @angular/router */ 124);
-/* harmony import */ var _syllogimous_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./syllogimous.component */ 4724);
-/* harmony import */ var src_app_shared_shared_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/shared/shared.module */ 4466);
-/* harmony import */ var _components_modal_level_change_modal_level_change_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/modal-level-change/modal-level-change.component */ 8487);
-/* harmony import */ var _components_card_card_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/card/card.component */ 8640);
-/* harmony import */ var _pages_intro_intro_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/intro/intro.component */ 3995);
-/* harmony import */ var _pages_start_start_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/start/start.component */ 2080);
-/* harmony import */ var _pages_tutorial_tutorial_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pages/tutorial/tutorial.component */ 3485);
-/* harmony import */ var _pages_history_history_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pages/history/history.component */ 5773);
-/* harmony import */ var _pages_game_game_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./pages/game/game.component */ 848);
+/* harmony import */ var src_app_shared_shared_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/shared/shared.module */ 4466);
+/* harmony import */ var _syllogimous_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./syllogimous.component */ 4724);
+/* harmony import */ var _pages_game_game_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/game/game.component */ 848);
+/* harmony import */ var _components_modal_level_change_modal_level_change_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/modal-level-change/modal-level-change.component */ 8487);
+/* harmony import */ var _components_card_card_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/card/card.component */ 8640);
+/* harmony import */ var _pages_intro_intro_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/intro/intro.component */ 3995);
+/* harmony import */ var _pages_start_start_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pages/start/start.component */ 2080);
+/* harmony import */ var _pages_tutorial_tutorial_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pages/tutorial/tutorial.component */ 3485);
+/* harmony import */ var _pages_history_history_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./pages/history/history.component */ 5773);
 /* harmony import */ var _pages_feedback_feedback_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./pages/feedback/feedback.component */ 7089);
 /* harmony import */ var _pages_stats_stats_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./pages/stats/stats.component */ 5567);
 /* harmony import */ var _pages_tutorials_tutorials_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./pages/tutorials/tutorials.component */ 3652);
@@ -4252,7 +4252,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_progress_and_performance_progress_and_performance_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./components/progress-and-performance/progress-and-performance.component */ 1135);
 /* harmony import */ var _pages_settings_game_mode_choose_game_mode_choose_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./pages/settings/game-mode-choose/game-mode-choose.component */ 9871);
 /* harmony import */ var _constants_question_constants__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./constants/question.constants */ 6189);
-/* harmony import */ var _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./constants/syllogimous.constants */ 9182);
+/* harmony import */ var _constants_game_constants__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./constants/game.constants */ 6904);
 /* harmony import */ var _pages_tiers_matrix_tiers_matrix_component__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./pages/tiers-matrix/tiers-matrix.component */ 1388);
 /* harmony import */ var _pages_other_games_other_games_component__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./pages/other-games/other-games.component */ 9105);
 /* harmony import */ var _pages_settings_settings_component__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./pages/settings/settings.component */ 6708);
@@ -4304,38 +4304,38 @@ __webpack_require__.r(__webpack_exports__);
 
 const routes = [{
   path: '',
-  component: _syllogimous_component__WEBPACK_IMPORTED_MODULE_0__.SyllogimousComponent,
+  component: _syllogimous_component__WEBPACK_IMPORTED_MODULE_1__.SyllogimousComponent,
   children: [{
     path: "",
-    redirectTo: _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Intro,
+    redirectTo: _constants_game_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Intro,
     pathMatch: "full"
   }, {
-    path: _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Intro,
-    component: _pages_intro_intro_component__WEBPACK_IMPORTED_MODULE_4__.IntroComponent
+    path: _constants_game_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Intro,
+    component: _pages_intro_intro_component__WEBPACK_IMPORTED_MODULE_5__.IntroComponent
   }, {
-    path: _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Start,
-    component: _pages_start_start_component__WEBPACK_IMPORTED_MODULE_5__.StartComponent
+    path: _constants_game_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Start,
+    component: _pages_start_start_component__WEBPACK_IMPORTED_MODULE_6__.StartComponent
   }, {
-    path: _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Game,
-    component: _pages_game_game_component__WEBPACK_IMPORTED_MODULE_8__.GameComponent
+    path: _constants_game_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Game,
+    component: _pages_game_game_component__WEBPACK_IMPORTED_MODULE_2__.GameComponent
   }, {
-    path: _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Stats,
+    path: _constants_game_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Stats,
     component: _pages_stats_stats_component__WEBPACK_IMPORTED_MODULE_10__.StatsComponent
   }, {
-    path: _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.History,
-    component: _pages_history_history_component__WEBPACK_IMPORTED_MODULE_7__.HistoryComponent
+    path: _constants_game_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.History,
+    component: _pages_history_history_component__WEBPACK_IMPORTED_MODULE_8__.HistoryComponent
   }, {
-    path: _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Feedback,
+    path: _constants_game_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Feedback,
     component: _pages_feedback_feedback_component__WEBPACK_IMPORTED_MODULE_9__.FeedbackComponent
   }, {
-    path: _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Settings,
+    path: _constants_game_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Settings,
     component: _pages_settings_settings_component__WEBPACK_IMPORTED_MODULE_38__.SettingsComponent
   }, {
-    path: _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Tutorials,
+    path: _constants_game_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Tutorials,
     component: _pages_tutorials_tutorials_component__WEBPACK_IMPORTED_MODULE_11__.TutorialsComponent
   }, {
-    path: _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Tutorial,
-    component: _pages_tutorial_tutorial_component__WEBPACK_IMPORTED_MODULE_6__.TutorialComponent,
+    path: _constants_game_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.Tutorial,
+    component: _pages_tutorial_tutorial_component__WEBPACK_IMPORTED_MODULE_7__.TutorialComponent,
     children: [{
       path: _constants_question_constants__WEBPACK_IMPORTED_MODULE_34__.EnumQuestionType.Distinction,
       component: _pages_tutorial_distinction_distinction_component__WEBPACK_IMPORTED_MODULE_12__.TutorialDistinctionComponent
@@ -4374,13 +4374,13 @@ const routes = [{
       component: _pages_tutorial_binary_binary_component__WEBPACK_IMPORTED_MODULE_20__.TutorialBinaryComponent
     }]
   }, {
-    path: _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.TiersMatrix,
+    path: _constants_game_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.TiersMatrix,
     component: _pages_tiers_matrix_tiers_matrix_component__WEBPACK_IMPORTED_MODULE_36__.TiersMatrixComponent
   }, {
-    path: _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.PlaygroundMode,
+    path: _constants_game_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.PlaygroundMode,
     component: _pages_playground_mode_playground_mode_component__WEBPACK_IMPORTED_MODULE_31__.PlaygroundModeComponent
   }, {
-    path: _constants_syllogimous_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.OtherGames,
+    path: _constants_game_constants__WEBPACK_IMPORTED_MODULE_35__.EnumScreens.OtherGames,
     component: _pages_other_games_other_games_component__WEBPACK_IMPORTED_MODULE_37__.OtherGamesComponent
   }]
 }];
@@ -4398,14 +4398,14 @@ class SyllogimousModule {
   static {
     this.ɵinj = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_40__["ɵɵdefineInjector"]({
       providers: [_services_stats_export_service__WEBPACK_IMPORTED_MODULE_28__.StatsExportService],
-      imports: [_angular_common__WEBPACK_IMPORTED_MODULE_41__.CommonModule, src_app_shared_shared_module__WEBPACK_IMPORTED_MODULE_1__.SharedModule, _angular_router__WEBPACK_IMPORTED_MODULE_42__.RouterModule.forChild(routes)]
+      imports: [_angular_common__WEBPACK_IMPORTED_MODULE_41__.CommonModule, src_app_shared_shared_module__WEBPACK_IMPORTED_MODULE_0__.SharedModule, _angular_router__WEBPACK_IMPORTED_MODULE_42__.RouterModule.forChild(routes)]
     });
   }
 }
 (function () {
   (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_40__["ɵɵsetNgModuleScope"](SyllogimousModule, {
-    declarations: [_syllogimous_component__WEBPACK_IMPORTED_MODULE_0__.SyllogimousComponent, _components_card_card_component__WEBPACK_IMPORTED_MODULE_3__.CardComponent, _components_modal_level_change_modal_level_change_component__WEBPACK_IMPORTED_MODULE_2__.ModalLevelChangeComponent, _pages_intro_intro_component__WEBPACK_IMPORTED_MODULE_4__.IntroComponent, _pages_start_start_component__WEBPACK_IMPORTED_MODULE_5__.StartComponent, _pages_history_history_component__WEBPACK_IMPORTED_MODULE_7__.HistoryComponent, _pages_game_game_component__WEBPACK_IMPORTED_MODULE_8__.GameComponent, _pages_feedback_feedback_component__WEBPACK_IMPORTED_MODULE_9__.FeedbackComponent, _pages_tutorials_tutorials_component__WEBPACK_IMPORTED_MODULE_11__.TutorialsComponent, _pages_tutorial_tutorial_component__WEBPACK_IMPORTED_MODULE_6__.TutorialComponent, _pages_tutorial_distinction_distinction_component__WEBPACK_IMPORTED_MODULE_12__.TutorialDistinctionComponent, _pages_tutorial_comparison_numerical_comparison_numerical_component__WEBPACK_IMPORTED_MODULE_14__.TutorialComparisonNumericalComponent, _pages_tutorial_comparison_chronological_comparison_chronological_component__WEBPACK_IMPORTED_MODULE_15__.TutorialComparisonChronologicalComponent, _pages_tutorial_syllogism_syllogism_component__WEBPACK_IMPORTED_MODULE_13__.TutorialSyllogismComponent, _pages_tutorial_linear_arrangement_linear_arrangement_component__WEBPACK_IMPORTED_MODULE_21__.TutorialLinearArrangementComponent, _pages_tutorial_circular_arrangement_circular_arrangement_component__WEBPACK_IMPORTED_MODULE_22__.TutorialCircularArrangementComponent, _pages_tutorial_direction_direction_component__WEBPACK_IMPORTED_MODULE_16__.TutorialDirectionComponent, _pages_tutorial_direction3D_spatial_direction3D_spatial_component__WEBPACK_IMPORTED_MODULE_17__.TutorialDirection3DSpatialComponent, _pages_tutorial_direction3D_temporal_direction3D_temporal_component__WEBPACK_IMPORTED_MODULE_18__.TutorialDirection3DTemporalComponent, _pages_tutorial_graph_matching_graph_matching_component__WEBPACK_IMPORTED_MODULE_39__.TutorialGraphMatchingComponent, _pages_tutorial_analogy_analogy_component__WEBPACK_IMPORTED_MODULE_19__.TutorialAnalogyComponent, _pages_tutorial_binary_binary_component__WEBPACK_IMPORTED_MODULE_20__.TutorialBinaryComponent, _pages_stats_stats_component__WEBPACK_IMPORTED_MODULE_10__.StatsComponent, _pages_stats_accuracy_stats_accuracy_stats_component__WEBPACK_IMPORTED_MODULE_23__.AccuracyStatsComponent, _pages_stats_error_analysis_error_analysis_component__WEBPACK_IMPORTED_MODULE_24__.ErrorAnalysisComponent, _pages_stats_tier_stats_tier_stats_component__WEBPACK_IMPORTED_MODULE_25__.TierStatsComponent, _pages_stats_time_based_stats_time_based_stats_component__WEBPACK_IMPORTED_MODULE_26__.TimeBasedStatsComponent, _pages_stats_type_based_stats_type_based_stats_component__WEBPACK_IMPORTED_MODULE_27__.TypeBasedStatsComponent, _components_card_card_dropdown_card_dropdown_component__WEBPACK_IMPORTED_MODULE_29__.CardDropdownComponent, _pages_playground_mode_playground_mode_component__WEBPACK_IMPORTED_MODULE_31__.PlaygroundModeComponent, _pages_settings_timer_choose_timer_choose_component__WEBPACK_IMPORTED_MODULE_30__.TimerChooseComponent, _components_progress_and_performance_progress_and_performance_component__WEBPACK_IMPORTED_MODULE_32__.DailyProgressComponent, _pages_settings_game_mode_choose_game_mode_choose_component__WEBPACK_IMPORTED_MODULE_33__.GameModeChooseComponent, _pages_tiers_matrix_tiers_matrix_component__WEBPACK_IMPORTED_MODULE_36__.TiersMatrixComponent, _pages_other_games_other_games_component__WEBPACK_IMPORTED_MODULE_37__.OtherGamesComponent, _pages_settings_settings_component__WEBPACK_IMPORTED_MODULE_38__.SettingsComponent],
-    imports: [_angular_common__WEBPACK_IMPORTED_MODULE_41__.CommonModule, src_app_shared_shared_module__WEBPACK_IMPORTED_MODULE_1__.SharedModule, _angular_router__WEBPACK_IMPORTED_MODULE_42__.RouterModule]
+    declarations: [_syllogimous_component__WEBPACK_IMPORTED_MODULE_1__.SyllogimousComponent, _pages_game_game_component__WEBPACK_IMPORTED_MODULE_2__.GameComponent, _components_card_card_component__WEBPACK_IMPORTED_MODULE_4__.CardComponent, _components_modal_level_change_modal_level_change_component__WEBPACK_IMPORTED_MODULE_3__.ModalLevelChangeComponent, _pages_intro_intro_component__WEBPACK_IMPORTED_MODULE_5__.IntroComponent, _pages_start_start_component__WEBPACK_IMPORTED_MODULE_6__.StartComponent, _pages_history_history_component__WEBPACK_IMPORTED_MODULE_8__.HistoryComponent, _pages_game_game_component__WEBPACK_IMPORTED_MODULE_2__.GameComponent, _pages_feedback_feedback_component__WEBPACK_IMPORTED_MODULE_9__.FeedbackComponent, _pages_tutorials_tutorials_component__WEBPACK_IMPORTED_MODULE_11__.TutorialsComponent, _pages_tutorial_tutorial_component__WEBPACK_IMPORTED_MODULE_7__.TutorialComponent, _pages_tutorial_distinction_distinction_component__WEBPACK_IMPORTED_MODULE_12__.TutorialDistinctionComponent, _pages_tutorial_comparison_numerical_comparison_numerical_component__WEBPACK_IMPORTED_MODULE_14__.TutorialComparisonNumericalComponent, _pages_tutorial_comparison_chronological_comparison_chronological_component__WEBPACK_IMPORTED_MODULE_15__.TutorialComparisonChronologicalComponent, _pages_tutorial_syllogism_syllogism_component__WEBPACK_IMPORTED_MODULE_13__.TutorialSyllogismComponent, _pages_tutorial_linear_arrangement_linear_arrangement_component__WEBPACK_IMPORTED_MODULE_21__.TutorialLinearArrangementComponent, _pages_tutorial_circular_arrangement_circular_arrangement_component__WEBPACK_IMPORTED_MODULE_22__.TutorialCircularArrangementComponent, _pages_tutorial_direction_direction_component__WEBPACK_IMPORTED_MODULE_16__.TutorialDirectionComponent, _pages_tutorial_direction3D_spatial_direction3D_spatial_component__WEBPACK_IMPORTED_MODULE_17__.TutorialDirection3DSpatialComponent, _pages_tutorial_direction3D_temporal_direction3D_temporal_component__WEBPACK_IMPORTED_MODULE_18__.TutorialDirection3DTemporalComponent, _pages_tutorial_graph_matching_graph_matching_component__WEBPACK_IMPORTED_MODULE_39__.TutorialGraphMatchingComponent, _pages_tutorial_analogy_analogy_component__WEBPACK_IMPORTED_MODULE_19__.TutorialAnalogyComponent, _pages_tutorial_binary_binary_component__WEBPACK_IMPORTED_MODULE_20__.TutorialBinaryComponent, _pages_stats_stats_component__WEBPACK_IMPORTED_MODULE_10__.StatsComponent, _pages_stats_accuracy_stats_accuracy_stats_component__WEBPACK_IMPORTED_MODULE_23__.AccuracyStatsComponent, _pages_stats_error_analysis_error_analysis_component__WEBPACK_IMPORTED_MODULE_24__.ErrorAnalysisComponent, _pages_stats_tier_stats_tier_stats_component__WEBPACK_IMPORTED_MODULE_25__.TierStatsComponent, _pages_stats_time_based_stats_time_based_stats_component__WEBPACK_IMPORTED_MODULE_26__.TimeBasedStatsComponent, _pages_stats_type_based_stats_type_based_stats_component__WEBPACK_IMPORTED_MODULE_27__.TypeBasedStatsComponent, _components_card_card_dropdown_card_dropdown_component__WEBPACK_IMPORTED_MODULE_29__.CardDropdownComponent, _pages_playground_mode_playground_mode_component__WEBPACK_IMPORTED_MODULE_31__.PlaygroundModeComponent, _pages_settings_timer_choose_timer_choose_component__WEBPACK_IMPORTED_MODULE_30__.TimerChooseComponent, _components_progress_and_performance_progress_and_performance_component__WEBPACK_IMPORTED_MODULE_32__.DailyProgressComponent, _pages_settings_game_mode_choose_game_mode_choose_component__WEBPACK_IMPORTED_MODULE_33__.GameModeChooseComponent, _pages_tiers_matrix_tiers_matrix_component__WEBPACK_IMPORTED_MODULE_36__.TiersMatrixComponent, _pages_other_games_other_games_component__WEBPACK_IMPORTED_MODULE_37__.OtherGamesComponent, _pages_settings_settings_component__WEBPACK_IMPORTED_MODULE_38__.SettingsComponent],
+    imports: [_angular_common__WEBPACK_IMPORTED_MODULE_41__.CommonModule, src_app_shared_shared_module__WEBPACK_IMPORTED_MODULE_0__.SharedModule, _angular_router__WEBPACK_IMPORTED_MODULE_42__.RouterModule]
   });
 })();
 

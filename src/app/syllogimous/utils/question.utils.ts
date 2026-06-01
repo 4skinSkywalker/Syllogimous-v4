@@ -1,4 +1,4 @@
-import { NOUNS, NUMBER_WORDS, STRINGS } from "../constants/question.constants";
+import { getEmojis, getStrings, NOUNS, NUMBER_WORDS } from "../constants/question.constants";
 import { EnumArrangements, EnumQuestionType } from "../constants/question.constants";
 import { IArrangementPremise, IArrangementRelationship, Question } from "../models/question.models";
 import { Settings, Picked } from "../models/settings.models";
