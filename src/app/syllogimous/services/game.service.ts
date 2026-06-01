@@ -15,6 +15,7 @@ import { EnumArrangements, EnumQuestionType } from "../constants/question.consta
 import { EnumQuestionGroup, QUESTION_TYPE_SETTING_PARAMS } from "../constants/settings.constants";
 import { Logger } from "../utils/logger";
 import { GameTimerService } from "./game-timer.service";
+import { getSyllogismGeneratorValue, SyllogismGenerator } from "../pages/settings/game-mode-choose/game-mode-choose.component";
 
 @Injectable({
     providedIn: "root"
@@ -1468,8 +1469,17 @@ export class GameService {
         return question;
     }
 
-    private createSyllogismOld(numOfPremises: number) {
-        this.logger.info("createSyllogism");
+    private createSyllogismAll(numOfPremises: number) {
+        this.logger.info("createSyllogismAll");
+        if (coinFlip()) {
+            return this.createSyllogismFredo(numOfPremises);
+        } else {
+            return this.createSyllogismCanyon(numOfPremises);
+        }
+    }
+
+    private createSyllogismFredo(numOfPremises: number) {
+        this.logger.info("createSyllogismFredo");
 
         const type = EnumQuestionType.Syllogism;
         const settings = this.settings;
@@ -1512,19 +1522,14 @@ export class GameService {
         return question;
     }
 
-    createSyllogism(numOfPremises: number) {
-        this.logger.info("createSyllogism");
+    private createSyllogismCanyon(numOfPremises: number) {
+        this.logger.info("createSyllogismCanyon");
 
         const type = EnumQuestionType.Syllogism;
         const settings = this.settings;
 
         if (!canGenerateQuestion(type, numOfPremises, settings)) {
             throw new Error("Cannot generate.");
-        }
-
-        // @ts-ignore
-        if (1 === 0) {
-            return this.createSyllogismOld(numOfPremises);
         }
 
         const question = new Question(type);
@@ -1554,5 +1559,18 @@ export class GameService {
         question.conclusion = formatSylPremise(conclusion, negated);
 
         return question;
+    }
+
+    createSyllogism(numOfPremises: number) {
+        switch (getSyllogismGeneratorValue()) {
+            case SyllogismGenerator.All:
+                return this.createSyllogismAll(numOfPremises);
+            case SyllogismGenerator.Fredo:
+                return this.createSyllogismFredo(numOfPremises);
+            case SyllogismGenerator.Canyon:
+                return this.createSyllogismCanyon(numOfPremises);
+            default:
+                return this.createSyllogismAll(numOfPremises);
+        }
     }
 }

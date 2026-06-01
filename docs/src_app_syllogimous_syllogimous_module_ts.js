@@ -1531,7 +1531,7 @@ class PlaygroundModeComponent {
           _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵtext"](5, "Playground is a freestyle mode where questions are just for practice, they don't count for points or stats.");
           _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵelementEnd"]();
           _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵelementStart"](6, "div", 3)(7, "div", 4);
-          _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵtext"](8, "Game mode");
+          _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵtext"](8, "Game settings");
           _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵelementEnd"]();
           _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵelementStart"](9, "div", 5);
           _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵelement"](10, "app-game-mode-choose");

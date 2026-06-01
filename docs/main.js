@@ -5714,6 +5714,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "LS_PREMISES_UP_THRESHOLD": () => (/* binding */ LS_PREMISES_UP_THRESHOLD),
 /* harmony export */   "LS_PROPS": () => (/* binding */ LS_PROPS),
 /* harmony export */   "LS_SCORE": () => (/* binding */ LS_SCORE),
+/* harmony export */   "LS_SYLLOGISM_GENERATOR": () => (/* binding */ LS_SYLLOGISM_GENERATOR),
 /* harmony export */   "LS_TIMER": () => (/* binding */ LS_TIMER),
 /* harmony export */   "LS_TRAINING_UNIT": () => (/* binding */ LS_TRAINING_UNIT),
 /* harmony export */   "LS_TRAINING_UNIT_LENGTH": () => (/* binding */ LS_TRAINING_UNIT_LENGTH),
@@ -5737,6 +5738,7 @@ const LS_PREMISES_UP_THRESHOLD = "SYL_PREMISES_UP_THRESHOLD";
 const LS_PREMISES_DOWN_THRESHOLD = "SYL_PREMISES_DOWN_THRESHOLD";
 const LS_SCORE = "SYL_SCORE";
 const LS_COLOR_BLINDNESS_MODE = "SYL_COLOR_BLINDNESS_MODE";
+const LS_SYLLOGISM_GENERATOR = "SYL_SYLLOGISM_GENERATOR";
 const LS_PROPS = [LS_HISTORY, LS_TIMER, LS_GAME_MODE, LS_DAILY_PROGRESS, LS_PG_SETTINGS, LS_DAILY_GOAL, LS_WEEKLY_GOAL, LS_TRAINING_UNIT_LENGTH, LS_PREMISES_UP_THRESHOLD, LS_PREMISES_DOWN_THRESHOLD, LS_SCORE];
 for (const screen of Object.values(_game_constants__WEBPACK_IMPORTED_MODULE_1__.EnumScreens)) {
   LS_PROPS.push(LS_DONT_SHOW + screen);
@@ -6184,21 +6186,58 @@ class Settings {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GameModeChooseComponent": () => (/* binding */ GameModeChooseComponent)
+/* harmony export */   "GameModeChooseComponent": () => (/* binding */ GameModeChooseComponent),
+/* harmony export */   "SyllogismGenerator": () => (/* binding */ SyllogismGenerator),
+/* harmony export */   "getSyllogismGeneratorValue": () => (/* binding */ getSyllogismGeneratorValue)
 /* harmony export */ });
 /* harmony import */ var C_Users_stopc_Documenti_GitHub_Syllogimous_v4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 1670);
 /* harmony import */ var _constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../constants/local-storage.constants */ 6376);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ 4534);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ 2508);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 2560);
+/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ 4534);
+/* harmony import */ var _shared_components_input_input_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../shared/components/input/input.component */ 2371);
 
 
 
 
+
+
+var SyllogismGenerator;
+(function (SyllogismGenerator) {
+  SyllogismGenerator["All"] = "all";
+  SyllogismGenerator["Fredo"] = "fredo";
+  SyllogismGenerator["Canyon"] = "canyon";
+})(SyllogismGenerator || (SyllogismGenerator = {}));
+const getSyllogismGeneratorValue = () => {
+  return localStorage.getItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_1__.LS_SYLLOGISM_GENERATOR) || SyllogismGenerator.Canyon;
+};
 class GameModeChooseComponent {
-  constructor() {}
+  constructor() {
+    this.syllogismGeneratorChoices = [{
+      text: "All (random mix)",
+      value: SyllogismGenerator.All
+    }, {
+      text: "Fredo generator",
+      value: SyllogismGenerator.Fredo
+    }, {
+      text: "Canyon generator",
+      value: SyllogismGenerator.Canyon
+    }];
+    this.syllogismGenerator = new _angular_forms__WEBPACK_IMPORTED_MODULE_3__.FormControl(getSyllogismGeneratorValue(), {
+      nonNullable: true
+    });
+    this.subscriptions = [];
+  }
   ngAfterViewInit() {
     const gameMode = localStorage.getItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_1__.LS_GAME_MODE) || '0';
     document.querySelector(`#mode-choice-${gameMode}`).checked = true;
+    const syllogismGeneratorSubscription = this.syllogismGenerator.valueChanges.subscribe(value => {
+      localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_1__.LS_SYLLOGISM_GENERATOR, value);
+    });
+    this.subscriptions.push(syllogismGeneratorSubscription);
+  }
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
   setMode(gameMode) {
     return (0,C_Users_stopc_Documenti_GitHub_Syllogimous_v4_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
@@ -6211,42 +6250,55 @@ class GameModeChooseComponent {
     };
   }
   static {
-    this.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({
+    this.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({
       type: GameModeChooseComponent,
       selectors: [["app-game-mode-choose"]],
-      decls: 13,
-      vars: 0,
-      consts: [[1, "game-mode-choices"], [1, "game-mode-choice"], ["type", "radio", "id", "mode-choice-0", "name", "mode-kind", 3, "click"], ["for", "mode-choice-0", "ngbTooltip", "View all premises on the screen simultaneously"], ["type", "radio", "id", "mode-choice-1", "name", "mode-kind", 3, "click"], ["for", "mode-choice-1", "ngbTooltip", "View one premise at a time in a carousel format"], ["type", "radio", "id", "mode-choice-2", "name", "mode-kind", 3, "click"], ["for", "mode-choice-2", "ngbTooltip", "View one premise at a time in a carousel format without going back"]],
+      decls: 19,
+      vars: 2,
+      consts: [[1, "mb-2", "text-muted"], [1, "game-mode-choices"], [1, "game-mode-choice"], ["type", "radio", "id", "mode-choice-0", "name", "mode-kind", 3, "click"], ["for", "mode-choice-0", "ngbTooltip", "View all premises on the screen simultaneously"], ["type", "radio", "id", "mode-choice-1", "name", "mode-kind", 3, "click"], ["for", "mode-choice-1", "ngbTooltip", "View one premise at a time in a carousel format"], ["type", "radio", "id", "mode-choice-2", "name", "mode-kind", 3, "click"], ["for", "mode-choice-2", "ngbTooltip", "View one premise at a time in a carousel format without going back"], [1, "mt-3", "mb-2", "text-muted"], [1, "d-grid", 2, "gap", "1rem", "padding-inline", "0.5rem"], ["type", "select", "name", "syllogismGenerator", "label", "Syllogism generator", "placeholder", "Syllogism generator", 3, "ngControl", "options"]],
       template: function GameModeChooseComponent_Template(rf, ctx) {
         if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 0)(1, "div", 1)(2, "input", 2);
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function GameModeChooseComponent_Template_input_click_2_listener() {
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "div", 0);
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](1, "Game mode");
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](2, "div", 1)(3, "div", 2)(4, "input", 3);
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function GameModeChooseComponent_Template_input_click_4_listener() {
             return ctx.setMode("0");
           });
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "label", 3);
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](4, "View all premises");
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](5, "div", 1)(6, "input", 4);
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function GameModeChooseComponent_Template_input_click_6_listener() {
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](5, "label", 4);
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](6, "All premises");
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]()();
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](7, "div", 2)(8, "input", 5);
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function GameModeChooseComponent_Template_input_click_8_listener() {
             return ctx.setMode("1");
           });
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "label", 5);
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](8, "Carousel");
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](9, "div", 1)(10, "input", 6);
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function GameModeChooseComponent_Template_input_click_10_listener() {
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](9, "label", 6);
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](10, "Carousel");
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]()();
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](11, "div", 2)(12, "input", 7);
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function GameModeChooseComponent_Template_input_click_12_listener() {
             return ctx.setMode("2");
           });
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "label", 7);
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](12, "Carousel (no back)");
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()()();
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](13, "label", 8);
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](14, "Carousel (no back)");
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]()()();
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](15, "div", 9);
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](16, "Other game settings");
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](17, "div", 10);
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](18, "app-input", 11);
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+        }
+        if (rf & 2) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](18);
+          _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngControl", ctx.syllogismGenerator)("options", ctx.syllogismGeneratorChoices);
         }
       },
-      dependencies: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__.NgbTooltip],
-      styles: ["[_nghost-%COMP%] {\r\n    display: block;\r\n}\r\n\r\n.game-mode-choices[_ngcontent-%COMP%] {\r\n    display: grid;\r\n    grid-template-columns: 1fr 1fr 1fr;\r\n    justify-items: center;\r\n    gap: 1rem;\r\n}\r\n\r\n.game-mode-choice[_ngcontent-%COMP%] {\r\n    white-space: nowrap;\r\n    display: flex;\r\n    gap: 0.25rem;\r\n}\r\n\r\n.game-mode-choice[_ngcontent-%COMP%] {\r\n    cursor: pointer;\r\n}\r\n\r\n@media (max-width: 768px) {\r\n    .game-mode-choices[_ngcontent-%COMP%] {\r\n        grid-template-columns: 1fr;\r\n        gap: 0.5rem;\r\n    }\r\n}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9hcHAvc3lsbG9naW1vdXMvcGFnZXMvc2V0dGluZ3MvZ2FtZS1tb2RlLWNob29zZS9nYW1lLW1vZGUtY2hvb3NlLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxjQUFjO0FBQ2xCOztBQUVBO0lBQ0ksYUFBYTtJQUNiLGtDQUFrQztJQUNsQyxxQkFBcUI7SUFDckIsU0FBUztBQUNiOztBQUVBO0lBQ0ksbUJBQW1CO0lBQ25CLGFBQWE7SUFDYixZQUFZO0FBQ2hCOztBQUVBO0lBQ0ksZUFBZTtBQUNuQjs7QUFFQTtJQUNJO1FBQ0ksMEJBQTBCO1FBQzFCLFdBQVc7SUFDZjtBQUNKIiwic291cmNlc0NvbnRlbnQiOlsiOmhvc3Qge1xyXG4gICAgZGlzcGxheTogYmxvY2s7XHJcbn1cclxuXHJcbi5nYW1lLW1vZGUtY2hvaWNlcyB7XHJcbiAgICBkaXNwbGF5OiBncmlkO1xyXG4gICAgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiAxZnIgMWZyIDFmcjtcclxuICAgIGp1c3RpZnktaXRlbXM6IGNlbnRlcjtcclxuICAgIGdhcDogMXJlbTtcclxufVxyXG5cclxuLmdhbWUtbW9kZS1jaG9pY2Uge1xyXG4gICAgd2hpdGUtc3BhY2U6IG5vd3JhcDtcclxuICAgIGRpc3BsYXk6IGZsZXg7XHJcbiAgICBnYXA6IDAuMjVyZW07XHJcbn1cclxuXHJcbi5nYW1lLW1vZGUtY2hvaWNlIHtcclxuICAgIGN1cnNvcjogcG9pbnRlcjtcclxufVxyXG5cclxuQG1lZGlhIChtYXgtd2lkdGg6IDc2OHB4KSB7XHJcbiAgICAuZ2FtZS1tb2RlLWNob2ljZXMge1xyXG4gICAgICAgIGdyaWQtdGVtcGxhdGUtY29sdW1uczogMWZyO1xyXG4gICAgICAgIGdhcDogMC41cmVtO1xyXG4gICAgfVxyXG59Il0sInNvdXJjZVJvb3QiOiIifQ== */"]
+      dependencies: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_5__.NgbTooltip, _shared_components_input_input_component__WEBPACK_IMPORTED_MODULE_2__.InputComponent],
+      styles: ["[_nghost-%COMP%] {\r\n    display: block;\r\n}\r\n\r\n.game-mode-choices[_ngcontent-%COMP%] {\r\n    display: grid;\r\n    grid-template-columns: 1fr 1fr 1fr;\r\n    justify-items: center;\r\n    gap: 1rem;\r\n    padding-inline: 0.5rem;\r\n}\r\n\r\n.game-mode-choice[_ngcontent-%COMP%] {\r\n    white-space: nowrap;\r\n    display: flex;\r\n    gap: 0.25rem;\r\n}\r\n\r\n.game-mode-choice[_ngcontent-%COMP%] {\r\n    cursor: pointer;\r\n}\r\n\r\n@media (max-width: 768px) {\r\n    .game-mode-choices[_ngcontent-%COMP%] {\r\n        grid-template-columns: 1fr;\r\n        gap: 0.5rem;\r\n    }\r\n}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9hcHAvc3lsbG9naW1vdXMvcGFnZXMvc2V0dGluZ3MvZ2FtZS1tb2RlLWNob29zZS9nYW1lLW1vZGUtY2hvb3NlLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxjQUFjO0FBQ2xCOztBQUVBO0lBQ0ksYUFBYTtJQUNiLGtDQUFrQztJQUNsQyxxQkFBcUI7SUFDckIsU0FBUztJQUNULHNCQUFzQjtBQUMxQjs7QUFFQTtJQUNJLG1CQUFtQjtJQUNuQixhQUFhO0lBQ2IsWUFBWTtBQUNoQjs7QUFFQTtJQUNJLGVBQWU7QUFDbkI7O0FBRUE7SUFDSTtRQUNJLDBCQUEwQjtRQUMxQixXQUFXO0lBQ2Y7QUFDSiIsInNvdXJjZXNDb250ZW50IjpbIjpob3N0IHtcclxuICAgIGRpc3BsYXk6IGJsb2NrO1xyXG59XHJcblxyXG4uZ2FtZS1tb2RlLWNob2ljZXMge1xyXG4gICAgZGlzcGxheTogZ3JpZDtcclxuICAgIGdyaWQtdGVtcGxhdGUtY29sdW1uczogMWZyIDFmciAxZnI7XHJcbiAgICBqdXN0aWZ5LWl0ZW1zOiBjZW50ZXI7XHJcbiAgICBnYXA6IDFyZW07XHJcbiAgICBwYWRkaW5nLWlubGluZTogMC41cmVtO1xyXG59XHJcblxyXG4uZ2FtZS1tb2RlLWNob2ljZSB7XHJcbiAgICB3aGl0ZS1zcGFjZTogbm93cmFwO1xyXG4gICAgZGlzcGxheTogZmxleDtcclxuICAgIGdhcDogMC4yNXJlbTtcclxufVxyXG5cclxuLmdhbWUtbW9kZS1jaG9pY2Uge1xyXG4gICAgY3Vyc29yOiBwb2ludGVyO1xyXG59XHJcblxyXG5AbWVkaWEgKG1heC13aWR0aDogNzY4cHgpIHtcclxuICAgIC5nYW1lLW1vZGUtY2hvaWNlcyB7XHJcbiAgICAgICAgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiAxZnI7XHJcbiAgICAgICAgZ2FwOiAwLjVyZW07XHJcbiAgICB9XHJcbn0iXSwic291cmNlUm9vdCI6IiJ9 */"]
     });
   }
 }
@@ -6398,6 +6450,9 @@ const loadColorBlindnessMode = () => {
   }
 };
 class SettingsComponent {
+  get defaultColorBlindnessMode() {
+    return this.colorBlindnessChoices[0].value;
+  }
   constructor(router, game, progressAndPerformanceService) {
     this.router = router;
     this.game = game;
@@ -6425,16 +6480,19 @@ class SettingsComponent {
       text: "Achromatopsia",
       value: "rgb(38, 38, 38)"
     }];
-    this.colorBlindnessMode = new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl(this.colorBlindnessChoices[0].value, {
+    this.colorBlindnessMode = new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl(this.defaultColorBlindnessMode, {
       nonNullable: true
     });
+    this.subscriptions = [];
     // Playtime stuff     
     const daily = localStorage.getItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_2__.LS_DAILY_GOAL);
     this.dailyProgressMinutes.setValue(Number(daily) || _services_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_1__.DEFAULT_DAILY_GOAL);
-    this.dailyProgressMinutes.valueChanges.subscribe(v => localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_2__.LS_DAILY_GOAL, String(v)));
+    const dailySubscription = this.dailyProgressMinutes.valueChanges.subscribe(v => localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_2__.LS_DAILY_GOAL, String(v)));
+    this.subscriptions.push(dailySubscription);
     const weekly = localStorage.getItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_2__.LS_WEEKLY_GOAL);
     this.weeklyProgressMinutes.setValue(Number(weekly) || _services_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_1__.DEFAULT_WEEKLY_GOAL);
-    this.weeklyProgressMinutes.valueChanges.subscribe(v => localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_2__.LS_WEEKLY_GOAL, String(v)));
+    const weeklySubscription = this.weeklyProgressMinutes.valueChanges.subscribe(v => localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_2__.LS_WEEKLY_GOAL, String(v)));
+    this.subscriptions.push(weeklySubscription);
     // Training unit stuff
     const {
       trainingUnitLength,
@@ -6442,22 +6500,29 @@ class SettingsComponent {
       premisesDownThreshold
     } = this.progressAndPerformanceService.getTrainingUnitSettings();
     this.trainingUnitLength.setValue(trainingUnitLength);
-    this.trainingUnitLength.valueChanges.subscribe(v => localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_2__.LS_TRAINING_UNIT_LENGTH, String(v)));
+    const trainingUnitSubscription = this.trainingUnitLength.valueChanges.subscribe(v => localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_2__.LS_TRAINING_UNIT_LENGTH, String(v)));
+    this.subscriptions.push(trainingUnitSubscription);
     this.premisesUpThreshold.setValue(premisesUpThreshold);
-    this.premisesUpThreshold.valueChanges.subscribe(v => localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_2__.LS_PREMISES_UP_THRESHOLD, String(v)));
+    const premisesUpSubscription = this.premisesUpThreshold.valueChanges.subscribe(v => localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_2__.LS_PREMISES_UP_THRESHOLD, String(v)));
+    this.subscriptions.push(premisesUpSubscription);
     this.premisesDownThreshold.setValue(premisesDownThreshold);
-    this.premisesDownThreshold.valueChanges.subscribe(v => localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_2__.LS_PREMISES_DOWN_THRESHOLD, String(v)));
+    const premisesDownSubscription = this.premisesDownThreshold.valueChanges.subscribe(v => localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_2__.LS_PREMISES_DOWN_THRESHOLD, String(v)));
+    this.subscriptions.push(premisesDownSubscription);
     const colorBlindnessMode = localStorage.getItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_2__.LS_COLOR_BLINDNESS_MODE);
     if (colorBlindnessMode) {
       const [text, value] = colorBlindnessMode.split(";");
       this.colorBlindnessMode.setValue(value);
     }
-    this.colorBlindnessMode.valueChanges.subscribe(value => {
+    const colorBlindnessSubscription = this.colorBlindnessMode.valueChanges.subscribe(value => {
       const text = this.colorBlindnessChoices.find(choice => choice.value === value)?.text;
       const cmpKey = text + ";" + value;
       localStorage.setItem(_constants_local_storage_constants__WEBPACK_IMPORTED_MODULE_2__.LS_COLOR_BLINDNESS_MODE, cmpKey);
       loadColorBlindnessMode();
     });
+    this.subscriptions.push(colorBlindnessSubscription);
+  }
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
   static {
     this.ɵfac = function SettingsComponent_Factory(t) {
@@ -6474,7 +6539,7 @@ class SettingsComponent {
       template: function SettingsComponent_Template(rf, ctx) {
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵelementStart"](0, "app-card")(1, "div", 0)(2, "div", 1)(3, "div", 2);
-          _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵtext"](4, "Game mode");
+          _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵtext"](4, "Game settings");
           _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵelementEnd"]();
           _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵelementStart"](5, "div", 3);
           _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵelement"](6, "app-game-mode-choose");
@@ -6726,11 +6791,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_utils_uuid__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/utils/uuid */ 3488);
 /* harmony import */ var _constants_settings_constants__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../constants/settings.constants */ 8266);
 /* harmony import */ var _utils_logger__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../utils/logger */ 3476);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/core */ 2560);
-/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ 4534);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/router */ 124);
-/* harmony import */ var _progress_and_performance_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./progress-and-performance.service */ 2740);
-/* harmony import */ var _game_timer_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./game-timer.service */ 6002);
+/* harmony import */ var _pages_settings_game_mode_choose_game_mode_choose_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../pages/settings/game-mode-choose/game-mode-choose.component */ 9871);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/core */ 2560);
+/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ 4534);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @angular/router */ 124);
+/* harmony import */ var _progress_and_performance_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./progress-and-performance.service */ 2740);
+/* harmony import */ var _game_timer_service__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./game-timer.service */ 6002);
+
 
 
 
@@ -7955,8 +8022,16 @@ class GameService {
     }
     return question;
   }
-  createSyllogismOld(numOfPremises) {
-    this.logger.info("createSyllogism");
+  createSyllogismAll(numOfPremises) {
+    this.logger.info("createSyllogismAll");
+    if ((0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.coinFlip)()) {
+      return this.createSyllogismFredo(numOfPremises);
+    } else {
+      return this.createSyllogismCanyon(numOfPremises);
+    }
+  }
+  createSyllogismFredo(numOfPremises) {
+    this.logger.info("createSyllogismFredo");
     const type = _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Syllogism;
     const settings = this.settings;
     if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_8__.canGenerateQuestion)(type, numOfPremises, settings)) {
@@ -7980,15 +8055,13 @@ class GameService {
     (0,_utils_question_utils__WEBPACK_IMPORTED_MODULE_2__.shuffle)(question.premises);
     return question;
   }
-  createSyllogism(numOfPremises) {
-    this.logger.info("createSyllogism");
+  createSyllogismCanyon(numOfPremises) {
+    this.logger.info("createSyllogismCanyon");
     const type = _constants_question_constants__WEBPACK_IMPORTED_MODULE_4__.EnumQuestionType.Syllogism;
     const settings = this.settings;
     if (!(0,_models_settings_models__WEBPACK_IMPORTED_MODULE_8__.canGenerateQuestion)(type, numOfPremises, settings)) {
       throw new Error("Cannot generate.");
     }
-    // @ts-ignore
-    if (false) {}
     const question = new _models_question_models__WEBPACK_IMPORTED_MODULE_1__.Question(type);
     const minDepth = Math.min(2, numOfPremises);
     const maxDepth = numOfPremises;
@@ -8018,13 +8091,25 @@ class GameService {
     question.conclusion = (0,_utils_syllogism_utils__WEBPACK_IMPORTED_MODULE_3__.formatSylPremise)(conclusion, negated);
     return question;
   }
+  createSyllogism(numOfPremises) {
+    switch ((0,_pages_settings_game_mode_choose_game_mode_choose_component__WEBPACK_IMPORTED_MODULE_12__.getSyllogismGeneratorValue)()) {
+      case _pages_settings_game_mode_choose_game_mode_choose_component__WEBPACK_IMPORTED_MODULE_12__.SyllogismGenerator.All:
+        return this.createSyllogismAll(numOfPremises);
+      case _pages_settings_game_mode_choose_game_mode_choose_component__WEBPACK_IMPORTED_MODULE_12__.SyllogismGenerator.Fredo:
+        return this.createSyllogismFredo(numOfPremises);
+      case _pages_settings_game_mode_choose_game_mode_choose_component__WEBPACK_IMPORTED_MODULE_12__.SyllogismGenerator.Canyon:
+        return this.createSyllogismCanyon(numOfPremises);
+      default:
+        return this.createSyllogismAll(numOfPremises);
+    }
+  }
   static {
     this.ɵfac = function GameService_Factory(t) {
-      return new (t || GameService)(_angular_core__WEBPACK_IMPORTED_MODULE_14__["ɵɵinject"](_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_15__.NgbModal), _angular_core__WEBPACK_IMPORTED_MODULE_14__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_16__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_14__["ɵɵinject"](_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_12__.ProgressAndPerformanceService), _angular_core__WEBPACK_IMPORTED_MODULE_14__["ɵɵinject"](_game_timer_service__WEBPACK_IMPORTED_MODULE_13__.GameTimerService));
+      return new (t || GameService)(_angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵinject"](_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_16__.NgbModal), _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_17__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵinject"](_progress_and_performance_service__WEBPACK_IMPORTED_MODULE_13__.ProgressAndPerformanceService), _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵinject"](_game_timer_service__WEBPACK_IMPORTED_MODULE_14__.GameTimerService));
     };
   }
   static {
-    this.ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_14__["ɵɵdefineInjectable"]({
+    this.ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵdefineInjectable"]({
       token: GameService,
       factory: GameService.ɵfac,
       providedIn: "root"

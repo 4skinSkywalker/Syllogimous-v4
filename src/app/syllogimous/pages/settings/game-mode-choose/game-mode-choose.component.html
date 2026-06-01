@@ -1,7 +1,9 @@
+<div class="mb-2 text-muted">Game mode</div>
+
 <div class="game-mode-choices">
     <div class="game-mode-choice">
         <input type="radio" id="mode-choice-0" name="mode-kind" (click)="setMode('0')">
-        <label for="mode-choice-0" ngbTooltip="View all premises on the screen simultaneously">View all premises</label>
+        <label for="mode-choice-0" ngbTooltip="View all premises on the screen simultaneously">All premises</label>
     </div>
 
     <div class="game-mode-choice">
@@ -13,4 +15,17 @@
         <input type="radio" id="mode-choice-2" name="mode-kind" (click)="setMode('2')">
         <label for="mode-choice-2" ngbTooltip="View one premise at a time in a carousel format without going back">Carousel (no back)</label>
     </div>
+</div>
+
+<div class="mt-3 mb-2 text-muted">Other game settings</div>
+
+<div class="d-grid" style="gap: 1rem; padding-inline: 0.5rem;">
+    <app-input
+        type="select"
+        name="syllogismGenerator"
+        label="Syllogism generator"
+        placeholder="Syllogism generator"
+        [ngControl]="syllogismGenerator"
+        [options]="syllogismGeneratorChoices"
+    />
 </div>
