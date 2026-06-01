@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { EnumScreens, EnumTiers, NO_DATA, TIER_SCORE_RANGES } from '../../constants/syllogimous.constants';
+import { EnumScreens, EnumTiers, NO_DATA, TIER_SCORE_RANGES } from '../../constants/game.constants';
 import { Question } from '../../models/question.models';
-import { SyllogimousService } from '../../services/syllogimous.service';
+import { GameService } from '../../services/game.service';
 import { Router } from '@angular/router';
 import { formatTime } from 'src/app/utils/date';
 import { ProgressAndPerformanceService } from '../../services/progress-and-performance.service';
@@ -30,7 +30,7 @@ export class StartComponent {
     timePlayedThisWeek = 0;
 
     constructor(
-        public sylSrv: SyllogimousService,
+        public game: GameService,
         public router: Router,
         private progressAndPerformanceService: ProgressAndPerformanceService
     ) {
@@ -39,11 +39,11 @@ export class StartComponent {
     }
 
     ngOnInit() {
-        const currTierIdx = this.tiers.findIndex(tier => tier === this.sylSrv.tier);
+        const currTierIdx = this.tiers.findIndex(tier => tier === this.game.tier);
         this.nextTier = this.tiers[currTierIdx + 1] || NO_DATA;
-        this.pointsRemaining = (this.nextTier !== NO_DATA) ? (TIER_SCORE_RANGES[this.nextTier as EnumTiers].minScore - this.sylSrv.score) : 0;
+        this.pointsRemaining = (this.nextTier !== NO_DATA) ? (TIER_SCORE_RANGES[this.nextTier as EnumTiers].minScore - this.game.score) : 0;
 
-        this.questions = this.sylSrv.questions;
+        this.questions = this.game.questions;
 
         this.correctQs = this.questions.filter(q => q.userAnswer !== undefined && q.isValid === q.userAnswer);
         this.incorrectQs = this.questions.filter(q => q.userAnswer !== undefined && q.isValid !== q.userAnswer);

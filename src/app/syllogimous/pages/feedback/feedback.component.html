@@ -2,13 +2,13 @@
     <div body>
         <app-progress-and-performance
             [feedbackPage]="true"
-            [playgroundMode]="sylSrv.settings === sylSrv.playgroundSettings"
+            [playgroundMode]="game.settings === game.playgroundSettings"
         ></app-progress-and-performance>
 
         <div
             *ngIf="{
-                timeout: sylSrv.question.userAnswer === undefined,
-                validity: sylSrv.question.userAnswer === sylSrv.question.isValid
+                timeout: game.question.userAnswer === undefined,
+                validity: game.question.userAnswer === game.question.isValid
             } as d"
             class="feedback-wrap"
             [class.feedback-timeout]="d.timeout"
@@ -31,7 +31,7 @@
             </button>
         </div>
         <div>
-            <button class="btn btn-primary" (click)="sylSrv.play()">
+            <button class="btn btn-primary" (click)="game.play()">
                 Play <i class="bi bi-play-fill"></i>
             </button>
         </div>

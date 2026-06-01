@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { IArrangementPremise, IDirection3DProposition, IDirectionProposition, Question } from "../models/question.models";
-import { coinFlip, getCircularWays, getLinearWays, getRandomRuleValid, getRandomSymbols, getRelation, getSymbols, isPremiseLikeConclusion, createMetaRelationships, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions, getSyllogism, getRandomRuleInvalid, areGraphsIsomorphic } from "../utils/question.utils";
+import { coinFlip, getCircularWays, getLinearWays, getRandomSymbols, getRelation, getSymbols, isPremiseLikeConclusion, createMetaRelationships, metarelateArrangement, pickUniqueItems, horizontalShuffleArrangement, shuffle, interpolateArrangementRelationship, fixBinaryInstructions, areGraphsIsomorphic } from "../utils/question.utils";
+import { generatePolysyllogism, formatSylPremise, getRandomRuleValid, getRandomRuleInvalid, getSyllogism } from "../utils/syllogism.utils";
 import { NUMBER_WORDS } from "../constants/question.constants";
-import { EnumScreens, EnumTiers, ORDERED_QUESTION_TYPES, ORDERED_TIERS, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES, TIERS_MATRIX } from "../constants/syllogimous.constants";
+import { EnumScreens, EnumTiers, ORDERED_QUESTION_TYPES, ORDERED_TIERS, TIER_SCORE_ADJUSTMENTS, TIER_SCORE_RANGES, TIERS_MATRIX } from "../constants/game.constants";
 import { LS_DONT_SHOW, LS_HISTORY, LS_SCORE, LS_TIMER } from "../constants/local-storage.constants";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ModalLevelChangeComponent } from "../components/modal-level-change/modal-level-change.component";
@@ -18,7 +19,7 @@ import { GameTimerService } from "./game-timer.service";
 @Injectable({
     providedIn: "root"
 })
-export class SyllogimousService {
+export class GameService {
     _score = 0;
     history: Question[] = [];
     question;
@@ -290,50 +291,6 @@ export class SyllogimousService {
         );
 
         this.router.navigate([EnumScreens.Feedback]);
-    }
-
-    createSyllogism(numOfPremises: number) {
-        this.logger.info("createSyllogism");
-
-        const type = EnumQuestionType.Syllogism;
-        const settings = this.settings;
-
-        if (!canGenerateQuestion(type, numOfPremises, settings)) {
-            throw new Error("Cannot generate.");
-        }
-
-        const length = numOfPremises + 1;
-        const question = new Question(type);
-        question.isValid = coinFlip();
-
-        do {
-            question.rule = question.isValid ? getRandomRuleValid() : getRandomRuleInvalid();
-            question.bucket = getRandomSymbols(settings, length);
-            question.premises = [];
-
-            [
-                question.premises[0],
-                question.premises[1],
-                question.conclusion
-            ] = getSyllogism(
-                settings,
-                question.bucket[0],
-                question.bucket[1],
-                question.bucket[2],
-                question.isValid ? getRandomRuleValid() : getRandomRuleInvalid()
-            );
-        } while (isPremiseLikeConclusion(question.premises, question.conclusion));
-
-        for (let i = 3; i < length; i++) {
-            const rnd = Math.floor(Math.random() * (i - 1));
-            const flip = coinFlip();
-            const [p, m] = flip ? [question.bucket[i], question.bucket[rnd]] : [question.bucket[rnd], question.bucket[i]];
-            question.premises.push(getSyllogism(settings, "#####", p, m, getRandomRuleInvalid())[0]);
-        }
-
-        shuffle(question.premises);
-
-        return question;
     }
 
     createDistinction(numOfPremises: number): Question {
@@ -1507,6 +1464,94 @@ export class SyllogimousService {
         if (safe <= 0) {
             throw new Error("MAXIMUM NUMBER OF ITERATIONS REACHED!");
         }
+
+        return question;
+    }
+
+    private createSyllogismOld(numOfPremises: number) {
+        this.logger.info("createSyllogism");
+
+        const type = EnumQuestionType.Syllogism;
+        const settings = this.settings;
+
+        if (!canGenerateQuestion(type, numOfPremises, settings)) {
+            throw new Error("Cannot generate.");
+        }
+
+        const length = numOfPremises + 1;
+        const question = new Question(type);
+        question.isValid = coinFlip();
+
+        do {
+            question.rule = question.isValid ? getRandomRuleValid() : getRandomRuleInvalid();
+            question.bucket = getRandomSymbols(settings, length);
+            question.premises = [];
+
+            [
+                question.premises[0],
+                question.premises[1],
+                question.conclusion
+            ] = getSyllogism(
+                settings,
+                question.bucket[0],
+                question.bucket[1],
+                question.bucket[2],
+                question.isValid ? getRandomRuleValid() : getRandomRuleInvalid()
+            );
+        } while (isPremiseLikeConclusion(question.premises, question.conclusion));
+
+        for (let i = 3; i < length; i++) {
+            const rnd = Math.floor(Math.random() * (i - 1));
+            const flip = coinFlip();
+            const [p, m] = flip ? [question.bucket[i], question.bucket[rnd]] : [question.bucket[rnd], question.bucket[i]];
+            question.premises.push(getSyllogism(settings, "#####", p, m, getRandomRuleInvalid())[0]);
+        }
+
+        shuffle(question.premises);
+
+        return question;
+    }
+
+    createSyllogism(numOfPremises: number) {
+        this.logger.info("createSyllogism");
+
+        const type = EnumQuestionType.Syllogism;
+        const settings = this.settings;
+
+        if (!canGenerateQuestion(type, numOfPremises, settings)) {
+            throw new Error("Cannot generate.");
+        }
+
+        // @ts-ignore
+        if (1 === 0) {
+            return this.createSyllogismOld(numOfPremises);
+        }
+
+        const question = new Question(type);
+        const minDepth = Math.min(2, numOfPremises);
+        const maxDepth = numOfPremises;
+        const chainDepth = Math.floor(Math.random() * (maxDepth - minDepth + 1)) + minDepth;
+        const chainTermsNeeded = chainDepth + 1;
+        const numDistractors = numOfPremises - chainDepth;
+        const minExtra = Math.ceil(numDistractors / chainTermsNeeded);
+        const maxExtra = numDistractors;
+        const extra = Math.floor(Math.random() * (maxExtra - minExtra + 1)) + minExtra;
+        const poolSize = chainTermsNeeded + extra;
+        const termPool = getRandomSymbols(settings, poolSize);
+        const wantTrue = coinFlip();
+        const { premises, conclusion, conclusionIsTrue } = generatePolysyllogism({
+            nPremises: numOfPremises,
+            chainDepth,
+            termPool,
+            trueConclusion: wantTrue,
+        });
+
+        const negated = settings.enabled.negation && coinFlip();
+
+        question.bucket = termPool;
+        question.isValid = conclusionIsTrue;
+        question.premises = premises.map(p => formatSylPremise(p, negated));
+        question.conclusion = formatSylPremise(conclusion, negated);
 
         return question;
     }

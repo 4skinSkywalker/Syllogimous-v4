@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Question } from '../../models/question.models';
-import { SyllogimousService } from '../../services/syllogimous.service';
+import { GameService } from '../../services/game.service';
 import { LS_HISTORY } from '../../constants/local-storage.constants';
 import { Router } from '@angular/router';
-import { EnumScreens } from '../../constants/syllogimous.constants';
+import { EnumScreens } from '../../constants/game.constants';
 import { EnumQuestionType } from '../../constants/question.constants';
 
 @Component({
@@ -20,7 +20,7 @@ export class TutorialsComponent {
     seenQs: Record<string, boolean> = {};
 
     constructor(
-        public sylSrv: SyllogimousService,
+        public game: GameService,
         public router: Router
     ) {
         this.questionTypes = Object.values(EnumQuestionType);

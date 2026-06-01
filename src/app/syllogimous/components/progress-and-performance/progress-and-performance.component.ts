@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ProgressAndPerformanceService } from '../../services/progress-and-performance.service';
-import { SyllogimousService } from '../../services/syllogimous.service';
+import { GameService } from '../../services/game.service';
 
 @Component({
     selector: 'app-progress-and-performance',
@@ -24,12 +24,12 @@ export class DailyProgressComponent {
     };
 
     constructor(
-        public sylSrv: SyllogimousService,
+        public game: GameService,
         private progressAndPerformanceService: ProgressAndPerformanceService
     ) {
         const today = progressAndPerformanceService.getToday();
         this.dailyProgressPercentage = progressAndPerformanceService.calcDailyProgress(today);
         this.weeklyProgressPercentage = progressAndPerformanceService.calcWeeklyProgress(today);
-        this.trainingUnitPercentage = progressAndPerformanceService.calcTrainingUnitPercentages(sylSrv.question.type);
+        this.trainingUnitPercentage = progressAndPerformanceService.calcTrainingUnitPercentages(game.question.type);
     }
 }

@@ -1,4 +1,4 @@
-import { FORMS, getEmojis, getStrings, NOUNS, NUMBER_WORDS, VALID_RULES } from "../constants/question.constants";
+import { NOUNS, NUMBER_WORDS, STRINGS } from "../constants/question.constants";
 import { EnumArrangements, EnumQuestionType } from "../constants/question.constants";
 import { IArrangementPremise, IArrangementRelationship, Question } from "../models/question.models";
 import { Settings, Picked } from "../models/settings.models";
@@ -32,22 +32,6 @@ export function shuffle<T>(array: T[]) {
         [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
     }
     return array;
-}
-
-export function getRandomRuleValid() {
-    return VALID_RULES[Math.floor(Math.random() * VALID_RULES.length)];
-}
-
-export function getRandomRuleInvalid() {
-    let rule;
-    while (!rule || VALID_RULES.includes(rule)) {
-        rule = "";
-        for (let i = 0; i < 3; i++) {
-            rule += Math.floor(Math.random() * 4); // Form
-        }
-        rule += 1 + Math.floor(Math.random() * 4); // Figure
-    }
-    return rule;
 }
 
 export function extractSubjects(phrase: string) {
@@ -85,50 +69,6 @@ export function getRandomSymbols(settings: Settings, length: number) {
             seen.add(rnd);
             return symbols[rnd];
         });
-}
-
-export function getSyllogism(settings: Settings, s: string, p: string, m: string, rule: string) {
-
-    const _forms = (!settings.enabled.negation)
-        ? FORMS[0]
-        : pickUniqueItems(FORMS, 1).picked[0];
-
-    let major = _forms[+rule[0]];
-    let minor = _forms[+rule[1]];
-    let conclusion = _forms[+rule[2]];
-
-    const figure = +rule[3];
-    switch (figure) {
-        case 1:
-            major = major.replace("$", m);
-            major = major.replace("$", p);
-            minor = minor.replace("$", s);
-            minor = minor.replace("$", m);
-            break;
-        case 2:
-            major = major.replace("$", p);
-            major = major.replace("$", m);
-            minor = minor.replace("$", s);
-            minor = minor.replace("$", m);
-            break;
-        case 3:
-            major = major.replace("$", m);
-            major = major.replace("$", p);
-            minor = minor.replace("$", m);
-            minor = minor.replace("$", s);
-            break;
-        case 4:
-            major = major.replace("$", p);
-            major = major.replace("$", m);
-            minor = minor.replace("$", m);
-            minor = minor.replace("$", s);
-            break;
-    }
-
-    conclusion = conclusion.replace("$", s);
-    conclusion = conclusion.replace("$", p);
-
-    return [major, minor, conclusion];
 }
 
 export function getMetaReplacer(settings: Settings, choosenPair: Picked<string>, relations: string[], negations: boolean[]) {
@@ -474,7 +414,7 @@ function buildGraph(edgeList: [string, "↔" | "→" | "←", string][]) {
     return graph;
 }
 
-// Checks if two directed graphs (given as edge lists) are isomorphic
+/** Checks if two directed graphs (given as edge lists) are isomorphic */
 export function areGraphsIsomorphic(edgeList1: [string, "↔" | "→" | "←", string][], edgeList2: [string, "↔" | "→" | "←", string][]) {
     const graph1 = buildGraph(edgeList1);
     const graph2 = buildGraph(edgeList2);

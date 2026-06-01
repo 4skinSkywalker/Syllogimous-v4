@@ -68,48 +68,6 @@ export const getEmojis = () => {
 };
 getEmojis();
 
-export const VALID_RULES = [
-    "0001",
-    "1011",
-    "0221",
-    "1231",
-    "0021",
-    "1031",
-    "0112",
-    "1012",
-    "1232",
-    "0332",
-    "0132",
-    "1032",
-    "0223",
-    "2023",
-    "3033",
-    "1233",
-    "0023",
-    "1033",
-    "0114",
-    "2024",
-    "1234",
-    "0134",
-    "1034",
-    "0024"
-];
-
-export const FORMS = [
-    [
-        'All <span class="subject">$</span> is <span class="subject">$</span>',
-        'No <span class="subject">$</span> is <span class="subject">$</span>',
-        'Some <span class="subject">$</span> is <span class="subject">$</span>',
-        'Some <span class="subject">$</span> is not <span class="subject">$</span>'
-    ],
-    [
-        '<span class="is-negated">No</span> <span class="subject">$</span> is <span class="subject">$</span>',
-        '<span class="is-negated">All</span> <span class="subject">$</span> is <span class="subject">$</span>',
-        'Some <span class="subject">$</span> <span class="is-negated">is not</span> <span class="subject">$</span>',
-        'Some <span class="subject">$</span> <span class="is-negated">is</span> <span class="subject">$</span>'
-    ],
-];
-
 export const NOUNS = [
     "Acrobat",
     "Afro",

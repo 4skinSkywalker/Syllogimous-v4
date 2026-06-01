@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { EnumQuestionType } from 'src/app/syllogimous/constants/question.constants';
 import { TypeBasedStats } from 'src/app/syllogimous/models/stats.models';
 import { StatsService } from 'src/app/syllogimous/services/stats.service';
-import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.service';
+import { GameService } from 'src/app/syllogimous/services/game.service';
 
 @Component({
     selector: 'app-type-based-stats',
@@ -15,7 +15,7 @@ export class TypeBasedStatsComponent {
     typeBasedStats: TypeBasedStats;
 
     constructor(
-        public sylSrv: SyllogimousService,
+        public game: GameService,
         private statsService: StatsService,
     ) {
         const { types, typeBasedStats } = this.statsService.calcStats();

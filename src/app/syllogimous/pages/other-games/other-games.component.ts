@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { EnumScreens } from '../../constants/syllogimous.constants';
+import { EnumScreens } from '../../constants/game.constants';
 
 @Component({
   selector: 'app-other-games',

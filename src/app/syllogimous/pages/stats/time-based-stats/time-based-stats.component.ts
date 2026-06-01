@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Question } from 'src/app/syllogimous/models/question.models';
-import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.service';
+import { GameService } from 'src/app/syllogimous/services/game.service';
 import { formatTime } from 'src/app/utils/date';
 
 @Component({
@@ -19,9 +19,9 @@ export class TimeBasedStatsComponent {
     timeBasedStats: Record<string, any>; // TODO: This should be typed
 
     constructor(
-        private sylSrv: SyllogimousService
+        private game: GameService
     ) {
-        this.questions = this.sylSrv.questions;
+        this.questions = this.game.questions;
         this.timeBasedStats = {};
 
         for (const q of this.questions) {

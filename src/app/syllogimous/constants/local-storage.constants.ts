@@ -1,5 +1,5 @@
 import { EnumQuestionType } from "./question.constants";
-import { EnumScreens } from "./syllogimous.constants";
+import { EnumScreens } from "./game.constants";
 
 export const LS_DONT_SHOW = "SYL_DONT_SHOW:";
 export const LS_HISTORY = "SYL_HISTORY";

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { SyllogimousService } from '../../services/syllogimous.service';
+import { GameService } from '../../services/game.service';
 import { StatsService } from '../../services/stats.service';
 import { LS_GAME_MODE, LS_TIMER } from '../../constants/local-storage.constants';
 import { LS_CUSTOM_TIMERS_KEY } from '../settings/modal-timer-settings/modal-timer-settings.component';
 import { Router } from '@angular/router';
-import { EnumScreens } from '../../constants/syllogimous.constants';
+import { EnumScreens } from '../../constants/game.constants';
 import { GameTimerService } from '../../services/game-timer.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class GameComponent {
     trueButtonToTheRight = false;
 
     constructor(
-        public sylSrv: SyllogimousService,
+        public game: GameService,
         public gameTimerService: GameTimerService,
         private statsService: StatsService,
         private router: Router,
@@ -30,7 +30,7 @@ export class GameComponent {
         this.gameMode = localStorage.getItem(LS_GAME_MODE) || '0';
         this.trueButtonToTheRight = Math.random() > 0.5;
 
-        if (this.sylSrv.question.conclusion === "!") {
+        if (this.game.question.conclusion === "!") {
             this.router.navigate([EnumScreens.Start]);
         }
     }
@@ -41,7 +41,7 @@ export class GameComponent {
                 console.log("Custom timer");
 
                 const customTimers = JSON.parse(localStorage.getItem(LS_CUSTOM_TIMERS_KEY) || "{}");
-                this.timerTimeSeconds = customTimers[this.sylSrv.question.type] || 90;
+                this.timerTimeSeconds = customTimers[this.game.question.type] || 90;
                 this.kickTimer();
                 
                 break;
@@ -57,8 +57,8 @@ export class GameComponent {
                 const metaRelationBonus = 4;
                 this.timerTimeSeconds = 90;
 
-                const questionType = this.sylSrv.question.type;
-                const questionPremises = this.sylSrv.question.premises.length;
+                const questionType = this.game.question.type;
+                const questionPremises = this.game.question.premises.length;
                 const { typeBasedStats } = this.statsService.calcStats(this.timerType);
                 const tbs = typeBasedStats[questionType];
 
@@ -80,8 +80,8 @@ export class GameComponent {
                         avgTimeToRespond += newLevelBonus; // Bonus for the new level
                     }
 
-                    avgTimeToRespond += negationBonus * this.sylSrv.question.negations;
-                    avgTimeToRespond += metaRelationBonus * this.sylSrv.question.metaRelations;
+                    avgTimeToRespond += negationBonus * this.game.question.negations;
+                    avgTimeToRespond += metaRelationBonus * this.game.question.metaRelations;
 
                     this.timerTimeSeconds = Math.floor(Math.max(0, avgTimeToRespond));
                 }
@@ -102,6 +102,6 @@ export class GameComponent {
 
     kickTimer = async () => {
         await this.gameTimerService.start(this.timerTimeSeconds);
-        this.sylSrv.checkQuestion();
+        this.game.checkQuestion();
     }
 }

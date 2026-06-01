@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LS_DAILY_GOAL, LS_DAILY_PROGRESS, LS_DONT_SHOW, LS_GAME_MODE, LS_HISTORY, LS_PG_SETTINGS, LS_PREMISES_DOWN_THRESHOLD, LS_PREMISES_UP_THRESHOLD, LS_PROPS, LS_SCORE, LS_TIMER, LS_TRAINING_UNIT, LS_TRAINING_UNIT_LENGTH, LS_WEEKLY_GOAL } from 'src/app/syllogimous/constants/local-storage.constants';
-import { EnumQuestionType } from 'src/app/syllogimous/constants/question.constants';
-import { EnumScreens } from 'src/app/syllogimous/constants/syllogimous.constants';
-import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.service';
+import { LS_HISTORY, LS_PROPS } from 'src/app/syllogimous/constants/local-storage.constants';
+import { EnumScreens } from 'src/app/syllogimous/constants/game.constants';
+import { GameService } from 'src/app/syllogimous/services/game.service';
 import { downloadFile } from 'src/app/utils/file';
 
 @Component({
@@ -16,7 +15,7 @@ export class CardDropdownComponent {
     EnumScreens = EnumScreens;
 
     constructor(
-        public sylSrv: SyllogimousService,
+        public game: GameService,
         public router: Router,
         private modalService: NgbModal,
     ) { }

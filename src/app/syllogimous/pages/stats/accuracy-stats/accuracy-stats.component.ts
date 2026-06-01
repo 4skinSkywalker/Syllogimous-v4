@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Question } from 'src/app/syllogimous/models/question.models';
-import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.service';
+import { GameService } from 'src/app/syllogimous/services/game.service';
 
 @Component({
     selector: 'app-accuracy-stats',
@@ -16,11 +16,11 @@ export class AccuracyStatsComponent {
     longestStreak: Question[] = [];
 
     constructor(
-        public sylSrv: SyllogimousService
+        public game: GameService
     ) {}
 
     ngOnInit() {
-        this.questions = this.sylSrv.questions;
+        this.questions = this.game.questions;
 
         this.correctQs = this.questions.filter(q => q.userAnswer !== undefined && q.isValid === q.userAnswer);
         this.incorrectQs = this.questions.filter(q => q.userAnswer !== undefined && q.isValid !== q.userAnswer);

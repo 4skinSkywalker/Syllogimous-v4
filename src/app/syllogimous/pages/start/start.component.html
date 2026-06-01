@@ -5,7 +5,7 @@
         <ul class="list-group mb-4">
             <li class="list-group-item flex-between">
                 <b>Tier</b>
-                <div>{{ sylSrv.tier }} {{ sylSrv.score }} pts <small class="text-muted">(next {{nextTier}}<i [ngbTooltip]="pointsRemaining + ' pts left to this next level'" class="bi bi-info-circle ms-1"></i>)</small></div>
+                <div>{{ game.tier }} {{ game.score }} pts <small class="text-muted">(next {{nextTier}}<i [ngbTooltip]="pointsRemaining + ' pts left to this next level'" class="bi bi-info-circle ms-1"></i>)</small></div>
             </li>
     
             <li class="list-group-item flex-between">
@@ -55,7 +55,7 @@
         <button
             style="width: 150px;"
             class="btn btn-primary"
-            (click)="sylSrv.playArcadeMode()"
+            (click)="game.playArcadeMode()"
         >Arcade</button>
         <button
             style="width: 150px;"

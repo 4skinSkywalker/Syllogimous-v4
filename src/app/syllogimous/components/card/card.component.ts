@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
-import { EnumTiers, TIER_COLORS, TIER_SCORE_RANGES } from "../../constants/syllogimous.constants";
-import { SyllogimousService } from "../../services/syllogimous.service";
+import { EnumTiers, TIER_COLORS, TIER_SCORE_RANGES } from "../../constants/game.constants";
+import { GameService } from "../../services/game.service";
 
 @Component({
     selector: "app-card",
@@ -14,6 +14,6 @@ export class CardComponent {
     Infinity = Infinity;
 
     constructor(
-        public sylSrv: SyllogimousService,
+        public game: GameService,
     ) {}
 }
