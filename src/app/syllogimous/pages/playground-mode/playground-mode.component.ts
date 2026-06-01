@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IDynamicField } from 'src/app/shared/components/dynamic-form/dynamic-form.component';
 import { areSettingsInvalid, QuestionSettings, Settings } from 'src/app/syllogimous/models/settings.models';
-import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.service';
-import { EnumScreens } from '../../constants/syllogimous.constants';
+import { GameService } from 'src/app/syllogimous/services/game.service';
+import { EnumScreens } from '../../constants/game.constants';
 import { EnumQuestionType } from '../../constants/question.constants';
 import { LS_PG_SETTINGS } from '../../constants/local-storage.constants';
 
@@ -35,7 +35,7 @@ export class PlaygroundModeComponent {
     constructor(
         public router: Router,
         private modalService: NgbModal,
-        private sylSrv: SyllogimousService,
+        private game: GameService,
     ) {
         const settings = this.loadPlaygroundSettings() || new Settings();
 
@@ -120,11 +120,11 @@ export class PlaygroundModeComponent {
             return;
         }
 
-        this.sylSrv.playgroundSettings = settings;
+        this.game.playgroundSettings = settings;
         console.log("Playground settings", settings);
         this.savePlaygroundSettings(settings);
 
-        this.sylSrv.play();
+        this.game.play();
     }
 
     loadPlaygroundSettings() {

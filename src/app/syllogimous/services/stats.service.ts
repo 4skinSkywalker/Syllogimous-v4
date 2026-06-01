@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { SyllogimousService } from "./syllogimous.service";
+import { GameService } from "./game.service";
 import { jsonCopy } from "src/app/utils/json";
 import { TypeBasedStats } from "../models/stats.models";
 import { EnumQuestionType } from "../constants/question.constants";
@@ -9,11 +9,11 @@ import { EnumQuestionType } from "../constants/question.constants";
 })
 export class StatsService {
     constructor(
-        public sylSrv: SyllogimousService
+        public game: GameService
     ) { }
 
     calcStats = (timerType?: "0" | "1" | "2") => {
-        const questions = this.sylSrv.questions.filter(q => q.playgroundMode === !!this.sylSrv.playgroundSettings);
+        const questions = this.game.questions.filter(q => q.playgroundMode === !!this.game.playgroundSettings);
         const types = Object.values(EnumQuestionType).filter(qt => Object.values(EnumQuestionType).includes(qt));
         const typeBasedStats = new TypeBasedStats();
 

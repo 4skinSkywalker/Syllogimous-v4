@@ -1,5 +1,5 @@
 <ng-template #questionInstructionsAndNotes>
-    <ng-container *ngIf="{ instructions: sylSrv.question.instructions, notes: sylSrv.question.notes } as info">
+    <ng-container *ngIf="{ instructions: game.question.instructions, notes: game.question.notes } as info">
         <div *ngIf="info.instructions?.length || info.notes?.length">
             <div *ngIf="info.instructions?.length">
                 <div class="small text-muted">Instructions</div>
@@ -31,13 +31,13 @@
                 [showNavigationIndicators]="false"
                 style="border: 0; box-shadow: none;"
             >
-                <ng-template ngbSlide *ngIf="sylSrv.question.instructions?.length || sylSrv.question.notes?.length">
+                <ng-template ngbSlide *ngIf="game.question.instructions?.length || game.question.notes?.length">
                     <div style="display: grid; place-items: center;">
                         <ng-container *ngTemplateOutlet="questionInstructionsAndNotes"></ng-container>
                     </div>
                 </ng-template>
 
-                <ng-template ngbSlide *ngFor="let p of sylSrv.question.premises; let i = index; let last = last;">
+                <ng-template ngbSlide *ngFor="let p of game.question.premises; let i = index; let last = last;">
                     <div style="display: grid; place-items: center;">
                         <div>
                             <small class="text-muted">{{last ? "Last premise" : "Premise " + (i + 1)}}</small>
@@ -46,8 +46,8 @@
                     </div>
                 </ng-template>
 
-                <ng-container *ngIf="Array.isArray(sylSrv.question.conclusion); else conclusionsIsStringCarouselTemplate">
-                    <ng-template ngbSlide *ngFor="let c of sylSrv.question.conclusion; let i = index; let last = last;">
+                <ng-container *ngIf="Array.isArray(game.question.conclusion); else conclusionsIsStringCarouselTemplate">
+                    <ng-template ngbSlide *ngFor="let c of game.question.conclusion; let i = index; let last = last;">
                         <div style="display: grid; place-items: center;">
                             <div>
                                 <small class="text-muted">{{last ? "Last conclusion" : "Conclusion " + (i + 1)}}</small>
@@ -61,7 +61,7 @@
                         <div style="display: grid; place-items: center;">
                             <div>
                                 <small class="text-muted">Conclusion</small>
-                                <div [innerHTML]="sylSrv.question.conclusion"></div>
+                                <div [innerHTML]="game.question.conclusion"></div>
                             </div>
                         </div>
                     </ng-template>
@@ -79,29 +79,29 @@
 
             <div>
                 <div class="small text-muted">Premises</div>
-                <div class="premises" *ngIf="sylSrv.question.premises as premises">
+                <div class="premises" *ngIf="game.question.premises as premises">
                     <div *ngFor="let p of premises" [innerHTML]="p"></div>
                 </div>
             </div>
 
-            <div *ngIf="Array.isArray(sylSrv.question.conclusion); else conclusionIsStringTemplate">
+            <div *ngIf="Array.isArray(game.question.conclusion); else conclusionIsStringTemplate">
                 <div class="small text-muted">Conclusion</div>
-                <div class="conclusions" *ngIf="sylSrv.question.conclusion as conclusions">
+                <div class="conclusions" *ngIf="game.question.conclusion as conclusions">
                     <div *ngFor="let c of conclusions" [innerHTML]="c"></div>
                 </div>
             </div>
             <ng-template #conclusionIsStringTemplate>
                 <div>
                     <div class="small text-muted">Conclusion</div>
-                    <div [innerHTML]="sylSrv.question.conclusion"></div>
+                    <div [innerHTML]="game.question.conclusion"></div>
                 </div>
             </ng-template>
         </div>
     </div>
 
     <div footer class="d-flex gap-3 justify-content-center">
-        <button *ngIf="!trueButtonToTheRight" class="btn btn-lg btn-success col-md-3 col-4" (click)="sylSrv.checkQuestion(true)">True</button>
-        <button class="btn btn-lg btn-danger col-md-3 col-4" (click)="sylSrv.checkQuestion(false)">False</button>
-        <button *ngIf="trueButtonToTheRight" class="btn btn-lg btn-success col-md-3 col-4" (click)="sylSrv.checkQuestion(true)">True</button>
+        <button *ngIf="!trueButtonToTheRight" class="btn btn-lg btn-success col-md-3 col-4" (click)="game.checkQuestion(true)">True</button>
+        <button class="btn btn-lg btn-danger col-md-3 col-4" (click)="game.checkQuestion(false)">False</button>
+        <button *ngIf="trueButtonToTheRight" class="btn btn-lg btn-success col-md-3 col-4" (click)="game.checkQuestion(true)">True</button>
     </div>
 </app-card>

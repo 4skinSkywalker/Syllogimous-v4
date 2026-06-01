@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Question } from 'src/app/syllogimous/models/question.models';
-import { SyllogimousService } from 'src/app/syllogimous/services/syllogimous.service';
+import { GameService } from 'src/app/syllogimous/services/game.service';
 
 @Component({
     selector: 'app-error-analysis',
@@ -13,11 +13,11 @@ export class ErrorAnalysisComponent {
     leastCommonMistake = "No Mistakes Yet";
 
     constructor(
-        public sylSrv: SyllogimousService
+        public game: GameService
     ) {}
 
     ngOnInit() {
-        this.questions = this.sylSrv.questions;
+        this.questions = this.game.questions;
 
         const typeMistakesCount: Record<string, number> = {};
         this.questions

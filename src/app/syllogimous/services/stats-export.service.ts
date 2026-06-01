@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { SyllogimousService } from './syllogimous.service';
+import { GameService } from './game.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class StatsExportService {
     constructor(
-        private sylSrv: SyllogimousService
+        private game: GameService
     ) {}
 
     private formatDateTime(timestamp: number): string {
@@ -23,7 +23,7 @@ export class StatsExportService {
     }
 
     exportStats() {
-        const questions = [...this.sylSrv.questions]
+        const questions = [...this.game.questions]
             .sort((a, b) => a.createdAt - b.createdAt);
             
         // Create CSV header

@@ -57,12 +57,3 @@ export class Question {
         this.type = type;
     }
 }
-
-export type SylKind = "all" | "no" | "some" | "some_not";
-export type SylPremise = [string, SylKind, string];
-
-export interface PolysyllogismResult {
-    premises: SylPremise[];
-    conclusion: SylPremise;
-    conclusionIsTrue: boolean;
-}

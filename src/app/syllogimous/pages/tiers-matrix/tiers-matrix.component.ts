@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ORDERED_QUESTION_TYPES, ORDERED_TIERS, TIERS_MATRIX } from '../../constants/syllogimous.constants';
-import { SyllogimousService } from '../../services/syllogimous.service';
+import { ORDERED_QUESTION_TYPES, ORDERED_TIERS, TIERS_MATRIX } from '../../constants/game.constants';
+import { GameService } from '../../services/game.service';
 
 @Component({
     selector: 'app-tiers-matrix',
@@ -17,8 +17,8 @@ export class TiersMatrixComponent {
     cellSelI = -1;
     cellSelJ = -1;
 
-    constructor(private sylSrv: SyllogimousService) {
-        this.userTierIdx = Math.max(0, ORDERED_TIERS.findIndex(t => t === sylSrv.tier));
+    constructor(private game: GameService) {
+        this.userTierIdx = Math.max(0, ORDERED_TIERS.findIndex(t => t === game.tier));
     }
 
     showDetails(i: number, j: number) {

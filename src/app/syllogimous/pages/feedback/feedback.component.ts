@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { SyllogimousService } from '../../services/syllogimous.service';
+import { GameService } from '../../services/game.service';
 import { Router } from '@angular/router';
-import { EnumScreens } from '../../constants/syllogimous.constants';
+import { EnumScreens } from '../../constants/game.constants';
 
 @Component({
     selector: 'app-feedback',
@@ -12,7 +12,7 @@ export class FeedbackComponent {
     EnumScreens = EnumScreens;
 
     constructor(
-        public sylSrv: SyllogimousService,
+        public game: GameService,
         public router: Router
     ) { }
 }

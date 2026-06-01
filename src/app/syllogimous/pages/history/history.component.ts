@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { SyllogimousService } from '../../services/syllogimous.service';
+import { GameService } from '../../services/game.service';
 import { Question } from '../../models/question.models';
 import { Router } from '@angular/router';
-import { EnumScreens } from '../../constants/syllogimous.constants';
+import { EnumScreens } from '../../constants/game.constants';
 import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
@@ -19,13 +19,13 @@ export class HistoryComponent {
     sliceIdx = -25;
     
     constructor(
-        public sylSrv: SyllogimousService,
+        public game: GameService,
         public router: Router,
         private toaster: ToastService
     ) { }
 
     ngOnInit() {
-        this.allQuestions = this.sylSrv.questions;
+        this.allQuestions = this.game.questions;
         this.loadMoreQuestions();
     }
 

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { StatsExportService } from '../../services/stats-export.service';
-import { EnumScreens } from '../../constants/syllogimous.constants';
+import { EnumScreens } from '../../constants/game.constants';
 
 @Component({
     selector: 'app-stats',

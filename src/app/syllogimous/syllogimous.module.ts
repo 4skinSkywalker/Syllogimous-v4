@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { SyllogimousComponent } from './syllogimous.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { SyllogimousComponent } from './syllogimous.component';
+import { GameComponent } from './pages/game/game.component';
 import { ModalLevelChangeComponent } from './components/modal-level-change/modal-level-change.component';
 import { CardComponent } from './components/card/card.component';
 import { IntroComponent } from './pages/intro/intro.component';
 import { StartComponent } from './pages/start/start.component';
 import { TutorialComponent } from './pages/tutorial/tutorial.component';
 import { HistoryComponent } from './pages/history/history.component';
-import { GameComponent } from './pages/game/game.component';
 import { FeedbackComponent } from './pages/feedback/feedback.component';
 import { StatsComponent } from './pages/stats/stats.component';
 import { TutorialsComponent } from './pages/tutorials/tutorials.component';
@@ -36,7 +36,7 @@ import { PlaygroundModeComponent } from './pages/playground-mode/playground-mode
 import { DailyProgressComponent } from './components/progress-and-performance/progress-and-performance.component';
 import { GameModeChooseComponent } from './pages/settings/game-mode-choose/game-mode-choose.component';
 import { EnumQuestionType } from './constants/question.constants';
-import { EnumScreens } from './constants/syllogimous.constants';
+import { EnumScreens } from './constants/game.constants';
 import { TiersMatrixComponent } from './pages/tiers-matrix/tiers-matrix.component';
 import { OtherGamesComponent } from './pages/other-games/other-games.component';
 import { SettingsComponent } from './pages/settings/settings.component';
@@ -84,6 +84,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         SyllogimousComponent,
+        GameComponent,
         CardComponent,
         ModalLevelChangeComponent,
         IntroComponent,

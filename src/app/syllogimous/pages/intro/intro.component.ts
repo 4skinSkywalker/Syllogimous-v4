@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SyllogimousService } from '../../services/syllogimous.service';
+import { GameService } from '../../services/game.service';
 
 @Component({
     selector: 'app-intro',
@@ -8,6 +8,6 @@ import { SyllogimousService } from '../../services/syllogimous.service';
 })
 export class IntroComponent {
     constructor(
-        public sylSrv: SyllogimousService
+        public game: GameService
     ) { }
 }
