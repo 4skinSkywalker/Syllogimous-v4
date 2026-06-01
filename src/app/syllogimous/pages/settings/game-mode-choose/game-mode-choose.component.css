@@ -23,6 +23,7 @@
 @media (max-width: 768px) {
     .game-mode-choices {
         grid-template-columns: 1fr;
+        justify-items: start;
         gap: 0.5rem;
     }
 }
