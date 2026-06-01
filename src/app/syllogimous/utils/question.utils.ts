@@ -50,7 +50,11 @@ export function isPremiseLikeConclusion(premises: string[], conclusion: string) 
 }
 
 export function getSymbols(settings: Settings) {
-    return settings.enabled.meaningfulWords ? [...NOUNS] : [...STRINGS];
+    return settings.enabled.useEmojis
+        ? [...getEmojis()]
+        : settings.enabled.meaningfulWords
+            ? [...NOUNS]
+            : [...getStrings()];
 }
 
 export function getRandomSymbols(settings: Settings, length: number) {

@@ -6,6 +6,15 @@ import { DEFAULT_DAILY_GOAL, DEFAULT_PREMISES_DOWN_THRESHOLD, DEFAULT_PREMISES_U
 import { LS_DAILY_GOAL, LS_PREMISES_DOWN_THRESHOLD, LS_PREMISES_UP_THRESHOLD, LS_TRAINING_UNIT_LENGTH, LS_WEEKLY_GOAL } from '../../constants/local-storage.constants';
 import { GameService } from '../../services/game.service';
 
+export const loadColorBlindnessMode = () => {
+    const blindnessModeColor = localStorage.getItem(LS_COLOR_BLINDNESS_MODE);
+    if (blindnessModeColor) {
+        const [text, value] = blindnessModeColor.split(";");
+        console.log("Loaded color blindness mode:", {text, value});
+        document.documentElement.style.setProperty('--negated-color', value);
+    }
+};
+
 @Component({
     selector: 'app-settings',
     templateUrl: './settings.component.html',
@@ -21,6 +30,15 @@ export class SettingsComponent {
     trainingUnitLength = new FormControl(DEFAULT_TRAINING_UNIT_LENGTH);
     premisesUpThreshold = new FormControl(DEFAULT_PREMISES_UP_THRESHOLD);
     premisesDownThreshold = new FormControl(DEFAULT_PREMISES_DOWN_THRESHOLD);
+
+    colorBlindnessChoices = [
+        { text: "None", value: "rgb(128, 0, 0)" },
+        { text: "Protanopia", value: "rgb(73, 71, 0)", },
+        { text: "Deuteranopia", value: "rgb(80, 90, 0)" },
+        { text: "Tritanopia", value: "rgb(122, 0, 0)" },
+        { text: "Achromatopsia", value: "rgb(38, 38, 38)" }
+    ];
+    colorBlindnessMode = new FormControl(this.colorBlindnessChoices[0].value, { nonNullable: true });
 
     constructor(
         public router: Router,
@@ -52,6 +70,18 @@ export class SettingsComponent {
         this.premisesDownThreshold.setValue(premisesDownThreshold);
         this.premisesDownThreshold.valueChanges
             .subscribe(v => localStorage.setItem(LS_PREMISES_DOWN_THRESHOLD, String(v)));
+
+        const colorBlindnessMode = localStorage.getItem(LS_COLOR_BLINDNESS_MODE);
+        if (colorBlindnessMode) {
+            const [text, value] = colorBlindnessMode.split(";");
+            this.colorBlindnessMode.setValue(value);
+        }
+        this.colorBlindnessMode.valueChanges.subscribe(value => {
+            const text = this.colorBlindnessChoices.find(choice => choice.value === value)?.text;
+            const cmpKey = text + ";" + value;
+            localStorage.setItem(LS_COLOR_BLINDNESS_MODE, cmpKey);
+            loadColorBlindnessMode();
+        });
     }
 
 }

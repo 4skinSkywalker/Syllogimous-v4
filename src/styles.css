@@ -1,10 +1,9 @@
-/* Start of VARIABLES */
 :root {
     --border-radius_sm: calc(var(--border-radius_md) * 0.2 / 0.25);
     --border-radius_md: 1.1rem;
     --border-radius_lg: calc(var(--border-radius_md) * 0.3 / 0.25);
+    --negated-color: rgb(128, 0, 0);
 }
-/* End of VARIABLES */
 
 html[darkmode] {
     filter: invert(1) hue-rotate(180deg);
