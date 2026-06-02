@@ -718,7 +718,7 @@ export class GameService {
         question.premises = premises.map(stringifyProposition);
         question.conclusion = stringifyProposition(conclusion);
         question.notes = [
-            "Note that cardinal directions are exact and direct<br>(e.g., \"north\" is not \"north-east\" or \"north-west\")"
+            "Cardinal directions are strict and direct (e.g., \"north\" means exactly north, not \"north-east\" or \"north-west\")"
         ];
 
         // TODO: Create meta relationship
@@ -990,7 +990,7 @@ export class GameService {
         question.premises = premises.map(stringifyProposition);
         question.conclusion = stringifyProposition(conclusion);
         question.notes = [
-            "Note that cardinal directions are exact and direct<br>(e.g., \"north\" is not \"north-east\" or \"north-west\")"
+            "Cardinal directions are strict and direct (e.g., \"north\" means exactly north, not \"north-east\" or \"north-west\")"
         ];
 
         // TODO: Create meta relationship
